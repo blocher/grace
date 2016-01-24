@@ -1,0 +1,23 @@
+{
+  "name": "grace",
+  "description": "Website for Grace Episcopal Church",
+  "type":"wordpress-theme",
+  "minimum-stability" : "stable",
+  "autoload": {
+      "classmap": [
+          "public/wp-content/themes/grace/includes",
+          "public/wp-content/themes/grace/models"
+      ]
+  },
+  "require": {
+    "endroid/twitter": "^1.1",
+    "simplepie/simplepie": "^1.3",
+    "abraham/twitteroauth": "^0.6.2"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://wpackagist.org"
+    }
+  ]
+}

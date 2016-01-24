@@ -1,0 +1,20 @@
+== Changelog ==
+
+= 1.0.5 =
+*  Upgrade to Pro link added
+*  RTL Language Support
+
+= 1.0.4 =
+*  One more prefix fixed
+
+= 1.0.3 =
+*  Fixed all prefixes
+
+= 1.0.2 =
+* Requires issues fixed
+
+= 1.0.1 =
+* Features added
+
+= 1.0.0 =
+* Initial submission to WordPress repository
