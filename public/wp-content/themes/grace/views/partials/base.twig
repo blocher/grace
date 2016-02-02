@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ site.name }}</title>
+  <link rel="shortcut icon" href="{{ function('get_stylesheet_directory_uri') }}/favicon.ico" />
+
+  <!-- SCRIPTS -->
+  <!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if IE]><html class="ie" lang="en"> <![endif]-->
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  {{ function('wp_head') }}
+
+  <script>
+    //PrettyPhoto
+      jQuery(document).ready(function() {
+        jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+      });
+      
+      //BlackAndWhite
+      jQuery(window).load(function(){
+        jQuery('.client_img').BlackAndWhite({
+          hoverEffect : true, // default true
+          // set the path to BnWWorker.js for a superfast implementation
+          webworkerPath : false,
+          // for the images with a fluid width and height 
+          responsive:true,
+          // to invert the hover effect
+          invertHoverEffect: false,
+          // this option works only on the modern browsers ( on IE lower than 9 it remains always 1)
+          intensity:1,
+          speed: { //this property could also be just speed: value for both fadeIn and fadeOut
+            fadeIn: 300, // 200ms for fadeIn animations
+            fadeOut: 300 // 800ms for fadeOut animations
+          },
+          onImageReady:function(img) {
+            // this callback gets executed anytime an image is converted
+          }
+        });
+      });
+      
+  </script>
+
+
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '<?php the_field("facebook_app_id"); ?>',
+        xfbml      : true,
+        version    : 'v2.5'
+      });
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+</head>
+<body>
+
+  {% include 'partials/header.twig' %}
+
+  {% block template %}
+
+  {% endblock %}
+
+  {% include 'partials/footer.twig' %}
+
+  {{ function('wp_footer') }}
+
+</body>
+</html>

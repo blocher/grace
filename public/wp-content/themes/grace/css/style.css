@@ -2042,15 +2042,20 @@ input[type="color"]:focus {
 
 
 
+.flex_caption1 {
 
+    background-color:black;
+    z-index:0;
+    opacity:0.6;
+    padding: 20px;
+    position: relative;
+    width: 75% !important;
 
+}
 
-
-
-
-
-
-
+.top_slider .slide1 .flex_caption1 {
+	color: white !important;
+}
 
 
 
