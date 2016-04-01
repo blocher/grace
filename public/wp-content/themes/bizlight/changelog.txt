@@ -1,5 +1,9 @@
 == Changelog ==
 
+= 1.0.6 =
+*  Slider caption design issue fixed
+*  Minor design issues Fixed
+
 = 1.0.5 =
 *  Upgrade to Pro link added
 *  RTL Language Support
