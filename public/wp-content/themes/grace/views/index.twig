@@ -8,13 +8,24 @@
 				<!-- TOP SLIDER -->
 				<div class="flexslider top_slider">
 					<ul class="slides">
-						<li class="slide1" style="background-image:url({{ theme.link }}/img/worship.jpg);">
+
+						{% for slide in slides %}
+							<li class="slide1" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
+								<div class="flex_caption1">
+									<p class="title1 captionDelay2 FromTop">{{ slide.headline }}</p>
+									<p class="title4 captionDelay7 FromBottom">{{ slide.subheadline }}</p>
+								</div>
+								<a class="slide_btn FromRight" href="{{ slide.on-site_link | default (slide.off-site_link) }}" >Read More</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{# 	<li class="slide1" style="background-image:url({{ theme.link }}/img/worship.jpg);">
 							<div class="flex_caption1">
 								<p class="title1 captionDelay2 FromTop">Worship</p>
 								<p class="title4 captionDelay7 FromBottom">Worship the Lord in the Beauty of Holiness</p>
-
-							</div>
-							<a class="slide_btn FromRight" href="javascript:void(0);" >Read More</a>
+								</div>
+								<a class="slide_btn FromRight" href="javascript:void(0);" >Read More</a>
+							</li>
 						<li class="slide2" style="background-image:url({{ theme.link }}/img/outreach.jpg);">
 							<div class="flex_caption1">
 								<p class="title1 captionDelay6 FromLeft">Mission</p>
@@ -56,15 +67,13 @@
 							<a id="P2" class="player" data-property="{videoURL:'tDvBwPzJ7dY',containment:'.top_slider .slide3',autoPlay:true, mute:true, startAt:0, opacity:1}" ></a>
 							<!-- //VIDEO BACKGROUND -->
 						</li>
-					</ul>
+					</ul> #}
 				</div>
 				<div id="carousel">
 					<ul class="slides">
-						<li><img src="{{ theme.link }}/img/worship.jpg" alt="" /></li>
-						<li><img src="{{ theme.link }}/img/outreach.jpg" alt="" /></li>
-						<li><img src="{{ theme.link }}/img/education.jpg" alt="" /></li>
-						<li><img src="{{ theme.link }}/img/youth.jpg" alt="" /></li>
-						<li><img src="{{ theme.link }}/img/fellowship.jpg" alt="" /></li>
+						{% for slide in slides %}
+							<li><img src="{{ TimberImage(slide.image).src('large') }}" alt="" /></li>
+						{% endfor %}
 					</ul>
 				</div><!-- //TOP SLIDER -->
 			</section><!-- //HOME -->
