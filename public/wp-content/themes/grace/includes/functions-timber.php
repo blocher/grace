@@ -16,7 +16,7 @@ class TimberFunctions
             die ('you must install the memcached extension');
         }
 
-        
+
         $this->m->addServer('localhost', 11211);
 
         /***TWIG****/
@@ -24,21 +24,16 @@ class TimberFunctions
         add_filter('get_twig', array($this,'add_clean_to_twig'));
 
         /***TIMBER CONTEXT****/
-        add_filter('timber_context', array($this, 'add_to_context'));
+        add_filter('timber_context', array($this, 'add_menus'));
         add_filter('timber_context', array($this,'load_custom_fields'));
 
         add_action( 'save_post', array($this,'clear_options_cache') );
         add_action( 'acf/save_post', array($this,'clear_options_cache') );
     }
 
-    function add_to_context($data)
+    function add_menus($data)
     {
-        //$data['main_menu'] = new TimberMenu('main-menu');
-        // $data['theme_assets'] = array(
-        //     'homepage_background' => get_template_directory_uri() . '/images/bg-homepage.jpg',
-        //     'subpage_background' => get_template_directory_uri() . '/images/bg-subpage.jpg',
-        // );
-
+        $data['main_menu'] = new TimberMenu('main-menu');
         return $data;
     }
 
@@ -47,7 +42,7 @@ class TimberFunctions
 	    $twig->addFilter('timestamp', new Twig_Filter_Function('twig_timestamp_filter'));
 	    return $twig;
 	}
-	
+
 
 	function twig_timestamp_filter ($timestamp,$format) {
 		if (!isValidTimestamp($timestamp)) {
@@ -63,7 +58,7 @@ class TimberFunctions
         $twig->addFilter('clean', new Twig_Filter_Function('twig_clean_filter'));
         return $twig;
     }
-    
+
 
     function twig_clean_filter ($content) {
         return clean($content);
@@ -84,20 +79,23 @@ class TimberFunctions
    function set_options() {
 
         $fields = get_fields('options');
+        if (empty($fields)) {
+            return;
+        }
         $options = (object) array();
 
         foreach ($fields as $key=>$value) {
             $options->$key = $value;
         }
 
-        @$this->m->set('judiciary-options', $options, time() + (86400 * 30)); // Cache for 30 days
+        @$this->m->set('grace-options', $options, time() + (86400 * 30)); // Cache for 30 days
         return $options;
    }
 
    function load_custom_fields($data) {
 
-        if ($this->m->get('judiciary-options')) {
-            $data['options'] = $this->m->get('judiciary-options');
+        if ($this->m->get('grace-options')) {
+            $data['options'] = $this->m->get('grace-options');
         } else {
             $data['options'] = $this->set_options();
         }
@@ -106,7 +104,7 @@ class TimberFunctions
     }
 
     function clear_options_cache($post_id) {
-        $this->m->delete('judiciary-options');
+        $this->m->delete('grace-options');
         $this->set_options();
     }
 

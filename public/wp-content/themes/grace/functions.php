@@ -15,8 +15,6 @@ if ($timber_loaded && $acf_loaded) {
         function __construct(){
 
             require_once(ABSPATH . '../vendor/autoload.php');
-            // require_once(get_template_directory() . '/includes/theme-customizer.php');
-            // require_once(get_template_directory() . '/includes/admin.php');
             require_once(get_template_directory() . '/includes/functions-timber.php');
 
             add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
@@ -39,6 +37,8 @@ if ($timber_loaded && $acf_loaded) {
                 acf_add_options_sub_page('Social');
             }
 
+            add_theme_support( 'menus' );
+
             parent::__construct();
         }
 
@@ -49,15 +49,15 @@ if ($timber_loaded && $acf_loaded) {
 
         function enqueue_styles()
         {
-           
+
             //CSS
             wp_enqueue_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', [], null);
             wp_enqueue_style('flexslider', get_template_directory_uri() . '/css/flexslider.css', [], null);
             wp_enqueue_style('prettyPhoto', get_template_directory_uri() . '/css/prettyPhoto.css', [], null);
             wp_enqueue_style('animate', get_template_directory_uri() . '/css/animate.css', [], null);
-            wp_enqueue_style('carousel', get_template_directory_uri() . '/css/owl.carousel.css', [], null); 
-            wp_enqueue_style('font-awesome', 'http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', [], null); 
-            
+            wp_enqueue_style('carousel', get_template_directory_uri() . '/css/owl.carousel.css', [], null);
+            wp_enqueue_style('font-awesome', 'http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', [], null);
+
             wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', [], null);
 
             // FONTS
@@ -88,7 +88,7 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_script('blackandwhite-js', get_template_directory_uri() . '/js/jquery.BlackAndWhite.js', [], null, true);
 
             wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', [], null, true);
-    
+
         }
 
         function add_editor_styles()
@@ -178,7 +178,7 @@ function displayMissingDependencyNotice( $plugin_name ) {
         });
         return;
     }
-    
+
     echo $plugin_name . ' not activated.  Please contact site administrator.';
     die();
 
@@ -189,7 +189,7 @@ function checkPluginDependency ($class_or_function_name, $plugin_name='', $type=
     if (empty($plugin_name)) {
         $plugin_name = $class_or_function_name;
     }
-    
+
 
     if ($type=='function' && !function_exists($class_or_function_name)) {
         displayMissingDependencyNotice($plugin_name);
@@ -202,7 +202,7 @@ function checkPluginDependency ($class_or_function_name, $plugin_name='', $type=
     }
 
     return true;
-    
+
 
 }
 
