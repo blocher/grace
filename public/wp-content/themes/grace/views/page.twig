@@ -3,18 +3,20 @@
 {% block template %}
 
 
-
-
-{#         <!-- BREADCRUMBS -->
+        <!-- BREADCRUMBS -->
     <section class="breadcrumbs_block clearfix parallax">
       <div class="container center">
-        <h2><b>The</b> Blog</h2>
-        <p>Publication of the latest news, articles, and free apps.</p>
+
+        <h2><b>{{ parent.title }}</b></h2>
+        {% if parent.title != post.title %}
+          <p>{{ post.title }}</p>
+        {% endif %}
       </div>
-    </section><!-- //BREADCRUMBS --> #}
+    </section><!-- //BREADCRUMBS -->
 
 
     <!-- BLOG -->
+    <div class="single_page">
     <section id="blog">
 
       <!-- CONTAINER -->
@@ -115,11 +117,22 @@
           <div class="sidebar col-lg-3 col-md-3 padbot50">
 
             <div class="sidepanel widget_meta">
+              {% for child in post.parents('any','ExtendedTimberPost') %}
+                  <h3><a class="{% if child.ID == post.ID %}active{% endif %} main_category" href="{{ child.link }}" >{{ child.title }}</a></h3>
+                {% endfor %}
               <ul>
+
+
+                {% for child in post.siblings('any','ExtendedTimberPost') %}
+                  <li><a class="{% if child.ID == post.ID %}active{% endif %}" href="{{ child.link }}" >{{ child.title }}</a></li>
+                {% endfor %}
+
                 {% for child in post.children('any','ExtendedTimberPost') %}
-                  <li><a href="{{ child.permalink }}" >{{ child.title }}</a></li>
+                  <li><a class="{% if child.ID == post.ID %}active{% endif %}" href="{{ child.link }}" >{{ child.title }}</a></li>
                 {% endfor %}
               </ul>
+
+
             </div>
 
 
@@ -190,6 +203,7 @@
         </div><!-- //ROW -->
       </div><!-- //CONTAINER -->
     </section><!-- //BLOG -->
+  </div>
   </div><!-- //PAGE -->
 
 

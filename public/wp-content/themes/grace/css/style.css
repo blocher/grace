@@ -2058,6 +2058,14 @@ input[type="color"]:focus {
 }
 
 
+.active {
+	font-weight: 700;
+}
+
+.main_category {
+	font-size: 40px !important;
+}
+
 
 
 

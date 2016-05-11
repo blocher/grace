@@ -4,12 +4,12 @@
 		function __construct($pid = null) {
 
 	        parent::__construct($pid);
-	        
+
 	       // $this->post_content = $this->stripMSWord($this->post_content);
 	      //  $this->post_excerpt = $this->stripMSWord($this->post_excerpt);
 
 
-	 
+
 
 	    }
 
@@ -24,11 +24,11 @@
 
 			return $content;
 		}
-		
+
 	    public function excerpt($maxchars = 200, $force = false, $readmore = '...', $strip = true) {
 
 	    	if (is_search()) {
-	    		
+
 	    		$strip = false;
 	    		return $this->post_excerpt;
 	    	}
@@ -54,9 +54,9 @@
 						$excerpt .= ' <a href="' . $this->permalink()  . '">' . $readmore . '</a>';
 					}
 				}
-				
+
 			}
-			
+
 			return trim($excerpt);
 	    }
 
@@ -74,7 +74,7 @@
 					$excerpt .= ' ' . $readmore;
 				}
 			}
-			
+
 			return trim($excerpt);
 	    }
 
@@ -114,58 +114,65 @@
 	    	return $this->post_type_object()->labels->singular_name;
 	    }
 
-	    function featured_image($size='homepage_module') {
-	    	
-	    	$featured_image = $this->thumbnail();
-	    	if (!empty($featured_image)) {
-	    		return $featured_image->src($size);
+
+	    function siblings($post_type='any',$object_type='ExtendedTimberPost') {
+
+	    	if (!is_object($this->parent)) {
+	    		return [];
 	    	}
 
-	    	global $possible_images;
+	    	$args = [
+	    		'post_parent' => $this->parent->ID,
+	    		'nopagaing' => true,
+	    		'post_type' => $post_type,
+	    		'order_by' => 'menu_order',
+	    	];
+	    	return ExtendedTimber::get_posts($args,$object_type);
 
-	    	if (empty($possible_images)) {
-
-	    		$possible_images = [];
-		    	if( have_rows('default_pictures', 'option') ):
-
-					while( have_rows('default_pictures', 'option') ): the_row();
-					 
-					    $possible_images[] = get_sub_field('image'); 
-					        
-					endwhile;
-					 
-				endif;
-				if (empty($possible_images)) {
-		    		return '';
-		    	}
-
-	    	}
-
-	    	$key = array_rand($possible_images);
-	    	$tid = $possible_images[$key];
-	    	unset($possible_images[$key]);
-
-	    	$image = new TimberImage($tid);
-
-	    	return $image->src($size);
-	    	
 	    }
 
-	    function subcommittee() {
-	    	$subcommittees = $this->terms('subcommittee');
-	    	if (count($subcommittees)<1) {
-				return '';
-			}
-	    	$subcommittee = array_shift($subcommittees);
-	    	$name = $subcommittee->name;
-	    	$name = str_replace('-',' ',$subcommittee->name);
-	    	if (!strpos($subcommittee->name,'Committee on')) {
-	    		$name = 'Committee on ' . $name;
+	    function parents($post_type='any',$object_type='ExtendedTimberPost') {
+
+	    	if ($this->post_parent == 0) {
+	    		return [];
 	    	}
-	    	$name = ucwords($name);
-	    	$name = str_replace('On','on',$name);
-	    	$name = str_replace('And','and',$name);
-	    	return $name;
+
+	    	$args = [
+	    		'p' => $this->post_parent,
+	    		'nopagaing' => true,
+	    		'post_type' => $post_type,
+	    		'order_by' => 'menu_order',
+	    	];
+	    	return ExtendedTimber::get_posts($args,$object_type);
+
+	    }
+
+	    function children($post_type='any',$object_type='ExtendedTimberPost') {
+
+	    	$args = [
+	    		'post_parent' => $this->ID,
+	    		'nopagaing' => true,
+	    		'post_type' => $post_type,
+	    		'order_by' => 'menu_order',
+	    	];
+	    	return ExtendedTimber::get_posts($args,$object_type);
+
+	    }
+
+	    function children_and_siblings($post_type='any',$object_type='ExtendedTimberPost') {
+
+	    	if (!is_object($this->parent)) {
+	    		return [];
+	    	}
+
+	    	$args = [
+	    		'post_parent__in' => [$this->parent->ID, $this->ID],
+	    		'nopagaing' => true,
+	    		'post_type' => $post_type,
+	    		'order_by' => 'menu_order',
+	    	];
+	    	return ExtendedTimber::get_posts($args,$object_type);
+
 	    }
 
 
