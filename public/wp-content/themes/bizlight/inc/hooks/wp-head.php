@@ -45,7 +45,8 @@ if( ! function_exists( 'bizlight_wp_head' ) ) :
             h3, h3 a,
             h4, h4 a,
             h5, h5 a,
-            h6, h6 a{
+            h6, h6 a,
+            .box-container .box-inner a:hover{
                 color: <?php echo esc_attr( $bizlight_h1_h6_color );?> !important; /*#212121*/
             }
             <?php
@@ -81,7 +82,7 @@ if( ! function_exists( 'bizlight_wp_head' ) ) :
               .edit-link a:hover,
               .nav-links .nav-previous a:hover,
               .nav-links .nav-next a:hover,
-              .page-links a:hover {
+              .page-links a:hover{
                   color: <?php echo esc_attr( $bizlight_link_hover_color ); ?> !important; /*#212121*/
               }
               <?php

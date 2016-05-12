@@ -194,12 +194,12 @@ function bizlight_header() {
                                     bloginfo( 'name' );
                                 endif;
                                 ?>
+                            </a>
                                 <?php
                                 if ( 1 == $bizlight_customizer_all_values['bizlight-enable-tagline'] ) :
                                     echo '<p class="site-description">'. get_bloginfo('description' ).'</p>';
                                 endif;
                                 ?>
-                            </a>
                             <?php if ( is_front_page() && is_home() ){
                                 echo '</h1>';
                             }

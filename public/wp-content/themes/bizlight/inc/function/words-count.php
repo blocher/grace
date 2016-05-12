@@ -6,9 +6,23 @@
 */
 if ( ! function_exists( 'bizlight_words_count' ) ) :
 	function bizlight_words_count( $length = 25, $bizlight_content = null ) {
-		$length = absint( $length );
-		$source_content = preg_replace( '`\[[^\]]*\]`', '', $bizlight_content );
-		$trimmed_content = wp_trim_words( $source_content, $length, '...' );
-		return $trimmed_content;
+		$bizlight_content = $bizlight_content;
+		$bizlight_content = strip_shortcodes( $bizlight_content );
+		$bizlight_content = apply_filters('the_content', $bizlight_content);
+		$bizlight_content = str_replace(']]&gt;', ']]&gt;', $bizlight_content);
+
+		$excerpt_length = $length;
+
+		$words = preg_split("/[\n\r\t ]+/", $bizlight_content, $excerpt_length + 1, PREG_SPLIT_NO_EMPTY);
+		if ( count($words) > $excerpt_length ) {
+		    array_pop($words);
+		    $bizlight_content = implode(' ', $words);
+		    $bizlight_content = force_balance_tags( $bizlight_content );          
+		    $bizlight_content = $bizlight_content;
+		} else {
+		    $bizlight_content = implode(' ', $words);
+		}
+
+		return $bizlight_content;
 	}
 endif;

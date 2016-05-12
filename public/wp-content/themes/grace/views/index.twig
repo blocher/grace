@@ -203,9 +203,9 @@ given us.  <a href="#">Learn more</a></span>
 							</div>
 						</div><!-- //ROW -->
 					</div><!-- //CONTAINER -->
-				</div><!-- //MULTI PURPOSE -->
+				</div><!-- //MULTI PURPOSE --> #}
 			</section><!-- //ABOUT -->
-
+{#
 
 			<!-- PROJECTS -->
 			<section id="projects" class="padbot20">
@@ -545,7 +545,6 @@ given us.  <a href="#">Learn more</a></span>
 
 				<!-- CONTAINER -->
 				<div class="container">
-					<h2><b>Coming up at Grace</h2>
 
 					<!-- TESTIMONIALS -->
 
@@ -572,50 +571,47 @@ given us.  <a href="#">Learn more</a></span>
 						</div><!-- TESTIMONIALS SLIDER -->
 					</div><!-- //TESTIMONIALS --> #}
 
-					<!-- RECENT POSTS -->
 					<div class="row recent_posts" data-appear-top-offset="-200" data-animated="fadeInUp">
-						<div class="col-lg-4 col-md-4 col-sm-4 padbot30 post_item_block">
-							<div class="post_item">
-								<div class="post_item_img">
-								{#	<img src="{{ theme.link }}/img/youth.jpg" alt="" /> #}
-									<a class="link" href="blog-post.html" ></a>
-								</div>
-								<div class="post_item_content">
-									<a class="title" href="blog-post.html" >Chili Bowl</a>
-									<ul class="post_item_inf">
-										<li><a href="javascript:void(0);" >January 21</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 padbot30 post_item_block">
-							<div class="post_item">
-								<div class="post_item_img">
-									{#	<img src="{{ theme.link }}/img/fellowship.jpg" alt="" /> #}
-									<a class="link" href="blog-post.html"></a>
-								</div>
-								<div class="post_item_content">
-									<a class="title" href="blog-post.html" >Grace Church Luncheon</a>
-									<ul class="post_item_inf">
-										<li><a href="javascript:void(0);" >March 5</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-4 padbot30 post_item_block">
-							<div class="post_item">
-								<div class="post_item_img">
-									{#	<img src="{{ theme.link }}/img/worship.jpg" alt="" /> #}
-									<a class="link" href="blog-post.html"></a>
-								</div>
-								<div class="post_item_content">
-									<a class="title" href="blog-post.html" >Candlemas Blesisng of Candles</a>
-									<ul class="post_item_inf">
-										<li><a href="javascript:void(0);" >Tomorrow</a></li>
-									</ul>
+						<h2>Upcoming at Grace</h2>
+						{{ function('do_shortcode','[ai1ec view="agenda"]') }}
+					</div>
+
+					<div class="row">
+						&nbsp;
+					</div>
+
+					<!-- RECENT POSTS -->
+					<h2>Latest News</h2>
+					<div class="row recent_posts" data-appear-top-offset="-200" data-animated="fadeInUp">
+
+						{% for post in news %}
+							<div class="col-lg-4 col-md-4 col-sm-4 padbot30 post_item_block">
+								<div class="post_item">
+									<div class="post_item_img">
+										{% if post.thumbnail %}
+											<img src="{{ post.thumbnail.src('homepage_module') }}" alt="" />
+										{% endif %}
+										<a class="link" href="{{ post.link }}" ></a>
+									</div>
+									<div class="post_item_content">
+										<a class="title" href="blog-post.html" >{{ post.title }}</a>
+										<ul class="post_item_inf">
+											<li><a href="javascript:void(0);" >{{ post.post_date|date('M j') }}</li>
+											<li>{{ post.excerpt }}</li>
+										</ul>
+									</div>
 								</div>
 							</div>
-						</div>
+						{% endfor %}
+
+					</div>
+
+
+
+
+
+
+
 					</div><!-- RECENT POSTS -->
 				</div><!-- //CONTAINER -->
 			</section><!-- //NEWS -->

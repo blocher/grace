@@ -121,8 +121,6 @@
                   <h3><a class="{% if child.ID == post.ID %}active{% endif %} main_category" href="{{ child.link }}" >{{ child.title }}</a></h3>
                 {% endfor %}
               <ul>
-
-
                 {% for child in post.siblings('any','ExtendedTimberPost') %}
                   <li><a class="{% if child.ID == post.ID %}active{% endif %}" href="{{ child.link }}" >{{ child.title }}</a></li>
                 {% endfor %}

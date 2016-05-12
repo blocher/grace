@@ -4,7 +4,7 @@ Theme URI: http://evisionthemes.com/themes/bizlight
 Author: evisiontheme
 Author URI: http://evisionthemes.com/
 Description: Bizlight theme is clean and elegant lightweight WordPress theme, adequate enough to create a standard site for any corporate house. Bizlight is basically designed for the normal WordPress users, in order to create a site quickly and efficiently. However, it has many competencies including responsive, bootstrap, HTML5, CSS3, retina ready, font awesome, google font, cross-browser compatibility, color control, layout control, logo upload, translation-ready, custom CSS field, etc. Documentation consists of several parts and shows you the entire process of setting up WordPress and Bizlight theme from scratch.Demo : http://demo.evisionthemes.com/bizlight-pro/ Documentation : http://doc.evisionthemes.com/bizlight/
-Version: 1.0.6
+Version: 1.0.8
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: bizlight
@@ -183,7 +183,7 @@ a:focus {
   outline: 0;
   border: none;
   text-decoration: none;
-  color: #ff0000;
+  color: #23527c;
 }
 /* Typography */
 /* --------------------------------------- */
@@ -2279,32 +2279,37 @@ body:not(.home) .site-header.evision-nav-right{
   position: relative;
   z-index: 1;
 }
-.box-container a:hover .icon-container i,
-.box-container a .box-content,
-.box-container a h3,
-.box-container a .box-content p{
+.box-container .box-inner:hover .icon-container i,
+.box-container .box-content,
+.box-container h3,
+.box-container .box-content p{
     -webkit-transition: all 1s ease 0s;
     -moz-transition: all 1s ease 0s;
     -ms-transition: all 1s ease 0s;
     -o-transition: all 1s ease 0s;
   transition: all 1s ease 0s;
 }
-.box-container a .box-content{
+.box-container .box-content{
   color: #565656;
 }
-.box-container a:hover .box-content{
+.box-container .box-inner:hover .box-content{
   background-color: #028484;
 }
-.box-container a:hover h3,
-.box-container a:hover .box-content p{
+.box-container .box-inner:hover h3,
+.box-container .box-inner:hover .box-content p{
   color: #ffffff;
 }
 .box-container h3{
   margin-top: 0px;
   margin-bottom: 25px;
 }
-.box-container a:hover h3{
+.box-container .box-inner:hover h3,
+.box-container .box-inner:hover li,
+.box-container .box-inner:hover p{
   color: #ffffff !important;
+}
+.box-container .box-inner:hover a{
+  color: #d5d5d5 !important;
 }
 .browse-more-btn{
   margin-top: 60px;

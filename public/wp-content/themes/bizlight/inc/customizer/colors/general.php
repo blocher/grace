@@ -30,7 +30,7 @@ $bizlight_sections['bizlight-colors-reset'] =
 /*defaults values*/
 $bizlight_customizer_defaults['bizlight-h1-h6-color'] = '#212121';
 $bizlight_customizer_defaults['bizlight-link-color'] = '#212121';
-$bizlight_customizer_defaults['bizlight-link-hover-color'] = '#ff0000';
+$bizlight_customizer_defaults['bizlight-link-hover-color'] = '#028484';
 $bizlight_customizer_defaults['bizlight-site-identity-color'] = '#ffffff';
 
 $bizlight_customizer_defaults['bizlight-color-reset'] = '';

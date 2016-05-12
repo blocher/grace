@@ -51,7 +51,7 @@
 					}
 
 					if (!empty($readmore) && !empty($excerpt)) {
-						$excerpt .= ' <a href="' . $this->permalink()  . '">' . $readmore . '</a>';
+						$excerpt .= ' <a href="' . $this->link()  . '">' . $readmore . '</a>';
 					}
 				}
 

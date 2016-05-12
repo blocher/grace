@@ -65,6 +65,16 @@ function bizlight_setup() {
 	 */
 	add_theme_support( 'post-thumbnails' );
 
+
+	/*
+	 * Enable support for Post Thumbnails on posts and pages.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/add_image_size/
+	 */
+	add_image_size( 'home-main-slider', 1361 ,533, true );
+	add_image_size( 'home-blog-post-thumbnails-image', 365, 247, true );
+
+
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
 		'primary' => esc_html__( 'Primary Menu', 'bizlight' ),

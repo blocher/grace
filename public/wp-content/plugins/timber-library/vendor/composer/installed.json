@@ -1,21 +1,21 @@
 [
     {
         "name": "composer/installers",
-        "version": "v1.0.22",
-        "version_normalized": "1.0.22.0",
+        "version": "v1.0.25",
+        "version_normalized": "1.0.25.0",
         "source": {
             "type": "git",
             "url": "https://github.com/composer/installers.git",
-            "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046"
+            "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/composer/installers/zipball/bd9b14f094c89c8b5804a4e41edeb7853bb85046",
-            "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046",
+            "url": "https://api.github.com/repos/composer/installers/zipball/36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
+            "reference": "36e5b5843203d7f1cf6ffb0305a97e014387bd8e",
             "shasum": ""
         },
         "require": {
-            "composer-plugin-api": "1.0.0"
+            "composer-plugin-api": "^1.0"
         },
         "replace": {
             "roundcube/plugin-installer": "*",
@@ -25,7 +25,7 @@
             "composer/composer": "1.0.*@dev",
             "phpunit/phpunit": "4.1.*"
         },
-        "time": "2015-10-29 23:28:48",
+        "time": "2016-04-13 19:46:30",
         "type": "composer-plugin",
         "extra": {
             "class": "Composer\\Installers\\Plugin",
@@ -35,8 +35,8 @@
         },
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "Composer\\Installers\\": "src/"
+            "psr-4": {
+                "Composer\\Installers\\": "src/Composer/Installers"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
@@ -51,12 +51,14 @@
             }
         ],
         "description": "A multi-framework Composer library installer",
-        "homepage": "http://composer.github.com/installers/",
+        "homepage": "https://composer.github.io/installers/",
         "keywords": [
             "Craft",
             "Dolibarr",
             "Hurad",
+            "ImageCMS",
             "MODX Evo",
+            "Mautic",
             "OXID",
             "SMF",
             "Thelia",
@@ -101,17 +103,17 @@
     },
     {
         "name": "twig/twig",
-        "version": "v1.23.1",
-        "version_normalized": "1.23.1.0",
+        "version": "v1.24.0",
+        "version_normalized": "1.24.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/twigphp/Twig.git",
-            "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6"
+            "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/twigphp/Twig/zipball/d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
-            "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
+            "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+            "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
             "shasum": ""
         },
         "require": {
@@ -121,11 +123,11 @@
             "symfony/debug": "~2.7",
             "symfony/phpunit-bridge": "~2.7"
         },
-        "time": "2015-11-05 12:49:06",
+        "time": "2016-01-25 21:22:18",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.23-dev"
+                "dev-master": "1.24-dev"
             }
         },
         "installation-source": "dist",
@@ -164,17 +166,17 @@
     },
     {
         "name": "asm89/twig-cache-extension",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
+        "version": "1.2.0",
+        "version_normalized": "1.2.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/asm89/twig-cache-extension.git",
-            "reference": "127410728db193a88254c399e3455274fc05fa5d"
+            "reference": "76a801d6da8e1a1015af974d93df4ade0dda7267"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/asm89/twig-cache-extension/zipball/127410728db193a88254c399e3455274fc05fa5d",
-            "reference": "127410728db193a88254c399e3455274fc05fa5d",
+            "url": "https://api.github.com/repos/asm89/twig-cache-extension/zipball/76a801d6da8e1a1015af974d93df4ade0dda7267",
+            "reference": "76a801d6da8e1a1015af974d93df4ade0dda7267",
             "shasum": ""
         },
         "require": {
@@ -184,11 +186,11 @@
         "require-dev": {
             "doctrine/cache": "~1.0"
         },
-        "time": "2015-10-17 11:55:02",
+        "time": "2016-02-14 13:52:38",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "1.0-dev"
+                "dev-master": "1.1-dev"
             }
         },
         "installation-source": "dist",

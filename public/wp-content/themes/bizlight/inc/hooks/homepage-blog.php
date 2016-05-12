@@ -29,14 +29,14 @@ if ( ! function_exists( 'bizlight_home_blog' ) ) :
                         $bizlight_home_about_args = array(
                             'post_type' => 'post',
                             'posts_per_page' => 3,
-                            'ignore_sticky_posts ' => 1
+                            'ignore_sticky_posts' => 1
                         );
                         $bizlight_home_about_post_query = new WP_Query($bizlight_home_about_args);
                         if ($bizlight_home_about_post_query->have_posts()) :
                             $data_delay = 0;
                             while ($bizlight_home_about_post_query->have_posts()) : $bizlight_home_about_post_query->the_post();
                                 if(has_post_thumbnail()){
-                                    $thumb = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
+                                    $thumb = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'home-blog-post-thumbnails-image' );
                                     $url = $thumb['0'];
                                 }
                                 else{

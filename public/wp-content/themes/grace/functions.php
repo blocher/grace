@@ -20,7 +20,7 @@ if ($timber_loaded && $acf_loaded) {
             add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
             add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
             add_action('admin_init', array($this, 'add_editor_styles'));
-            //add_action('after_setup_theme', array($this, 'add_image_sizes'));
+            add_action('after_setup_theme', array($this, 'add_image_sizes'));
 
             add_theme_support('post-thumbnails');
             add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
@@ -42,10 +42,10 @@ if ($timber_loaded && $acf_loaded) {
             parent::__construct();
         }
 
-        // function add_image_sizes() {
-        //     add_image_size( 'homepage_module', 512, 600, 1 );
-        //     add_image_size( 'single_post', 1000, 553, 1 );
-        // }
+        function add_image_sizes() {
+            add_image_size( 'homepage_module', 370, 192, 1 );
+            add_image_size( 'single_post', 1000, 553, 1 );
+        }
 
         function enqueue_styles()
         {

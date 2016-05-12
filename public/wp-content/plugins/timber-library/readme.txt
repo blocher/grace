@@ -1,9 +1,9 @@
 === Timber ===
-Contributors: jarednova, lggorman
+Contributors: jarednova, connorjburton, lggorman
 Tags: template engine, templates, twig
 Requires at least: 3.7
-Stable tag: 0.22.5
-Tested up to: 4.4.1
+Stable tag: 1.0.1
+Tested up to: 4.5.1
 PHP version: 5.3.0 or greater
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,11 +17,11 @@ Once Timber is installed and activated in your plugin directory, it gives any Wo
 
 ### Looking for docs?
 * **[Project Page](http://upstatement.com/timber)**
-* [Timber Documentation](https://github.com/jarednova/timber/wiki/)
+* [Timber Documentation](https://github.com/timber/timber/wiki/)
 * [Twig Reference (from SensioLabs)](http://twig.sensiolabs.org/doc/templates.html)
 _Twig is the template language powering Timber; if you need a little background on what a template language is, [Twig's homepage has an overview](http://twig.sensiolabs.org/)_
-* **[Video Tutorials](https://github.com/jarednova/timber/wiki/Video-Tutorials)**
-* [Overview / Getting Started Guide](https://github.com/jarednova/timber/wiki/getting-started)
+* **[Video Tutorials](https://github.com/timber/timber/wiki/Video-Tutorials)**
+* [Overview / Getting Started Guide](https://github.com/timber/timber/wiki/getting-started)
 
 #### Related Projects
 * [**Timber Debug Bar**](http://wordpress.org/plugins/debug-bar-timber/) Adds a debug bar panel that will show you want template is in-use and the data sent to your twig file.
@@ -33,7 +33,7 @@ Nothing. Timber is meant for you to build a theme on. Like the [Starkers](https:
 Timber is great for any WordPress developer who cares about writing good, maintainable code. It helps teams of designers and developers working together. At [Upstatement](http://upstatement.com) we made Timber because not everyone knows the ins-and-outs of the_loop(), WordPress codex and PHP (nor should they). With Timber your best WordPress dev can focus on building the .php files with requests from WordPress and pass the data into .twig files. Once there, designers can easily mark-up data and build out a site's look-and-feel.
 
 #### Want to read more?
-* [Timber on GitHub](http://github.com/jarednova/timber/)
+* [Timber on GitHub](http://github.com/timber/timber/)
 * [Timber Overview on Tidy Repo](http://tidyrepo.com/timber/)
 * ["Timber and Twig Reignited My Love for WordPress" on CSS-Tricks](https://css-tricks.com/timber-and-twig-reignited-my-love-for-wordpress/)
 
@@ -41,12 +41,40 @@ Timber is great for any WordPress developer who cares about writing good, mainta
 
 == Changelog ==
 
+= 1.0.1 =
+* {{ user.avatar }} property is now available (thanks @connorjburton) d21eb85
+* #947: Fix to pagination base (thanks @matsrietdijk) 270d7c2
+* Fix to some namespacing issues (thanks @connorjburton) 0a8346a
+* #958: Call the_post action to help other plugins (thanks @felthy) 4442703
+* #976: Fixed problem with static declaration (@jarednova) c888606
+* #978: Bug with arrays for post types (thanks @connorjburton) 571f6f8
+
+= 1.0.0 =
+* Added `{{ user }}` object to context
+* Exposed translation functions
+* Added better error reporting/warnings
+* Fixed some things with function wrapper
+* Timber is now namespaced, big big thanks to @connorjburton
+* Cleanup of spacing
+* Removed deprecated functions, added warning for key functions
+* Updated version numbers and build script (@jarednova) 81a281e
+* Corrected Routes -> /Routes which threw a fatal error (@jarednova) 26b6585
+
+= 0.22.6 = 
+* New {{request}} object for post/get variables (thanks @connorjburton) #856
+* New crop positions (thanks @salaros) #861
+* Bug Fixes
+
+* Fix to "next" in pagination (thanks @connorjburton) #900
+* Fix to issue with tojpg filter's images not being deleted (thanks @connorjburton) #897
+* `{{post.parent.children}}` used to return unpublished posts due to underlying behavior in WordPress, it now only returns published posts (thanks @connorjburton) #883
+
 = 0.22.5 =
 * Fixed errors in tests (thanks @lggorman)
 * Fixed error in comments_link (thanks @tehlivi)
 
 = 0.22.4 =
-* Fixed [bug](https://github.com/jarednova/timber/issues/785) in get_calling_script file (thanks @gwagroves)
+* Fixed [bug](https://github.com/timber/timber/issues/785) in get_calling_script file (thanks @gwagroves)
 * Added tons of new tests and docs (thanks @lggorman and @jarednova)
 
 = 0.22.3 =
@@ -61,7 +89,7 @@ Timber is great for any WordPress developer who cares about writing good, mainta
 * Added support for animated gifs
 
 = 0.22.1 =
-* Added better support for [post.get_terms](https://github.com/jarednova/timber/pull/737) (thanks @aaemnnosttv)
+* Added better support for [post.get_terms](https://github.com/timber/timber/pull/737) (thanks @aaemnnosttv)
 * Fix for issue with ACF date field (thanks @rpkoller)
 * Fix for resizing jpEgs (thanks @eaton)
 
@@ -228,7 +256,7 @@ Timber is great for any WordPress developer who cares about writing good, mainta
 * Hotfix on timber-admin error
 
 = 0.17.0 =
-* Now you can resize/crop images with positional preferences, thanks @mmikkel. Here are the docs: https://github.com/jarednova/timber/wiki/TimberImage#resize
+* Now you can resize/crop images with positional preferences, thanks @mmikkel. Here are the docs: https://github.com/timber/timber/wiki/TimberImage#resize
 * Removed the Timber Starter Guide from the admin, a link to the GitHub wiki suffices.
 
 = 0.16.8 =
@@ -323,7 +351,7 @@ Timber is great for any WordPress developer who cares about writing good, mainta
 * New Timber::compile method which _doesn't_ automatically echo. (Same args as Timber::render)
 * Added post.get_next / post.get_prev for TimberPosts
 * Fixed a thing to make get_preview easier when you want to omit the 'Read More' link
-* Read the [Full Release Notes](https://github.com/jarednova/timber/releases/tag/0.15.0)
+* Read the [Full Release Notes](https://github.com/timber/timber/releases/tag/0.15.0)
 
 = 0.14.1 =
 * Added hooks to play nicely with Timber Debug Bar
@@ -441,12 +469,12 @@ That's Timber!
 
 == Support ==
 
-Please use the [GitHub repo](https://github.com/jarednova/timber/issues?state=open) to file bugs or questions.
+Please post on [StackOverflow under the "Timber" tag](http://stackoverflow.com/questions/tagged/timber). Please use GitHub issues only for specific bugs, feature requests and other types of issues.
 
 == Frequently Asked Questions ==
 
 = Can it be used in an existing theme? =
-You bet! Watch these **[video tutorials](https://github.com/jarednova/timber/wiki/Video-Tutorials)** to see how.
+You bet! Watch these **[video tutorials](https://github.com/timber/timber/wiki/Video-Tutorials)** to see how.
 
 = Is it used in production? =
 At Upstatement we've now used it on more than a dozen client sites. Hundreds of other sites use it too. You can check some of them out in the **[showcase](http://upstatement.com/timber/#showcase)**.
@@ -461,4 +489,4 @@ Whatever. It simplifies the silly stuff so that you can focus on building more c
 As stated above, we're using it in dozens of sites (and dozens more planned) -- dozens of other developers are using it too. This isn't going anywhere. Twig is the chosen language for other PHP platforms like Symfony, Drupal 8 and Craft. WordPress will eventually adopt Twig too, I promise you that.
 
 = Support? =
-Leave a [GitHub issue](https://github.com/jarednova/timber/issues?state=open) and I'll holler back.
+Leave a [GitHub issue](https://github.com/timber/timber/issues?state=open) and I'll holler back.

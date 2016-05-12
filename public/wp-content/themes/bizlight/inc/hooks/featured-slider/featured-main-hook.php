@@ -43,7 +43,7 @@ if ( ! function_exists( 'bizlight_featured_slider_array' ) ) :
                 while ( $bizlight_fs_post_query->have_posts() ) : $bizlight_fs_post_query->the_post();
                     $url ='';
                     if(has_post_thumbnail()){
-                        $thumb = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'full' );
+                        $thumb = wp_get_attachment_image_src( get_post_thumbnail_id( get_the_ID() ), 'home-main-slider' );
                         $url = $thumb['0'];
                     }
                     $bizlight_fs_contents_array[$i]['bizlight-fs-title'] = get_the_title();

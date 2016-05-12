@@ -1,4 +1,12 @@
 == Changelog ==
+= 1.0.8=
+* Popular plugins supported
+* Minor issues fixing 
+
+= 1.0.7 =
+*  Resized image for slider and blog section
+*  Word count maintained for listing items
+*  Minor design issues Fixed
 
 = 1.0.6 =
 *  Slider caption design issue fixed

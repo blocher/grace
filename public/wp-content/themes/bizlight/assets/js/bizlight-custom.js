@@ -3,10 +3,15 @@ jQuery(document).ready(function ($) {
         $(this).bxSlider({
             adaptiveHeight: true,
             controls: false,
+            touchEnabled: false,
             pager: $(this).data('control'),
             auto: $(this).data('auto')
         });
     });
+
+    $('.wrap-testimonial .carousel').carousel({
+      interval: 7000
+    })
 
     //What happen on window scroll
     function back_to_top(){
@@ -22,7 +27,7 @@ jQuery(document).ready(function ($) {
         back_to_top();
     });
     back_to_top();
-    $('a[href*=#]').on('click', function(event){
+    $('a[href*="#"]').on('click', function(event){
         if ($(this.hash).length){
             event.preventDefault();
             $("html, body").stop().animate({scrollTop: $(this.hash).offset().top - 70}, 2e3, "easeInOutExpo");
