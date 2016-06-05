@@ -2,7 +2,7 @@
 Contributors: jarednova, connorjburton, lggorman
 Tags: template engine, templates, twig
 Requires at least: 3.7
-Stable tag: 1.0.1
+Stable tag: 1.0.3
 Tested up to: 4.5.1
 PHP version: 5.3.0 or greater
 License: GPLv2 or later
@@ -40,6 +40,9 @@ Timber is great for any WordPress developer who cares about writing good, mainta
 
 
 == Changelog ==
+
+= 1.0.2 =
+* Hot fix for PHP 5.3 support
 
 = 1.0.1 =
 * {{ user.avatar }} property is now available (thanks @connorjburton) d21eb85

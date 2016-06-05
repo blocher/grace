@@ -1,4 +1,9 @@
 == Changelog ==
+
+= 1.0.9=
+* Minor issues fixing 
+* Remove deprecated tags.
+
 = 1.0.8=
 * Popular plugins supported
 * Minor issues fixing 

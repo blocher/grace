@@ -40,14 +40,19 @@ if( ! function_exists( 'bizlight_simple_breadcrumb' ) ) :
 
         if (is_home() || is_front_page()) {
 
-            if ($showOnHome == 1) echo '<div id="crumbs"><a href="' . $homeLink . '">' . $text['home'] . '</a></div>';
-
+            if ($showOnHome == 1){
+                    echo '<div id="crumbs"><a href="' . $homeLink . '">' . $text['home'] . '</a></div>';
+                }
         } else {
 
             echo '<div id="crumbs" xmlns:v="http://rdf.data-vocabulary.org/#">' . sprintf($link, $homeLink, $text['home']) . $delimiter;
 
+            if ( is_author() ) {
+                global $author;
+                $userdata = get_userdata($author);
+                echo $before . sprintf($text['author'], $userdata->display_name) . $after;
 
-            if ( is_category() ) {
+            }elseif ( is_category() ) {
                 $thisCat = get_category(get_query_var('cat'), false);
                 if ($thisCat->parent != 0) {
                     $cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
@@ -56,8 +61,8 @@ if( ! function_exists( 'bizlight_simple_breadcrumb' ) ) :
                     echo $cats;
                 }
                 echo $before . sprintf($text['category'], single_cat_title('', false)) . $after;
-
-            } elseif( is_tax() ){
+            
+            }elseif( is_tax() ){
                 $thisCat = get_category(get_query_var('cat'), false);
                 if ($thisCat->parent != 0) {
                     $cats = get_category_parents($thisCat->parent, TRUE, $delimiter);
@@ -133,10 +138,6 @@ if( ! function_exists( 'bizlight_simple_breadcrumb' ) ) :
             } elseif ( is_tag() ) {
                 echo $before . sprintf($text['tag'], single_tag_title('', false)) . $after;
 
-            } elseif ( is_author() ) {
-                global $author;
-                $userdata = get_userdata($author);
-                echo $before . sprintf($text['author'], $userdata->display_name) . $after;
 
             } elseif ( is_404() ) {
                 echo $before . $text['404'] . $after;
