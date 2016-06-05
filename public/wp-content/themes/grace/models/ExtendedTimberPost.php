@@ -25,7 +25,7 @@
 			return $content;
 		}
 
-	    public function excerpt($maxchars = 200, $force = false, $readmore = '...', $strip = true) {
+	    public function excerpt($maxchars = 700, $force = false, $readmore = '...', $strip = true) {
 
 	    	if (is_search()) {
 
@@ -172,6 +172,18 @@
 	    		'order_by' => 'menu_order',
 	    	];
 	    	return ExtendedTimber::get_posts($args,$object_type);
+
+	    }
+
+	    function main_image($size='page_header') {
+
+	    	if (has_post_thumbnail( $this->ID )) {
+					  return $this->get_thumbnail()->src($size);
+				}
+
+			  $default_photos = get_field('default_page_headers','option');
+			  $photo_number = rand(0, count($default_photos)-1);
+			  return $default_photos[$photo_number]['photo']['sizes'][$size];
 
 	    }
 

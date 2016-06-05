@@ -1361,7 +1361,8 @@ input[type="color"]:focus {
 /* __________ Pagination __________ */
 .pagination {
 	display:block;
-	margin:0 0 50px;
+	width: 75%;
+  margin: auto;
 	padding:0;
 	border-radius:0;
 }
