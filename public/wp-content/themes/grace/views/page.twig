@@ -4,7 +4,7 @@
 
 
         <!-- BREADCRUMBS -->
-    <section class="breadcrumbs_block clearfix parallax">
+    <section class="breadcrumbs_block clearfix parallax" style="background-image: url('{{ header_photo }}'); ">
       <div class="container center">
 
         <h2><b>{{ parent.title }}</b></h2>
@@ -34,9 +34,7 @@
         {#         <div class="single_blog_post_date">{{ post.date }}</div> #}
                 <div class="single_blog_post_title">{{ post.title }}</div>
               </div>
-              {% if post.thumbnail %}
-                <div class="single_blog_post_img"><img src="{{post.thumbnail.src}}" alt="" /></div>
-              {% endif %}
+
               <div class="single_blog_post_content">
                 <p class="margbot50">{{ post.content }}</p>
               </div>
