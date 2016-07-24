@@ -2,8 +2,16 @@
 
 namespace Buzz\Util;
 
+use Buzz\Message\RequestInterface;
+use Buzz\Exception\InvalidArgumentException;
+
 class Url
 {
+    private static $defaultPorts = array(
+        'http'  => 80,
+        'https' => 443,
+    );
+
     private $url;
     private $components;
 
@@ -19,7 +27,7 @@ class Url
         $components = parse_url($url);
 
         if (false === $components) {
-            throw new \InvalidArgumentException(sprintf('The URL "%s" is invalid.', $url));
+            throw new InvalidArgumentException(sprintf('The URL "%s" is invalid.', $url));
         }
 
         // support scheme-less URLs
@@ -33,6 +41,11 @@ class Url
                 $components['host'] = $host;
                 $components['path'] = '/'.$path;
             }
+        }
+
+        // default port
+        if (isset($components['scheme']) && !isset($components['port']) && isset(self::$defaultPorts[$components['scheme']])) {
+            $components['port'] = self::$defaultPorts[$components['scheme']];
         }
 
         $this->url = $url;
@@ -86,19 +99,13 @@ class Url
      */
     public function getHost()
     {
-        // default ports
-        static $map = array(
-            'http'  => 80,
-            'https' => 443,
-        );
-
         if ($hostname = $this->parseUrl('host')) {
             $host  = $scheme = $this->parseUrl('scheme', 'http');
             $host .= '://';
             $host .= $hostname;
 
             $port = $this->parseUrl('port');
-            if ($port && (!isset($map[$scheme]) || $map[$scheme] != $port)) {
+            if ($port && (!isset(self::$defaultPorts[$scheme]) || self::$defaultPorts[$scheme] != $port)) {
                 $host .= ':'.$port;
             }
 
@@ -152,13 +159,22 @@ class Url
             } elseif (!ctype_alpha($part)) {
                 $url .= $part;
             } else {
-                throw new \InvalidArgumentException(sprintf('The format character "%s" is invalid.', $part));
+                throw new InvalidArgumentException(sprintf('The format character "%s" is invalid.', $part));
             }
 
             next($parts);
         }
 
         return $url;
+    }
+
+    /**
+     * Applies the current URL to the supplied request.
+     */
+    public function applyToRequest(RequestInterface $request)
+    {
+        $request->setResource($this->getResource());
+        $request->setHost($this->getHost());
     }
 
     private function parseUrl($component = null, $default = null)

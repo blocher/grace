@@ -2,10 +2,11 @@
 
 namespace Buzz\Listener;
 
-use Buzz\Message;
+use Buzz\Message\MessageInterface;
+use Buzz\Message\RequestInterface;
 
 interface ListenerInterface
 {
-    function preSend(Message\Request $request);
-    function postSend(Message\Request $request, Message\Response $response);
+    public function preSend(RequestInterface $request);
+    public function postSend(RequestInterface $request, MessageInterface $response);
 }

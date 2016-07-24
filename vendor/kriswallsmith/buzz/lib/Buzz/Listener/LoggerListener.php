@@ -2,7 +2,9 @@
 
 namespace Buzz\Listener;
 
-use Buzz\Message;
+use Buzz\Message\MessageInterface;
+use Buzz\Message\RequestInterface;
+use Buzz\Exception\InvalidArgumentException;
 
 class LoggerListener implements ListenerInterface
 {
@@ -13,19 +15,19 @@ class LoggerListener implements ListenerInterface
     public function __construct($logger, $prefix = null)
     {
         if (!is_callable($logger)) {
-            throw new \InvalidArgumentException('The logger must be a callable.');
+            throw new InvalidArgumentException('The logger must be a callable.');
         }
 
         $this->logger = $logger;
         $this->prefix = $prefix;
     }
 
-    public function preSend(Message\Request $request)
+    public function preSend(RequestInterface $request)
     {
         $this->startTime = microtime(true);
     }
 
-    public function postSend(Message\Request $request, Message\Response $response)
+    public function postSend(RequestInterface $request, MessageInterface $response)
     {
         $seconds = microtime(true) - $this->startTime;
 

@@ -2,8 +2,8 @@
 
 namespace Buzz\Test\Message;
 
-use Buzz\Message\FormRequest;
-use Buzz\Message\FormUpload;
+use Buzz\Message\Form\FormRequest;
+use Buzz\Message\Form\FormUpload;
 
 /**
  * FormRequestTest
@@ -21,6 +21,23 @@ class FormRequestTest extends \PHPUnit_Framework_TestCase
         $expected = "foo=bar&bar=foo";
         $this->assertEquals($expected, $message->getContent());
     }
+
+    public function testGetContentGeneratesContentWithCustomArgSeparatorOutput()
+    {
+
+        $argSeparatorOutput = ini_get('arg_separator.output');
+        ini_set('arg_separator.output', '&amp;');
+
+        $message = new FormRequest();
+        $message->setField('foo', 'bar');
+        $message->setField('bar', 'foo');
+
+        $expected = "foo=bar&bar=foo";
+        $this->assertEquals($expected, $message->getContent());
+
+        ini_set('arg_separator.output', $argSeparatorOutput);
+    }
+
 
     public function testAddDataAddsData()
     {

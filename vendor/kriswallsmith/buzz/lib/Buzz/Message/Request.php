@@ -2,22 +2,14 @@
 
 namespace Buzz\Message;
 
-use Buzz\Util;
+use Buzz\Util\Url;
 
 class Request extends AbstractMessage implements RequestInterface
 {
-    const METHOD_OPTIONS = 'OPTIONS';
-    const METHOD_GET     = 'GET';
-    const METHOD_HEAD    = 'HEAD';
-    const METHOD_POST    = 'POST';
-    const METHOD_PUT     = 'PUT';
-    const METHOD_DELETE  = 'DELETE';
-    const METHOD_PATCH   = 'PATCH';
-
     private $method;
     private $resource;
     private $host;
-    private $protocolVersion = 1.0;
+    private $protocolVersion = 1.1;
 
     /**
      * Constructor.
@@ -31,6 +23,28 @@ class Request extends AbstractMessage implements RequestInterface
         $this->method = strtoupper($method);
         $this->resource = $resource;
         $this->host = $host;
+    }
+
+    public function setHeaders(array $headers)
+    {
+        parent::setHeaders(array());
+
+        foreach ($this->flattenHeaders($headers) as $header) {
+            $this->addHeader($header);
+        }
+    }
+
+    public function addHeader($header)
+    {
+        if (0 === stripos(substr($header, -8), 'HTTP/1.') && 3 == count($parts = explode(' ', $header))) {
+            list($method, $resource, $protocolVersion) = $parts;
+
+            $this->setMethod($method);
+            $this->setResource($resource);
+            $this->setProtocolVersion((float) substr($protocolVersion, 5));
+        } else {
+            parent::addHeader($header);
+        }
     }
 
     public function setMethod($method)
@@ -86,16 +100,15 @@ class Request extends AbstractMessage implements RequestInterface
     /**
      * A convenience method for populating the current request from a URL.
      *
-     * @param Util\Url|string $url An URL
+     * @param Url|string $url An URL
      */
     public function fromUrl($url)
     {
-        if (!$url instanceof Util\Url) {
-            $url = new Util\Url($url);
+        if (!$url instanceof Url) {
+            $url = new Url($url);
         }
 
-        $this->setResource($url->getResource());
-        $this->setHost($url->getHost());
+        $url->applyToRequest($this);
     }
 
     /**

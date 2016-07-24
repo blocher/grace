@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Endroid\\Twitter\\' => array($vendorDir . '/endroid/twitter/src', $vendorDir . '/endroid/twitter/tests'),
+    'Endroid\\Twitter\\Tests\\' => array($vendorDir . '/endroid/twitter/tests'),
+    'Endroid\\Twitter\\' => array($vendorDir . '/endroid/twitter/src'),
     'Abraham\\TwitterOAuth\\' => array($vendorDir . '/abraham/twitteroauth/src'),
 );

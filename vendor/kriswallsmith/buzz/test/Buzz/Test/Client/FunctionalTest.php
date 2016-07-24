@@ -2,11 +2,15 @@
 
 namespace Buzz\Test\Client;
 
+use Buzz\Client\BatchClientInterface;
+use Buzz\Client\ClientInterface;
 use Buzz\Client\Curl;
 use Buzz\Client\FileGetContents;
-use Buzz\Message\FormRequest;
-use Buzz\Message\FormUpload;
+use Buzz\Client\MultiCurl;
+use Buzz\Message\Form\FormRequest;
+use Buzz\Message\Form\FormUpload;
 use Buzz\Message\Request;
+use Buzz\Message\RequestInterface;
 use Buzz\Message\Response;
 
 class FunctionalTest extends \PHPUnit_Framework_TestCase
@@ -26,8 +30,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $request = new Request($method);
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->setContent('test');
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -41,8 +44,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
     {
         $request = new Request();
         $request->fromUrl($_SERVER['TEST_SERVER']);
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -57,8 +59,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $request = new FormRequest();
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->setField('company[name]', 'Google');
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -74,8 +75,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $request = new FormRequest(FormRequest::METHOD_GET);
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->setField('search[query]', 'cats');
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -92,8 +92,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->setField('company[name]', 'Google');
         $request->setField('company[logo]', $upload);
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -107,12 +106,11 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
      */
     public function testJsonPayload($client)
     {
-        $request = new Request(Request::METHOD_POST);
+        $request = new Request(RequestInterface::METHOD_POST);
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->addHeader('Content-Type: application/json');
         $request->setContent(json_encode(array('foo' => 'bar')));
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -126,12 +124,11 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
     public function testConsecutiveRequests($client)
     {
         // request 1
-        $request = new Request(Request::METHOD_PUT);
+        $request = new Request(RequestInterface::METHOD_PUT);
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->addHeader('Content-Type: application/json');
         $request->setContent(json_encode(array('foo' => 'bar')));
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -140,10 +137,9 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('{"foo":"bar"}', $data['INPUT']);
 
         // request 2
-        $request = new Request(Request::METHOD_GET);
+        $request = new Request(RequestInterface::METHOD_GET);
         $request->fromUrl($_SERVER['TEST_SERVER']);
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
 
@@ -159,8 +155,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         $request = new FormRequest();
         $request->fromUrl($_SERVER['TEST_SERVER']);
         $request->setField('math', '1+1=2');
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $data = json_decode($response->getContent(), true);
         parse_str($data['INPUT'], $fields);
@@ -175,11 +170,61 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
     {
         $request = new Request();
         $request->fromUrl($_SERVER['TEST_SERVER'].'?redirect_to='.$_SERVER['TEST_SERVER']);
-        $response = new Response();
-        $client->send($request, $response);
+        $response = $this->send($client, $request);
 
         $headers = $response->getHeaders();
         $this->assertContains('200', $headers[0]);
+    }
+
+    /**
+     * @dataProvider provideClient
+     */
+    public function testProxy($client)
+    {
+        if (!isset($_SERVER['TEST_PROXY'])) {
+            $this->markTestSkipped('The proxy server is not configured.');
+        }
+
+        $client->setProxy($_SERVER['TEST_PROXY']);
+
+        $request = new Request();
+        $request->fromUrl($_SERVER['TEST_SERVER']);
+        $response = $this->send($client, $request);
+
+        $data = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('HTTP_VIA', $data['SERVER']);
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage Protocol pop3 not supported or disabled in libcurl
+     */
+    public function testRedirectedToForbiddenProtocol()
+    {
+        $client = new Curl();
+        $request = new Request();
+        $request->fromUrl($_SERVER['TEST_SERVER'].'?redirect_to=pop3://localhost/');
+        $response = $this->send($client, $request);
+    }
+
+    public function testMultiCurlExecutesRequestsConcurently()
+    {
+        $client = new MultiCurl();
+        $client->setTimeout(10);
+
+        $calls = array();
+        $callback = function($client, $request, $response, $options, $error) use(&$calls) {
+            $calls[] = func_get_args();
+        };
+
+        for ($i = 3; $i > 0; $i--) {
+            $request = new Request();
+            $request->fromUrl($_SERVER['TEST_SERVER'].'?delay='.$i);
+            $client->send($request, new Response(), array('callback' => $callback));
+        }
+
+        $client->flush();
+        $this->assertCount(3, $calls);
     }
 
     public function provideClient()
@@ -187,6 +232,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         return array(
             array(new Curl()),
             array(new FileGetContents()),
+            array(new MultiCurl()),
         );
     }
 
@@ -195,7 +241,7 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         // HEAD is intentionally omitted
         // http://stackoverflow.com/questions/2603104/does-mod-php-honor-head-requests-properly
 
-        $methods = array('GET', 'POST', 'PUT', 'DELETE', 'PATCH');
+        $methods = array('GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS');
         $clients = $this->provideClient();
 
         $data = array();
@@ -225,5 +271,17 @@ class FunctionalTest extends \PHPUnit_Framework_TestCase
         }
 
         return $data;
+    }
+
+    private function send(ClientInterface $client, RequestInterface $request)
+    {
+        $response = new Response();
+        $client->send($request, $response);
+
+        if ($client instanceof BatchClientInterface) {
+            $client->flush();
+        }
+
+        return $response;
     }
 }

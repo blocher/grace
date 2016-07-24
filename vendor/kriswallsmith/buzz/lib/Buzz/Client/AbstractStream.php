@@ -2,20 +2,20 @@
 
 namespace Buzz\Client;
 
-use Buzz\Message;
+use Buzz\Message\RequestInterface;
 
 abstract class AbstractStream extends AbstractClient
 {
     /**
      * Converts a request into an array for stream_context_create().
      *
-     * @param Message\Request $request A request object
+     * @param RequestInterface $request A request object
      *
      * @return array An array for stream_context_create()
      */
-    public function getStreamContextArray(Message\Request $request)
+    public function getStreamContextArray(RequestInterface $request)
     {
-        return array(
+        $options = array(
             'http' => array(
                 // values from the request
                 'method'           => $request->getMethod(),
@@ -25,12 +25,21 @@ abstract class AbstractStream extends AbstractClient
 
                 // values from the current client
                 'ignore_errors'    => $this->getIgnoreErrors(),
-                'max_redirects'    => $this->getMaxRedirects(),
+                'follow_location'  => $this->getMaxRedirects() > 0,
+                'max_redirects'    => $this->getMaxRedirects() + 1,
                 'timeout'          => $this->getTimeout(),
             ),
             'ssl' => array(
                 'verify_peer'      => $this->getVerifyPeer(),
+                'verify_host'      => $this->getVerifyHost(),
             ),
         );
+
+        if ($this->proxy) {
+            $options['http']['proxy'] = $this->proxy;
+            $options['http']['request_fulluri'] = true;
+        }
+
+        return $options;
     }
 }

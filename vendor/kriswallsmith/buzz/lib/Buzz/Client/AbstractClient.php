@@ -2,14 +2,14 @@
 
 namespace Buzz\Client;
 
-use Buzz\Message;
-
-abstract class AbstractClient
+abstract class AbstractClient implements ClientInterface
 {
     protected $ignoreErrors = true;
     protected $maxRedirects = 5;
     protected $timeout = 5;
     protected $verifyPeer = true;
+    protected $verifyHost = 2;
+    protected $proxy;
 
     public function setIgnoreErrors($ignoreErrors)
     {
@@ -49,5 +49,25 @@ abstract class AbstractClient
     public function getVerifyPeer()
     {
         return $this->verifyPeer;
+    }
+
+    public function getVerifyHost()
+    {
+        return $this->verifyHost;
+    }
+
+    public function setVerifyHost($verifyHost)
+    {
+        $this->verifyHost = $verifyHost;
+    }
+
+    public function setProxy($proxy)
+    {
+        $this->proxy = $proxy;
+    }
+
+    public function getProxy()
+    {
+        return $this->proxy;
     }
 }

@@ -14,11 +14,12 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "kriswallsmith/buzz": "^0.6"
+        "kriswallsmith/buzz": "~0.10"
     },
     "autoload": {
         "psr-4": {
-            "Endroid\\Twitter\\": [ "src/", "tests/" ]
+            "Endroid\\Twitter\\": [ "src/" ],
+            "Endroid\\Twitter\\Tests\\": [ "tests/" ]
         }
     },
     "config": {

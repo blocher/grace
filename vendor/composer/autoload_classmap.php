@@ -11,4 +11,5 @@ return array(
     'ExtendedTimberMenuItem' => $baseDir . '/public/wp-content/themes/grace/models/ExtendedTimberMenuItem.php',
     'ExtendedTimberPost' => $baseDir . '/public/wp-content/themes/grace/models/ExtendedTimberPost.php',
     'ExtendedTimberTerm' => $baseDir . '/public/wp-content/themes/grace/models/ExtendedTimberTerm.php',
+    'TimberFunctions' => $baseDir . '/public/wp-content/themes/grace/includes/functions-timber.php',
 );

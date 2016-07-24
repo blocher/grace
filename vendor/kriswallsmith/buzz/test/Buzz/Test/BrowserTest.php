@@ -12,8 +12,8 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->client = $this->getMock('Buzz\\Client\\ClientInterface');
-        $this->factory = $this->getMock('Buzz\\Message\\FactoryInterface');
+        $this->client = $this->getMock('Buzz\Client\ClientInterface');
+        $this->factory = $this->getMock('Buzz\Message\Factory\FactoryInterface');
 
         $this->browser = new Browser($this->client, $this->factory);
     }
@@ -23,23 +23,23 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
      */
     public function testBasicMethods($method, $content)
     {
-        $request = $this->getMockBuilder('Buzz\\Message\\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $response = $this->getMockBuilder('Buzz\\Message\\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->getMock('Buzz\Message\RequestInterface');
+        $response = $this->getMock('Buzz\Message\MessageInterface');
+        $headers = array('X-Foo: bar');
 
         $this->factory->expects($this->once())
             ->method('createRequest')
             ->with(strtoupper($method))
             ->will($this->returnValue($request));
         $request->expects($this->once())
-            ->method('fromUrl')
-            ->with('http://google.com/');
+            ->method('setHost')
+            ->with('http://google.com');
+        $request->expects($this->once())
+            ->method('setResource')
+            ->with('/');
         $request->expects($this->once())
             ->method('addHeaders')
-            ->with(array('X-Foo: bar'));
+            ->with($headers);
         $request->expects($this->once())
             ->method('setContent')
             ->with($content);
@@ -50,7 +50,7 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
             ->method('send')
             ->with($request, $response);
 
-        $actual = $this->browser->$method('http://google.com/', array('X-Foo: bar'), $content);
+        $actual = $this->browser->$method('http://google.com/', $headers, $content);
 
         $this->assertSame($response, $actual);
     }
@@ -58,22 +58,19 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
     public function provideMethods()
     {
         return array(
-            array('get', ''),
-            array('head', ''),
-            array('post', 'content'),
-            array('put', 'content'),
+            array('get',    ''),
+            array('head',   ''),
+            array('post',   'content'),
+            array('put',    'content'),
             array('delete', 'content'),
         );
     }
 
     public function testSubmit()
     {
-        $request = $this->getMockBuilder('Buzz\\Message\\FormRequest')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $response = $this->getMockBuilder('Buzz\\Message\\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->getMock('Buzz\Message\Form\FormRequestInterface');
+        $response = $this->getMock('Buzz\Message\MessageInterface');
+        $headers = array('X-Foo: bar');
 
         $this->factory->expects($this->once())
             ->method('createFormRequest')
@@ -82,11 +79,14 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
             ->method('setMethod')
             ->with('PUT');
         $request->expects($this->once())
-            ->method('fromUrl')
+            ->method('setHost')
             ->with('http://google.com');
         $request->expects($this->once())
+            ->method('setResource')
+            ->with('/');
+        $request->expects($this->once())
             ->method('addHeaders')
-            ->with(array('X-Foo: bar'));
+            ->with($headers);
         $request->expects($this->once())
             ->method('setFields')
             ->with(array('foo' => 'bar', 'bar' => 'foo'));
@@ -97,20 +97,16 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
             ->method('send')
             ->with($request, $response);
 
-        $actual = $this->browser->submit('http://google.com', array('foo' => 'bar', 'bar' => 'foo'), 'PUT', array('X-Foo: bar'));
+        $actual = $this->browser->submit('http://google.com', array('foo' => 'bar', 'bar' => 'foo'), 'PUT', $headers);
 
         $this->assertSame($response, $actual);
     }
 
     public function testListener()
     {
-        $listener = $this->getMock('Buzz\\Listener\\ListenerInterface');
-        $request = $this->getMockBuilder('Buzz\\Message\\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $response = $this->getMockBuilder('Buzz\\Message\\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $listener = $this->getMock('Buzz\Listener\ListenerInterface');
+        $request = $this->getMock('Buzz\Message\RequestInterface');
+        $response = $this->getMock('Buzz\Message\MessageInterface');
 
         $listener->expects($this->once())
             ->method('preSend')
@@ -127,12 +123,8 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
 
     public function testLastMessages()
     {
-        $request = $this->getMockBuilder('Buzz\\Message\\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $response = $this->getMockBuilder('Buzz\\Message\\Response')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->getMock('Buzz\Message\RequestInterface');
+        $response = $this->getMock('Buzz\Message\MessageInterface');
 
         $this->browser->send($request, $response);
 
@@ -142,41 +134,41 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
 
     public function testClientMethods()
     {
-        $client = $this->getMock('Buzz\\Client\\ClientInterface');
+        $client = $this->getMock('Buzz\Client\ClientInterface');
         $this->browser->setClient($client);
         $this->assertSame($client, $this->browser->getClient());
     }
 
     public function testFactoryMethods()
     {
-        $factory = $this->getMock('Buzz\\Message\\FactoryInterface');
+        $factory = $this->getMock('Buzz\Message\Factory\FactoryInterface');
         $this->browser->setMessageFactory($factory);
         $this->assertSame($factory, $this->browser->getMessageFactory());
     }
 
     public function testAddFirstListener()
     {
-        $listener = $this->getMock('Buzz\\Listener\\ListenerInterface');
+        $listener = $this->getMock('Buzz\Listener\ListenerInterface');
         $this->browser->addListener($listener);
         $this->assertEquals($listener, $this->browser->getListener());
     }
 
     public function testAddSecondListener()
     {
-        $listener = $this->getMock('Buzz\\Listener\\ListenerInterface');
+        $listener = $this->getMock('Buzz\Listener\ListenerInterface');
 
         $this->browser->addListener($listener);
         $this->browser->addListener($listener);
 
         $listenerChain = $this->browser->getListener();
 
-        $this->assertInstanceOf('Buzz\\Listener\\ListenerChain', $listenerChain);
+        $this->assertInstanceOf('Buzz\Listener\ListenerChain', $listenerChain);
         $this->assertEquals(2, count($listenerChain->getListeners()));
     }
 
     public function testAddThirdListener()
     {
-        $listener = $this->getMock('Buzz\\Listener\\ListenerInterface');
+        $listener = $this->getMock('Buzz\Listener\ListenerInterface');
 
         $this->browser->addListener($listener);
         $this->browser->addListener($listener);
@@ -184,7 +176,7 @@ class BrowserTest extends \PHPUnit_Framework_TestCase
 
         $listenerChain = $this->browser->getListener();
 
-        $this->assertInstanceOf('Buzz\\Listener\\ListenerChain', $listenerChain);
+        $this->assertInstanceOf('Buzz\Listener\ListenerChain', $listenerChain);
         $this->assertEquals(3, count($listenerChain->getListeners()));
     }
 }

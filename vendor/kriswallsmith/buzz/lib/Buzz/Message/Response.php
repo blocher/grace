@@ -71,20 +71,6 @@ class Response extends AbstractMessage
         $this->resetStatusLine();
     }
 
-    public function fromString($raw)
-    {
-        $lines = preg_split('/(\\r?\\n)/', $raw, -1, PREG_SPLIT_DELIM_CAPTURE);
-        for ($i = 0, $count = count($lines); $i < $count; $i += 2) {
-            $line = $lines[$i];
-            if (empty($line)) {
-                $this->setContent(implode('', array_slice($lines, $i + 2)));
-                break;
-            }
-
-            $this->addHeader($line);
-        }
-    }
-
     /**
      * Is response invalid?
      *
@@ -192,7 +178,7 @@ class Response extends AbstractMessage
         $headers = $this->getHeaders();
 
         if (isset($headers[0]) && 3 == count($parts = explode(' ', $headers[0], 3))) {
-            $this->protocolVersion = (float) $parts[0];
+            $this->protocolVersion = (float) substr($parts[0], 5);
             $this->statusCode = (integer) $parts[1];
             $this->reasonPhrase = $parts[2];
         } else {
