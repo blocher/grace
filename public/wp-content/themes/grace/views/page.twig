@@ -115,21 +115,27 @@
           <div class="sidebar col-lg-3 col-md-3 padbot50">
 
             <div class="sidepanel widget_meta">
-              {% for child in post.parents('any','ExtendedTimberPost') %}
-                  <h3><a class="{% if child.ID == post.ID %}active{% endif %} main_category" href="{{ child.link }}" >{{ child.title }}</a></h3>
+              <ul class="parent-list">
+                {% for parent in post.parents('any','ExtendedTimberPost') %}
+                  <li><a class="{% if parent.ID == post.ID %}active{% endif %} parent" href="{{ parent.link }}" >{{ parent.title }}</a></li>
                 {% endfor %}
-              <ul>
-                {% for child in post.siblings('any','ExtendedTimberPost') %}
-                  <li><a class="{% if child.ID == post.ID %}active{% endif %}" href="{{ child.link }}" >{{ child.title }}</a></li>
+              </ul>
+              <ul class="sibling-list">
+                {% for sibling in post.siblings('any','ExtendedTimberPost') %}
+                  <li><a class="{% if sibling.ID == post.ID %}active{% endif %} sibling" href="{{ sibling.link }}" >{{ sibling.title }}</a></li>
+                  <ul class="child-list">
+                    {% for child in sibling.children('any','ExtendedTimberPost') %}
+                      <li><a class="{% if child.ID == post.ID %}active{% endif %} child" href="{{ child.link }}" >{{ child.title }}</a></li>
+                    {% endfor %}
+                  </ul>
                 {% endfor %}
 
-                {% for child in post.children('any','ExtendedTimberPost') %}
-                  <li><a class="{% if child.ID == post.ID %}active{% endif %}" href="{{ child.link }}" >{{ child.title }}</a></li>
-                {% endfor %}
+
               </ul>
 
 
             </div>
+
 
 
 {#

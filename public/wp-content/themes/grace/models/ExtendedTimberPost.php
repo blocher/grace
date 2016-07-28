@@ -126,6 +126,7 @@
 	    		'nopagaing' => true,
 	    		'post_type' => $post_type,
 	    		'order_by' => 'menu_order',
+	    		'order' => 'ASC',
 	    	];
 	    	return ExtendedTimber::get_posts($args,$object_type);
 
@@ -142,6 +143,7 @@
 	    		'nopagaing' => true,
 	    		'post_type' => $post_type,
 	    		'order_by' => 'menu_order',
+	    		'order' => 'ASC',
 	    	];
 	    	return ExtendedTimber::get_posts($args,$object_type);
 
@@ -154,6 +156,7 @@
 	    		'nopagaing' => true,
 	    		'post_type' => $post_type,
 	    		'order_by' => 'menu_order',
+	    		'order' => 'ASC',
 	    	];
 	    	return ExtendedTimber::get_posts($args,$object_type);
 
@@ -170,6 +173,7 @@
 	    		'nopagaing' => true,
 	    		'post_type' => $post_type,
 	    		'order_by' => 'menu_order',
+	    		'order' => 'ASC',
 	    	];
 	    	return ExtendedTimber::get_posts($args,$object_type);
 

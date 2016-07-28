@@ -1579,9 +1579,36 @@ input[type="color"]:focus {
 	font-size:20px;
 	color:#666;
 }
+
+.widget_meta li a.parent {
+	font-size:20px;
+
+}
+
+.widget_meta li a.sibling {
+	font-size:15px;
+}
+
+.widget_meta li a.child {
+ font-size:10px;
+
+}
 .widget_meta li a:hover {color:#333;}
 
 
+.parent-list {
+	list-style-type: none;
+}
+
+.sibling-list {
+	list-style-type: circle;
+	margin-left: 10px;
+}
+
+.child-list {
+	list-style-type: square;
+	margin-left: 20px;
+}
 
 
 /* __________ Popular Tags __________ */
