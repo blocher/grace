@@ -33,6 +33,11 @@ if (stripos(get_option('siteurl'), 'https://') === 0) {
 
     // add JavaScript detection of page protocol, and pray!
     add_action('wp_print_scripts', 'force_ssl_url_scheme_script');
+} else {
+  $_SERVER['HTTPS'] = 'off';
+
+    // add JavaScript detection of page protocol, and pray!
+    add_action('wp_print_scripts', 'force_non_ssl_url_scheme_script');
 }
 
 function force_ssl_url_scheme_script() {
@@ -40,6 +45,16 @@ function force_ssl_url_scheme_script() {
 <script>
 if (document.location.protocol != "https:") {
     document.location = document.URL.replace(/^http:/i, "https:");
+}
+</script>
+<?php
+}
+
+function force_non_ssl_url_scheme_script() {
+?>
+<script>
+if (document.location.protocol != "http:") {
+    document.location = document.URL.replace(/^https:/i, "http:");
 }
 </script>
 <?php
