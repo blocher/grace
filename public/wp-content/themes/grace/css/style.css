@@ -1579,7 +1579,7 @@ input[type="color"]:focus {
 
 .widget_meta li:before {
 	color:#999;
-	margin: -0 10px 0 -25px;
+	margin: -0 10px 0 -35px;
 	font-size : 10px;
 	font-family: 'FontAwesome';
 }
@@ -1590,14 +1590,12 @@ input[type="color"]:focus {
 
 }
 
-.widget_meta li a.sibling {
+.widget_meta li a.sibling, .widget_meta li a.child {
 	font-size:15px;
+	margin-left: 0;
 }
 
-.widget_meta li a.child {
- font-size:10px;
 
-}
 .widget_meta li a:hover {color:#333;}
 
 
@@ -1610,21 +1608,18 @@ input[type="color"]:focus {
 	font-weight: 700;
 }
 
-.sibling-list li:before {
+.sibling-list li:before, .child-list li:before  {
 
 	content: '\f067';
 
 }
 
-.sibling-list {
+.sibling-list, .child-list {
 	list-style-type: none;
 	margin-left: 10px;
+	margin-bottom: 30px;
 }
 
-.child-list {
-	list-style-type: none;
-	margin-left: 20px;
-}
 
 
 /* __________ Popular Tags __________ */

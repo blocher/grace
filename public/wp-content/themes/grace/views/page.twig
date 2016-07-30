@@ -12,6 +12,7 @@
           <p>{{ post.title }}</p>
         {% endif %}
       </div>
+
     </section><!-- //BREADCRUMBS -->
 
 
@@ -31,7 +32,8 @@
             <!-- SINGLE BLOG POST -->
             <div class="single_blog_post clearfix" data-animated="fadeInUp">
               <div class="single_blog_post_descr">
-        {#         <div class="single_blog_post_date">{{ post.date }}</div> #}
+                {#  <div class="single_blog_post_date">{{ post.date }}</div> #}
+                {{ function('yoast_breadcrumb','','',false) }}
                 <div class="single_blog_post_title">{{ post.title }}</div>
               </div>
 
@@ -115,7 +117,7 @@
           <div class="sidebar col-lg-3 col-md-3 padbot50">
 
             <div class="sidepanel widget_meta">
-              <ul class="parent-list">
+{#               <ul class="parent-list">
                 {% for parent in post.parents('page','ExtendedTimberPost') %}
                   <li><a class="{% if parent.ID == post.ID %}active{% endif %} parent" href="{{ parent.link }}" >{{ parent.title }}</a></li>
                 {% endfor %}
@@ -131,8 +133,27 @@
                 {% endfor %}
 
 
-              </ul>
+              </ul> #}
 
+              {% if post.children %}
+                <h3><small>More about</small><br>{{ post.title }}</h3>
+                <ul class="child-list">
+                  {% for child in post.children('page','ExtendedTimberPost') %}
+                    <li><a class="child" href="{{ child.link }}" >{{ child.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+
+              {% if post.siblings %}
+                <h3><small>More about</small><br>{{ post.parent.title }}</h3>
+                <ul class="sibling-list">
+                  {% for sibling in post.siblings('page','ExtendedTimberPost') %}
+
+                    <li><a class="{% if sibling.ID == post.ID %}active {% endif %}sibling" href="{{ sibling.link }}" >{{ sibling.title }}</a></li>
+
+                  {% endfor %}
+                </ul>
+              {% endif %}
 
             </div>
 
