@@ -117,7 +117,9 @@
             <div class="sidepanel widget_meta">
               <ul class="parent-list">
                 {% for parent in post.parents('any','ExtendedTimberPost') %}
+                  {{ parent }}
                   <li><a class="{% if parent.ID == post.ID %}active{% endif %} parent" href="{{ parent.link }}" >{{ parent.title }}</a></li>
+                  }
                 {% endfor %}
               </ul>
               <ul class="sibling-list">
