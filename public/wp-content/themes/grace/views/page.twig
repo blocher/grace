@@ -116,17 +116,15 @@
 
             <div class="sidepanel widget_meta">
               <ul class="parent-list">
-                {% for parent in post.parents('any','ExtendedTimberPost') %}
-                  {{ parent }}
+                {% for parent in post.parents('page','ExtendedTimberPost') %}
                   <li><a class="{% if parent.ID == post.ID %}active{% endif %} parent" href="{{ parent.link }}" >{{ parent.title }}</a></li>
-                  }
                 {% endfor %}
               </ul>
               <ul class="sibling-list">
-                {% for sibling in post.siblings('any','ExtendedTimberPost') %}
+                {% for sibling in post.siblings('page','ExtendedTimberPost') %}
                   <li><a class="{% if sibling.ID == post.ID %}active{% endif %} sibling" href="{{ sibling.link }}" >{{ sibling.title }}</a></li>
                   <ul class="child-list">
-                    {% for child in sibling.children('any','ExtendedTimberPost') %}
+                    {% for child in sibling.children('page','ExtendedTimberPost') %}
                       <li><a class="{% if child.ID == post.ID %}active{% endif %} child" href="{{ child.link }}" >{{ child.title }}</a></li>
                     {% endfor %}
                   </ul>

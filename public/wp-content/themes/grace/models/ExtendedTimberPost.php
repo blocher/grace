@@ -117,12 +117,8 @@
 
 	    function siblings($post_type='any',$object_type='ExtendedTimberPost') {
 
-	    	if (!is_object($this->parent)) {
-	    		return [];
-	    	}
-
 	    	$args = [
-	    		'post_parent' => $this->parent->ID,
+	    		'post_parent' => !is_object($this->parent) ? 0 : $this->parent->ID,
 	    		'nopagaing' => true,
 	    		'post_type' => $post_type,
 	    		'order_by' => 'menu_order',

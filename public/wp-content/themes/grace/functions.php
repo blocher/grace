@@ -57,7 +57,7 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_style('prettyPhoto', get_template_directory_uri() . '/css/prettyPhoto.css', [], null);
             wp_enqueue_style('animate', get_template_directory_uri() . '/css/animate.css', [], null);
             wp_enqueue_style('carousel', get_template_directory_uri() . '/css/owl.carousel.css', [], null);
-            wp_enqueue_style('font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css', [], null);
+            wp_enqueue_style('font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css', [], null);
 
             wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', [], null);
 
