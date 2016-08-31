@@ -90,49 +90,14 @@
 
 						<!-- ROW -->
 						<div class="row">
-							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 margbot30">
-								<a class="services_item" href="javascript:void(0);" >
-									<p><b>Sunday</b> Schedule</p>
-
-									<ul>
-										<li>7:30 a.m.	Said Eucharist</li>
-										<li>9:00 a.m.	Festival Eucharist (Rite II)</li>
-										<li>11:15 a.m.	Festival Eucharist (Rite I)</li>
-										<li>5:00 p.m.	Said Eucharist</li>
-									</ul>
-								</a>
-							</div>
-							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 margbot30">
-								<a class="services_item" href="javascript:void(0);" >
-									<p><b>Weekday</b> Schedule</p>
-									<ul>
-										<li>Tuesday, 6 p.m.	Said Eucharist with Healing</li>
-										<li>Wednesday, 7 a.m.	Said Eucharist</li>
-										<li>Thursday 12:30 p.m.	Said Eucharist</li>
-									</ul>
-								</a>
-							</div>
-							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 margbot30">
-								<a class="services_item" href="javascript:void(0);" >
-									<p><b>Recent</b> Sermons</p>
-									<ul>
-										<li>Jan 30	Mother Locher</li>
-										<li>Jan 21	Father Malm</li>
-										<li>Jan 11	Mother Stephenson</li>
-										<li>Jan 10	Guest Preacher</li>
-									</ul>
-								</a>
-							</div>
-							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 margbot30">
-								<a class="services_item" href="javascript:void(0);" >
-									<p><b>Pledge</b> 2016</p>
-									<span>Stewardship is … Everything I do after I say, “I
-believe.”
-God calls us to share in God’s mission of caring for the world, using all the gifts God has
-given us.  <a href="#">Learn more</a></span>
-								</a>
-							</div>
-
+							{% for widget in options.homepage_widgets %}
+								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 margbot30">
+									<a class="services_item" href="javascript:void(0);" >
+										<p>{{ widget.widget_title }}</p>
+										{{ widget.widget_content|replace({'<p>': '<span>', '</p>': '</span>'}) }}
+									</a>
+								</div>
+							{% endfor %}
 						</div><!-- //ROW -->
 					</div><!-- //CONTAINER -->
 				</div><!-- //SERVICES -->

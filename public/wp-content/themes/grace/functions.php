@@ -39,6 +39,9 @@ if ($timber_loaded && $acf_loaded) {
 
             add_theme_support( 'menus' );
 
+            add_action('acf/save_post', [$this, 'clear_options_cache'], 20);
+            add_filter('timber_context', [$this, 'load_custom_fields']);
+
             parent::__construct();
         }
 
@@ -126,11 +129,49 @@ if ($timber_loaded && $acf_loaded) {
             $allowedposttags = $this->allow_iframes($allowedposttags);
         }
 
+        function load_custom_fields($data) {
+
+            $gmemcache = new Memcached();
+            $gmemcache->addServer('localhost', 11211);
+
+            if ($gmemcache->get('grace-options')) {
+                $data['options'] = $gmemcache->get('grace-options');
+                // echo '<!-- options cached -->';
+            } else {
+                $fields = get_fields('options');
+                $options = (object) array();
+
+                foreach ($fields as $key=>$value) {
+                    $options->$key = $value;
+                }
+
+                $options->privacy_policy_link = isset($options->privacy_policy_link[0]->ID) ? new ExtendedTimberPost($options->privacy_policy_link[0]->ID) : '';
+                $data['options'] = $options;
+                $gmemcache->set('grace-options', $data['options'], time() + 86400); // Cache for 1 day
+                // echo '<!-- options fresh -->';
+            }
+
+            return $data;
+
+        }
+
+        function clear_options_cache($post_id) {
+
+
+
+            if ($post_id=='options') {
+               $gmemcache = new Memcached();
+               $gmemcache->addServer('localhost', 11211);
+               $gmemcache->delete('grace-options');
+            }
+        }
+
 
     }
 
 
     new BaseSite();
+
 
 }
 
