@@ -42,6 +42,9 @@ if ($timber_loaded && $acf_loaded) {
             add_action('acf/save_post', [$this, 'clear_options_cache'], 20);
             add_filter('timber_context', [$this, 'load_custom_fields']);
 
+            add_action('acf/save_post', [$this, 'clear_publications_cache'], 20);
+            add_filter('timber_context', [$this, 'load_publications']);
+
             parent::__construct();
         }
 
@@ -166,11 +169,47 @@ if ($timber_loaded && $acf_loaded) {
             }
         }
 
+        function load_publications($data) {
+
+            $gmemcache = new Memcached();
+            $gmemcache->addServer('localhost', 11211);
+
+            if ($gmemcache->get('grace-publications')) {
+                $data['publications'] = $gmemcache->get('grace-publications');
+                // echo '<!-- options cached -->';
+            } else {
+
+                $args = array(
+                    'post_type' => 'publication',
+                    'post_per_page' => 3,
+                    'order' => 'DESC',
+                    'orderby' => 'meta_value',
+                    'meta_key' => 'published_date',
+                );
+                $data['publications'] = Timber::get_posts($args, 'ExtendedTimberPost');
+                $gmemcache->set('grace-publications', $data['publications'], time() + 86400); // Cache for 1 day
+                // echo '<!-- options fresh -->';
+            }
+
+            return $data;
+
+        }
+
+        // function clear_publications_cache($post_id) {
+
+        //     if (get_post_type($post_id)=='publication') {
+        //        $gmemcache = new Memcached();
+        //        $gmemcache->addServer('localhost', 11211);
+        //        $gmemcache->delete('grace-publication');
+        //     }
+        // }
+
 
     }
 
 
-    new BaseSite();
+
+new BaseSite();
 
 
 }

@@ -24,6 +24,7 @@ $args = array(
 );
 $data['news'] = Timber::get_posts($args, 'ExtendedTimberPost');
 
+
 Timber::render('index.twig', $data);
 
 
