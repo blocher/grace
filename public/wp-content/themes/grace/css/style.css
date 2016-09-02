@@ -1887,6 +1887,7 @@ input[type="color"]:focus {
 	#search-form input:focus {width:42px;}
 
 
+
 /* __________ Menu __________ */
 	a.menu_toggler {display:inline-block; float:right; margin: 20px 0 0 20px; width:40px; height:40px; text-align:center; line-height:38px; font-size:23px; color:#fff; background-color:#333;}
 	a.menu_toggler:hover {background-color:#333;}
@@ -1895,11 +1896,10 @@ input[type="color"]:focus {
 	.navmenu ul {padding:10px 0;}
 	.navmenu ul li {display:block; text-align:left;}
 	.navmenu ul li a {padding:4px 20px;}
-
 	.sub-menu ul {display:block; position:static; width:100%; box-shadow:none; padding:0; margin:0;}
 	.sub-menu ul:before {display:none !important;}
 	.navmenu li.sub-menu:hover, .navmenu li.sub-menu.active_page {background:none;}
-	.sub-menu ul li a {background:none; border:0; padding-left:30px;}
+	.sub-menu ul li a {display: none; background:none; border:0; padding-left:30px;}
 	.sub-menu ul li a:hover, .sub-menu ul li.active a {background:none !important; color:#333 !Important;}
 	.sub-menu ul li a:before {content:'-'; position:absolute; z-index:10; left:17px; top:4px; color:#666;}
 
