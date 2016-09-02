@@ -1077,19 +1077,20 @@ ul.project_info li span {color:#979797;}
 }
 
 footer {
-	overflow:hidden;
-	position:fixed;
+  overflow:hidden;
+	/*position:fixed;
 	z-index:1;
 	bottom:0;
-	left:50%;
-	opacity:0;
+	left:50%;*/
+	opacity:1;
 	width:100%;
 	padding:60px 0 10px;
 	color:#999;
 	background-color:#1c1c1c;
+	/*
 	transform: translateX(-50%);
 	-ms-transform: translateX(-50%);
-	-webkit-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);*/
 }
 footer h4 {color:#fff;}
 
