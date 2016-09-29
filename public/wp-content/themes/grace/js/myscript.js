@@ -63,18 +63,18 @@ jQuery(document).ready(function() {
 		});
 	}
 
-	// if single_page
-	if (jQuery("#page").hasClass("single_page")) {
-	}
-	else {
-		$(window).scroll(function(event) {
-			calculateScroll();
-		});
-		$('.navmenu ul li a, .mobile_menu ul li a, .btn_down').click(function() {
-			$('html, body').animate({scrollTop: $(this.hash).offset().top - 80}, 1000);
-			return false;
-		});
-	};
+	// // if single_page
+	// if (jQuery("#page").hasClass("single_page")) {
+	// }
+	// else {
+	// 	$(window).scroll(function(event) {
+	// 		calculateScroll();
+	// 	});
+	// 	$('.navmenu ul li a, .mobile_menu ul li a, .btn_down').click(function() {
+	// 		$('html, body').animate({scrollTop: $(this.hash).offset().top - 80}, 1000);
+	// 		return false;
+	// 	});
+	// };
 });
 
 
@@ -87,7 +87,12 @@ jQuery(document).ready(function() {
 
 
 
-
+jQuery('.nav-main-item ').hover(function() {
+	jQuery( this ).children('ul').css('display','block');
+},
+function(){
+	jQuery( this ).children('ul').css('display','none');
+});
 
 
 
