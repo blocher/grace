@@ -336,6 +336,34 @@ function get_current_template( $echo = false ) {
         return $GLOBALS['current_theme_template'];
 }
 
+//[foobar]
+function sermons_shortcode( $atts ){
+
+    $args = [
+        'post_type' => 'sermon',
+        'posts_per_page' => -1,
+        'order' => 'DESC',
+        'orderby' => 'meta_value',
+        'meta_key' => 'published_date',
+
+    ];
+
+    $sermons = get_posts($args);
+
+    foreach ($sermons as $sermon) {
+        $id = $sermon->ID;
+
+        echo '<a href="' . get_field('attachment',$id) . '" target="_blank">';
+        if (get_field('sermon_title',$id)) {
+            echo '<b>' . get_field('sermon_title',$id) . '</b><br>';
+        }
+        echo 'Preached by ' . get_field('preacher',$id) . ' on ' . get_field('published_date', $id) . ' for ' . get_field('occassion', $id);
+        echo '</a>';
+
+    }
+}
+add_shortcode( 'sermons', 'sermons_shortcode' );
+
 
 // Google Sheets API
 
