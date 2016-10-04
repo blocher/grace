@@ -41,7 +41,7 @@ if ($timber_loaded && $acf_loaded) {
 
             add_action('acf/save_post', [$this, 'clear_options_cache'], 20);
             add_filter('timber_context', [$this, 'load_custom_fields']);
-
+            add_filter('timber_context', [$this, 'load_alerts']);
             add_action('acf/save_post', [$this, 'clear_publications_cache'], 20);
             add_filter('timber_context', [$this, 'load_publications']);
 
@@ -133,6 +133,36 @@ if ($timber_loaded && $acf_loaded) {
             $allowedposttags = $this->allow_iframes($allowedposttags);
         }
 
+        function load_alerts($data) {
+
+            $date = new DateTime('now', new DateTimeZone('America/New_York'));
+            $date = $date->format("Y-m-d H:i:s");
+
+            $args = [
+                'post_type' => 'alert',
+                'order' => 'DESC',
+                'orderby' => 'meta_value',
+                'meta_key' => 'start_date_and_time',
+                'posts_per_page' => 1,
+                'meta_query' => [
+                    [
+                        'key'     => 'start_date_and_time',
+                        'value'   => $date,
+                        'compare' => '<',
+                    ],
+                    [
+                        'key'     => 'end_date_and_time',
+                        'value'   => $date,
+                        'compare' => '>',
+                    ],
+                    'relation' => 'AND',
+                ],
+            ];
+            $data['alerts'] = ExtendedTimber::get_posts($args,'ExtendedTimberPost');
+            //pp($data['alerts']);
+            return $data;
+        }
+
         function load_custom_fields($data) {
 
             $gmemcache = new Memcached();
@@ -158,6 +188,7 @@ if ($timber_loaded && $acf_loaded) {
             return $data;
 
         }
+
 
         function clear_options_cache($post_id) {
 
@@ -306,6 +337,26 @@ function get_current_template( $echo = false ) {
 }
 
 
+// Google Sheets API
 
+// client ID
+//  960883593214-ji2mbupp43hspg6llt8rmemeafgbpmb1.apps.googleusercontent.com
+// clinet secret
+//   BtznvSLoovKqoGUoa36hCLsC
+// api key
+//   AIzaSyAuOOYt7LxFlYkG-5hGAcp7hMZ-Dios5Q0
 
+// function testGoogleSheets() {
+//     $client = new Google_Client();
+//     $client->setApplicationName("My Application");
+//     $client->setDeveloperKey("AIzaSyAuOOYt7LxFlYkG-5hGAcp7hMZ-Dios5Q0 ");
+//     $service = new Google_Service_Sheets($client);
+//     $response = $service->spreadsheets_values->get('152-_P5rlYdPFZ6EcGdB0spKvnHgqA5CgRpjMOwTZiJY','Sheet1!A1:B10');
+//     $values = $response->getValues();
+//     p($values);
+//     echo 'here'; die();
+
+// }
+
+// add_action('init','testGoogleSheets',1,0);
 

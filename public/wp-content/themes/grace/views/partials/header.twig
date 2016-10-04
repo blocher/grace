@@ -1,5 +1,8 @@
+
     <!-- PAGE -->
     <div id="page">
+
+
 
       <!-- HEADER -->
       <header>
@@ -40,25 +43,22 @@
                     {% endfor %}
                 </ul>
               </nav>
-{#               <nav class="navmenu center">
-                <ul>
-                  <li class="first active scroll_btn"><a href="#home" >Home</a></li>
-                  <li class="scroll_btn"><a href="#about" >About Us</a></li>
-                  <li class="scroll_btn"><a href="#projects" >Worship</a></li>
-                  <li class="scroll_btn"><a href="#team" >Parish Life</a></li>
-                  <li class="scroll_btn"><a href="#news" >Service</a></li>
-                  <li class="scroll_btn last"><a href="#contacts" >Formation</a></li>
-                  <li class="sub-menu">
-                    <a href="javascript:void(0);" >Test</a>
-                    <ul>
-                      <li><a href="blog.html" >Test 1</a></li>
-                      <li><a href="blog-post.html" >Test 2</a></li>
-                      <li><a href="portfolio-post.html" >Test 3</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </nav> #}
+
             </div><!-- //MENU -->
           </div><!-- //MENU BLOCK -->
+
+          {% if alerts %}
+            {% for alert in alerts %}
+              <div class="alert alert-danger" role="alert">
+                {% if alert.link_type == 'internal' %}
+                  <a href="{{ alert.alert_link }}"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
+                {% elseif alert.link_type == 'external' %}
+                  <a href="{{ alert.alert_link }}" target="_blank"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
+                {% else %}
+                  <strong>{{ alert.main_text }}</strong> {{ alert.subtext }}
+                {% endif %}
+              </div>
+            {%endfor %}
+          {% endif %}
         </div><!-- //CONTAINER -->
       </header><!-- //HEADER -->

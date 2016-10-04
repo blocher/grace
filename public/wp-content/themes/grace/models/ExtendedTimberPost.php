@@ -192,6 +192,29 @@
 
 	    }
 
+	    function alert_link() {
+
+	    	if ($this->post_type!='alert') {
+	    		return '';;
+	    	}
+
+	    	if ($this->custom['link_type']=='none') {
+	    		return '';
+	    	}
+
+	    	if ($this->custom['link_type']=='internal') {
+	    		$alert_link = new ExtendedTimberPost($this->custom['internal_link']);
+	    		$alert_link = $alert_link->link();
+	    		return ($alert_link);
+	    	}
+
+	    	if ($this->custom['link_type']=='external') {
+	    		return $this->custom['external_link'];
+	    	}
+
+
+	    }
+
 
 
 
