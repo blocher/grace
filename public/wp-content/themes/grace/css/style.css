@@ -271,7 +271,7 @@ header {
 	position:fixed;
 	z-index:9999;
 	left:0;
-	top:0;
+	top:120;
 	right:0;
 	height:80px;
 	width:100%;
@@ -1308,7 +1308,7 @@ input[type="color"]:focus {
 	height:36px;
 	margin:0 0 -30px -30px;
 	opacity:0;
-	background-image:url(../images/zoom.png);
+	/* background-image:url(../images/zoom.png); */
 	background-repeat:no-repeat;
 	background-position:0 0;
 	background-size:100% auto;
@@ -1465,7 +1465,6 @@ input[type="color"]:focus {
 	padding:8px 18px;
 	border:2px solid #333;
 }
-
 
 
 
@@ -1779,15 +1778,16 @@ input[type="color"]:focus {
 
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
-	.logo a {font-size:22px;}
+@media (min-width: 768px) and (max-width: 1204px) {
+	.logo a {font-size:15px;}
 
+	#search-form input { width: 0; }
+	#search-form input:focus {width:400px;}
 
-	#search-form input:focus {width:42px;}
 
 
 /* __________ Menu __________ */
-	.navmenu ul li a {padding-left:10px; padding-right:10px; font-size:12px;}
+	.navmenu ul li a {padding-left:4px; padding-right:4px; font-size:10px;}
 
 
 
@@ -2311,4 +2311,13 @@ figure.alignnone {
 	border: 0;
 	border-radius: 0;
 	line-height: 1.5;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9999999;
+}
+
+.menu_block_alert {
+	position: relative;
+	top: 80px;
 }

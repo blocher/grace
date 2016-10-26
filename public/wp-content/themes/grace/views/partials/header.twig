@@ -1,4 +1,6 @@
 
+
+
     <!-- PAGE -->
     <div id="page">
 
@@ -7,58 +9,66 @@
       <!-- HEADER -->
       <header>
 
+
+
+        {% if alerts %}
+          {% for alert in alerts %}
+            <div class="alert alert-danger" role="alert">
+              {% if alert.link_type == 'internal' %}
+                <a href="{{ alert.alert_link }}"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
+              {% elseif alert.link_type == 'external' %}
+                <a href="{{ alert.alert_link }}" target="_blank"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
+              {% else %}
+                <strong>{{ alert.main_text }}</strong> {{ alert.subtext }}
+              {% endif %}
+            </div>
+          {%endfor %}
+        {% endif %}
+
         <!-- MENU BLOCK -->
-        <div class="menu_block">
+        <div class="menu_block {% if alerts %} menu_block_alert {% endif %}">
 
           <!-- CONTAINER -->
           <div class="container clearfix">
 
-            <!-- LOGO -->
-            <div class="logo pull-left">
-              <a href="{{ site.url }}" ><span class="b1">g</span><span class="b2">r</span><span class="b3">a</span><span class="b4">c</span><span class="b5">e</span></a><span class="b5">Episcopal Church</span></a>
-            </div><!-- //LOGO -->
+              <!-- LOGO -->
+              <div class="logo pull-left">
+                <a href="{{ site.url }}" ><span class="b1">g</span><span class="b2">r</span><span class="b3">a</span><span class="b4">c</span><span class="b5">e</span></a><span class="b5">Episcopal Church</span></a>
+              </div><!-- //LOGO -->
 
-            <!-- SEARCH FORM -->
-            <div id="search-form" class="pull-right">
-              <form method="get" action="{{ site.url }}">
-                <input type="text" name="s" value="" placeholder="Search" />
-              </form>
-            </div><!-- SEARCH FORM -->
+              <!-- SEARCH FORM -->
+              <div id="search-form" class="pull-right">
+                <form method="get" action="{{ site.url }}">
+                  <input type="text" name="s" value="" placeholder="Search" />
+                </form>
+              </div><!-- SEARCH FORM -->
 
-            <!-- MENU -->
-            <div class="pull-right">
+              <!-- MENU -->
+              <div class="pull-right">
 
-              <nav  class="navmenu center">
-                <ul class="main-nav">
-                    {% for item in main_menu.get_items %}
-                      <li class="nav-main-item {% if item.get_children %}sub-menu{% endif %} {{item.classes | join(' ')}}"><a class="nav-main-link" href="{{item.get_link}}">{{item.title}}</a>
-                          {% if item.get_children %}
-                              <ul class="nav-drop">
-                                {% for child in item.get_children %}
-                                  <li class="nav-drop-item"><a href="{{child.get_link}}">{{child.title}}</a></li>
-                                {% endfor %}
-                              </ul>
-                           {% endif %}
-                      </li>
-                    {% endfor %}
-                </ul>
-              </nav>
+                <nav  class="navmenu center">
+                  <ul class="main-nav">
+                      {% for item in main_menu.get_items %}
+                        <li class="nav-main-item {% if item.get_children %}sub-menu{% endif %} {{item.classes | join(' ')}}"><a class="nav-main-link" href="{{item.get_link}}">{{item.title}}</a>
+                            {% if item.get_children %}
+                                <ul class="nav-drop">
+                                  {% for child in item.get_children %}
+                                    <li class="nav-drop-item"><a href="{{child.get_link}}">{{child.title}}</a></li>
+                                  {% endfor %}
+                                </ul>
+                             {% endif %}
+                        </li>
+                      {% endfor %}
+                  </ul>
+                </nav>
 
-            </div><!-- //MENU -->
-          </div><!-- //MENU BLOCK -->
+              </div><!-- //MENU -->
+            </div><!-- //MENU BLOCK -->
 
-          {% if alerts %}
-            {% for alert in alerts %}
-              <div class="alert alert-danger" role="alert">
-                {% if alert.link_type == 'internal' %}
-                  <a href="{{ alert.alert_link }}"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
-                {% elseif alert.link_type == 'external' %}
-                  <a href="{{ alert.alert_link }}" target="_blank"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
-                {% else %}
-                  <strong>{{ alert.main_text }}</strong> {{ alert.subtext }}
-                {% endif %}
-              </div>
-            {%endfor %}
-          {% endif %}
+
+
+
+
+
         </div><!-- //CONTAINER -->
       </header><!-- //HEADER -->

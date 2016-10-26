@@ -6,7 +6,7 @@
               </div>
               <div class="blog_post_descr">
                 <div class="blog_post_date">{{ post.post_date|date('F, j Y')}}</div>
-                <a class="blog_post_title" href="blog-post.html" >{{ post.title }}</a>
+                <a class="blog_post_title" href="{{ post.link }}" >{{ post.title }}</a>
                   <ul class="blog_post_info">
                     <li>{{ post.post_type_name }}</li>
                   </ul>
@@ -17,6 +17,6 @@
                   </ul> #}
                 <hr>
                 <div class="blog_post_content">{{ post.excerpt }}</div>
-                <a class="read_more_btn" href="blog-post.html" >Read More</a>
+                <a class="read_more_btn" href="{{ post.link }}" >Read More</a>
               </div>
             </div><!-- //BLOG POST -->

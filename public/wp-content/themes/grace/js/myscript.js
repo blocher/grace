@@ -308,14 +308,16 @@ function blogHeight(){
 // });
 
 
-//alerts
+jQuery('#search-form').click(function() {
+	jQuery('#search-form input').focus();
+});
 
-close = document.getElementById("close");
- close.addEventListener('click', function() {
-   note = document.getElementById("note");
-   note.style.display = 'none';
- }, false);
+jQuery('#search-form input').focus(function() {
+	$('.main-nav').addClass('hidden');
+});
 
-
+jQuery('#search-form input').blur(function() {
+	$('.main-nav').removeClass('hidden');
+});
 
 
