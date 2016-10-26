@@ -1345,7 +1345,8 @@ input[type="color"]:focus {
 .blog_post_info li {position:relative; display:inline-block; padding-right:22px;}
 .blog_post_info li:before {content:''; position:absolute; right:9px; top:4px; height:12px; width:1px; background-color:#d3d3d3;}
 .blog_post_info li:last-child:before {display:none;}
-.blog_post_info li a {font-size:14px;}
+.blog_post_info li {font-size:16px;}
+.blog_post_info li a {font-size:16px;}
 .blog_post_content {
 	padding-bottom:18px;
 	line-height:26px;

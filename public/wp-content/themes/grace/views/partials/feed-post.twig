@@ -7,9 +7,11 @@
               <div class="blog_post_descr">
                 <div class="blog_post_date">{{ post.post_date|date('F, j Y')}}</div>
                 <a class="blog_post_title" href="{{ post.link }}" >{{ post.title }}</a>
-                  <ul class="blog_post_info">
-                    <li>{{ post.post_type_name }}</li>
-                  </ul>
+                  {% if post.post_type_name != 'Page' %}
+                    <ul class="blog_post_info">
+                      <li>{{ post.post_type_name }}</li>
+                    </ul>
+                  {% endif %}
                  {#  <ul class="blog_post_info">
                     <li><a href="javascript:void(0);" >Admin</a></li>
                     <li><a href="javascript:void(0);" >Creative</a></li>
