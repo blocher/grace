@@ -60,6 +60,16 @@ if ($timber_loaded && $acf_loaded) {
             //CSS
             wp_enqueue_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', [], null);
             wp_enqueue_style('flexslider', get_template_directory_uri() . '/css/flexslider.css', [], null);
+
+
+            wp_register_script('underscore-js', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', array('jquery'), '1.8.3', FALSE);
+            wp_enqueue_script('underscore-js');
+
+            wp_register_script('moment-js', '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js', array('jquery'), '2.10.6', FALSE);
+            wp_enqueue_script('moment-js');
+
+            wp_register_script('calendar-js', '//cdn.rawgit.com/kylestetz/CLNDR/master/clndr.min.js', array('jquery'), '1.3.4', FALSE);
+            wp_enqueue_script('calendar-js');
             //wp_enqueue_style('prettyPhoto', get_template_directory_uri() . '/css/prettyPhoto.css', [], null);
             //wp_enqueue_style('animate', get_template_directory_uri() . '/css/animate.css', [], null);
             //wp_enqueue_style('carousel', get_template_directory_uri() . '/css/owl.carousel.css', [], null);
@@ -227,6 +237,7 @@ if ($timber_loaded && $acf_loaded) {
 
         }
 
+
         // function clear_publications_cache($post_id) {
 
         //     if (get_post_type($post_id)=='publication') {
@@ -242,6 +253,9 @@ if ($timber_loaded && $acf_loaded) {
 
 
 new BaseSite();
+function eventsSearch() {
+    return EventsSearch::getInstance();
+}
 
 
 }
@@ -365,26 +379,47 @@ function sermons_shortcode( $atts ){
 add_shortcode( 'sermons', 'sermons_shortcode' );
 
 
-// Google Sheets API
+/* This function handles setting up Date archive rewrite rules for
+ * ANY custom post type - You pass the CPT, and it will use the
+ * re-written slug if applicable.
+ */
+function eh_generate_date_archives( $cpt ) {
+    global $wp_rewrite;
+    $rules = array();
+    $post_type = get_post_type_object( $cpt );
+    $slug_archive = $post_type->has_archive;
+    if ( $slug_archive === false ) return $rules;
+    if ( $slug_archive === true ) {
+        $slug_archive = $post_type->rewrite['slug'] ? $post_type->rewrite['slug'] : $post_type->name;
+    }
+    $dates = array(
+        array(
+            'rule' => "([0-9]{4})/([0-9]{1,2})/([0-9]{1,2})",
+            'vars' => array( 'year', 'monthnum', 'day' )
+        ),
+        array(
+            'rule' => "([0-9]{4})/([0-9]{1,2})",
+            'vars' => array( 'year', 'monthnum' )
+        ),
+        array(
+            'rule' => "([0-9]{4})",
+            'vars' => array( 'year' )
+        )
+      );
+    foreach ($dates as $data) {
+        $query = 'index.php?post_type='.$cpt;
+        $rule = $slug_archive.'/'.$data['rule'];
 
-// client ID
-//  960883593214-ji2mbupp43hspg6llt8rmemeafgbpmb1.apps.googleusercontent.com
-// clinet secret
-//   BtznvSLoovKqoGUoa36hCLsC
-// api key
-//   AIzaSyAuOOYt7LxFlYkG-5hGAcp7hMZ-Dios5Q0
-
-// function testGoogleSheets() {
-//     $client = new Google_Client();
-//     $client->setApplicationName("My Application");
-//     $client->setDeveloperKey("AIzaSyAuOOYt7LxFlYkG-5hGAcp7hMZ-Dios5Q0 ");
-//     $service = new Google_Service_Sheets($client);
-//     $response = $service->spreadsheets_values->get('152-_P5rlYdPFZ6EcGdB0spKvnHgqA5CgRpjMOwTZiJY','Sheet1!A1:B10');
-//     $values = $response->getValues();
-//     p($values);
-//     echo 'here'; die();
-
-// }
-
-// add_action('init','testGoogleSheets',1,0);
-
+        $i = 1;
+        foreach ( $data['vars'] as $var ) {
+            $query.= '&'.$var.'='.$wp_rewrite->preg_index($i);
+            $i++;
+        }
+        $rules[$rule."/?$"] = $query;
+        $rules[$rule."/feed/(feed|rdf|rss|rss2|atom)/?$"] = $query."&feed=".$wp_rewrite->preg_index($i);
+        $rules[$rule."/(feed|rdf|rss|rss2|atom)/?$"] = $query."&feed=".$wp_rewrite->preg_index($i);
+        $rules[$rule."/page/([0-9]{1,})/?$"] = $query."&paged=".$wp_rewrite->preg_index($i);
+    }
+    return $rules;
+}
+add_action( 'plugins_loaded', 'eh_generate_date_archives');

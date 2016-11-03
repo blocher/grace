@@ -536,14 +536,64 @@
 						</div><!-- TESTIMONIALS SLIDER -->
 					</div><!-- //TESTIMONIALS --> #}
 
-					<div class="row recent_posts" data-appear-top-offset="-200" data-animated="fadeInUp">
-						<h2>Upcoming at Grace</h2>
-						{{ function('do_shortcode','[ai1ec view="agenda"]') }}
-					</div>
 
-					<div class="row">
-						&nbsp;
-					</div>
+<section class="hearings-section">
+  <div class="container">
+
+    <div class="row">
+      <h1 class="section-title">Upcoming Events</h1>
+    </div>
+
+    <div class="row">
+
+      {#-- Hearings Column --#}
+      <div class="col-md-7">
+
+        {% for event in events %}
+        <a href="{{ event.link }}">
+        <div class="row hearing {{ event.class }}">
+
+          <div class="col-xs-4 event-date center">
+            <span class="event-month">{{ event.start.format('F') }}</span>
+            <span class="event-day">{{ event.start.format('j') }}</span>
+          </div>
+
+          <div class="col-xs-8 event-details">
+            <div class="row event-time-type">
+              <span class="event-time"><i class="fa fa-clock-o"></i> {{ event.start.format('g:i A') }}</span> &mdash; {{ event.category }}
+            </div>
+
+            <div class="row">
+
+              <h3 class="event-title">{{ event.title }}</h3>
+
+            </div>
+
+          </div>
+
+        </div>
+        </a>
+        {% endfor %}
+
+      </div>
+
+      {#-- Calendar Column --#}
+      <div class="col-md-5">
+
+        {% include('partials/calendar.twig') %}
+
+      </div>
+
+    </div>
+
+    <div class="see-more-wrapper row center">
+      <a class="btn btn-default" href="/events">View All</a>
+    </div>
+
+  </div>
+</section>
+
+
 
 					<!-- RECENT POSTS -->
 					<h2>Latest News</h2>
