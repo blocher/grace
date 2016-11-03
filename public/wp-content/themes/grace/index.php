@@ -77,7 +77,7 @@ if (!empty($_POST['json']) && $_POST['json'] == 1)
   *****/
   $args = array(
       'post_type' => 'news',
-      'post_per_page' => 3,
+      'posts_per_page' => 3,
   );
   $data['news'] = Timber::get_posts($args, 'ExtendedTimberPost');
 
