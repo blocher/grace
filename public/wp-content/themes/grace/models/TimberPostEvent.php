@@ -1,5 +1,5 @@
 <?php
-  class TimberPostEvent extends TimberPost {
+  class TimberPostEvent extends ExtendedTimberPost {
 
     public $event;
 
