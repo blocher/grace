@@ -58,10 +58,16 @@ if ($timber_loaded && $acf_loaded) {
         {
 
             //CSS
-            wp_enqueue_style('bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', [], null);
+            wp_enqueue_style('bootstrap', "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", [], null);
+
             wp_enqueue_style('flexslider', get_template_directory_uri() . '/css/flexslider.css', [], null);
 
+              wp_enqueue_style('tables', "//cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/r-2.1.0/datatables.min.css", ['bootstrap'], null);
 
+
+
+
+            //JS
             wp_register_script('underscore-js', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', array('jquery'), '1.8.3', FALSE);
             wp_enqueue_script('underscore-js');
 
@@ -73,6 +79,15 @@ if ($timber_loaded && $acf_loaded) {
             //wp_enqueue_style('prettyPhoto', get_template_directory_uri() . '/css/prettyPhoto.css', [], null);
             //wp_enqueue_style('animate', get_template_directory_uri() . '/css/animate.css', [], null);
             //wp_enqueue_style('carousel', get_template_directory_uri() . '/css/owl.carousel.css', [], null);
+
+            wp_register_script('bootstrap-js', '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', array('jquery'), '3.3.7', FALSE);
+            wp_enqueue_script('bootstrap-js');
+
+
+             wp_register_script('table-js', '//cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/r-2.1.0/datatables.min.js', array('jquery', 'bootstrap-js'), '1.10.12', FALSE);
+            wp_enqueue_script('table-js');
+
+
 
 
             // FONTS
@@ -354,27 +369,18 @@ function get_current_template( $echo = false ) {
 function sermons_shortcode( $atts ){
 
     $args = [
-        'post_type' => 'sermon',
-        'posts_per_page' => -1,
-        'order' => 'DESC',
-        'orderby' => 'meta_value',
-        'meta_key' => 'published_date',
+
+      'post_type' => 'sermon',
+      'posts_per_page' => 3,
+      'order' => 'DESC',
+      'orderby' => 'meta_value',
+      'meta_key' => 'date_given',
 
     ];
 
-    $sermons = get_posts($args);
-
-    foreach ($sermons as $sermon) {
-        $id = $sermon->ID;
-
-        echo '<a href="' . get_field('attachment',$id) . '" target="_blank">';
-        if (get_field('sermon_title',$id)) {
-            echo '<b>' . get_field('sermon_title',$id) . '</b><br>';
-        }
-        echo 'Preached by ' . get_field('preacher',$id) . ' on ' . get_field('published_date', $id) . ' for ' . get_field('occassion', $id);
-        echo '</a>';
-
-    }
+    $sermons = ExtendedTimber::get_posts($args,'ExtendedTimberPost');
+    $content = Timber::compile('partials/sermons-small.twig', ['sermons' => $sermons]);
+    return $content;
 }
 add_shortcode( 'sermons', 'sermons_shortcode' );
 

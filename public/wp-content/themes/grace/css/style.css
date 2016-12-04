@@ -1362,19 +1362,19 @@ input[type="color"]:focus {
 
 
 /* __________ Pagination __________ */
-.pagination {
+.site-pagination .pagination {
 	display:block;
 	width: 75%;
   margin: auto;
 	padding:0;
 	border-radius:0;
 }
-.pagination li {
+.site-pagination .pagination li {
 	float:left;
 	width:68px;
 	height:70px;
 }
-.pagination li a {
+.site-pagination .pagination li a {
 	float:none;
 	display:block;
 	margin:0;
@@ -1386,12 +1386,12 @@ input[type="color"]:focus {
 	font-size:20px;
 	color:#999;
 }
-.pagination li a:focus,
-.pagination li a:hover {
+.site-pagination .pagination li a:focus,
+.site-pagination .pagination li a:hover {
 	background:none !important;
 	color:#333 !important;
 }
-.pagination li.active a {
+.site-pagination .pagination li.active a {
 	border:2px solid #333 !Important;
 	font-size:26px;
 	color:#333 !important;
@@ -1969,9 +1969,9 @@ input[type="color"]:focus {
 	.blog_post_info li:before {right:6px;}
 	.blog_post_content {padding-top:20px;}
 
-	.pagination li {width:40px; height:40px;}
-	.pagination li a {font-size:16px; line-height:38px;}
-	.pagination li.active a, .pagination li a:focus, .pagination li a:hover {font-size:18px;}
+	.site-pagination .pagination li {width:40px; height:40px;}
+	.site-pagination .pagination li a {font-size:16px; line-height:38px;}
+	.site-pagination .pagination li.active a, .site-pagination .pagination li a:focus, .site-pagination .pagination li a:hover {font-size:18px;}
 
 
 	.single_blog_post_title{font-size:44px; line-height:50px;}

@@ -24,23 +24,24 @@
 
             {% endfor %}
 
+            <div class="site-pagination">
+              <div class="pagination-wrapper">
+                <ul class="pagination clearfix">
 
-            <div class="pagination-wrapper">
-              <ul class="pagination clearfix">
+                  {% for page in pagination.pages %}
 
-                {% for page in pagination.pages %}
+                        {% if page.class == "dots" %}
+                          <li><a href="javascript:void(0);">. . .</a></li>
+                        {% elseif page.current %}
+                            <li class="active"><a href="{{page.link}}">{{page.title}}</a></li>
+                        {% else %}
+                            <li><a href="{{page.link}}">{{page.title}}</a></li>
+                        {% endif %}
+                    </li>
+                  {% endfor %}
 
-                      {% if page.class == "dots" %}
-                        <li><a href="javascript:void(0);">. . .</a></li>
-                      {% elseif page.current %}
-                          <li class="active"><a href="{{page.link}}">{{page.title}}</a></li>
-                      {% else %}
-                          <li><a href="{{page.link}}">{{page.title}}</a></li>
-                      {% endif %}
-                  </li>
-                {% endfor %}
-
-              </ul><!-- //PAGINATION -->
+                </ul><!-- //PAGINATION -->
+              </div>
             </div>
 
 

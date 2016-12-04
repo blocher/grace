@@ -321,3 +321,13 @@ jQuery('#search-form input').blur(function() {
 });
 
 
+/**** tables *****/
+jQuery(document).ready(function() {
+    jQuery('#sermon-table').DataTable( {
+        "order": [[ 0, "desc" ]],
+        "lengthMenu": [[25, 10, 25, 50, 100, 200, 250, -1], [25, 10, 25, 50, 100, 200, 250, "All"]]
+    } );
+
+    $('#sermon-table_length select').removeClass('input-sm');
+} );
+

@@ -39,6 +39,47 @@
 
               <div class="single_blog_post_content">
                 <p class="margbot50">{{ post.content }}</p>
+                {% if sermons %}
+                  <div class="table-responsive">
+                    <table id="sermon-table" class="display table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Time</th>
+                          <th>Occassion</th>
+                          <th>Title</th>
+                          <th>Preacher</th>
+                          <th>Download</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for sermon in sermons %}
+                          <tr>
+                            <td>{{ sermon.date_given|date('F n, Y') }}</td>
+                            <td>{% if sermon.time_given %}{{ sermon.time_given|date('g:i A') }}{% endif %}</td>
+                            <td>{{ sermon.occassion }}</td>
+                            <td>{{ sermon.sermon_title }}</td>
+                            <td>{{ sermon.preacher }}</td>
+                            <td>
+                              {% if sermon.get_field('pdf').url %}
+                                <a href="{{  sermon.get_field('pdf').url }}" target="_blank">
+                                  {% if sermon.get_field('pdf').mime_type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' %}
+                                    <span class="fa fa-file-word-o"></span>
+                                  {% elseif sermon.get_field('pdf').mime_type == 'application/pdf' %}
+                                    <span class="fa fa-file-pdf-o"></span>
+                                  {% else %}
+                                    <span class="fa fa-download"></span>
+                                  {% endif %}
+                                  Download</a>
+                              {% endif %}
+                            </td>
+
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% endif %}
               </div>
 
             </div><!-- //SINGLE BLOG POST -->

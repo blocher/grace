@@ -1,0 +1,28 @@
+                {% if sermons %}
+                  <div class="table">
+                    <table id="sermon-table-small" class="display table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Date</th>
+                          <th>Sermon</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for sermon in sermons %}
+
+                          <tr>
+                            <td><a href="{{  sermon.get_field('pdf').url }}" target="_blank">{{ sermon.date_given|date('M j') }}: {{ sermon.occassion }}</a></td>
+                            <td><a href="{{  sermon.get_field('pdf').url }}" target="_blank">{{ sermon.title }} by {{ sermon.preacher }}</a>
+                            </td>
+                          </tr>
+
+
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+
+                {% endif %}
+                <div class="col-md-12 text-center">
+                  <a class="btn btn-default" href="/worship/sermons">View all sermons</a>
+                </div>
