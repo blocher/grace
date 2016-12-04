@@ -2796,6 +2796,12 @@
       'c' => 'Twig_TokenStream',
       'i' => 'g',
     ),
+    '__TwigTemplate_6b2c061bbbe82525690ae9ecc2cbcf8ff4e2ebe0056efad05bd2a94fbbd63fc3' => 
+    array (
+      'f' => AI1EC_PATH . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'twig' . DIRECTORY_SEPARATOR . '6b' . DIRECTORY_SEPARATOR . '2c' . DIRECTORY_SEPARATOR . '061bbbe82525690ae9ecc2cbcf8ff4e2ebe0056efad05bd2a94fbbd63fc3.php',
+      'c' => '__TwigTemplate_6b2c061bbbe82525690ae9ecc2cbcf8ff4e2ebe0056efad05bd2a94fbbd63fc3',
+      'i' => 'g',
+    ),
     'acl.aco' => 
     array (
       'f' => AI1EC_PATH . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'acl' . DIRECTORY_SEPARATOR . 'aco.php',
@@ -4390,6 +4396,12 @@
       'c' => 'Ai1ec_Theme_Search',
       'i' => 'g',
       'r' => 'y',
+    ),
+    'twig.6b.2c.061bbbe82525690ae9ecc2cbcf8ff4e2ebe0056efad05bd2a94fbbd63fc3' => 
+    array (
+      'f' => AI1EC_PATH . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'twig' . DIRECTORY_SEPARATOR . '6b' . DIRECTORY_SEPARATOR . '2c' . DIRECTORY_SEPARATOR . '061bbbe82525690ae9ecc2cbcf8ff4e2ebe0056efad05bd2a94fbbd63fc3.php',
+      'c' => '__TwigTemplate_6b2c061bbbe82525690ae9ecc2cbcf8ff4e2ebe0056efad05bd2a94fbbd63fc3',
+      'i' => 'g',
     ),
     'twig.Compiler' => 
     array (
