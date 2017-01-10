@@ -719,6 +719,10 @@ body.adding-menu-items #customize-preview {
 	opacity: 0.4;
 }
 
+body.adding-menu-items #customize-preview iframe {
+	pointer-events: none;
+}
+
 .menu-item-handle .spinner {
 	display: none;
 	float: right;
@@ -811,7 +815,6 @@ li.assigned-to-menu-location .add-new-menu-item {
 .menu-delete:hover,
 .menu-delete:focus {
 	color: #f00;
-	text-decoration: none;
 }
 
 .menu-item-handle {
