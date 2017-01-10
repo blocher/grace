@@ -41,7 +41,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         ),
         'E' => 
         array (
-            'Endroid\\Twitter\\Tests\\' => 22,
             'Endroid\\Twitter\\' => 16,
         ),
         'A' => 
@@ -90,10 +89,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Firebase\\JWT\\' => 
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
-        ),
-        'Endroid\\Twitter\\Tests\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/endroid/twitter/tests',
         ),
         'Endroid\\Twitter\\' => 
         array (

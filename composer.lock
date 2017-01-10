@@ -63,21 +63,25 @@
         },
         {
             "name": "endroid/twitter",
-            "version": "1.2.2",
+            "version": "1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/endroid/Twitter.git",
-                "reference": "c9dafaff41188582011a619fbd09eb495a2ed1ff"
+                "reference": "6905bd4eacb8bd346377dbce66b8c4cb99b9839c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/endroid/Twitter/zipball/c9dafaff41188582011a619fbd09eb495a2ed1ff",
-                "reference": "c9dafaff41188582011a619fbd09eb495a2ed1ff",
+                "url": "https://api.github.com/repos/endroid/Twitter/zipball/6905bd4eacb8bd346377dbce66b8c4cb99b9839c",
+                "reference": "6905bd4eacb8bd346377dbce66b8c4cb99b9839c",
                 "shasum": ""
             },
             "require": {
                 "kriswallsmith/buzz": "~0.10",
-                "php": ">=5.3.0"
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0",
+                "symfony/http-foundation": "^2.3|^3.0"
             },
             "type": "library",
             "extra": {
@@ -87,12 +91,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Endroid\\Twitter\\": [
-                        "src/"
-                    ],
-                    "Endroid\\Twitter\\Tests\\": [
-                        "tests/"
-                    ]
+                    "Endroid\\Twitter\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -109,23 +108,25 @@
             "description": "Endroid Twitter",
             "homepage": "https://github.com/endroid/Twitter",
             "keywords": [
+                "bundle",
                 "endroid",
+                "symfony",
                 "twitter"
             ],
-            "time": "2016-08-22 20:51:17"
+            "time": "2017-01-01 20:52:29"
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v3.0.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1"
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1",
-                "reference": "fa8a06e96526eb7c0eeaa47e4f39be59d21f16e1",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
                 "shasum": ""
             },
             "require": {
@@ -155,41 +156,41 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2015-07-22 18:31:08"
+            "time": "2016-07-18 04:51:16"
         },
         {
             "name": "google/apiclient",
-            "version": "v2.0.3",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client.git",
-                "reference": "37adb8a6f4d4b27b9900d62d67bf1d54995a755c"
+                "reference": "e39fe36586407600b0c79623ae4817412a8ccc7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/37adb8a6f4d4b27b9900d62d67bf1d54995a755c",
-                "reference": "37adb8a6f4d4b27b9900d62d67bf1d54995a755c",
+                "url": "https://api.github.com/repos/google/google-api-php-client/zipball/e39fe36586407600b0c79623ae4817412a8ccc7e",
+                "reference": "e39fe36586407600b0c79623ae4817412a8ccc7e",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~2.0|~3.0",
-                "google/apiclient-services": "^0.7",
-                "google/auth": "0.10",
+                "firebase/php-jwt": "~2.0|~3.0|~4.0",
+                "google/apiclient-services": "^0.8",
+                "google/auth": "^0.11",
                 "guzzlehttp/guzzle": "~5.2|~6.0",
                 "guzzlehttp/psr7": "^1.2",
                 "monolog/monolog": "^1.17",
                 "php": ">=5.4",
-                "phpseclib/phpseclib": "~2.0"
+                "phpseclib/phpseclib": "~0.3.10|~2.0"
             },
             "require-dev": {
+                "cache/filesystem-adapter": "^0.3.2",
                 "phpunit/phpunit": "~4",
                 "squizlabs/php_codesniffer": "~2.3",
                 "symfony/css-selector": "~2.1",
-                "symfony/dom-crawler": "~2.1",
-                "tedivm/stash": "^0.14.1"
+                "symfony/dom-crawler": "~2.1"
             },
             "suggest": {
-                "tedivm/stash": "For caching certs and tokens (using Google_Client::setCache)"
+                "cache/filesystem-adapter": "For caching certs and tokens (using Google_Client::setCache)"
             },
             "type": "library",
             "extra": {
@@ -214,20 +215,20 @@
             "keywords": [
                 "google"
             ],
-            "time": "2016-09-14 19:33:35"
+            "time": "2017-01-09 23:08:43"
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.7",
+            "version": "v0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-api-php-client-services.git",
-                "reference": "c07a8a9d424024f1a9fc5d62da8ed5467ed25909"
+                "reference": "26bcd71cb4fcf78020ec24052ddfb28550e01bc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/c07a8a9d424024f1a9fc5d62da8ed5467ed25909",
-                "reference": "c07a8a9d424024f1a9fc5d62da8ed5467ed25909",
+                "url": "https://api.github.com/repos/google/google-api-php-client-services/zipball/26bcd71cb4fcf78020ec24052ddfb28550e01bc8",
+                "reference": "26bcd71cb4fcf78020ec24052ddfb28550e01bc8",
                 "shasum": ""
             },
             "require": {
@@ -248,24 +249,24 @@
             "keywords": [
                 "google"
             ],
-            "time": "2016-09-14 19:12:27"
+            "time": "2016-10-18 01:01:16"
         },
         {
             "name": "google/auth",
-            "version": "v0.10",
+            "version": "v0.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/google/google-auth-library-php.git",
-                "reference": "760e3fbe4064c0525c22e27e5374eada3c103da8"
+                "reference": "a240674b08a09949fd5597f7590b3ed83663a12d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/google/google-auth-library-php/zipball/760e3fbe4064c0525c22e27e5374eada3c103da8",
-                "reference": "760e3fbe4064c0525c22e27e5374eada3c103da8",
+                "url": "https://api.github.com/repos/google/google-auth-library-php/zipball/a240674b08a09949fd5597f7590b3ed83663a12d",
+                "reference": "a240674b08a09949fd5597f7590b3ed83663a12d",
                 "shasum": ""
             },
             "require": {
-                "firebase/php-jwt": "~2.0|~3.0",
+                "firebase/php-jwt": "~2.0|~3.0|~4.0",
                 "guzzlehttp/guzzle": "~5.3|~6.0",
                 "guzzlehttp/psr7": "~1.2",
                 "php": ">=5.4",
@@ -296,7 +297,7 @@
                 "google",
                 "oauth2"
             ],
-            "time": "2016-08-02 22:00:48"
+            "time": "2016-11-02 14:59:14"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -362,28 +363,28 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.2.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579"
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/c10d860e2a9595f8883527fa0021c7da9e65f579",
-                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -409,7 +410,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-05-18 16:56:05"
+            "time": "2016-12-20 10:07:11"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -519,16 +520,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.21.0",
+            "version": "1.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "f42fbdfd53e306bda545845e4dbfd3e72edb4952"
+                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/f42fbdfd53e306bda545845e4dbfd3e72edb4952",
-                "reference": "f42fbdfd53e306bda545845e4dbfd3e72edb4952",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bad29cb8d18ab0315e6c477751418a82c850d558",
+                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558",
                 "shasum": ""
             },
             "require": {
@@ -539,7 +540,7 @@
                 "psr/log-implementation": "1.0.0"
             },
             "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9",
+                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
                 "jakub-onderka/php-parallel-lint": "0.9",
@@ -593,7 +594,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-07-29 03:23:52"
+            "time": "2016-11-26 00:15:39"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -832,20 +833,26 @@
         },
         {
             "name": "simplepie/simplepie",
-            "version": "1.4.2",
+            "version": "1.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplepie/simplepie.git",
-                "reference": "9b775e88ba1128fa14c69ff94ab954d86067de2a"
+                "reference": "2a24b6e74aa9bf33243020f52895fe77efe94ccf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/9b775e88ba1128fa14c69ff94ab954d86067de2a",
-                "reference": "9b775e88ba1128fa14c69ff94ab954d86067de2a",
+                "url": "https://api.github.com/repos/simplepie/simplepie/zipball/2a24b6e74aa9bf33243020f52895fe77efe94ccf",
+                "reference": "2a24b6e74aa9bf33243020f52895fe77efe94ccf",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4 || ~5"
+            },
+            "suggest": {
+                "mf2/mf2": "Microformat module that allows for parsing HTML for microformats"
             },
             "type": "library",
             "autoload": {
@@ -882,7 +889,7 @@
                 "feeds",
                 "rss"
             ],
-            "time": "2016-06-14 05:48:16"
+            "time": "2016-11-27 01:39:18"
         }
     ],
     "packages-dev": [],

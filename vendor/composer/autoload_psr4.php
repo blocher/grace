@@ -16,7 +16,6 @@ return array(
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Google\\Auth\\' => array($vendorDir . '/google/auth/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
-    'Endroid\\Twitter\\Tests\\' => array($vendorDir . '/endroid/twitter/tests'),
     'Endroid\\Twitter\\' => array($vendorDir . '/endroid/twitter/src'),
     'Abraham\\TwitterOAuth\\' => array($vendorDir . '/abraham/twitteroauth/src'),
 );
