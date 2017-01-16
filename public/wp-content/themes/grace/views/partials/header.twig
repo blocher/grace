@@ -5,6 +5,25 @@
     <div id="page">
 
 
+      <div class="visitors-panel" id="visitors-panel">
+
+        <div class="container">
+            <div class="row">
+              {% for link in options.visitors_links %}
+                <div class="col-md-2"><a href="{{ link.link }}"><div class="btn btn-outline">{{ link.text }}</div></a></div>
+              {% endfor  %}
+            </div>
+
+            <div class="row">
+              <div class="col-md-4"><img class="img-responsive" src="{{ options.visitors_image }}"></div>
+              <div class="col-md-8">
+                <h1>{{ options.visitors_title }}</h1>
+                <p>{{ options.visitors_description }}</p>
+              </div>
+            </div>
+        </div>
+
+        </div>
 
       <!-- HEADER -->
       <header>
@@ -25,12 +44,12 @@
           {%endfor %}
         {% endif %}
 
+
         <!-- MENU BLOCK -->
         <div class="menu_block {% if alerts %} menu_block_alert {% endif %}">
 
           <!-- CONTAINER -->
           <div class="container clearfix">
-
               <!-- LOGO -->
               <div class="logo pull-left">
                 <a href="{{ site.url }}" ><span class="b1">g</span><span class="b2">r</span><span class="b3">a</span><span class="b4">c</span><span class="b5">e</span></a><span class="b5">Episcopal Church</span></a>
@@ -59,6 +78,7 @@
                              {% endif %}
                         </li>
                       {% endfor %}
+                      <li class="nav-main-item new-to-grace-link"><a class="nav-main-link" href="{{item.get_link}}">New to Grace?</a></li>
                   </ul>
                 </nav>
 

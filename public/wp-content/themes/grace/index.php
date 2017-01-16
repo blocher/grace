@@ -53,6 +53,8 @@ if (!empty($_POST['json']) && $_POST['json'] == 1)
 
 
   $data = Timber::get_context();
+
+  var_dump($data['options']); die();
   $dt = new DateTime("now", new DateTimeZone('America/New_York'));
   $start = $dt->format('Y-m-d 00:00:00');
   $dt->add(new DateInterval('P14D'));

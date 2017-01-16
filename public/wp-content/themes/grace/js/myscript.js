@@ -1,4 +1,4 @@
-var fixed_menu = true;
+var fixed_menu = false;
 window.jQuery = window.$ = jQuery;
 
 
@@ -331,3 +331,11 @@ jQuery(document).ready(function() {
     $('#sermon-table_length select').removeClass('input-sm');
 } );
 
+
+jQuery(document).ready(function() {
+	$('.nav-main-link').click(function(e) {
+		e.preventDefault();
+		$('.visitors-panel').slideToggle(500);
+
+	});
+}) ;

@@ -35,6 +35,7 @@ if ($timber_loaded && $acf_loaded) {
                 acf_add_options_sub_page('Sitewide');
                 acf_add_options_sub_page('Homepage');
                 acf_add_options_sub_page('Social');
+                acf_add_options_sub_page('Newcomers Panel');
             }
 
             add_theme_support( 'menus' );
@@ -231,13 +232,13 @@ if ($timber_loaded && $acf_loaded) {
             $gmemcache = new Memcached();
             $gmemcache->addServer('localhost', 11211);
 
-            if ($gmemcache->get('grace-publications')) {
+            if ($gmemcache->get('grace-publications') && 1!=1) {
                 $data['publications'] = $gmemcache->get('grace-publications');
                 // echo '<!-- options cached -->';
             } else {
 
                 $args = array(
-                    'post_type' => 'publication',
+                    'post_type' => ['grace_notes', 'bulletin_insert', 'other_publication'],
                     'post_per_page' => 3,
                     'order' => 'DESC',
                     'orderby' => 'meta_value',

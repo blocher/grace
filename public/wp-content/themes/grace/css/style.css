@@ -228,8 +228,42 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 
 
 
+.visitors-panel {
+	position:relative;
+	height:375px;
+	background-color:#551A8B;
+	display:none;
+}
+
+.visitors-panel {
+	color:white;
+}
+
+.visitors-panel .row {
+	margin-top: 30px;
+}
+
+.visitors-panel .row h1 {
+	color:white;
+}
+
+.visitors-panel img {
+	border:1px solid white;
+}
 
 
+.visitors-panel .btn-outline {
+	padding: 10px;
+	border: 2px solid white;
+	color: white;
+		width: 100%;
+}
+
+.visitors-panel .btn-outline:hover {
+	color:#551A8B;
+	background-color:white;
+
+}
 
 
 
@@ -268,25 +302,37 @@ header {
 
 /* __________ Menu __________ */
 .menu_block {
-	position:fixed;
 	z-index:9999;
 	left:0;
 	top:120;
 	right:0;
-	height:80px;
+	height:110px;
 	width:100%;
 	background-color:#fff;
 	box-shadow:0 2px 3px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 1024px) {
+	.menu_block {
+		position:relative;
+	}
+
 }
 
 .navmenu ul li {
 	position:relative;
 	display:inline-block;
 }
+
+.navmenu ul li.new-to-grace-link {
+	background-color: #551A8B;
+	max-width: 75px;
+}
+
 .navmenu ul li a {
 	display:block;
 	margin:0 0 0 -3px;
-	padding:30px 20px;
+	padding:30px 12px;
 	text-transform:uppercase;
 	font-weight:900;
 	line-height:20px;
@@ -299,6 +345,17 @@ header {
 .navmenu li.active a {
 	color:#333;
 }
+
+.navmenu ul li.new-to-grace-link a {
+	color: white;
+	padding: 10px 12px;
+	font-size: 13px;
+	font-weight: 500;
+	font-family: 'Roboto', sans-serif;
+}
+
+
+
 
 /* Sub menu */
 .sub-menu ul {
