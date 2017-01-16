@@ -333,7 +333,7 @@ jQuery(document).ready(function() {
 
 
 jQuery(document).ready(function() {
-	$('.nav-main-link').click(function(e) {
+	$('.new-to-grace-link').click(function(e) {
 		e.preventDefault();
 		$('.visitors-panel').slideToggle(500);
 
