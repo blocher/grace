@@ -66,10 +66,25 @@ img {
 	height:auto;
 }
 
-a {color:#999; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out;}
+a {color:#999; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ease-in-out; }
 a:hover, a:focus {text-decoration:none; color:#333;}
 
 
+
+.single_blog_post a {
+	border-bottom:1px dotted;
+	color: #551A8B;
+	font-weight: 700;
+
+}
+
+.single_blog_post a:hover, a:focus {
+	font-weight: 900;
+}
+
+#about a {
+	font-weight: 700;
+}
 
 
 .margbot0 {margin-bottom:0;}
