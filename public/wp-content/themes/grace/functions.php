@@ -239,10 +239,8 @@ if ($timber_loaded && $acf_loaded) {
 
                 $args = array(
                     'post_type' => ['grace_notes', 'bulletin_insert', 'other_publication'],
-                    'post_per_page' => 3,
+                    'posts_per_page' => 3,
                     'order' => 'DESC',
-                    'orderby' => 'meta_value',
-                    'meta_key' => 'published_date',
                 );
                 $data['publications'] = Timber::get_posts($args, 'ExtendedTimberPost');
                 $gmemcache->set('grace-publications', $data['publications'], time() + 86400); // Cache for 1 day

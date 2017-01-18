@@ -80,6 +80,74 @@
                     </table>
                   </div>
                 {% endif %}
+
+
+             {#    /***GRACE NOTES ***/ #}
+
+              {% if grace_notes %}
+                  <div class="table-responsive">
+                    <table id="sermon-table" class="display table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Downlaod</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for grace_note in grace_notes %}
+                          <tr>
+                            <td>{{ grace_note.title }}</td>
+
+                            <td>
+                              {% if grace_note.get_field('pdf') %}
+                                <a href="{{  grace_note.get_field('pdf').url }}" target="_blank">
+
+                                    <span class="fa fa-file-pdf-o"></span>
+
+                                  Download</a>
+                              {% endif %}
+                            </td>
+
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% endif %}
+
+
+                {% if bulletin_inserts %}
+                  <div class="table-responsive">
+                    <table id="sermon-table" class="display table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Downlaod</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for bulletin_insert in bulletin_inserts %}
+                          <tr>
+                            <td>{{ bulletin_insert.title }}</td>
+
+                            <td>
+                              {% if bulletin_insert.get_field('pdf') %}
+                                <a href="{{  bulletin_insert.get_field('pdf').url }}" target="_blank">
+
+                                    <span class="fa fa-file-pdf-o"></span>
+
+                                  Download</a>
+                              {% endif %}
+                            </td>
+
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                {% endif %}
+
+
               </div>
 
             </div><!-- //SINGLE BLOG POST -->

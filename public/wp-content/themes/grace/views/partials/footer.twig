@@ -12,22 +12,30 @@
             {% for publication in publications %}
               <div class="recent_posts_small clearfix">
                 <div class="post_item_img_small">
-                  <span class="fa {{ publication.type }} fa-3x"></span>
+                  <span class="fa {% if publication.type == "bulletin_insert" %} fa-bullhorn {% elseif publication.type == "grace_notes" %} fa-newspaper-o {% else %} fa-download {% endif %} fa-2x"></span>
                 </div>
                 <div class="post_item_content_small">
-                  <a target="_blank" class="title" href="{{ publication.get_field('attachment') }}">{{ publication.title }}</a>
-                  <ul class="post_item_inf_small">
-                    <li>{{ publication.published_date|date('F j, Y') }}</li>
-                  </ul>
+                  <a class="title" href="{{ publication.get_field('attachment') }}">{{ publication.title }}</a>
                 </div>
               </div>
             {% endfor %}
-                <div class="col-md-6">
-                  <a class="btn btn-default" href="/bulletins">All Bulletins</a>
-                </div>
-                <div class="col-md-6">
-                  <a class="btn btn-default" href="/grace-notes">All Grace Notes</a>
-                </div>
+            <hr>
+            <div class="recent_posts_small clearfix">
+              <div class="post_item_img_small">
+                <span class="fa fa-bullhorn fa-2x"</span>
+              </div>
+              <div class="post_item_content_small">
+                <a class="title" href="/parish-life/parish-news/bulletin-inserts"><strong>Older Bulletin Inserts</strong></a>
+              </div>
+            </div>
+            <div class="recent_posts_small clearfix">
+              <div class="post_item_img_small">
+                <span class="fa fa-newspaper-o fa-2x"</span>
+              </div>
+              <div class="post_item_content_small">
+                <a class="title" href="/parish-life/parish-news/grace-notes"><strong>Older Grace Notes</strong></a>
+              </div>
+            </div>
           </div>
 
           <div class="col-lg-4 col-md-4 col-sm-6 padbot30 foot_about_block">
@@ -44,7 +52,7 @@
           <div class="respond_clear"></div>
 
           <div class="col-lg-4 col-md-4 padbot30">
-            <h4><b>Contacts</b> Us</h4>
+            <h4><b>Contact</b> Us</h4>
 
             <!-- CONTACT FORM -->
             <div class="span9 contact_form">
