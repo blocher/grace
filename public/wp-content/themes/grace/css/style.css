@@ -296,7 +296,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 /*-----------------------------------------------------------------------------------*/
 header {
 	position:relative;
-	height:85px;
+	height:110px;
 	background-color:#fff;
 }
 
