@@ -10,12 +10,12 @@
         <div class="container">
             <div class="row">
               {% for link in options.visitors_links %}
-                <div class="col-md-2"><a href="{{ link.link }}"><div class="btn btn-outline">{{ link.text }}</div></a></div>
+                <div class="col-xs-6 col-md-2"><a href="{{ link.link }}"><div class="btn btn-outline">{{ link.text }}</div></a></div>
               {% endfor  %}
             </div>
 
             <div class="row">
-              <div class="col-md-4"><img class="img-responsive" src="{{ options.visitors_image }}"></div>
+              <div class="col-md-4 image"><img class="img-responsive" src="{{ options.visitors_image }}"></div>
               <div class="col-md-8">
                 <h1>{{ options.visitors_title }}</h1>
                 <p>{{ options.visitors_description }}</p>

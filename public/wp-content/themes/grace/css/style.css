@@ -256,12 +256,34 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 	padding: 10px;
 	border: 2px solid white;
 	color: white;
-		width: 100%;
+	width: 100%;
+	font-size: 11px;
 }
 
 .visitors-panel .btn-outline:hover {
 	color:#551A8B;
 	background-color:white;
+
+}
+
+@media (max-width: 992px) {
+	.visitors-panel {
+
+		height: 450px;
+	}
+
+	.visitors-panel img {
+		display: none;
+	}
+
+}
+
+@media (max-width: 1024px) {
+	.visitors-panel .btn-outline {
+
+		max-width: 100%;
+		margin-bottom: 10px;
+	}
 
 }
 
@@ -274,7 +296,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 /*-----------------------------------------------------------------------------------*/
 header {
 	position:relative;
-	height:80px;
+	height:85px;
 	background-color:#fff;
 }
 
@@ -1846,7 +1868,7 @@ input[type="color"]:focus {
 
 /* __________ Menu __________ */
 	.navmenu ul li a {padding-left:4px; padding-right:4px; font-size:10px;}
-
+	.navmenu ul li:first-child {display: none;}
 
 
 /* __________ Index __________ */
