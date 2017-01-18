@@ -669,7 +669,7 @@ function wpmu_validate_blog_signup( $blogname, $blog_title, $user = '' ) {
 function wpmu_signup_blog( $domain, $path, $title, $user, $user_email, $meta = array() )  {
 	global $wpdb;
 
-	$key = substr( md5( time() . rand() . $domain ), 0, 16 );
+	$key = substr( md5( time() . wp_rand() . $domain ), 0, 16 );
 	$meta = serialize($meta);
 
 	$wpdb->insert( $wpdb->signups, array(
@@ -719,7 +719,7 @@ function wpmu_signup_user( $user, $user_email, $meta = array() ) {
 	// Format data
 	$user = preg_replace( '/\s+/', '', sanitize_user( $user, true ) );
 	$user_email = sanitize_email( $user_email );
-	$key = substr( md5( time() . rand() . $user_email ), 0, 16 );
+	$key = substr( md5( time() . wp_rand() . $user_email ), 0, 16 );
 	$meta = serialize($meta);
 
 	$wpdb->insert( $wpdb->signups, array(
@@ -2240,9 +2240,9 @@ function wp_schedule_update_network_counts() {
 }
 
 /**
- * Update the network-wide counts for the current network.
+ *  Update the network-wide counts for the current network.
  *
- * @since 3.1.0
+ *  @since 3.1.0
  */
 function wp_update_network_counts() {
 	wp_update_network_user_counts();

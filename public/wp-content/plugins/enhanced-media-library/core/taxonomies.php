@@ -883,10 +883,15 @@ if ( ! function_exists( 'wpuxss_eml_save_attachment_compat' ) ) {
 
                 $term_ids = array_map( 'trim', preg_split( '/,+/', $attachment_data[ $taxonomy ] ) );
             }
-            elseif ( isset( $_REQUEST['tax_input'] ) && isset( $_REQUEST['tax_input'][ $taxonomy ] ) ) {
+            elseif ( isset( $_REQUEST['tax_input'] ) ) {
 
-                $term_ids = array_keys( $_REQUEST['tax_input'][ $taxonomy ], 1 );
-                $term_ids = array_map( 'intval', $term_ids );
+                if ( ! isset( $_REQUEST['tax_input'][ $taxonomy ] ) ) {
+                    continue;
+                }
+                else {
+                    $term_ids = array_keys( $_REQUEST['tax_input'][ $taxonomy ], 1 );
+                    $term_ids = array_map( 'intval', $term_ids );
+                }
             }
 
             wp_set_object_terms( $id, $term_ids, $taxonomy, false );

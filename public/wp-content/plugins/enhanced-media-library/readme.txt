@@ -3,7 +3,7 @@ Contributors: webbistro
 Tags: media library, media category, media categories, media gallery, gallery shortcode, media tag, media tags, media taxonomy, media taxonomies, media uploader, mime type, mime, mime types, file types, media types, media filter, attachment, gallery, image, images, media, ux, user experience, wp-admin, admin, taxonomy, taxonomies
 Requires at least: 4.5
 Tested up to: 4.7.1
-Stable tag: 2.4
+Stable tag: 2.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -166,6 +166,14 @@ Please notice that you use Enhanced Media Library with other plugins which add m
 
 == Changelog ==
 
+= 2.4.1 =
+*Release Date - January 16, 2017*
+
+= Bugfixes =
+* A bug with saving taxonomy terms from post editor media popup fixed - [Support Ticket](https://wordpress.org/support/topic/category-filter-not-media-category-filter-stopped-working-again/)
+
+
+&nbsp;
 = 2.4 =
 *Release Date - January 13, 2017*
 

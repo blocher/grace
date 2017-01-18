@@ -1921,7 +1921,6 @@ function wp_upload_dir( $time = null, $create_dir = true, $refresh_cache = false
 /**
  * A non-filtered, non-cached version of wp_upload_dir() that doesn't check the path.
  *
- * @since 4.5.0
  * @access private
  *
  * @param string $time Optional. Time formatted in 'yyyy/mm'. Default null.
@@ -2255,7 +2254,7 @@ function wp_check_filetype( $filename, $mimes = null ) {
  * If it's determined that the extension does not match the file's real type,
  * then the "proper_filename" value will be set with a proper filename and extension.
  *
- * Currently this function only supports validating images known to getimagesize().
+ * Currently this function only supports renaming images validated via wp_get_image_mime().
  *
  * @since 3.0.0
  *
@@ -2279,14 +2278,15 @@ function wp_check_filetype_and_ext( $file, $filename, $mimes = null ) {
 		return compact( 'ext', 'type', 'proper_filename' );
 	}
 
-	// We're able to validate images using GD
-	if ( $type && 0 === strpos( $type, 'image/' ) && function_exists('getimagesize') ) {
+	// Validate image types.
+	if ( $type && 0 === strpos( $type, 'image/' ) ) {
 
 		// Attempt to figure out what type of image it actually is
-		$imgstats = @getimagesize( $file );
+		$real_mime = wp_get_image_mime( $file );
 
-		// If getimagesize() knows what kind of image it really is and if the real MIME doesn't match the claimed MIME
-		if ( !empty($imgstats['mime']) && $imgstats['mime'] != $type ) {
+		if ( ! $real_mime ) {
+			$type = $ext = false;
+		} elseif ( $real_mime != $type ) {
 			/**
 			 * Filters the list mapping image mime types to their respective extensions.
 			 *
@@ -2303,10 +2303,10 @@ function wp_check_filetype_and_ext( $file, $filename, $mimes = null ) {
 			) );
 
 			// Replace whatever is after the last period in the filename with the correct extension
-			if ( ! empty( $mime_to_ext[ $imgstats['mime'] ] ) ) {
+			if ( ! empty( $mime_to_ext[ $real_mime ] ) ) {
 				$filename_parts = explode( '.', $filename );
 				array_pop( $filename_parts );
-				$filename_parts[] = $mime_to_ext[ $imgstats['mime'] ];
+				$filename_parts[] = $mime_to_ext[ $real_mime ];
 				$new_filename = implode( '.', $filename_parts );
 
 				if ( $new_filename != $filename ) {
@@ -2316,7 +2316,19 @@ function wp_check_filetype_and_ext( $file, $filename, $mimes = null ) {
 				$wp_filetype = wp_check_filetype( $new_filename, $mimes );
 				$ext = $wp_filetype['ext'];
 				$type = $wp_filetype['type'];
+			} else {
+				$type = $ext = false;
 			}
+		}
+	} elseif ( function_exists( 'finfo_file' ) ) {
+		// Use finfo_file if available to validate non-image files.
+		$finfo = finfo_open( FILEINFO_MIME_TYPE );
+		$real_mime = finfo_file( $finfo, $file );
+		finfo_close( $finfo );
+
+		// If the extension does not match the file's real type, return false.
+		if ( $real_mime !== $type ) {
+			$type = $ext = false;
 		}
 	}
 
@@ -2333,6 +2345,38 @@ function wp_check_filetype_and_ext( $file, $filename, $mimes = null ) {
 	 * @param array  $mimes                     Key is the file extension with value as the mime type.
 	 */
 	return apply_filters( 'wp_check_filetype_and_ext', compact( 'ext', 'type', 'proper_filename' ), $file, $filename, $mimes );
+}
+
+/**
+ * Returns the real mime type of an image file.
+ *
+ * This depends on exif_imagetype() or getimagesize() to determine real mime types.
+ *
+ * @since 4.7.1
+ *
+ * @param string $file Full path to the file.
+ * @return string|false The actual mime type or false if the type cannot be determined.
+ */
+function wp_get_image_mime( $file ) {
+	/*
+	 * Use exif_imagetype() to check the mimetype if available or fall back to
+	 * getimagesize() if exif isn't avaialbe. If either function throws an Exception
+	 * we assume the file could not be validated.
+	 */
+	try {
+		if ( is_callable( 'exif_imagetype' ) ) {
+			$mime = image_type_to_mime_type( exif_imagetype( $file ) );
+		} elseif ( function_exists( 'getimagesize' ) ) {
+			$imagesize = getimagesize( $file );
+			$mime = ( isset( $imagesize['mime'] ) ) ? $imagesize['mime'] : false;
+		} else {
+			$mime = false;
+		}
+	} catch ( Exception $e ) {
+		$mime = false;
+	}
+
+	return $mime;
 }
 
 /**
@@ -5109,8 +5153,6 @@ function _device_can_upload() {
 /**
  * Test if a given path is a stream URL
  *
- * @since 3.5.0
- *
  * @param string $path The resource path or URL.
  * @return bool True if the path is a stream URL.
  */
@@ -5392,7 +5434,7 @@ function wp_delete_file( $file ) {
 	 *
 	 * @since 2.1.0
 	 *
-	 * @param string $file Path to the file to delete.
+	 * @param string $medium Path to the file to delete.
 	 */
 	$delete = apply_filters( 'wp_delete_file', $file );
 	if ( ! empty( $delete ) ) {
