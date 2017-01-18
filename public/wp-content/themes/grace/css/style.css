@@ -302,7 +302,25 @@ header {
 
 
 /* __________ Logo __________ */
-.logo {float:left;}
+.logo {
+	float:left;
+	max-width: 350px;
+	margin-top: 15px;
+}
+
+
+@media (min-width: 769px) and (max-width: 992px) {
+	.logo {
+		max-width: 240px;
+	}
+}
+
+@media (max-width: 768px) {
+	.logo {
+		max-width: 225px;
+	}
+}
+
 .logo a {
 	text-transform:uppercase;
 	line-height:80px;
