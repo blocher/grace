@@ -95,7 +95,7 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_style('roboto', '//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500italic,700,500,700italic,900,900italic', [], null);
             wp_enqueue_style('fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', [], null);
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css?v=1.1', [], null);
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css?v=1.2', [], null);
 
 
         }

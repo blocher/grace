@@ -269,7 +269,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 @media (max-width: 992px) {
 	.visitors-panel {
 
-		height: 450px;
+		height: 475px;
 	}
 
 	.visitors-panel img {
