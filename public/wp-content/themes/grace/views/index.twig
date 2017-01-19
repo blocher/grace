@@ -15,7 +15,7 @@
 									<p class="title1 captionDelay2 From{{ slide.headline_slide_from | capitalize }}">{{ slide.headline }}</p>
 									<p class="title4 captionDelay7 From{{ slide.subheadline_slide_from | capitalize }}">{{ slide.subheadline }}</p>
 								</div>
-								<a class="slide_btn From{{ slide.read_more_slide_from | capitalize }}" href="{{ slide.on-site_link | default (slide.off-site_link) }}" >{{ slide.read_more_text }}</a>
+								<a class="slide_btn From{{ slide.read_more_slide_from | capitalize }}" href="{{ slide.get_field('link') }}" >{{ slide.read_more_text }}</a>
 							</li>
 						{% endfor %}
 					</ul>
