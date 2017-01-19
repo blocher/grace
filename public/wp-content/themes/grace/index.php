@@ -1,4 +1,9 @@
 <?php
+
+$loader = new TimberLoader();
+$loader->clear_cache_timber();
+$loader->clear_cache_twig();
+
 /**********************
 *
 * Set up Calendar

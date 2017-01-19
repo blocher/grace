@@ -527,11 +527,10 @@ header {
 
 
 
-
 /*-----------------------------------------------------------------------------------*/
 /*	ABOUT
 /*-----------------------------------------------------------------------------------*/
-#about {padding-top:70px;}
+#about {padding-top:10px;}
 
 /* __________ Services __________ */
 .services_block {padding:7px 0 0;}
@@ -568,6 +567,27 @@ header {
 	font-size:14px;
 	color:#666;
 }
+
+.info-box {
+	padding: 10px;
+}
+
+.info-box a {
+	border-bottom: dotted 1px;
+	font-weight: 300;
+}
+.inner {
+	padding: 10px;
+	border: silver 1px solid;
+}
+
+@media (min-width: 769px) {
+	.inner {
+		min-height: 310px;
+	}
+
+}
+
 
 
 

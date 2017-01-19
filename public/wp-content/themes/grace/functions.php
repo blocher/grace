@@ -95,7 +95,7 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_style('roboto', '//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500italic,700,500,700italic,900,900italic', [], null);
             wp_enqueue_style('fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', [], null);
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css?v=1.4', [], null);
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css?v=1.5', [], null);
 
 
         }
@@ -194,7 +194,7 @@ if ($timber_loaded && $acf_loaded) {
             $gmemcache = new Memcached();
             $gmemcache->addServer('localhost', 11211);
 
-            if ($gmemcache->get('grace-options')) {
+            if ($gmemcache->get('grace-options') && 1!=1) {
                 $data['options'] = $gmemcache->get('grace-options');
                 // echo '<!-- options cached -->';
             } else {
@@ -370,7 +370,7 @@ function sermons_shortcode( $atts ){
     $args = [
 
       'post_type' => 'sermon',
-      'posts_per_page' => 3,
+      'posts_per_page' => 2,
       'order' => 'DESC',
       'orderby' => 'meta_value',
       'meta_key' => 'date_given',

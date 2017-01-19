@@ -83,21 +83,24 @@
 			<section id="about">
 
 				<!-- SERVICES -->
-				<div class="services_block padbot40" data-appear-top-offset="-200" data-animated="fadeInUp">
+				<div class="services_block" data-appear-top-offset="-200" data-animated="fadeInUp">
 
 					<!-- CONTAINER -->
 					<div class="container">
 
 						<!-- ROW -->
 						<div class="row">
-							{% for widget in options.homepage_widgets %}
-								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 margbot30">
-									<a class="services_item" href="javascript:void(0);" >
-										<p>{{ widget.widget_title }}</p>
-										{{ function('do_shortcode',widget.widget_content|replace({'<p>': '<span>', '</p>': '</span>'})) }}
-									</a>
-								</div>
-							{% endfor %}
+
+								{% for widget in options.homepage_widgets %}
+									<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 col-height">
+										<div class="inner">
+											<div class="services_item" href="javascript:void(0);" >
+												<p>{{ widget.widget_title }}</p>
+												{{ function('do_shortcode',widget.widget_content|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+											</div>
+										</div>
+									</div>
+								{% endfor %}
 						</div><!-- //ROW -->
 					</div><!-- //CONTAINER -->
 				</div><!-- //SERVICES -->
@@ -600,7 +603,7 @@
 					<div class="row recent_posts" data-appear-top-offset="-200" data-animated="fadeInUp">
 
 						{% for post in news %}
-							<div class="col-lg-4 col-md-4 col-sm-4 padbot30 post_item_block">
+							<div class="col-lg-4 col-md-4 col-sm-4 post_item_block">
 								<div class="post_item">
 									<div class="post_item_img">
 										{% if post.thumbnail %}
