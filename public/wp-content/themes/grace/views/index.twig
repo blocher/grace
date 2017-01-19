@@ -11,10 +11,13 @@
 
 						{% for slide in slides %}
 							<li class="slide1" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
-								<div class="flex_caption1">
-									<p class="title1 captionDelay2 From{{ slide.headline_slide_from | capitalize }}">{{ slide.headline }}</p>
-									<p class="title4 captionDelay7 From{{ slide.subheadline_slide_from | capitalize }}">{{ slide.subheadline }}</p>
-								</div>
+
+								<a href="{{ slide.get_field('link') }}" class="flex_caption1">
+
+										<p class="title1 captionDelay2 From{{ slide.headline_slide_from | capitalize }}">{{ slide.headline }}</p>
+										<p class="title4 captionDelay7 From{{ slide.subheadline_slide_from | capitalize }}">{{ slide.subheadline }}</p>
+
+								</a>
 								<a class="slide_btn From{{ slide.read_more_slide_from | capitalize }}" href="{{ slide.get_field('link') }}" >{{ slide.read_more_text }}</a>
 							</li>
 						{% endfor %}
