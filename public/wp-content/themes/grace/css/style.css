@@ -2546,7 +2546,7 @@ figure.alignnone {
   background-color: #D3D3D3;
   color: #fff;
   padding: 1.5em;
-  min-height: inherit;
+  height: 75px;
 }
 
 .event-month,
@@ -2555,7 +2555,6 @@ figure.alignnone {
   font-family: 'Oswald', sans-serif;
   font-weight: 300;
   font-size: 1.5em;
-  line-height: 1.5;
 }
 
 .event-subcommittee {
@@ -2569,20 +2568,23 @@ figure.alignnone {
 
 .event-details {
   padding: .7em 1.5em .7em 3em;
-  min-height: inherit;
+  height: 75px;
   background-color: #f2f5f8;
 }
 
 .event-time-type {
   color: #8fa9c2;
   text-transform: uppercase;
-  margin-bottom: 1em;
+  margin-bottom: 0;
   font-size: .8em;
 }
 
 .event-title {
   font-family: 'Oswald', sans-serif;
   font-weight: 100;
+  font-size: 16px;
+  line-height: 19px;
+  margin-top: 5px;
 }
 
 .hearings-link {
