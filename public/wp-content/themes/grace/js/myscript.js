@@ -152,8 +152,14 @@ jQuery(document).ready(function(){
 });
 
 function homeHeight(){
-	var wh = jQuery(window).height() - 80;
-	jQuery('.top_slider, .top_slider .slides li').css('height', wh);
+	var wh = jQuery(window).height();
+	var ww = jQuery(window).width();
+	if (ww<768) {
+		jQuery('.top_slider, .top_slider .slides li').css('height', 300);
+	} else {
+		jQuery('.top_slider, .top_slider .slides li').css('height', wh);
+	}
+
 }
 
 

@@ -607,7 +607,7 @@
 
 						{% for post in news %}
 							<div class="col-lg-4 col-md-4 col-sm-4 post_item_block">
-								<div class="post_item">
+								<div class="post_item inner">
 									<div class="post_item_img">
 										{% if post.thumbnail %}
 											<img src="{{ post.thumbnail.src('homepage_module') }}" alt="" />
@@ -615,9 +615,11 @@
 										<a class="link" href="{{ post.link }}" ></a>
 									</div>
 									<div class="post_item_content">
+										<ul class="post_item_inf">
+											<li><em>Posted on {{ post.post_date|date('F j, Y') }}</em></li>
+										</ul>
 										<a class="title" href="{{ post.link }}" >{{ post.title }}</a>
 										<ul class="post_item_inf">
-											<li><a href="javascript:void(0);" >{{ post.post_date|date('M j') }}</li>
 											<li>{{ post.excerpt }}</li>
 										</ul>
 									</div>
@@ -626,7 +628,7 @@
 						{% endfor %}
 
 						    <div class="see-more-wrapper row center">
-						      <a class="btn btn-default" href="/news">View All</a>
+						      <a class="btn btn-default" href="/news">View All News</a>
 						    </div>
 
 					</div>

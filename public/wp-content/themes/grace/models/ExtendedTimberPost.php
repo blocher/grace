@@ -25,7 +25,7 @@
 			return $content;
 		}
 
-	    public function excerpt($maxchars = 700, $force = false, $readmore = '...', $strip = true) {
+	    public function excerpt($maxchars = 250, $force = false, $readmore = '...read more', $strip = true) {
 
 	    	if (is_search()) {
 
