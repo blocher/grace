@@ -28,6 +28,9 @@ body.eml-media-css .term-list li input[type=checkbox]:indeterminate:before {
     margin: -3px 0 0 -4px;
     color: #CBCBCB;
 }
+body.eml-media-css .term-list .children {
+    margin: 5px 0 0 20px;
+}
 
 body.eml-media-css .compat-item .eml-tax-label {
     width: 100%;
@@ -123,6 +126,12 @@ body.upload-php.eml-grid #wpbody-content > .wrap {
 }
 
 
+.eml-grid .wrap .notice,
+.eml-grid .wrap div.updated,
+.eml-grid .wrap div.error {
+	z-index: 20;
+	position: relative;
+}
 .media-frame.mode-eml-grid {
     top: 50px;
     z-index: 10;

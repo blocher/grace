@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Enhanced Media Library PRO\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-13 03:04+0200\n"
-"PO-Revision-Date: 2017-01-13 03:04+0200\n"
+"POT-Creation-Date: 2017-01-19 22:55+0200\n"
+"PO-Revision-Date: 2017-01-19 22:55+0200\n"
 "Last-Translator: wpUXsolutions <wpUXsolutions@gmail.com>\n"
 "Language-Team: Japanese (Japan)\n"
 "Language: ja_JP\n"
@@ -31,9 +31,9 @@ msgid_plural " <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 
 #: core/options-pages.php:97 core/options-pages.php:220
-#: core/options-pages.php:313 core/options-pages.php:1080
-#: core/options-pages.php:1204 core/options-pages.php:1529
-#: core/options-pages.php:1729
+#: core/options-pages.php:313 core/options-pages.php:1082
+#: core/options-pages.php:1206 core/options-pages.php:1531
+#: core/options-pages.php:1731
 msgid "Media Settings"
 msgstr "メディア設定"
 
@@ -58,13 +58,13 @@ msgstr "Enhanced Media Library"
 msgid "General"
 msgstr "一般"
 
-#: core/options-pages.php:286 core/options-pages.php:1225
+#: core/options-pages.php:286 core/options-pages.php:1227
 msgid "Media Taxonomies"
 msgstr "メディアタクソノミー（分類法）"
 
 #: core/options-pages.php:310 core/options-pages.php:622
-#: core/options-pages.php:1076 core/options-pages.php:1201
-#: core/options-pages.php:1525
+#: core/options-pages.php:1078 core/options-pages.php:1203
+#: core/options-pages.php:1527
 msgid "You do not have sufficient permissions to access this page."
 msgstr "このページにアクセスするための十分な権限がありません。"
 
@@ -140,9 +140,9 @@ msgstr ""
 msgid "Organize my uploads into month- and year-based folders"
 msgstr ""
 
-#: core/options-pages.php:474 core/options-pages.php:1249
-#: core/options-pages.php:1264 core/options-pages.php:1327
-#: core/options-pages.php:1399
+#: core/options-pages.php:474 core/options-pages.php:1251
+#: core/options-pages.php:1266 core/options-pages.php:1329
+#: core/options-pages.php:1401
 msgid "Edit"
 msgstr "編集"
 
@@ -150,23 +150,23 @@ msgstr "編集"
 msgid "Close"
 msgstr "閉じる"
 
-#: core/options-pages.php:476 core/options-pages.php:1265
-#: core/options-pages.php:1328
+#: core/options-pages.php:476 core/options-pages.php:1267
+#: core/options-pages.php:1330
 msgid "View"
 msgstr "表示"
 
-#: core/options-pages.php:477 core/options-pages.php:1266
-#: core/options-pages.php:1329
+#: core/options-pages.php:477 core/options-pages.php:1268
+#: core/options-pages.php:1331
 msgid "Update"
 msgstr "更新"
 
-#: core/options-pages.php:478 core/options-pages.php:1267
-#: core/options-pages.php:1330
+#: core/options-pages.php:478 core/options-pages.php:1269
+#: core/options-pages.php:1332
 msgid "Add New"
 msgstr "新規追加"
 
-#: core/options-pages.php:479 core/options-pages.php:1268
-#: core/options-pages.php:1331
+#: core/options-pages.php:479 core/options-pages.php:1270
+#: core/options-pages.php:1333
 msgid "New"
 msgstr "新規"
 
@@ -174,23 +174,23 @@ msgstr "新規"
 msgid "Name"
 msgstr "名前"
 
-#: core/options-pages.php:481 core/options-pages.php:1269
-#: core/options-pages.php:1332
+#: core/options-pages.php:481 core/options-pages.php:1271
+#: core/options-pages.php:1334
 msgid "Parent"
 msgstr "親カテゴリー"
 
 #: core/options-pages.php:482 core/options-pages.php:718
-#: core/options-pages.php:1263 core/options-pages.php:1326
+#: core/options-pages.php:1265 core/options-pages.php:1328
 #: core/taxonomies.php:340 enhanced-media-library.php:509
 msgid "All"
 msgstr "全て"
 
-#: core/options-pages.php:483 core/options-pages.php:1270
-#: core/options-pages.php:1333
+#: core/options-pages.php:483 core/options-pages.php:1272
+#: core/options-pages.php:1335
 msgid "Search"
 msgstr "検索"
 
-#: core/options-pages.php:485 core/options-pages.php:1314
+#: core/options-pages.php:485 core/options-pages.php:1316
 msgid "New Taxonomy"
 msgstr "新しいタクソノミー （分類）"
 
@@ -271,7 +271,7 @@ msgstr ""
 msgid "Synchronizing..."
 msgstr ""
 
-#: core/options-pages.php:547 core/options-pages.php:1653
+#: core/options-pages.php:547 core/options-pages.php:1655
 msgid "Restore WordPress default MIME Types"
 msgstr "WordPressのデフォルトのMIMEタイプを復元"
 
@@ -429,57 +429,57 @@ msgstr "プラグインの設定がインポートされました。"
 msgid "Plugin settings restored from the backup."
 msgstr "プラグインの設定は、バックアップから復元させて下さい。"
 
-#: core/options-pages.php:1101
+#: core/options-pages.php:1103
 msgid "Media Items Order"
 msgstr ""
 
-#: core/options-pages.php:1108
+#: core/options-pages.php:1110
 msgid "Order media items by"
 msgstr "メディアアイテムの順番"
 
-#: core/options-pages.php:1111
+#: core/options-pages.php:1113
 msgid "Date"
 msgstr "日付"
 
-#: core/options-pages.php:1112
+#: core/options-pages.php:1114
 msgid "Title"
 msgstr "タイトル"
 
-#: core/options-pages.php:1113
+#: core/options-pages.php:1115
 msgid "Custom Order"
 msgstr "カスタムオーダー"
 
-#: core/options-pages.php:1115 core/options-pages.php:1127
+#: core/options-pages.php:1117 core/options-pages.php:1129
 msgid "For media library and media popups"
 msgstr "メディアライブラリとメディアポップアップについて"
 
-#: core/options-pages.php:1116
+#: core/options-pages.php:1118
 msgid "Option allows to change order by drag and drop with Custom Order value."
 msgstr ""
 "オプションは、ドラッグすることによって順序を変更し、カスタムオーダーの値でド"
 "ロップすることができます。"
 
-#: core/options-pages.php:1121
+#: core/options-pages.php:1123
 msgid "Sort order"
 msgstr "ソート順"
 
-#: core/options-pages.php:1124
+#: core/options-pages.php:1126
 msgid "Ascending"
 msgstr "昇順"
 
-#: core/options-pages.php:1125
+#: core/options-pages.php:1127
 msgid "Descending"
 msgstr "降順"
 
-#: core/options-pages.php:1140
+#: core/options-pages.php:1142
 msgid "Media Shortcodes"
 msgstr "メディアのショートコード"
 
-#: core/options-pages.php:1147 core/options-pages.php:1150
+#: core/options-pages.php:1149 core/options-pages.php:1152
 msgid "Enhanced media shortcodes"
 msgstr "強化されたメディアのショートコード"
 
-#: core/options-pages.php:1151
+#: core/options-pages.php:1153
 msgid ""
 "Enhance WordPress media shortcodes to make them understand media taxonomies, "
 "upload date, and media items number limit"
@@ -487,30 +487,30 @@ msgstr ""
 "WordPressのメディアショートコードでメディアタクソノミー、アップロードの日付と"
 "メディア・アイテム数の上限を取得させます。"
 
-#: core/options-pages.php:1152
+#: core/options-pages.php:1154
 msgid "Gallery example:"
 msgstr "ギャラリーの例:"
 
-#: core/options-pages.php:1153
+#: core/options-pages.php:1155
 msgid "Audio playlist example:"
 msgstr "オーディオプレイリストの例:"
 
-#: core/options-pages.php:1154
+#: core/options-pages.php:1156
 msgid "Video playlist example:"
 msgstr "ビデオプレイリストの例:"
 
-#: core/options-pages.php:1156
+#: core/options-pages.php:1158
 #, php-format
 msgid ""
 "%sWarning:%s Incompatibility with other gallery plugins or themes possible!"
 msgstr "%s警告:%s 他のギャラリープラグイン又はテーマとの非互換性の可能性！"
 
-#: core/options-pages.php:1158
+#: core/options-pages.php:1160
 #, php-format
 msgid "%sLearn more%s."
 msgstr "%sもっと詳しく%s."
 
-#: core/options-pages.php:1160
+#: core/options-pages.php:1162
 #, php-format
 msgid ""
 "Please check out your gallery front-end and back-end functionality once this "
@@ -521,243 +521,243 @@ msgstr ""
 "ション機能を一旦バックエンドして下さい。あなたが問題を見つけた場合は、プラグ"
 "イン作者までご連絡ください %s か %s."
 
-#: core/options-pages.php:1229 core/options-pages.php:1376
+#: core/options-pages.php:1231 core/options-pages.php:1378
 msgid "Assign following taxonomies to Media Library:"
 msgstr "メディアライブラリに次のタクソノミー(分類法)を割り当てます:"
 
-#: core/options-pages.php:1248 core/options-pages.php:1314
-#: core/options-pages.php:1398
+#: core/options-pages.php:1250 core/options-pages.php:1316
+#: core/options-pages.php:1400
 msgid "Assign Taxonomy"
 msgstr "タクソノミーを割り当て"
 
-#: core/options-pages.php:1249 core/options-pages.php:1399
+#: core/options-pages.php:1251 core/options-pages.php:1401
 msgid "Edit Taxonomy"
 msgstr "タクソノミーの編集"
 
-#: core/options-pages.php:1253 core/options-pages.php:1316
+#: core/options-pages.php:1255 core/options-pages.php:1318
 msgid "Delete Taxonomy"
 msgstr "タクソノミーを削除します"
 
-#: core/options-pages.php:1258 core/options-pages.php:1321
+#: core/options-pages.php:1260 core/options-pages.php:1323
 msgid "Labels"
 msgstr "ラベル"
 
-#: core/options-pages.php:1260 core/options-pages.php:1323
+#: core/options-pages.php:1262 core/options-pages.php:1325
 msgid "Singular"
 msgstr "単数"
 
-#: core/options-pages.php:1261 core/options-pages.php:1324
+#: core/options-pages.php:1263 core/options-pages.php:1326
 msgid "Plural"
 msgstr "複数"
 
-#: core/options-pages.php:1262 core/options-pages.php:1325
+#: core/options-pages.php:1264 core/options-pages.php:1327
 msgid "Menu Name"
 msgstr "メニュー名"
 
-#: core/options-pages.php:1275 core/options-pages.php:1298
-#: core/options-pages.php:1338 core/options-pages.php:1402
+#: core/options-pages.php:1277 core/options-pages.php:1300
+#: core/options-pages.php:1340 core/options-pages.php:1404
 msgid "Settings"
 msgstr "設定"
 
-#: core/options-pages.php:1277 core/options-pages.php:1340
+#: core/options-pages.php:1279 core/options-pages.php:1342
 msgid "Taxonomy Name"
 msgstr "タクソノミー名"
 
-#: core/options-pages.php:1278 core/options-pages.php:1341
+#: core/options-pages.php:1280 core/options-pages.php:1343
 msgid "Hierarchical"
 msgstr "階層"
 
-#: core/options-pages.php:1279 core/options-pages.php:1342
+#: core/options-pages.php:1281 core/options-pages.php:1344
 msgid "Column for List View"
 msgstr "リスト表示の列"
 
-#: core/options-pages.php:1280 core/options-pages.php:1300
-#: core/options-pages.php:1343 core/options-pages.php:1404
+#: core/options-pages.php:1282 core/options-pages.php:1302
+#: core/options-pages.php:1345 core/options-pages.php:1406
 msgid "Filter for List View"
 msgstr "リスト表示のフィルター"
 
-#: core/options-pages.php:1281 core/options-pages.php:1301
-#: core/options-pages.php:1344 core/options-pages.php:1405
+#: core/options-pages.php:1283 core/options-pages.php:1303
+#: core/options-pages.php:1346 core/options-pages.php:1407
 msgid "Filter for Grid View / Media Popup"
 msgstr "グリット表示/メディアポップアップのフィルター"
 
-#: core/options-pages.php:1282 core/options-pages.php:1302
-#: core/options-pages.php:1345 core/options-pages.php:1406
+#: core/options-pages.php:1284 core/options-pages.php:1304
+#: core/options-pages.php:1347 core/options-pages.php:1408
 msgid "Edit in Media Popup"
 msgstr "メディアポップアップの編集"
 
-#: core/options-pages.php:1283 core/options-pages.php:1346
+#: core/options-pages.php:1285 core/options-pages.php:1348
 msgid "Show in Nav Menu"
 msgstr "ナビゲーションメニューに表示"
 
-#: core/options-pages.php:1284 core/options-pages.php:1347
+#: core/options-pages.php:1286 core/options-pages.php:1349
 msgid "Remember Terms Order (sort)"
 msgstr ""
 
-#: core/options-pages.php:1285 core/options-pages.php:1348
+#: core/options-pages.php:1287 core/options-pages.php:1350
 msgid "Show in REST"
 msgstr "リストに表示"
 
-#: core/options-pages.php:1286 core/options-pages.php:1349
+#: core/options-pages.php:1288 core/options-pages.php:1351
 msgid "Rewrite Slug"
 msgstr "スラッグを書き換え"
 
-#: core/options-pages.php:1287 core/options-pages.php:1350
+#: core/options-pages.php:1289 core/options-pages.php:1352
 msgid "Slug with Front"
 msgstr "フロントとスラッグ"
 
-#: core/options-pages.php:1362
+#: core/options-pages.php:1364
 msgid "Add New Taxonomy"
 msgstr "新しいタクソノミーを追加"
 
-#: core/options-pages.php:1372
+#: core/options-pages.php:1374
 msgid "Non-Media Taxonomies"
 msgstr "非メディアタクソノミー(記事カテゴリー及びタグで分類)"
 
-#: core/options-pages.php:1435
+#: core/options-pages.php:1437
 msgid "Options"
 msgstr "オプション"
 
-#: core/options-pages.php:1445 core/options-pages.php:1448
+#: core/options-pages.php:1447 core/options-pages.php:1450
 msgid "Taxonomy archive pages"
 msgstr "タクソノミーのアーカイブページ"
 
-#: core/options-pages.php:1449
+#: core/options-pages.php:1451
 msgid "Turn on media taxonomy archive pages on the front-end"
 msgstr ""
 "フロントエンドのメディアタクソノミー(分類)のアーカイブページをオンにします"
 
-#: core/options-pages.php:1450
+#: core/options-pages.php:1452
 msgid ""
 "Re-save your permalink settings after this option change to make it work."
 msgstr ""
 "これを動作させるには、このオプションを変更した後、パーマリンクの設定を再保存"
 "しましょう。"
 
-#: core/options-pages.php:1456 core/options-pages.php:1459
+#: core/options-pages.php:1458 core/options-pages.php:1461
 msgid "Assign all like hierarchical"
 msgstr "階層のように全て割り当てます"
 
-#: core/options-pages.php:1460
+#: core/options-pages.php:1462
 msgid ""
 "Show non-hierarchical taxonomies like hierarchical in Grid View / Media Popup"
 msgstr ""
 "グリット表示の/メディアポップアップで、階層のような非階層的タクソノミーを表示"
 "する"
 
-#: core/options-pages.php:1466 core/options-pages.php:1469
+#: core/options-pages.php:1468 core/options-pages.php:1471
 msgid "Force filters"
 msgstr "フォースフィルター"
 
-#: core/options-pages.php:1470
+#: core/options-pages.php:1472
 msgid "Show media filters for ANY Media Popup"
 msgstr "あらゆるメディアにポップアップするフィルターを表示します。"
 
-#: core/options-pages.php:1471
+#: core/options-pages.php:1473
 msgid "Try this if filters are not shown for third-party plugins or themes."
 msgstr ""
 "フィルタが、サードパーティ製のプラグインやテーマの為に示されていない場合は、"
 "試してみてください。"
 
-#: core/options-pages.php:1477 core/options-pages.php:1480
+#: core/options-pages.php:1479 core/options-pages.php:1482
 msgid "Show count"
 msgstr ""
 
-#: core/options-pages.php:1481
+#: core/options-pages.php:1483
 msgid "Show item count per category for media filters"
 msgstr ""
 
-#: core/options-pages.php:1535
+#: core/options-pages.php:1537
 msgid "Add New MIME Type"
 msgstr "MIMEタイプ新規追加"
 
-#: core/options-pages.php:1555 core/options-pages.php:1610
+#: core/options-pages.php:1557 core/options-pages.php:1612
 msgid "Extension"
 msgstr "拡張子"
 
-#: core/options-pages.php:1556 core/options-pages.php:1611
+#: core/options-pages.php:1558 core/options-pages.php:1613
 msgid "MIME Type"
 msgstr "MIMEタイプ"
 
-#: core/options-pages.php:1557 core/options-pages.php:1612
+#: core/options-pages.php:1559 core/options-pages.php:1614
 msgid "Singular Label"
 msgstr "単数のラベル"
 
-#: core/options-pages.php:1558 core/options-pages.php:1613
+#: core/options-pages.php:1560 core/options-pages.php:1615
 msgid "Plural Label"
 msgstr "複数のラベル"
 
-#: core/options-pages.php:1559 core/options-pages.php:1589
-#: core/options-pages.php:1602 core/options-pages.php:1614
+#: core/options-pages.php:1561 core/options-pages.php:1591
+#: core/options-pages.php:1604 core/options-pages.php:1616
 msgid "Add Filter"
 msgstr "フィルタを追加"
 
-#: core/options-pages.php:1560 core/options-pages.php:1590
-#: core/options-pages.php:1603 core/options-pages.php:1615
+#: core/options-pages.php:1562 core/options-pages.php:1592
+#: core/options-pages.php:1605 core/options-pages.php:1617
 msgid "Allow Upload"
 msgstr "アップロードを許可"
 
-#: core/options-pages.php:1591 core/options-pages.php:1604
+#: core/options-pages.php:1593 core/options-pages.php:1606
 msgid "Delete MIME Type"
 msgstr "MIMEタイプを削除します"
 
-#: core/options-pages.php:1651
+#: core/options-pages.php:1653
 msgid "Save Changes"
 msgstr "変更内容を保存"
 
-#: core/options-pages.php:1681
+#: core/options-pages.php:1683
 msgid "Changelog"
 msgstr ""
 
-#: core/options-pages.php:1682
+#: core/options-pages.php:1684
 msgid "What's new in"
 msgstr ""
 
-#: core/options-pages.php:1682
+#: core/options-pages.php:1684
 msgid "version"
 msgstr ""
 
-#: core/options-pages.php:1685
+#: core/options-pages.php:1687
 msgid "More features under the hood"
 msgstr ""
 
-#: core/options-pages.php:1687
+#: core/options-pages.php:1689
 msgid "Support"
 msgstr ""
 
-#: core/options-pages.php:1688
+#: core/options-pages.php:1690
 msgid "Feel free to ask for help on"
 msgstr ""
 
-#: core/options-pages.php:1688
+#: core/options-pages.php:1690
 msgid "Support is free for both versions of the plugin."
 msgstr ""
 
-#: core/options-pages.php:1690
+#: core/options-pages.php:1692
 msgid "Plugin rating"
 msgstr ""
 
-#: core/options-pages.php:1691
+#: core/options-pages.php:1693
 msgid "Please"
 msgstr ""
 
-#: core/options-pages.php:1691
+#: core/options-pages.php:1693
 msgid "vote for the plugin"
 msgstr ""
 
-#: core/options-pages.php:1691
+#: core/options-pages.php:1693
 msgid "Thanks!"
 msgstr ""
 
-#: core/options-pages.php:1693
+#: core/options-pages.php:1695
 msgid "Other plugins you may find useful"
 msgstr ""
 
-#: core/options-pages.php:1732
+#: core/options-pages.php:1734
 msgid "Utility"
 msgstr ""
 
-#: core/options-pages.php:1755
+#: core/options-pages.php:1757
 msgid "Vote!"
 msgstr ""
 
@@ -778,27 +778,27 @@ msgstr ""
 msgid "Not in a"
 msgstr ""
 
-#: core/taxonomies.php:1283 core/taxonomies.php:1290
+#: core/taxonomies.php:1288 core/taxonomies.php:1295
 msgid "Remove"
 msgstr "削除"
 
-#: core/taxonomies.php:1285 core/taxonomies.php:1292
+#: core/taxonomies.php:1290 core/taxonomies.php:1297
 msgid "Deselect"
 msgstr "選択を解除"
 
-#: core/taxonomies.php:1337
+#: core/taxonomies.php:1342
 msgid "Caption this image&hellip;"
 msgstr "この画像をキャプション&hellip;"
 
-#: core/taxonomies.php:1341
+#: core/taxonomies.php:1346
 msgid "Describe this video&hellip;"
 msgstr "このビデオを説明してください&hellip;"
 
-#: core/taxonomies.php:1343
+#: core/taxonomies.php:1348
 msgid "Describe this audio file&hellip;"
 msgstr "このオーディオファイルを説明してください&hellip;"
 
-#: core/taxonomies.php:1345
+#: core/taxonomies.php:1350
 msgid "Describe this media file&hellip;"
 msgstr "このメディアファイルを記述します&hellip;"
 

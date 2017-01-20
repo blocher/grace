@@ -1075,7 +1075,9 @@ window.eml = window.eml || { l10n: {} };
             original.MediaFrame.Post.activate.apply( this, arguments );
 
             this.on( 'open', content.fixLayout, content );
-            $( document ).on( 'click', '.acf-expand-details', _.debounce( _.bind( content.fixLayout, content ), 250 ) );
+            if ( typeof acf != 'undefined' ) {
+                $( document ).on( 'click', '.acf-expand-details', _.debounce( _.bind( content.fixLayout, content ), 250 ) );
+            }
         }
     });
 
