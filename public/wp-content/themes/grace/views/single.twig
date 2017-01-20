@@ -7,9 +7,7 @@
 
         <!-- BREADCRUMBS -->
     <section class="breadcrumbs_block clearfix parallax" style="background-image: url('{{ post.main_image }}'); ">
-      <div class="container center">
-
-      </div>
+      <img src="{{ post.main_image }}" style="visibility: hidden;" />
     </section><!-- //BREADCRUMBS -->
 
     <div class="single_page">
@@ -23,7 +21,7 @@
           <div class="row">
 
             <!-- BLOG BLOCK -->
-            <div class="blog_block col-lg-9 col-md-9 padbot50">
+            <div class="blog_block col-lg-9 col-md-9">
 
               <!-- SINGLE BLOG POST -->
               <div class="single_blog_post clearfix" data-animated="fadeInUp">
@@ -31,9 +29,7 @@
                   <div class="single_blog_post_date">{{ post.date }}</div>
                   <div class="single_blog_post_title">{{ post.title }}</div>
                 </div>
-                {% if post.thumbnail %}
-                  <div class="single_blog_post_img"><img src="{{post.thumbnail.src}}" alt="" /></div>
-                {% endif %}
+
                 <div class="single_blog_post_content">
                   <p class="margbot50">{{ post.content }}</p>
                 </div>
@@ -111,7 +107,7 @@
 
 
             <!-- SIDEBAR -->
-            <div class="sidebar col-lg-3 col-md-3 padbot50">
+            <div class="sidebar col-lg-3 col-md-3">
 
              {#  <div class="sidepanel widget_meta">
                 <ul>
