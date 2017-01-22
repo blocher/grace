@@ -2546,7 +2546,7 @@ figure.alignnone {
   background-color: #D3D3D3;
   color: #fff;
   padding: 1.5em;
-  height: 75px;
+  height: 70px;
 }
 
 .event-month,
@@ -2568,7 +2568,7 @@ figure.alignnone {
 
 .event-details {
   padding: .7em 1.5em .7em 3em;
-  height: 75px;
+  height: 70px;
   background-color: #f2f5f8;
 }
 
@@ -2845,7 +2845,7 @@ figure.alignnone {
 }
 .custom-calendar-wrapper #full-clndr {
   position: relative;
-  padding-top: 35px;
+  padding-top: 0;
   -webkit-font-smoothing: antialiased;
 }
 .custom-calendar-wrapper #full-clndr .calendar-nav {
@@ -3102,6 +3102,10 @@ figure.alignnone {
 }
 .custom-calendar-wrapper #full-clndr .calendar-details .wrap .calendar-group .date span.type a:hover {
   opacity: .8;
+}
+
+.current-calendar {
+	height: 75px;
 }
 
 
