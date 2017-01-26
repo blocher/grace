@@ -3112,3 +3112,7 @@ figure.alignnone {
 .ai1ec-event-footer {
 	display: none;
 }
+
+div.dataTables_wrapper div.dataTables_length select {
+	min-height: 40px;
+}
