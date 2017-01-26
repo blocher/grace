@@ -336,10 +336,16 @@ jQuery(document).ready(function() {
 
     $('#sermon-table_length select').removeClass('input-sm');
 
-    jQuery('#gracenotes-table', '#bulletin-insert-table').DataTable( {
+    jQuery('#gracenotes-table').DataTable( {
         "order": [[ 1, "desc" ]],
         "lengthMenu": [[25, 10, 25, 50, 100, 200, 250, -1], [25, 10, 25, 50, 100, 200, 250, "All"]]
     } );
+
+    jQuery('#bulletin-insert-table').DataTable( {
+        "order": [[ 1, "desc" ]],
+        "lengthMenu": [[25, 10, 25, 50, 100, 200, 250, -1], [25, 10, 25, 50, 100, 200, 250, "All"]]
+    } );
+
 
     $('#sermon-table_length select').removeClass('input-sm');
 
