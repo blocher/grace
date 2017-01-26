@@ -86,18 +86,19 @@
 
               {% if grace_notes %}
                   <div class="table-responsive">
-                    <table id="sermon-table" class="display table table-striped">
+                    <table id="gracenotes-table" class="display table table-striped">
                       <thead>
                         <tr>
-                          <th>Title</th>
-                          <th>Downlaod</th>
+                          <th>Month</th>
+                          <th>Date</th>
+                          <th>Download</th>
                         </tr>
                       </thead>
                       <tbody>
                         {% for grace_note in grace_notes %}
                           <tr>
-                            <td>{{ grace_note.title }}</td>
-
+                            <td>{{ grace_note.month_description }}</td>
+                            <td>{{ grace_note.published_date|date('F j, Y') }}</td>
                             <td>
                               {% if grace_note.get_field('pdf') %}
                                 <a href="{{  grace_note.get_field('pdf').url }}" target="_blank">
@@ -118,18 +119,19 @@
 
                 {% if bulletin_inserts %}
                   <div class="table-responsive">
-                    <table id="sermon-table" class="display table table-striped">
+                    <table id="bulletin-insert-table" class="display table table-striped">
                       <thead>
                         <tr>
                           <th>Title</th>
-                          <th>Downlaod</th>
+                          <th>Date</th>
+                          <th>Download</th>
                         </tr>
                       </thead>
                       <tbody>
                         {% for bulletin_insert in bulletin_inserts %}
                           <tr>
                             <td>{{ bulletin_insert.title }}</td>
-
+                            <td>{{ bulletin_insert.published_date|date('F j, Y') }}</td>
                             <td>
                               {% if bulletin_insert.get_field('pdf') %}
                                 <a href="{{  bulletin_insert.get_field('pdf').url }}" target="_blank">
