@@ -101,7 +101,7 @@
                             <td>{{ grace_note.published_date|date('F j, Y') }}</td>
                             <td>
                               {% if grace_note.get_field('pdf') %}
-                                <a href="{{  grace_note.get_field('pdf').url }}" target="_blank">
+                                <a href="{{  grace_note.get_field('pdf') }}" target="_blank">
 
                                     <span class="fa fa-file-pdf-o"></span>
 
@@ -134,7 +134,7 @@
                             <td>{{ bulletin_insert.published_date|date('F j, Y') }}</td>
                             <td>
                               {% if bulletin_insert.get_field('pdf') %}
-                                <a href="{{  bulletin_insert.get_field('pdf').url }}" target="_blank">
+                                <a href="{{  bulletin_insert.get_field('pdf') }}" target="_blank">
 
                                     <span class="fa fa-file-pdf-o"></span>
 
