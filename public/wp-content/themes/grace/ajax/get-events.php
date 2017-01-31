@@ -116,8 +116,6 @@ if ($input['type'] == 'counts') {
 }
 
 $events = array_slice($events, 0, $input['limit']);
-
-
 $event_output = '';
 foreach ($events as $event) {
 
