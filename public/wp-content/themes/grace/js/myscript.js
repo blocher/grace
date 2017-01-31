@@ -359,3 +359,90 @@ jQuery(document).ready(function() {
 
 	});
 }) ;
+
+
+
+
+var calendar = (function ($) {
+
+
+		var upcomingEventsSpinner = function () {
+			$('#upcoming-events').html('<span class="fa fa-spin fa-spinner fa-3x"></span>');
+			$('html, body').animate({
+	        scrollTop: $('#upcoming-events').offset().top
+	    }, 200);
+		};
+
+    var init = function() {
+
+    	var data = {type:"upcoming",limit:6};
+	    $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+	        $("#upcoming-events").html(data);
+	    });
+
+
+	    jQuery(".responsive-calendar").responsiveCalendar({
+        time: '2017-01',
+        startFromSunday: true,
+        onInit: function () {
+        	var data = {type:"counts"};
+        	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+			        $.each(data, function(k,v) {
+			        	var obj = {};
+			        	obj[k] = {"number": v, "badgeClass": "badge-warning", "url": "#"};
+								$('.responsive-calendar').responsiveCalendar('edit', obj);
+							});
+				   }, 'json');
+        },
+        onMonthChange: function () {
+        	console.log(this);
+        	upcomingEventsSpinner();
+        	var data = {type:"counts",start_year:this.currentYear,start_month: this.currentMonth+1};
+        	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+			        $.each(data, function(k,v) {
+			        	var obj = {};
+			        	obj[k] = {"number": v, "badgeClass": "badge-warning", "url": "#"};
+								$('.responsive-calendar').responsiveCalendar('edit', obj);
+							});
+				   }, 'json');
+        	var data = {type:"month",start_year:this.currentYear,start_month: this.currentMonth+1};
+        	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+			        $("#upcoming-events").html(data);
+				   });
+        }
+      });
+
+      $(document).on("click", '.day a', function (e) {
+      	e.preventDefault();
+      });
+
+      $(document).on("click", '.day.active a', function (e) {
+      	upcomingEventsSpinner();
+      	e.preventDefault();
+      	var data = {type:"single",start_day:$(this).data('day'),start_month:$(this).data('month'),start_year:$(this).data('year'),limit:100};
+		    $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+		        $("#upcoming-events").html(data);
+		    });
+      });
+
+
+    }
+
+    return {
+
+        init: function() {
+            init();
+        },
+    };
+
+})(jQuery);
+
+
+jQuery(document).ready(function() {
+    var div = jQuery("#upcoming-events");
+    if ( div.length ) {
+        calendar.init();
+    }
+
+});
+

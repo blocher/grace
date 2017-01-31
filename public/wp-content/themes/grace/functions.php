@@ -63,7 +63,11 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_style('flexslider', get_template_directory_uri() . '/css/flexslider.css', [], null);
 
-              wp_enqueue_style('tables', "//cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/r-2.1.0/datatables.min.css", ['bootstrap'], null);
+            wp_enqueue_style('tables', "//cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/r-2.1.0/datatables.min.css", ['bootstrap'], null);
+
+            wp_enqueue_style('calendar',  get_template_directory_uri() . "/calendar/css/responsive-calendar.css?v=1.1", ['bootstrap'], null);
+
+
 
 
 
@@ -75,8 +79,8 @@ if ($timber_loaded && $acf_loaded) {
             wp_register_script('moment-js', '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js', array('jquery'), '2.10.6', FALSE);
             wp_enqueue_script('moment-js');
 
-            wp_register_script('calendar-js', '//cdn.rawgit.com/kylestetz/CLNDR/master/clndr.min.js', array('jquery'), '1.3.4', FALSE);
-            wp_enqueue_script('calendar-js');
+            // wp_register_script('calendar-js', '//cdn.rawgit.com/kylestetz/CLNDR/master/clndr.min.js', array('jquery'), '1.3.4', FALSE);
+            // wp_enqueue_script('calendar-js');
             //wp_enqueue_style('prettyPhoto', get_template_directory_uri() . '/css/prettyPhoto.css', [], null);
             //wp_enqueue_style('animate', get_template_directory_uri() . '/css/animate.css', [], null);
             //wp_enqueue_style('carousel', get_template_directory_uri() . '/css/owl.carousel.css', [], null);
@@ -88,14 +92,14 @@ if ($timber_loaded && $acf_loaded) {
              wp_register_script('table-js', '//cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/r-2.1.0/datatables.min.js', array('jquery', 'bootstrap-js'), '1.10.12', FALSE);
             wp_enqueue_script('table-js');
 
-
-
+            wp_register_script('calendar-js', get_template_directory_uri() . '/calendar/js/responsive-calendar.js', array('jquery'), '0.9', FALSE);
+            wp_enqueue_script('calendar-js');
 
             // FONTS
             wp_enqueue_style('roboto', '//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500italic,700,500,700italic,900,900italic', [], null);
             wp_enqueue_style('fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', [], null);
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css?v=1.6', [], null);
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css?v=1.7', [], null);
 
 
         }
@@ -121,7 +125,7 @@ if ($timber_loaded && $acf_loaded) {
 
             //wp_enqueue_script('blackandwhite-js', get_template_directory_uri() . '/js/jquery.BlackAndWhite.js', [], null, true);
 
-            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js?v=1.1', [], null, true);
+            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js?v=1.2', [], null, true);
 
         }
 
