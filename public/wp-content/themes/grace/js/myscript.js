@@ -369,7 +369,7 @@ var calendar = (function ($) {
 		var upcomingEventsSpinner = function () {
 			$('#upcoming-events').html('<span class="fa fa-spin fa-spinner fa-3x"></span>');
 			$('html, body').animate({
-	        scrollTop: $('#upcoming-events').offset().top
+	        scrollTop: $('.hearings-section .section-title').offset().top
 	    }, 200);
 		};
 
@@ -385,7 +385,7 @@ var calendar = (function ($) {
         time: '2017-01',
         startFromSunday: true,
         onInit: function () {
-        	var data = {type:"counts"};
+        	var data = {type:"counts",start_year:this.currentYear,start_month: this.currentMonth+1};
         	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
 			        $.each(data, function(k,v) {
 			        	var obj = {};
@@ -395,7 +395,6 @@ var calendar = (function ($) {
 				   }, 'json');
         },
         onMonthChange: function () {
-        	console.log(this);
         	upcomingEventsSpinner();
         	var data = {type:"counts",start_year:this.currentYear,start_month: this.currentMonth+1};
         	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){

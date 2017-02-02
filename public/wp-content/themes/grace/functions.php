@@ -125,7 +125,7 @@ if ($timber_loaded && $acf_loaded) {
 
             //wp_enqueue_script('blackandwhite-js', get_template_directory_uri() . '/js/jquery.BlackAndWhite.js', [], null, true);
 
-            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js?v=1.2', [], null, true);
+            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js?v=1.3', [], null, true);
 
         }
 
