@@ -35,7 +35,9 @@ $args = [
 
   'post_type' => $post_type,
   'nopaging' => true,
-  'order' => 'DESC',
+  'meta_key'   => 'published_date',
+  'orderby'    => 'meta_value',
+  'order'      => 'DESC',
 
 ];
 
@@ -43,7 +45,7 @@ if ($post_type=='sermon') {
 
   $args['orderby'] = 'meta_value';
   $args['meta_key'] = 'date_given';
-} else if ($post_type=='grace_notes') {
+} else if ($post_type=='grace_notes' || $post_type=='bulletin_insert') {
   $args['orderby'] = 'meta_value';
   $args['meta_key'] = 'published_date';
 } else {

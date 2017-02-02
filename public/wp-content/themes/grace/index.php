@@ -27,6 +27,15 @@ $args = array(
 );
 $data['news'] = Timber::get_posts($args, 'ExtendedTimberPost');
 
+$args = array(
+    'post_type' => ['grace_notes', 'bulletin_insert', 'other_publication'],
+    'posts_per_page' => 3,
+    'order' => 'DESC',
+    'meta_key'   => 'published_date',
+    'orderby'    => 'meta_value',
+    'order'      => 'DESC',
+);
+
 Timber::render('index.twig', $data);
 
 
