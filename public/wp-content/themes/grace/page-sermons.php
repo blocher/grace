@@ -42,12 +42,9 @@ $args = [
 ];
 
 if ($post_type=='sermon') {
-
   $args['orderby'] = 'meta_value';
   $args['meta_key'] = 'date_given';
 } else if ($post_type=='grace_notes' || $post_type=='bulletin_insert') {
-  $args['orderby'] = 'meta_value';
-  $args['meta_key'] = 'published_date';
 } else {
   $args['orderby'] = 'date';
 }

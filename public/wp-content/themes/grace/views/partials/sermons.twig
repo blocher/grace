@@ -14,7 +14,7 @@
                       <tbody>
                         {% for sermon in sermons %}
                           <tr>
-                            <td>{{ sermon.date_given|date('F n, Y') }}</td>
+                            <td>{{ sermon.date_given|date('F j, Y') }}</td>
                             <td>{% if sermon.time_given %}{{ sermon.time_given|date('g:i A') }}{% endif %}</td>
                             <td>{{ sermon.occassion }}</td>
                             <td>{{ sermon.sermon_title }}</td>
