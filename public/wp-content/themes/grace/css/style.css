@@ -2217,7 +2217,7 @@ input[type="color"]:focus {
 
 @media (max-width: 479px) {
 
-	#search-form {display:none;}
+	#search-form {display:block;}
 
 
 /* __________ Index __________ */
