@@ -70,7 +70,16 @@ a {color:#999; transition: all 0.3s ease-in-out; -webkit-transition: all 0.3s ea
 a:hover, a:focus {text-decoration:none; color:#333;}
 
 
-
+img.logo {
+	  z-index: 50;
+    position: absolute;
+    top: -15px;
+    left: 50px;
+    width: 175px;
+    height: 175px;
+    border: 1px black solid;
+    border-top: 0px;
+}
 .single_blog_post a {
 	border-bottom:1px dotted;
 	color: #551A8B;
@@ -314,8 +323,8 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 /*-----------------------------------------------------------------------------------*/
 header {
 	position:relative;
-	height:110px;
-	background-color:#fff;
+	height:82px;
+	background-color:#ffff;
 }
 
 
@@ -364,7 +373,7 @@ header {
 	left:0;
 	top:120;
 	right:0;
-	height:110px;
+	height:82px;
 	width:100%;
 	background-color:#fff;
 	box-shadow:0 2px 3px rgba(0,0,0,0.1);
@@ -393,8 +402,8 @@ header {
 	padding:30px 12px;
 	text-transform:uppercase;
 	font-weight:900;
-	line-height:20px;
-	font-size:13px;
+	line-height:21px;
+	font-size:17px;
 	color:#666;
 	transition: all 0.3s ease-in-out;
 	-webkit-transition: all 0.3s ease-in-out;
@@ -1956,7 +1965,7 @@ input[type="color"]:focus {
 
 
 /* __________ Menu __________ */
-	.navmenu ul li a {padding-left:4px; padding-right:4px; font-size:10px;}
+	.navmenu ul li a {padding-left:4px; padding-right:8px; font-size:15px;}
 	.navmenu ul li:first-child {display: none;}
 
 
