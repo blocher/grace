@@ -80,6 +80,29 @@ img.logo {
     border: 1px black solid;
     border-top: 0px;
 }
+@media (max-width: 767px) {
+
+	.menu_block {
+		z-index: 55;
+	}
+
+	.main-nav {
+		margin-top: 20px;
+	}
+
+	.new-to-grace-link {
+		display:block;
+		width: 100%;
+	}
+
+	img.logo {
+		  z-index: 50;
+	    left: 5px;
+	    width: 95px;
+	    height: 95px;
+	}
+
+}
 .single_blog_post a {
 	border-bottom:1px dotted;
 	color: #551A8B;
