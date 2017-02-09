@@ -281,7 +281,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 .visitors-panel {
 	position:relative;
 	height:375px;
-	background-color:#551A8B;
+	background-color: #24AAE1;
 	display:none;
 }
 
@@ -319,7 +319,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 @media (max-width: 992px) {
 	.visitors-panel {
 
-		height: 475px;
+		height: 550px;
 	}
 
 	.visitors-panel img {
@@ -415,7 +415,7 @@ header {
 }
 
 .navmenu ul li.new-to-grace-link {
-	background-color: #551A8B;
+	background-color: #24AAE1;
 	max-width: 75px;
 }
 
@@ -1119,7 +1119,7 @@ ul.project_info li span {color:#979797;}
 	font-weight:300;
 	line-height:34px;
 	font-size:24px;
-	color:#333;
+	color:white;
   margin: 10px 0;
   display: block;
 
@@ -1209,7 +1209,7 @@ ul.project_info li span {color:#979797;}
 	display:block;
 	line-height:17px;
 	font-size:14px;
-	color:#ccc;
+	color:white;
 }
 .post_item_content_small a.title:hover {color:#666;}
 .post_item_inf_small li {
@@ -1220,6 +1220,7 @@ ul.project_info li span {color:#979797;}
 	font-size:11px;
 	color:#666;
 }
+
 
 
 
@@ -1284,14 +1285,28 @@ footer {
 	opacity:1;
 	width:100%;
 	padding:60px 0 10px;
-	color:#999;
-	background-color:#1c1c1c;
+	color:white;
+	background-color: #24AAE1;
 	/*
 	transform: translateX(-50%);
 	-ms-transform: translateX(-50%);
 	-webkit-transform: translateX(-50%);*/
 }
 footer h4 {color:#fff;}
+
+footer textarea, footer input[type="text"] {
+	color: white;
+	border-color: white;
+}
+
+footer a {
+	color: white;
+}
+
+#note a {
+	display:block;
+	margin: 3px 0;
+}
 
 
 
@@ -1365,11 +1380,11 @@ footer h4 {color:#fff;}
 	display:block;
 	width:50px;
 	height:50px;
-	border:1px solid #242424;
+	border:1px solid white;
 	text-align:center;
 	line-height:46px;
 	font-size:23px;
-	color:#333;
+	color:white;
 }
 .social li a:hover {
 	color:#ccc;
