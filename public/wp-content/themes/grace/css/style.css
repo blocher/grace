@@ -2948,6 +2948,17 @@ figure.alignnone {
   transform: translateZ(0);
   border-radius: 0 0 3px 3px;
 }
+
+.custom-calendar-wrapper #full-clndr .days .badge {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+  border-radius: 0 0 3px 3px;
+}
+
+
+
 .custom-calendar-wrapper #full-clndr .days .day-number {
   line-height: 30px;
 }
@@ -3164,12 +3175,36 @@ div.dataTables_wrapper div.dataTables_length select {
 	background-color: transparent !important;
 }
 
+.responsive-calendar .day .badge {
+		min-width: 8px;
+    padding: 3px 5px;
+    font-size: 10px;
+}
+
+@media (max-width: 767px) {
+	.responsive-calendar .day .badge {
+		display: none;
+	}
+}
+
 #upcoming-events {
 	height: 350px;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	border: 1px solid silver;
 	padding: 10px;
+}
+
+@media (max-width: 992px) {
+	#upcoming-events {
+		height: auto;
+		overflow-y: visible;
+		margin-bottom: 20px;
+	}
+}
+
+.reset-events-btn {
+	display:none;
 }
 
 #upcoming-events::-webkit-scrollbar {

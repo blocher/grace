@@ -367,7 +367,8 @@ var calendar = (function ($) {
 
 
 		var upcomingEventsSpinner = function () {
-			$('#upcoming-events').html('<span class="fa fa-spin fa-spinner fa-3x"></span>');
+      $("#events-heading").html('<span class="fa fa-spin fa-spinner fa-1x"></span>');
+			$('#upcoming-events').html('<span class="fa fa-spin fa-spinner fa-2x"></span>');
 			$('html, body').animate({
 	        scrollTop: $('.hearings-section .section-title').offset().top
 	    }, 200);
@@ -375,7 +376,7 @@ var calendar = (function ($) {
 
     var init = function() {
 
-    	var data = {type:"upcoming",limit:6};
+    	var data = {type:"upcoming",limit:12};
 	    $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
 	        $("#upcoming-events").html(data);
 	    });
@@ -407,7 +408,9 @@ var calendar = (function ($) {
         	var data = {type:"month",start_year:this.currentYear,start_month: this.currentMonth+1};
         	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
 			        $("#upcoming-events").html(data);
+              $("#events-heading").html("Events in " + $("[data-head-month]").first().html()  + " " + $("[data-head-year]").first().html());
 				   });
+          $('.reset-events-btn').show();
         }
       });
 
@@ -418,11 +421,25 @@ var calendar = (function ($) {
       $(document).on("click", '.day.active a', function (e) {
       	upcomingEventsSpinner();
       	e.preventDefault();
+        var day =$(this).data('day');
       	var data = {type:"single",start_day:$(this).data('day'),start_month:$(this).data('month'),start_year:$(this).data('year'),limit:100};
 		    $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
 		        $("#upcoming-events").html(data);
+            $("#events-heading").html("Events on " + $("[data-head-month]").first().html()  + " " + day + ", " + $("[data-head-year]").first().html());
 		    });
+        $('.reset-events-btn').show();
       });
+
+      $(document).on("click", '.reset-events-btn', function (e) {
+        e.preventDefault();
+        upcomingEventsSpinner();
+          var data = {type:"upcoming",limit:12};
+          $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+              $("#upcoming-events").html(data);
+               $("#events-heading").html('Upcoming Events');
+          });
+      });
+
 
 
     }
