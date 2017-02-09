@@ -2293,7 +2293,6 @@ input[type="color"]:focus {
     opacity:0.6;
     padding: 20px;
     position: relative;
-    max-width: 80% !important;
     display:inline-block;
     margin-bottom: 10px;
 
@@ -2303,8 +2302,6 @@ input[type="color"]:focus {
 
 	.flex_caption1 {
 
-		width: 100%;
-		max-width: 100%;
 
 	}
 
@@ -2312,6 +2309,10 @@ input[type="color"]:focus {
 
 .top_slider .slide1 .flex_caption1 {
 	color: white !important;
+}
+
+.top_slider .slide1 .flex_caption1 .title{
+	width: auto !important;
 }
 
 .flexslider.top_slider {
