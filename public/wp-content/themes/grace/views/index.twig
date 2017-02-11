@@ -10,7 +10,7 @@
 					<ul class="slides">
 
 						{% for slide in slides %}
-							<li class="slide1" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
+							<li class="main-slide slide{{ loop.index }}" id="slide{{ loop.index }}" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
 
 								<a href="{{ slide.get_field('link') }}" class="flex_caption1">
 
@@ -75,7 +75,7 @@
 				<div id="carousel">
 					<ul class="slides">
 						{% for slide in slides %}
-							<li><img src="{{ TimberImage(slide.image).src('large') }}" alt="" /></li>
+							<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="{{ TimberImage(slide.image).src('large') }}" alt="" /></li>
 						{% endfor %}
 					</ul>
 				</div><!-- //TOP SLIDER -->

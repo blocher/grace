@@ -119,7 +119,11 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_script('superfish-js', get_template_directory_uri() . '/js/superfish.min.js', [], null, true);
 
-            wp_enqueue_script('flexslider-js', get_template_directory_uri() . '/js/jquery.flexslider-min.js', [], null, true);
+            // wp_enqueue_script('flexslider-js', get_template_directory_uri() . '/js/jquery.flexslider-min.js', [], null, true);
+
+            wp_enqueue_script('flexslider-js', 'https://cdnjs.cloudflare.com/ajax/libs/flexslider/2.6.3/jquery.flexslider.js', [], null, true);
+
+
 
            // wp_enqueue_script('carousel-js', get_template_directory_uri() . '/js/owl.carousel.js', [], null, true);
 
