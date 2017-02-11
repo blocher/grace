@@ -78,13 +78,15 @@
   <!-- End Google Tag Manager (noscript) -->
   {% include 'partials/header.twig' %}
 
-  {% block template %}
+  <div id="below-header" >
+    {% block template %}
 
-  {% endblock %}
+    {% endblock %}
 
-  {% include 'partials/footer.twig' %}
+    {% include 'partials/footer.twig' %}
 
-  {{ function('wp_footer') }}
+    {{ function('wp_footer') }}
+  </div>
 
 </body>
 </html>

@@ -7,23 +7,33 @@
 
       <div class="visitors-panel" id="visitors-panel">
 
+        <a class="visitors-panel-close"><span class="fa fa-times-circle fa-2x"></a>
+
         <div class="container">
-            <div class="row">
-              {% for link in options.visitors_links %}
-                <div class="col-xs-6 col-md-2"><a href="{{ link.link }}"><div class="btn btn-outline">{{ link.text }}</div></a></div>
-              {% endfor  %}
-            </div>
 
-            <div class="row">
-              <div class="col-md-4 image"><img class="img-responsive" src="{{ options.visitors_image }}"></div>
-              <div class="col-md-8">
-                <h1>{{ options.visitors_title }}</h1>
-                <p>{{ options.visitors_description }}</p>
+          <div class="row btn-row">
+            {% for link in options.visitors_links %}
+              <div class="col-xs-6 col-md-2">
+                <a href="{{ link.link }}"><div class="btn btn-outline">{{ link.text }}</div></a>
               </div>
+            {% endfor  %}
+          </div>
+
+          <div class="row content-row">
+
+            <div class="col-md-4 image"><img class="img-responsive" src="{{ options.visitors_image }}">
             </div>
-        </div>
+
+            <div class="col-md-8">
+              <h1>{{ options.visitors_title }}</h1>
+              <p>{{ options.visitors_description }}</p>
+            </div>
+
+          </div>
 
         </div>
+
+      </div>
 
       <!-- HEADER -->
       <header>
@@ -48,8 +58,10 @@
         <!-- MENU BLOCK -->
         <div class="menu_block {% if alerts %} menu_block_alert {% endif %}">
 
+
           <!-- CONTAINER -->
           <div class="container clearfix">
+              <a href="javascript:void(0)" class="menu_toggler hidden"><span class="fa fa-align-justify"></span></a>
               <!-- LOGO -->
               <div class="logo pull-left">
                 <a href="{{ site.url }}" ><img class="logo" src="{{options.logo}}"></a>

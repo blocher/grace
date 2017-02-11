@@ -86,9 +86,18 @@ img.logo {
 		z-index: 55;
 	}
 
+
+	#below-header.low-opacity {
+		opacity: .2;
+	}
+
 	.main-nav {
 		margin-top: 20px;
+		border-bottom: 3px solid black;
+		width: 100%;
 	}
+
+
 
 	.new-to-grace-link {
 		display:block;
@@ -101,6 +110,10 @@ img.logo {
 	    width: 95px;
 	    height: 95px;
 	}
+
+#navmenu { width:100%; overflow:auto;}
+#navmenu ul { padding:0; margin:0; white-space:nowrap; }
+#navmenu li { width: 100%; list-style-type:none; display:inline-block; }
 
 }
 .single_blog_post a {
@@ -280,7 +293,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 
 .visitors-panel {
 	position:relative;
-	height:375px;
+	height:auto;
 	background-color: #24AAE1;
 	display:none;
 }
@@ -289,8 +302,13 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 	color:white;
 }
 
-.visitors-panel .row {
-	margin-top: 30px;
+.visitors-panel .btn-row {
+	margin-top: 45px;
+}
+
+.visitors-panel .content-row {
+	margin-top: 15px;
+	margin-bottom: 20px;
 }
 
 .visitors-panel .row h1 {
@@ -308,6 +326,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 	color: white;
 	width: 100%;
 	font-size: 11px;
+	margin: auto;F
 }
 
 .visitors-panel .btn-outline:hover {
@@ -316,11 +335,15 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 
 }
 
-@media (max-width: 992px) {
-	.visitors-panel {
+.visitors-panel-close {
+	position: fixed;
+	top: 10px;
+	left: 10px;
+	color:white;
+	cursor: pointer;
+}
 
-		height: 550px;
-	}
+@media (max-width: 992px) {
 
 	.visitors-panel img {
 		display: none;
@@ -1994,17 +2017,19 @@ input[type="color"]:focus {
 
 }
 
+@media (max-width: 1000px) {
+
+	#search-form input  { width: 100px; }
+
+}
+
 @media (min-width: 768px) and (max-width: 1204px) {
 	.logo a {font-size:15px;}
-
-	#search-form input { width: 0; }
-	#search-form input:focus {width:400px;}
 
 
 
 /* __________ Menu __________ */
 	.navmenu ul li a {padding-left:4px; padding-right:8px; font-size:15px;}
-	.navmenu ul li:first-child {display: none;}
 
 
 /* __________ Index __________ */
@@ -2091,7 +2116,7 @@ input[type="color"]:focus {
 
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1000px) {
 	.container {padding-left:15px; padding-right:15px;}
 
 
@@ -2100,8 +2125,6 @@ input[type="color"]:focus {
 
 	.logo a {font-size:22px;}
 
-
-	#search-form input:focus {width:42px;}
 
 
 

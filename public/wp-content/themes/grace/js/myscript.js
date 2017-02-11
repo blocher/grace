@@ -55,13 +55,32 @@ function calculateScroll() {
 
 jQuery(document).ready(function() {
 	//MobileMenu
-	if ($(window).width() < 768){
-		jQuery('.menu_block .container').prepend('<a href="javascript:void(0)" class="menu_toggler"><span class="fa fa-align-justify"></span></a>');
+	if ($(window).width() < 1000){
+		$('.menu_toggler').removeClass('hidden');
 		jQuery('header .navmenu').hide();
-		jQuery('.menu_toggler, .navmenu ul li a').click(function(){
-			jQuery('header .navmenu').slideToggle(300);
-		});
+
 	}
+
+  $(window).resize(function() {
+    var windowsize = $(window).width();
+    if (windowsize > 1000) {
+      jQuery('header .navmenu').show();
+      $('.menu_toggler').addClass('hidden');
+    } else {
+      jQuery('header .navmenu').hide();
+      $('.menu_toggler').removeClass('hidden');
+    }
+  });
+
+  jQuery('.menu_toggler, .navmenu ul li a').click(function(){
+    jQuery('header .navmenu').slideToggle(300, function() {
+      if ($(this).is(":visible")) {
+        $('#below-header').addClass('low-opacity');
+      } else {
+        $('#below-header').removeClass('low-opacity');
+      }
+    });
+  });
 
 	// // if single_page
 	// if (jQuery("#page").hasClass("single_page")) {
@@ -75,6 +94,7 @@ jQuery(document).ready(function() {
 	// 		return false;
 	// 	});
 	// };
+
 });
 
 
@@ -353,11 +373,13 @@ jQuery(document).ready(function() {
 
 
 jQuery(document).ready(function() {
-	$('.new-to-grace-link').click(function(e) {
+	$('.new-to-grace-link, .visitors-panel-close').click(function(e) {
 		e.preventDefault();
 		$('.visitors-panel').slideToggle(500);
 
 	});
+
+
 }) ;
 
 
