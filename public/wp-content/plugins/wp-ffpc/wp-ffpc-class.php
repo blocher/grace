@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or die("Walk away.");
+
 if ( ! class_exists( 'WP_FFPC' ) ) :
 
 /* get the plugin abstract class*/
@@ -133,23 +135,21 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 			'apcu' => __( 'APCu' , 'wp-ffpc'),
 			'memcache' => __( 'PHP Memcache' , 'wp-ffpc'),
 			'memcached' => __( 'PHP Memcached' , 'wp-ffpc'),
-			'redis' => __( 'Redis (experimental, it will break!)' , 'wp-ffpc'),
 		);
 		/* check for required functions / classes for the cache types */
+
 		$this->valid_cache_type = array (
-			'apc' => function_exists( 'apc_cache_info' ) ? true : false,
+			'apc' => (function_exists( 'apc_cache_info' ) && version_compare(PHP_VERSION, '5.3.0') <= 0 ) ? true : false,
 			'apcu' => function_exists( 'apcu_cache_info' ) ? true : false,
 			'memcache' => class_exists ( 'Memcache') ? true : false,
 			'memcached' => class_exists ( 'Memcached') ? true : false,
-			'redis' => class_exists( 'Redis' ) ? true : false,
 		);
 
 		/* invalidation method possible values array */
 		$this->select_invalidation_method = array (
 			0 => __( 'flush cache' , 'wp-ffpc'),
 			1 => __( 'only modified post' , 'wp-ffpc'),
-			2 => __( 'modified post and all taxonomies' , 'wp-ffpc'),
-			3 => __( 'modified post and posts index page' , 'wp-ffpc'),
+			2 => __( 'modified post and all related taxonomies' , 'wp-ffpc'),
 		);
 
 		/* map of possible key masks */
@@ -159,6 +159,7 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 			'$request_uri' => __('The *original* request URI as received from the client including the args', 'wp-ffpc'),
 			'$remote_user' => __('Name of user, authenticated by the Auth Basic Module', 'wp-ffpc'),
 			'$cookie_PHPSESSID' => __('PHP Session Cookie ID, if set ( empty if not )', 'wp-ffpc'),
+			'$accept_lang' => __('First HTTP Accept Lang set in the HTTP request', 'wp-ffpc'),
 			//'$cookie_COOKnginy IE' => __('Value of COOKIE', 'wp-ffpc'),
 			//'$http_HEADER' => __('Value of HTTP request header HEADER ( lowercase, dashes converted to underscore )', 'wp-ffpc'),
 			//'$query_string' => __('Full request URI after rewrites', 'wp-ffpc'),
@@ -261,6 +262,8 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 				}
 			}
 		}
+
+		add_filter('contextual_help', array( &$this, 'plugin_admin_nginx_help' ), 10, 2);
 	}
 
 	/**
@@ -372,6 +375,28 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 	}
 
 	/**
+	 * admin help panel
+	 */
+	public function plugin_admin_nginx_help($contextual_help, $screen_id ) {
+
+		/* add our page only if the screenid is correct */
+		if ( strpos( $screen_id, $this->plugin_settings_page ) ) {
+			$content = __('<h3>Sample config for nginx to utilize the data entries</h3>', 'wp-ffpc');
+			$content .= __('<div class="update-nag">This is not meant to be a copy-paste configuration; you most probably have to tailor it to your needs.</div>', 'wp-ffpc');
+			$content .= __('<div class="update-nag"><strong>In case you are about to use nginx to fetch memcached entries directly and to use SHA1 hash keys, you will need an nginx version compiled with <a href="http://wiki.nginx.org/HttpSetMiscModule">HttpSetMiscModule</a>. Otherwise set_sha1 function is not available in nginx.</strong></div>', 'wp-ffpc');
+			$content .= '<code><pre>' . $this->nginx_example() . '</pre></code>';
+
+			get_current_screen()->add_help_tab( array(
+					'id'		=> 'wp-ffpc-nginx-help',
+					'title'		=> __( 'nginx example', 'wp-ffpc' ),
+					'content'	=> $content,
+			) );
+		}
+
+		return $contextual_help;
+	}
+
+	/**
 	 * admin panel, the admin page displayed for plugin settings
 	 */
 	public function plugin_admin_panel() {
@@ -381,6 +406,18 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 		if( ! function_exists( 'current_user_can' ) || ! current_user_can( 'manage_options' ) ){
 			die( );
 		}
+
+		/* woo_commenrce page url */
+		if ( class_exists( 'WooCommerce' ) ) {
+			$page_wc_checkout=str_replace( home_url(), '', wc_get_page_permalink( 'checkout' ) );
+			$page_wc_myaccount=str_replace( home_url(), '', wc_get_page_permalink( 'myaccount' ) );
+			$page_wc_cart=str_replace( home_url(), '', wc_get_page_permalink( 'cart' ) );
+			$wcapi='^/wc-api|^/\?wc-api=';
+			$this->options['nocache_woocommerce_url'] =  '^'.$page_wc_checkout.'|^'.$page_wc_myaccount.'|^'.$page_wc_cart.'|'.$wcapi;
+		} else {
+			$this->options['nocache_woocommerce_url'] = '';
+		}
+
 		?>
 
 		<div class="wrap">
@@ -552,8 +589,7 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 							$invalidation_method_description = array(
 								'clears everything in storage, <strong>including values set by other applications</strong>',
 								'clear only the modified posts entry, everything else remains in cache',
-								'removes all taxonomy term cache ( categories, tags, home, etc ) and the modified post as well<br><strong>Caution! Slows down page/post saving when there are many tags.</strong>',
-								'clear cache for modified post and posts index page'
+								'unvalidates post and the taxonomy related to the post',
 							);
 							foreach ($this->select_invalidation_method AS $current_key => $current_invalidation_method) {
 								printf('<li><em>%1$s</em> - %2$s</li>', $current_invalidation_method, $invalidation_method_description[$current_key]);
@@ -663,12 +699,13 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 					<table style="width:100%">
 						<thead>
 							<tr>
-								<th style="width:16%; text-align:left"><label for="nocache_home"><?php _e("Exclude home", 'wp-ffpc'); ?></label></th>
-								<th style="width:16%; text-align:left"><label for="nocache_feed"><?php _e("Exclude feeds", 'wp-ffpc'); ?></label></th>
-								<th style="width:16%; text-align:left"><label for="nocache_archive"><?php _e("Exclude archives", 'wp-ffpc'); ?></label></th>
-								<th style="width:16%; text-align:left"><label for="nocache_page"><?php _e("Exclude pages", 'wp-ffpc'); ?></label></th>
-								<th style="width:16%; text-align:left"><label for="nocache_single"><?php _e("Exclude singulars", 'wp-ffpc'); ?></label></th>
+								<th style="width:13%; text-align:left"><label for="nocache_home"><?php _e("Exclude home", 'wp-ffpc'); ?></label></th>
+								<th style="width:13%; text-align:left"><label for="nocache_feed"><?php _e("Exclude feeds", 'wp-ffpc'); ?></label></th>
+								<th style="width:13%; text-align:left"><label for="nocache_archive"><?php _e("Exclude archives", 'wp-ffpc'); ?></label></th>
+								<th style="width:13%; text-align:left"><label for="nocache_page"><?php _e("Exclude pages", 'wp-ffpc'); ?></label></th>
+								<th style="width:13%; text-align:left"><label for="nocache_single"><?php _e("Exclude singulars", 'wp-ffpc'); ?></label></th>
 								<th style="width:17%; text-align:left"><label for="nocache_dyn"><?php _e("Dynamic requests", 'wp-ffpc'); ?></label></th>
+								<th style="width:18%; text-align:left"><label for="nocache_woocommerce"><?php _e("WooCommerce", 'wp-ffpc'); ?></label></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -696,6 +733,12 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 									<td>
 										<input type="checkbox" name="nocache_dyn" id="nocache_dyn" value="1" <?php checked($this->options['nocache_dyn'],true); ?> />
 					<span class="description"><?php _e('Exclude every URL with "?" in it.', 'wp-ffpc'); ?></span>
+									</td>
+									<td>
+										<input type="hidden" name="nocache_woocommerce_url" id="nocache_woocommerce_url" value="<?php if(isset( $this->options['nocache_woocommerce_url'] ) ) echo $this->options['nocache_woocommerce_url']; ?>" />
+										<input type="checkbox" name="nocache_woocommerce" id="nocache_woocommerce" value="1" <?php checked($this->options['nocache_woocommerce'],true); ?> />
+					<span class="description"><?php _e('Exclude dynamic WooCommerce page.', 'wp-ffpc');?>
+					<?php if(isset( $this->options['nocache_woocommerce_url'] ) ) echo "<br />Url:".$this->options['nocache_woocommerce_url']; ?></span>
 									</td>
 								</tr>
 						</tbody>
@@ -745,7 +788,7 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 					<?php _e('List of backends, with the following syntax: <br />- in case of TCP based connections, list the servers as host1:port1,host2:port2,... . Do not add trailing , and always separate host and port with : .<br />- for a unix socket enter: unix://[socket_path]', 'wp-ffpc'); ?></span>
 				</dd>
 
-				<h3><?php _e('Authentication ( only for SASL enabled Memcached or Redis')?></h3>
+				<h3><?php _e('Authentication ( only for SASL enabled Memcached)')?></h3>
 				<?php
 					if ( ! ini_get('memcached.use_sasl') && ( !empty( $this->options['authuser'] ) || !empty( $this->options['authpass'] ) ) ) { ?>
 						<div class="error"><p><strong><?php _e( 'WARNING: you\'ve entered username and/or password for memcached authentication ( or your browser\'s autocomplete did ) which will not work unless you enable memcached sasl in the PHP settings: add `memcached.use_sasl=1` to php.ini' , 'wp-ffpc') ?></strong></p></div>
@@ -779,12 +822,6 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 
 
 			</dl>
-			</fieldset>
-
-			<fieldset id="<?php echo $this->plugin_constant ?>-nginx">
-			<legend><?php _e('Sample config for nginx to utilize the data entries', 'wp-ffpc'); ?></legend>
-			<div class="update-nag"><strong>In case you are about to use nginx to fetch memcached entries directly and to use SHA1 hash keys, you will need an nginx version compiled with <a href="http://wiki.nginx.org/HttpSetMiscModule">HttpSetMiscModule</a>. Otherwise set_sha1 function is not available in nginx.</strong></div>
-			<pre><?php echo $this->nginx_example(); ?></pre>
 			</fieldset>
 
 			<fieldset id="<?php echo $this->plugin_constant ?>-precache">
@@ -909,7 +946,6 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 			'debug' => __( 'Debug & in-depth', 'wp-ffpc'),
 			'exceptions' => __( 'Cache exceptions', 'wp-ffpc'),
 			'servers' => __( 'Backend settings', 'wp-ffpc'),
-			'nginx' => __( 'nginx', 'wp-ffpc'),
 			'precache' => __( 'Precache & precache log', 'wp-ffpc')
 		);
 
@@ -1060,10 +1096,10 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 		$nginx = file_get_contents ( $this->nginx_sample );
 
 		if ( isset($this->options['hashkey']) && $this->options['hashkey'] == true )
-			$mckeys = 'set_sha1 $memcached_sha1_key $memcached_raw_key;
-			set $memcached_key DATAPREFIX$memcached_sha1_key;';
+			$mckeys = '    set_sha1 $memcached_sha1_key $memcached_raw_key;
+    set $memcached_key DATAPREFIX$memcached_sha1_key;';
 		else
-			$mckeys = 'set $memcached_key DATAPREFIX$memcached_raw_key;';
+			$mckeys = '    set $memcached_key DATAPREFIX$memcached_raw_key;';
 
 		$nginx = str_replace ( 'HASHEDORNOT' , $mckeys , $nginx );
 
@@ -1089,9 +1125,9 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 		$loggedincookies = join('|', $this->backend->cookies );
 		/* this part is not used when the cache is turned on for logged in users */
 		$loggedin = '
-			if ($http_cookie ~* "'. $loggedincookies .'" ) {
-				set $memcached_request 0;
-			}';
+    if ($http_cookie ~* "'. $loggedincookies .'" ) {
+        set $memcached_request 0;
+    }';
 
 		/* add logged in cache, if valid */
 		if ( ! $this->options['cache_loggedin'])
@@ -1104,9 +1140,9 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 			$cookies = str_replace( ",","|", $this->options['nocache_cookies'] );
 			$cookies = str_replace( " ","", $cookies );
 			$cookie_exception = '# avoid cache for cookies specified
-			if ($http_cookie ~* ' . $cookies . ' ) {
-				set $memcached_request 0;
-			}';
+    if ($http_cookie ~* ' . $cookies . ' ) {
+        set $memcached_request 0;
+    }';
 			$nginx = str_replace ( 'COOKIES_EXCEPTION' , $cookie_exception , $nginx );
 		} else {
 			$nginx = str_replace ( 'COOKIES_EXCEPTION' , '' , $nginx );
@@ -1121,7 +1157,7 @@ class WP_FFPC extends WP_FFPC_ABSTRACT {
 			$nginx = str_replace ( 'RESPONSE_HEADER' , '' , $nginx );
 		}
 
-		return $nginx;
+		return htmlspecialchars($nginx);
 	}
 
 	/**

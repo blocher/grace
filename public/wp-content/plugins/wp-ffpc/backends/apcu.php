@@ -10,13 +10,13 @@ class WP_FFPC_Backend_apcu extends WP_FFPC_Backend {
 	protected function _init () {
 		/* verify apcu functions exist, apcu extension is loaded */
 		if ( ! function_exists( 'apcu_cache_info' ) ) {
-			$this->log (  __translate__('APCu extension missing', 'wp-ffpc' ) );
+			$this->log ( 'APCu extension missing' );
 			return false;
 		}
 
 		/* verify apcu is working */
 		if ( @apcu_cache_info("user") != false ) {
-			$this->log (  __translate__('backend OK', 'wp-ffpc' ) );
+			$this->log ( 'backend OK' );
 			$this->alive = true;
 		}
 	}
@@ -79,11 +79,11 @@ class WP_FFPC_Backend_apcu extends WP_FFPC_Backend {
 
 		foreach ( $keys as $key => $dummy ) {
 			if ( ! apcu_delete ( $key ) ) {
-				$this->log ( sprintf( __translate__( 'Failed to delete APC entry: %s', 'wp-ffpc' ),  $key ), LOG_WARNING );
+				$this->log ( sprintf( 'Failed to delete APC entry: %s',  $key ), LOG_WARNING );
 				//throw new Exception ( __translate__('Deleting APC entry failed with key ', 'wp-ffpc' ) . $key );
 			}
 			else {
-				$this->log ( sprintf( __translate__( 'APC entry delete: %s', 'wp-ffpc' ),  $key ) );
+				$this->log ( sprintf( 'APC entry delete: %s',  $key ) );
 			}
 		}
 	}

@@ -9,13 +9,13 @@ class WP_FFPC_Backend_memcache extends WP_FFPC_Backend {
 	protected  function _init () {
 		/* Memcached class does not exist, Memcache extension is not available */
 		if (!class_exists('Memcache')) {
-			$this->log (  __translate__('PHP Memcache extension missing', 'wp-ffpc' ), LOG_WARNING );
+			$this->log (  'PHP Memcache extension missing', LOG_WARNING );
 			return false;
 		}
 
 		/* check for existing server list, otherwise we cannot add backends */
 		if ( empty ( $this->options['servers'] ) && ! $this->alive ) {
-			$this->log (  __translate__("servers list is empty, init failed", 'wp-ffpc' ), LOG_WARNING );
+			$this->log (  "servers list is empty, init failed", LOG_WARNING );
 			return false;
 		}
 
@@ -25,7 +25,7 @@ class WP_FFPC_Backend_memcache extends WP_FFPC_Backend {
 
 		/* check if initialization was success or not */
 		if ( $this->connection === NULL ) {
-			$this->log (  __translate__( 'error initializing Memcache PHP extension, exiting', 'wp-ffpc' ) );
+			$this->log ( 'error initializing Memcache PHP extension, exiting' );
 			return false;
 		}
 
@@ -37,7 +37,7 @@ class WP_FFPC_Backend_memcache extends WP_FFPC_Backend {
 			else
 				$this->status[$server_id] = $this->connection->connect ( $server['host'] , $server['port'] );
 
-			$this->log ( sprintf( __translate__( '%s added', 'wp-ffpc' ),  $server_id ) );
+			$this->log ( sprintf( '%s added',  $server_id ) );
 		}
 
 		/* backend is now alive */
@@ -51,7 +51,7 @@ class WP_FFPC_Backend_memcache extends WP_FFPC_Backend {
 	 */
 	protected  function _status () {
 		/* server status will be calculated by getting server stats */
-		$this->log (  __translate__("checking server statuses", 'wp-ffpc' ));
+		$this->log ( "checking server statuses" );
 		/* get servers statistic from connection */
 		foreach ( $this->options['servers'] as $server_id => $server ) {
 			if ( $server['port'] === 0 )
@@ -59,9 +59,9 @@ class WP_FFPC_Backend_memcache extends WP_FFPC_Backend {
 			else
 				$this->status[$server_id] = $this->connection->getServerStatus( $server['host'], $server['port'] );
 			if ( $this->status[$server_id] == 0 )
-				$this->log ( sprintf( __translate__( '%s server is down', 'wp-ffpc' ),  $server_id ) );
+				$this->log ( sprintf( '%s server is down',  $server_id ) );
 			else
-				$this->log ( sprintf( __translate__( '%s server is up & running', 'wp-ffpc' ),  $server_id ) );
+				$this->log ( sprintf( '%s server is up & running',  $server_id ) );
 		}
 	}
 
@@ -110,10 +110,10 @@ class WP_FFPC_Backend_memcache extends WP_FFPC_Backend {
 			$kresult = $this->connection->delete( $key );
 
 			if ( $kresult === false ) {
-				$this->log ( sprintf( __translate__( 'unable to delete entry: %s', 'wp-ffpc' ),  $key ) );
+				$this->log ( sprintf( 'unable to delete entry: %s',  $key ) );
 			}
 			else {
-				$this->log ( sprintf( __translate__( 'entry deleted: %s', 'wp-ffpc' ),  $key ) );
+				$this->log ( sprintf( 'entry deleted: %s',  $key ) );
 			}
 		}
 	}

@@ -1,4 +1,7 @@
 <?php
+
+defined('ABSPATH') or die("Walk away.");
+
 /* __ only availabe if we're running from the inside of wordpress, not in advanced-cache.php phase */
 if ( !function_exists ('__translate__') ) {
 	/* __ only availabe if we're running from the inside of wordpress, not in advanced-cache.php phase */
@@ -111,6 +114,7 @@ abstract class WP_FFPC_ABSTRACT {
 
 		add_action( 'init', array(&$this,'plugin_init'));
 		add_action( 'admin_enqueue_scripts', array(&$this,'enqueue_admin_css_js'));
+		add_action( 'plugins_loaded', array(&$this,'plugin_load_textdomain'));
 
 	}
 
@@ -166,6 +170,13 @@ abstract class WP_FFPC_ABSTRACT {
 
 		/* setup plugin, plugin specific setup functions that need options */
 		$this->plugin_post_init();
+	}
+  
+	/**
+	 * admin panel, load plugin textdomain
+	 */
+	public function plugin_load_textdomain() {
+		load_plugin_textdomain( 'wp-ffpc', false ,  dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 
