@@ -5,8 +5,8 @@
   "minimum-stability" : "stable",
   "autoload": {
       "classmap": [
-          "public/wp-content/themes/grace/includes",
-          "public/wp-content/themes/grace/models"
+          "public/wp-content/themes/graceepiscopal/includes",
+          "public/wp-content/themes/graceepiscopal/models"
       ]
   },
   "require": {

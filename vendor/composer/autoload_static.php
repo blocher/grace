@@ -129,12 +129,12 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
     );
 
     public static $classMap = array (
-        'EventsSearch' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/includes/EventsSearch.php',
-        'ExtendedTimber' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/models/ExtendedTimber.php',
-        'ExtendedTimberMenu' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/models/ExtendedTimberMenu.php',
-        'ExtendedTimberMenuItem' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/models/ExtendedTimberMenuItem.php',
-        'ExtendedTimberPost' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/models/ExtendedTimberPost.php',
-        'ExtendedTimberTerm' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/models/ExtendedTimberTerm.php',
+        'EventsSearch' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/EventsSearch.php',
+        'ExtendedTimber' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimber.php',
+        'ExtendedTimberMenu' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberMenu.php',
+        'ExtendedTimberMenuItem' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberMenuItem.php',
+        'ExtendedTimberPost' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberPost.php',
+        'ExtendedTimberTerm' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberTerm.php',
         'Google\\Auth\\ApplicationDefaultCredentials' => __DIR__ . '/..' . '/google/auth/src/ApplicationDefaultCredentials.php',
         'Google\\Auth\\CacheTrait' => __DIR__ . '/..' . '/google/auth/src/CacheTrait.php',
         'Google\\Auth\\Cache\\InvalidArgumentException' => __DIR__ . '/..' . '/google/auth/src/Cache/InvalidArgumentException.php',
@@ -161,9 +161,9 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Google\\Auth\\Subscriber\\SimpleSubscriber' => __DIR__ . '/..' . '/google/auth/src/Subscriber/SimpleSubscriber.php',
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
-        'Singleton' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/includes/Singleton.php',
-        'TimberFunctions' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/includes/functions-timber.php',
-        'TimberPostEvent' => __DIR__ . '/../..' . '/public/wp-content/themes/grace/models/TimberPostEvent.php',
+        'Singleton' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/Singleton.php',
+        'TimberFunctions' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/functions-timber.php',
+        'TimberPostEvent' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/TimberPostEvent.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
