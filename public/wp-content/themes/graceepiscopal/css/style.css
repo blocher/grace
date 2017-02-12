@@ -290,16 +290,37 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 }
 
 
+/* Alert */
+
+.alert {
+
+	position:relative;
+	height:auto;
+	font-size: 1.5em;
+	border: 0;
+	border-radius: 0;
+	line-height: 1.5;
+	width: 100%;
+	z-index: 9999999;
+	margin-bottom: 0;
+	display: block;
+
+}
+
+/*.menu_block_alert {
+	position: relative;
+	top: 80px;
+}*/
+
+/** Visitors Panel **/
 
 .visitors-panel {
 	position:relative;
 	height:auto;
 	background-color: #24AAE1;
 	display:none;
-}
-
-.visitors-panel {
 	color:white;
+	margin: 0;
 }
 
 .visitors-panel .btn-row {
@@ -326,7 +347,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 	color: white;
 	width: 100%;
 	font-size: 11px;
-	margin: auto;F
+	margin: auto;
 }
 
 .visitors-panel .btn-outline:hover {
@@ -336,7 +357,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 }
 
 .visitors-panel-close {
-	position: fixed;
+	position: relative;
 	top: 10px;
 	left: 10px;
 	color:white;
@@ -2583,23 +2604,6 @@ figure.alignnone {
   margin-right: 0; }
 
 
-/* Alert */
-
-.alert {
-	font-size: 1.5em;
-	border: 0;
-	border-radius: 0;
-	line-height: 1.5;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 9999999;
-}
-
-.menu_block_alert {
-	position: relative;
-	top: 80px;
-}
 
 /** Calendar **/
 

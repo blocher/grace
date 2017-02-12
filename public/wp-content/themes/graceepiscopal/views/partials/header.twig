@@ -4,6 +4,17 @@
     <!-- PAGE -->
     <div id="page">
 
+        {% if alerts %}
+          {% for alert in alerts %}
+                <a href="{{ alert.alert_link }}" class="alert alert-danger " role="alert">
+                  {% if alert.alert_icon %}
+                      <span class='fa {{ alert.alert_icon }}'></span>
+                  {% endif %}
+                  <strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
+                </a>
+          {%endfor %}
+        {% endif %}
+
 
       <div class="visitors-panel" id="visitors-panel">
 
@@ -40,19 +51,7 @@
 
 
 
-        {% if alerts %}
-          {% for alert in alerts %}
-            <div class="alert alert-danger" role="alert">
-              {% if alert.link_type == 'internal' %}
-                <a href="{{ alert.alert_link }}"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
-              {% elseif alert.link_type == 'external' %}
-                <a href="{{ alert.alert_link }}" target="_blank"><strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
-              {% else %}
-                <strong>{{ alert.main_text }}</strong> {{ alert.subtext }}
-              {% endif %}
-            </div>
-          {%endfor %}
-        {% endif %}
+
 
 
         <!-- MENU BLOCK -->
@@ -61,7 +60,7 @@
 
           <!-- CONTAINER -->
           <div class="container clearfix">
-              <a href="javascript:void(0)" class="menu_toggler hidden"><span class="fa fa-align-justify"></span></a>
+              <a class="menu_toggler hidden"><span class="fa fa-align-justify"></span></a>
               <!-- LOGO -->
               <div class="logo pull-left">
                 <a href="{{ site.url }}" ><img class="logo" src="{{options.logo}}"></a>

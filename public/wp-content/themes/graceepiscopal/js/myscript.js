@@ -393,17 +393,13 @@ jQuery(document).ready(function() {
 
 } );
 
-
 jQuery(document).ready(function() {
-	$('.new-to-grace-link, .visitors-panel-close').click(function(e) {
-		e.preventDefault();
-		$('.visitors-panel').slideToggle(500);
-	});
+
 
   jQuery('a').each(function() {
 
      var a = new RegExp('/' + window.location.host + '/');
-     if(!a.test(this.href)) {
+     if(this.href && !a.test(this.href)) {
          jQuery(this).click(function(event) {
              event.preventDefault();
              event.stopPropagation();
@@ -412,6 +408,23 @@ jQuery(document).ready(function() {
      }
 
   });
+
+  $('.new-to-grace-link, .visitors-panel-close').click(function(e) {
+		e.preventDefault();
+		$('.visitors-panel').slideToggle(500, function() {
+      var windowsize = $(window).width();
+      if (windowsize > 1000) {
+        jQuery('header .navmenu').show();
+        $('.menu_toggler').addClass('hidden');
+      } else {
+        jQuery('header .navmenu').hide();
+        $('.menu_toggler').removeClass('hidden');
+      }
+    });
+
+	});
+
+
 
 
 
