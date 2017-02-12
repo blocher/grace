@@ -447,3 +447,11 @@ function eh_generate_date_archives( $cpt ) {
     return $rules;
 }
 add_action( 'plugins_loaded', 'eh_generate_date_archives');
+
+
+function fix_email_href($content) {
+
+    return preg_replace('/href="([\w-]+@([\w-]+\.)+[\w-]+)"/', 'href="mailto:$1"', $content);
+
+}
+add_filter( 'the_content', 'fix_email_href' );

@@ -398,11 +398,26 @@ jQuery(document).ready(function() {
 	$('.new-to-grace-link, .visitors-panel-close').click(function(e) {
 		e.preventDefault();
 		$('.visitors-panel').slideToggle(500);
-
 	});
+
+  jQuery('a').each(function() {
+
+     var a = new RegExp('/' + window.location.host + '/');
+     if(!a.test(this.href)) {
+         jQuery(this).click(function(event) {
+             event.preventDefault();
+             event.stopPropagation();
+             window.open(this.href, '_blank');
+         });
+     }
+
+  });
+
 
 
 }) ;
+
+
 
 
 
@@ -419,6 +434,7 @@ var calendar = (function ($) {
 		};
 
     var init = function() {
+
 
     	var data = {type:"upcoming",limit:12};
 	    $.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
@@ -483,8 +499,6 @@ var calendar = (function ($) {
                $("#events-heading").html('Upcoming Events');
           });
       });
-
-
 
     }
 
