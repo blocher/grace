@@ -421,7 +421,7 @@ var calendar = (function ($) {
     var init = function() {
 
     	var data = {type:"upcoming",limit:12};
-	    $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+	    $.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 	        $("#upcoming-events").html(data);
 	    });
 
@@ -431,7 +431,7 @@ var calendar = (function ($) {
         startFromSunday: true,
         onInit: function () {
         	var data = {type:"counts",start_year:this.currentYear,start_month: this.currentMonth+1};
-        	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+        	$.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 			        $.each(data, function(k,v) {
 			        	var obj = {};
 			        	obj[k] = {"number": v, "badgeClass": "badge-warning", "url": "#"};
@@ -442,7 +442,7 @@ var calendar = (function ($) {
         onMonthChange: function () {
         	upcomingEventsSpinner();
         	var data = {type:"counts",start_year:this.currentYear,start_month: this.currentMonth+1};
-        	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+        	$.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 			        $.each(data, function(k,v) {
 			        	var obj = {};
 			        	obj[k] = {"number": v, "badgeClass": "badge-warning", "url": "#"};
@@ -450,7 +450,7 @@ var calendar = (function ($) {
 							});
 				   }, 'json');
         	var data = {type:"month",start_year:this.currentYear,start_month: this.currentMonth+1};
-        	$.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+        	$.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 			        $("#upcoming-events").html(data);
               $("#events-heading").html("Events in " + $("[data-head-month]").first().html()  + " " + $("[data-head-year]").first().html());
 				   });
@@ -467,7 +467,7 @@ var calendar = (function ($) {
       	e.preventDefault();
         var day =$(this).data('day');
       	var data = {type:"single",start_day:$(this).data('day'),start_month:$(this).data('month'),start_year:$(this).data('year'),limit:100};
-		    $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+		    $.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 		        $("#upcoming-events").html(data);
             $("#events-heading").html("Events on " + $("[data-head-month]").first().html()  + " " + day + ", " + $("[data-head-year]").first().html());
 		    });
@@ -478,7 +478,7 @@ var calendar = (function ($) {
         e.preventDefault();
         upcomingEventsSpinner();
           var data = {type:"upcoming",limit:12};
-          $.get("wp-content/themes/grace/ajax/get-events.php", data, function(data, status){
+          $.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
               $("#upcoming-events").html(data);
                $("#events-heading").html('Upcoming Events');
           });
