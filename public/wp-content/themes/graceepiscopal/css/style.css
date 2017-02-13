@@ -1956,8 +1956,8 @@ input[type="color"]:focus {
 /*-----------------------------------------------------------------------------------*/
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-	.parallax, .cleancode_block, #team, .top_slider .slide1, .top_slider .slide2, .top_slider .slide3 {background-attachment:scroll !important; background-position:0 0;}
-	.top_slider .slide1, .top_slider .slide2, .top_slider .slide3 {background-size:cover !important;}
+	.parallax, .cleancode_block, #team, .top_slider .slide {background-attachment:scroll !important; background-position:0 0;}
+	.top_slider .slide, {background-size:cover !important;}
 
 }
 
@@ -2366,11 +2366,15 @@ input[type="color"]:focus {
 
 }
 
-.top_slider .slide1 .flex_caption1 {
+.top_slider .slide .flex_caption1 {
 	color: white !important;
 }
 
-.top_slider .slide1 .flex_caption1 .title{
+.top_slider .slide .flex_caption1 .title{
+	width: auto !important;
+}
+
+.title4 {
 	width: auto !important;
 }
 

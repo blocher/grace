@@ -10,7 +10,7 @@
 					<ul class="slides">
 
 						{% for slide in slides %}
-							<li class="main-slide slide{{ loop.index }}" id="slide{{ loop.index }}" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
+							<li class="main-slide slide{{ loop.index }} slide" id="slide{{ loop.index }}" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
 
 								<a href="{{ slide.get_field('link') }}" class="flex_caption1">
 
