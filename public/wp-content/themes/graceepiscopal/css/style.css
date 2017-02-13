@@ -3230,13 +3230,13 @@ div.dataTables_wrapper div.dataTables_length select {
 /*** New calendar ***/
 
 .btn.btn-calendar {
-	padding: 7px;
+	padding: 4px;
 	border: 1px solid #ccc;
 }
 
 @media (max-width: 768px) {
 	.btn.btn-calendar {
-		padding: 5px;
+		padding: 4px;
 		font-size: .9em;
 	}
 }
