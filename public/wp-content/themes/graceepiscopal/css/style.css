@@ -2628,12 +2628,25 @@ figure.alignnone {
   height: 70px;
 }
 
+.fa-calendar{
+		display: block;
+	}
+
 .event-month,
 .event-day {
-  display: block;
+  display: inline;
   font-family: 'Oswald', sans-serif;
   font-weight: 300;
-  font-size: 1.5em;
+  font-size: 1.3em;
+}
+
+@media (max-width: 768px) {
+
+	.event-month,
+	.event-day {
+	  font-size: 1em;
+	  display: inline;
+	}
 }
 
 .event-subcommittee {
@@ -2664,6 +2677,15 @@ figure.alignnone {
   font-size: 16px;
   line-height: 19px;
   margin-top: 5px;
+}
+
+
+@media (max-width: 768px) {
+	.event-title {
+	  font-size: 12px;
+	  line-height: 15px;
+	  overflow: hidden;
+	}
 }
 
 .hearings-link {
