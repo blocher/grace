@@ -1354,7 +1354,6 @@ footer a {
 /* __________ Footer About Block __________ */
 .foot_about_block p {
 	margin-bottom:24px;
-	padding-right:71px;
 	line-height:24px;
 	font-size:12px;
 }
@@ -1530,6 +1529,19 @@ input[type="color"]:focus {
 /*-----------------------------------------------------------------------------------*/
 .single_page #blog {padding-top:50px;}
 
+.blog_block {
+	margin-top: 100px;
+}
+
+@media (max-width: 768px) {
+	.blog_block {
+		margin-top: 30px;
+	}
+}
+
+.blog_block h1 {
+	margin-bottom: 20px;
+}
 
 .blog_block hr {border-top:2px solid #e9e9e9;}
 
