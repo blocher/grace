@@ -1163,7 +1163,7 @@ ul.project_info li span {color:#979797;}
 	font-weight:300;
 	line-height:34px;
 	font-size:24px;
-	color:white;
+	color:black;
   margin: 10px 0;
   display: block;
 
@@ -1191,13 +1191,10 @@ ul.project_info li span {color:#979797;}
 
 @media (max-width: 768px) {
 	.post_item_block {
-		padding: 0;
+		padding: 10px;
 	}
 
 }
-
-
-
 
 .post_item_inf a {
 	padding-right:12px;
@@ -1998,7 +1995,7 @@ input[type="color"]:focus {
 	.post_item_img a.link {width:40px; height:24px; margin:0 0 -12px -20px;}
 	.post_item_img a.link:hover {background-position:0 -24px;}
 	.post_item_content a.title {	line-height:24px;
-	font-size:24px;}
+	font-size:24px; color: black;}
 
 
 	.owl-theme .owl-controls {top:-69px;}
@@ -2079,7 +2076,7 @@ input[type="color"]:focus {
 	.post_item_img a.link {width:40px; height:24px; margin:0 0 -12px -20px;}
 	.post_item_img a.link:hover {background-position:0 -24px;}
 	.post_item_content a.title {	line-height:24px;
-	font-size:24px;}
+	font-size:24px; color: black;}
 	.post_item_content {padding-top:15px;}
 	.post_item_inf a {font-size:12px; padding-right:5px;}
 	.post_item_inf li {padding-right:5px;}
@@ -2622,7 +2619,7 @@ figure.alignnone {
 }
 
 .event-date {
-  background-color: #D3D3D3;
+  background-color: #24AAE1;
   color: #fff;
   padding: 1em;
   height: 70px;
@@ -3235,6 +3232,13 @@ div.dataTables_wrapper div.dataTables_length select {
 .btn.btn-calendar {
 	padding: 7px;
 	border: 1px solid #ccc;
+}
+
+@media (max-width: 768px) {
+	.btn.btn-calendar {
+		padding: 5px;
+		font-size: .9em;
+	}
 }
 
 
