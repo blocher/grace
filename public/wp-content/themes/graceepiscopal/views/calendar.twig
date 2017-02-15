@@ -1,0 +1,61 @@
+{% extends "partials/base.twig" %}
+
+{% block template %}
+
+
+        <!-- BREADCRUMBS -->
+    <section class="breadcrumbs_block clearfix parallax" style="background-image: url('{{ post.main_image }}'); ">
+      <img src="{{ post.main_image }}" style="visibility: hidden;" />
+    </section><!-- //BREADCRUMBS -->
+
+
+       {#  <h2><b>{{ parent.title }}</b></h2>
+        {% if parent.title != post.title %}
+          <p>{{ post.title }}</p>
+        {% endif %}
+      </div> #}
+
+    </section><!-- //BREADCRUMBS -->
+
+
+    <!-- BLOG -->
+    <div class="single_page">
+    <section id="blog">
+
+      <!-- CONTAINER -->
+      <div class="container">
+
+        <!-- ROW -->
+        <div class="row">
+
+          <!-- BLOG BLOCK -->
+          <div class="col-lg-12 col-md-12">
+
+            <!-- SINGLE BLOG POST -->
+            <div class="single_blog_post clearfix" data-animated="fadeInUp">
+              <div class="single_blog_post_descr">
+                {#  <div class="single_blog_post_date">{{ post.date }}</div> #}
+                {{ function('yoast_breadcrumb','','',false) }}
+                <div class="single_blog_post_title">{{ post.title }}</div>
+              </div>
+
+              <div class="single_blog_post_content">
+                <p class="margbot50">{{ post.content }}</p>
+                <p>&nbsp;</p>
+                <p>&nbsp;</p>
+
+
+              </div>
+
+          </div><!-- //SINGLE BLOG POST -->
+
+
+        </div><!-- //ROW -->
+      </div><!-- //CONTAINER -->
+    </section><!-- //BLOG -->
+  </div>
+  </div><!-- //PAGE -->
+
+
+
+{% endblock %}
