@@ -67,8 +67,7 @@ switch ($input['type']) {
   case 'month' :
 
     $start = $input['start_year'] . '-' . $input['start_month'] . '-' . 01 . ' 00:00:00';
-    $end = $input['start_year'] . '-' . $input['start_month'] . '-' . date('t', strtotime($input['end_day'])) . ' 23:59:59';
-
+    $end = $input['start_year'] . '-' . $input['start_month'] . '-' . date('t', strtotime($input['start_year'] . '-' . $input['start_month'] . '-01')) . ' 23:59:59';
     break;
 
   case 'single' :

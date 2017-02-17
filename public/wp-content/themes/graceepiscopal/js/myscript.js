@@ -456,7 +456,6 @@ var calendar = (function ($) {
 
 
 	    jQuery(".responsive-calendar").responsiveCalendar({
-        time: '2017-01',
         startFromSunday: true,
         onInit: function () {
         	var data = {type:"counts",start_year:this.currentYear,start_month: this.currentMonth+1};
