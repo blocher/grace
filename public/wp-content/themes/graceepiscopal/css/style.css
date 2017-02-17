@@ -118,7 +118,7 @@ img.logo {
 }
 .single_blog_post a {
 	border-bottom:1px dotted;
-	color: #24AAE1;
+	color: #2B378F;
 	font-weight: 700;
 
 }
@@ -317,7 +317,7 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 .visitors-panel {
 	position:relative;
 	height:auto;
-	background-color: #24AAE1;
+	background-color: #2B378F;
 	display:none;
 	color:white;
 	margin: 0;
@@ -459,7 +459,7 @@ header {
 }
 
 .navmenu ul li.new-to-grace-link {
-	background-color: #24AAE1;
+	background-color: #2B378F;
 	max-width: 75px;
 }
 
@@ -1327,7 +1327,7 @@ footer {
 	width:100%;
 	padding:60px 0 10px;
 	color:white;
-	background-color: #24AAE1;
+	background-color: #2B378F;
 	/*
 	transform: translateX(-50%);
 	-ms-transform: translateX(-50%);
@@ -2635,7 +2635,7 @@ figure.alignnone {
 }
 
 .event-date {
-  background-color: #24AAE1;
+  background-color: #2B378F;
   color: #fff;
   padding: 1em;
   height: 70px;
