@@ -2375,6 +2375,10 @@ input[type="color"]:focus {
 
 }
 
+
+.top_slider .slide {
+	background-attachment: scroll !important;
+}
 .top_slider .slide .flex_caption1 {
 	color: white !important;
 }
