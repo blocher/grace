@@ -29,12 +29,12 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 	protected function get_ticketing_settings( $find_attribute = null, $default_value_attribute = null ) {
 		$api_settings = get_option( self::WP_OPTION_KEY, null );
 		if ( ! is_array( $api_settings ) ) {
-			$api_settings = array( 
+			$api_settings = array(
 				'enabled'              => $this->_settings->get( 'ticketing_enabled' ),
 				'message'              => $this->_settings->get( 'ticketing_message' ),
 				'token'                => $this->_settings->get( 'ticketing_token' ),
 				'calendar_id'          => $this->_settings->get( 'ticketing_calendar_id' )
-			);			
+			);
 			update_option( self::WP_OPTION_KEY, $api_settings );
 			$this->_settings->set( 'ticketing_message'    , '' );
 			$this->_settings->set( 'ticketing_enabled'    , false );
@@ -86,7 +86,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 		$api_settings = $this->get_ticketing_settings();
 		if ( null !== $values ) {
 			$api_settings['payment_settings'] = $values;
-		} else {			
+		} else {
 			unset( $api_settings['payment_settings'] );
 		}
 		return update_option( self::WP_OPTION_KEY, $api_settings );
@@ -113,7 +113,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
     		}
     		$this->save_payment_settings( (array) $payment_settings );
     	}
-    	return ( null !== $payment_settings && 
+    	return ( null !== $payment_settings &&
     		'paypal' === $payment_settings['payment_method'] &&
     		false === ai1ec_is_blank( $payment_settings['paypal_email'] ) ) ;
     }
@@ -126,8 +126,8 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 		$calendar_id = $this->_get_ticket_calendar();
 		$settings    = null;
 		if ( 0 < $calendar_id ) {
-			$response = $this->request_api( 'GET', AI1EC_API_URL . "calendars/$calendar_id/payment", 
-				null, //no body 
+			$response = $this->request_api( 'GET', AI1EC_API_URL . "calendars/$calendar_id/payment",
+				null, //no body
 				true //decode response body
 			);
 			if ( $this->is_response_success( $response ) ) {
@@ -140,20 +140,20 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 			if ( ! isset( $settings->currency ) ) {
 				$settings->currency = 'USD';
 			}
-			return $settings;	
-		}		
+			return $settings;
+		}
 	}
 
 
     public function get_timely_token() {
         return $this->get_ticketing_settings( 'token' );
-    } 
+    }
 
 	protected function save_calendar_id ( $calendar_id ) {
 		$api_settings = $this->get_ticketing_settings();
 		$api_settings['calendar_id'] = $calendar_id;
 		return update_option( self::WP_OPTION_KEY, $api_settings );
-	} 
+	}
 
 	/**
 	 * Get the header array with authorization token
@@ -161,15 +161,15 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 	protected function _get_headers( $custom_headers = null ) {
 		$headers  = array(
 			'content-type' => 'application/json'
-		);		
+		);
 		$headers['Authorization'] = 'Basic ' . $this->get_ticketing_settings( 'token', '' );
 		if ( null !== $custom_headers ) {
 			foreach ( $custom_headers as $key => $value ) {
 				if ( null === $value ) {
 					unset( $headers[$key] );
 				} else {
-					$headers[$key] = $value;	
-				}				
+					$headers[$key] = $value;
+				}
 			}
 		}
 		return $headers;
@@ -192,7 +192,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 			if ( is_wp_error( $response ) ) {
 				$error_message = sprintf(
 					__( 'API URL: %s.<br/>Detail: %s', AI1EC_PLUGIN_NAME ),
-					$url,					
+					$url,
 					$response->get_error_message()
 				);
 			} else {
@@ -272,7 +272,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 			//if the calendar is not saved on settings it should exists on API
 			$ticketing_calendar_id = $this->_find_user_calendar();
 			if ( 0 < $ticketing_calendar_id  ) {
-				$this->save_calendar_id( $ticketing_calendar_id );				
+				$this->save_calendar_id( $ticketing_calendar_id );
 				return $ticketing_calendar_id;
 			} else {
 				//if the calendar should not exist on API, we will created
@@ -295,15 +295,15 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 			'title' => get_bloginfo( 'name' ),
 			'url'   => ai1ec_site_url()
 		);
-		$response = $this->request_api( 'GET', AI1EC_API_URL . 'calendars', 
+		$response = $this->request_api( 'GET', AI1EC_API_URL . 'calendars',
 			json_encode( $body )
-		); 		
+		);
 		if ( $this->is_response_success( $response ) ) {
 			if ( is_array( $response->body ) ) {
 				return $response->body[0]->id;
 			} else {
 				return $response->body->id;
-			}			
+			}
 		} else {
 			return 0;
 		}
@@ -318,7 +318,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 			'url'      => ai1ec_site_url(),
 			'timezone' => $this->_settings->get( 'timezone_string' )
 			);
-		$response = $this->request_api( 'POST', AI1EC_API_URL . 'calendars', 
+		$response = $this->request_api( 'POST', AI1EC_API_URL . 'calendars',
 			json_encode( $body )
 		);
 		if ( $this->is_response_success( $response ) ) {
@@ -424,14 +424,14 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 	/**
 	 * Make the request to the API endpons
 	 * @param $url The end part of the url to make the request.
-	 *        $body The body to send the message 
-	 *        $method POST | GET | PUT, etc	 
+	 *        $body The body to send the message
+	 *        $method POST | GET | PUT, etc
 	 *        or send a customized message to be showed in case of error
 	 *        $decode_response_body TRUE (default) to decode the body response
 	 * @return stdClass with the the fields:
 	 *         is_error TRUE or FALSE
 	 *         error in case of is_error be true
-	 *         body in case of is_error be false 
+	 *         body in case of is_error be false
 	 */
 	protected function request_api(  $method, $url, $body = null, $decode_response_body = true, $custom_headers = null ) {
 		$request = array(
@@ -444,8 +444,8 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 		}
 		$response    = wp_remote_request( $url, $request );
 		$result      = new stdClass();
-		$result->url = $url; 
-		$result->raw = $response; 
+		$result->url = $url;
+		$result->raw = $response;
 		if ( is_wp_error( $response ) ) {
 			$result->is_error = true;
 			$result->error    = $response->get_error_message();
@@ -455,7 +455,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 				if ( true === $decode_response_body ) {
 					$result->body     = json_decode( $response['body'] );
 					if ( false === is_null( $result->body ) ) {
-						$result->is_error = false;	
+						$result->is_error = false;
 					} else {
 						$result->is_error = true;
 						$result->error    = __( 'Error decoding the response', AI1EC_PLUGIN_NAME );
@@ -464,7 +464,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 				} else {
 					$result->is_error = false;
 					$result->body     = $response['body'];
-				}				
+				}
 			} else {
 				$result->is_error = true;
 				$result->error    = wp_remote_retrieve_response_message( $response );
@@ -482,7 +482,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 		if ( 0 >= $calendar_id ) {
 			return false;
 		}
-		$url  = AI1EC_API_URL . str_replace( '{calendar_id}', $calendar_id, $endpoint );	
+		$url  = AI1EC_API_URL . str_replace( '{calendar_id}', $calendar_id, $endpoint );
 		$body = json_encode( $body );
 		return $this->request_api( $method, $url, $body, $decode_response_body, $custom_headers );
 	}
@@ -494,11 +494,11 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 	 * @return full error message
 	 */
 	protected function save_error_notification( $response, $custom_error_response ) {
-		$error_message = $this->_transform_error_message( 
-			$custom_error_response, 
-			$response->raw, 
-			$response->url, 
-			true 
+		$error_message = $this->_transform_error_message(
+			$custom_error_response,
+			$response->raw,
+			$response->url,
+			true
 		);
 		$response->error_message = $error_message;
 		$notification            = $this->_registry->get( 'notification.admin' );
@@ -514,11 +514,11 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 	 * @return full error message
 	 */
 	protected function log_error( $response, $custom_error_response ) {
-		$error_message = $this->_transform_error_message( 
-			$custom_error_response, 
-			$response->raw, 
-			$response->url, 
-			true 
+		$error_message = $this->_transform_error_message(
+			$custom_error_response,
+			$response->raw,
+			$response->url,
+			true
 		);
 		error_log( $custom_error_response . ': ' . $error_message . ' - raw error: ' . print_r( $response->raw, true ) );
 		return $error_message;
@@ -528,7 +528,7 @@ abstract class Ai1ec_Api_Abstract extends Ai1ec_App {
 	 * Useful method to check if the response of request_api is a successful message
 	 */
 	public function is_response_success( $response ) {
-		return $response != null && 
+		return $response != null &&
 			( !isset( $response->is_error ) || ( isset( $response->is_error ) && false === $response->is_error ) );
 	}
 

@@ -304,7 +304,6 @@ class Ai1ecIcsConnectorPlugin extends Ai1ec_Connector_Plugin {
 		if ( false === $this->_api_feed->is_signed() ) {
 			return;
 		}
-
 		$db = $this->_registry->get( 'dbi.dbi' );
 		// Initializing custom post type and custom taxonomies
 		$post_type = $this->_registry->get( 'post.custom-type' );
@@ -316,7 +315,6 @@ class Ai1ecIcsConnectorPlugin extends Ai1ec_Connector_Plugin {
 		$sql        = 'SELECT `feed_id` FROM ' .
 			$db->get_table_name( 'ai1ec_event_feeds' );
 		$feeds      = $db->get_col( $sql );
-
 		// ===============================
 		// = go over each iCalendar feed =
 		// ===============================
