@@ -1,6 +1,6 @@
 <?php
 
-  class EventsSearch extends Singleton {
+  class EventsSearchOld extends Singleton {
 
 
     protected $registry;
