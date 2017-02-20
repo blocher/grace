@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'EventsSearch' => $baseDir . '/public/wp-content/themes/graceepiscopal/includes/EventsSearch.php',
+    'EventsSearchOld' => $baseDir . '/public/wp-content/themes/graceepiscopal/includes/EventsSearchOld.php',
     'ExtendedTimber' => $baseDir . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimber.php',
     'ExtendedTimberMenu' => $baseDir . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberMenu.php',
     'ExtendedTimberMenuItem' => $baseDir . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberMenuItem.php',

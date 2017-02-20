@@ -152,6 +152,7 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
 
     public static $classMap = array (
         'EventsSearch' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/EventsSearch.php',
+        'EventsSearchOld' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/EventsSearchOld.php',
         'ExtendedTimber' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimber.php',
         'ExtendedTimberMenu' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberMenu.php',
         'ExtendedTimberMenuItem' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimberMenuItem.php',
