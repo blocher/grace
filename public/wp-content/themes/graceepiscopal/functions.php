@@ -455,3 +455,104 @@ function fix_email_href($content) {
 
 }
 add_filter( 'the_content', 'fix_email_href' );
+
+function post_process_event( $post_id ) {
+
+    if ( wp_is_post_revision( $post_id ) )
+        return;
+
+    $type = get_post_type($post_id);
+    if ($type!='event') {
+        return;
+    }
+
+    $post = get_post($post_id);
+
+    $fields = [
+        'event_title',
+        'event_description',
+        'event_start_time',
+        'event_end_time',
+        'location',
+    ];
+
+    foreach ($fields as $field) {
+
+        $google = $field . '_google';
+        $override = $field . '_override';
+        $use = $field . '_use';
+
+        $google = get_field($google, $post_id, false);
+        $override = get_field($override, $post_id, false);
+        $use = '';
+
+        if (empty($override)) {
+            $use = $google;
+        } else {
+            $use = $override;
+        }
+        update_field($field . '_use', $use, $post_id);
+
+        if ($field=='event_start_time') {
+            $post->post_date = $use;
+        }
+
+        if ($field=='event_title') {
+            $post->post_title = $use;
+        }
+
+        if ($field=='event_description') {
+            $post->post_content = $use;
+        }
+
+    }
+
+
+
+    // unhook this function so it doesn't loop infinitely
+    remove_action('save_post', 'post_process_event');
+
+    // update the post, which calls save_post again
+    wp_update_post($post);
+
+    $status = get_post_status($post_id);
+
+    if ($status=='future') {
+        wp_publish_post($post_id);
+    }
+
+    // re-hook this function
+    add_action('save_post', 'post_process_event');
+
+
+}
+add_action( 'save_post', 'post_process_event' );
+
+function admin_event_js() {
+    ?>
+        <script>
+            jQuery('document').ready(function() {
+                jQuery('#acf-field_58aa13c989531, #acf-field_58aa13d989533, #acf-field_58aa13fc89535, #dp1487555824634, #acf-field_58aa186289538, #dp1487555824637, #acf-field_58aa18ac8953a, #acf-field_58aa18c18953c, #acf-field_58aa18c98953d').prop('disabled', true);
+
+                jQuery('#acf-field_58aa13fc89535, #acf-field_58aa186289538').next('.hasDatepicker').prop('disabled',true);
+
+                jQuery('div.acf-field-58aa48d7b6fa8, div.acf-field-58aa48f1b6fa9, div.acf-field_58aa4905b6faa, div.acf-field-58aa491db6fab, div.acf-field-58aa4932b6fac, div.acf-field-58aa4905b6faa').hide();
+            });
+
+
+            console.log('finished');
+        </script>
+    <?php
+}
+add_action('admin_footer', 'admin_event_js');
+
+
+
+
+// function futurenow_do_not_set_events_to_future( $data ) {
+//     if ( $data['post_status'] == 'future' && $data['post_type'] == 'event' )
+//         $data['post_status'] = 'publish';
+//     return $data;
+// }
+// remove_action('future_post', '_future_post_hook');
+// add_filter( 'wp_insert_post_data', 'futurenow_do_not_set_events_to_future' );

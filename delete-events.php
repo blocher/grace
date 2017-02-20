@@ -12,11 +12,11 @@ if ( !defined('ABSPATH') ) {
   require_once( 'public/wp-load.php' );
 }
 
-
 $args = [
 
-  'post_type' => 'ai1ec_event',
+  'post_type' => ['ai1ec_event', 'post', 'event'],
   'nopaging' => true,
+  'post_status' => ['publish', 'pending', 'draft', 'auto-draft','future','private','inherit','trash','any' ]
 
 ];
 
