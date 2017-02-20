@@ -526,7 +526,7 @@ function post_process_event( $post_id ) {
 
 
 }
-add_action( 'save_post', 'post_process_event' );
+add_action( 'acf/save_post', 'post_process_event', 20 );
 
 function admin_event_js() {
     ?>

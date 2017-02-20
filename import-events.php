@@ -120,6 +120,7 @@
     }
 
 
+    post_process_event($id);
     echo $id . PHP_EOL;
 
   }
