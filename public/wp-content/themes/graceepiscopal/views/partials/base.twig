@@ -103,5 +103,19 @@
     {{ function('wp_footer') }}
   </div>
 
+  <script type="text/javascript">
+  jQuery(document).ready(function($) {
+
+    $('.chosen-container').each(function(){
+      $(this).parent('.ginput_container_select').addClass('chosen-after');
+    });
+
+    var datepicker_image = $('div.ginput_container_date input.datepicker_with_icon').next('img'),
+        calendar_icon = '{{  theme.link }}/img/calendar.svg';
+    $(datepicker_image).attr('src', calendar_icon);
+
+  });
+  </script>
+
 </body>
 </html>
