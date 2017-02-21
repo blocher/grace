@@ -6,11 +6,11 @@
 
         {% if alerts %}
           {% for alert in alerts %}
-                <a href="{{ alert.alert_link }}" class="alert alert-danger " role="alert">
+                <a href="{{ alert.alert_link }}" class="alert {{ alert.style }} " role="alert">
                   {% if alert.alert_icon %}
-                      <span class='fa {{ alert.alert_icon }}'></span>
+                      <span class='fa {{ alert.alert_icon }} fa-inline'></span>&nbsp;&nbsp;
                   {% endif %}
-                  <strong>{{ alert.main_text }}</strong> {{ alert.subtext }}</a>
+                  <strong>{{ alert.main_text }}</strong><br>{{ alert.subtext }}</a>
                 </a>
           {%endfor %}
         {% endif %}

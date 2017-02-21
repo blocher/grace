@@ -3138,3 +3138,16 @@ div.dataTables_wrapper div.dataTables_length select {
     background-color: #fff;
     border-radius: 8px;
 }
+
+.fa-inline {
+	display: inline;
+}
+
+.alert-blue {
+	  color: white;
+    background-color: #2B378F;
+}
+
+a.alert-blue:hover {
+	color: white;
+}
