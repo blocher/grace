@@ -551,6 +551,10 @@ jQuery(document).ready(function() {
             handleWindowResize: true,
             displayEventTime: true,
             theme: false,
+            defaultView: 'listWeek',
+            firstDay: 0,
+            height: 'auto'
+
         });
     }
 

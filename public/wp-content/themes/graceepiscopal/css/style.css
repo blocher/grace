@@ -3152,3 +3152,36 @@ div.dataTables_wrapper div.dataTables_length select {
 a.alert-blue:hover {
 	color: white;
 }
+
+.fc-content {
+    padding: 5px;
+}
+
+#calendar a {
+    color: white;
+    font-weight: 300;
+}
+
+
+#calendar .fc-list-item-title a {
+    color: black;
+    font-weight: 300;
+}
+
+#calendar  a.fc-list-heading-main, #calendar  a.fc-list-heading-alt {
+    color: black;
+    font-weight: 500;
+}
+
+#calendar  a.fc-list-heading-main, #calendar  a.fc-list-heading-alt {
+    color: black;
+    font-weight: 500;
+}
+
+
+#calendar  th.fc-day-header a {
+    color: black;
+    font-weight: 500;
+}
+
+

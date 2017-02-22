@@ -25,14 +25,30 @@
 
               <!-- SINGLE BLOG POST -->
               <div class="single_blog_post clearfix" data-animated="fadeInUp">
-                <div class="single_blog_post_descr">
-                  <div class="single_blog_post_date">{{ post.date }}</div>
-                  <div class="single_blog_post_title">{{ post.title }}</div>
-                </div>
 
-                <div class="single_blog_post_content">
-                  <p class="margbot50">{{ post.content }}</p>
-                </div>
+                {% if post.post_type != 'event' %}
+                  <div class="single_blog_post_descr">
+                    <div class="single_blog_post_date">{{ post.date }}</div>
+                    <div class="single_blog_post_title">{{ post.title }}</div>
+                  </div>
+
+                  <div class="single_blog_post_content">
+                    <p class="margbot50">{{ post.content }}</p>
+                  </div>
+                {% else %}
+                   <div class="single_blog_post_descr">
+                    <div class="single_blog_post_title">{{ post.event_title_use }}</div>
+                    <p>Start: {{ post.event_start_time_use }}</p>
+                    <p>End: {{ post.event_end_time_use }}</p>
+                    {% if post.location_use %}
+                     <p>Location: {{ post.location_use }}</p>
+                    {% endif %}
+                  </div>
+
+                  <div class="single_blog_post_content">
+                    <p class="margbot50">{{ post.event_description_use }}</p>
+                  </div>
+                {% endif %}
 
               </div><!-- //SINGLE BLOG POST -->
 
