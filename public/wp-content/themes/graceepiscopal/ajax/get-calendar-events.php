@@ -1,71 +1,45 @@
 <?php
 
-require('../../../../wp-load.php');
+function pad($num) {
+  return str_pad($num, 2, "0", STR_PAD_LEFT);
+}
 
+date_default_timezone_set('America/New_York');
+use Carbon\Carbon;
+// header('Content-Type: application/json');
 
-$calendar = [];
+if ( !defined('ABSPATH') ) {
+    require_once( '../../../../wp-load.php' );
+}
 
-// Months Array
-$current_month = date('m');
-$calendar['selected_month'] = $current_month;
-$calendar['months'] = [
-    '01' => 'January',
-    '02' => 'February',
-    '03' => 'March',
-    '04' => 'April',
-    '05' => 'May',
-    '06' => 'June',
-    '07' => 'July',
-    '08' => 'August',
-    '09' => 'September',
-    '10' => 'October',
-    '11' => 'November',
-    '12' => 'December'
+$args = [
+    'start'         => FILTER_SANITIZE_STRING,
+    'end'           => FILTER_SANITIZE_STRING,
 ];
 
-if (!empty($_POST['calendar-month'])) {
-    $calendar['selected_month'] = $_POST['calendar-month'];
-}
+$input = filter_input_array(INPUT_GET, $args, true);
+
+$events = eventsSearch()->search($input['start'] . '00:00:00', $input['end'] . '23:59:59');
 
 
-// Year Array
-$oldest_year = 2010;
-$current_year = date('Y');
-$calendar['selected_year'] = $current_year;
-
-$calendar['years'] = array();
-while ($oldest_year <= $current_year)
-{
-    $calendar['years'][$oldest_year] = $oldest_year;
-
-    $oldest_year++;
-}
-
-// Get Year
-if (isset($_POST['calendar-year']) && !empty($_POST['calendar-year'])) {
- $calendar['selected_year'] = $_POST['calendar-year'];
-}
-
-// Get Month
-if (array_key_exists($calendar['selected_month'], $calendar['months'])) {
-    $start_date = $calendar['months'][$calendar['selected_month']].' 1, '.$calendar['selected_year'];
-} else {
-    $start_date = date('F 1, Y');;
-}
-
-$searchStart = (empty($_POST['calendar-year'])) ? date('Y-m-1 00:00:00', time()) : date('Y-m-1 00:00:00', strtotime($start_date));
-$searchEnd = (empty($_POST['calendar-year'])) ? date('Y-m-t 23:59:59', time()) : date('Y-m-t 23:59:59', strtotime($start_date));
-
-$calendar['calendar'] = array();
-$i=0;
-$events = eventsSearch()->search(date('Y-m-1 00:00:00', time()), date('Y-m-t 23:59:59', time()));
-
+$event_output = [];
 foreach ($events as $event) {
+  $start = get_field('event_start_time_use',$event->ID);
+  $start = new Carbon($start,new DateTimeZone('America/New_York'));
 
-  $calendar['calendar'][$i] = $event->calendarArray();
-  $i++;
+  $end = get_field('event_end_time_use',$event->ID);
+  $end = new Carbon($end,new DateTimeZone('America/New_York'));
 
+  $allDay = $start->format('H:i') == '00:00' && $end->format('H:i')=='23:59' ? true : false;
+  $data = [
+    'title' => get_field('event_title_use',$event->ID),
+    'url' => get_permalink($event->ID),
+    'start' => $start->format('Y-m-d H:i:s'),
+    'end' => $end->format('Y-m-d H:i:s'),
+    'allDay' => $allDay,
+    'color' => '#2B378F',
+
+  ];
+  $event_output[] = $data;
 }
-
-
-wp_send_json($calendar);
+echo json_encode($event_output);

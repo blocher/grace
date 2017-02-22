@@ -828,3 +828,26 @@ span.ginput_card_security_code_icon {
 .single_blog_post li.gfield {
     margin: 0;
 }
+
+.fc-content {
+    padding: 5px;
+}
+
+#calendar a {
+    color: white;
+    font-weight: 300;
+}
+
+
+#calendar .fc-list-item-title a {
+    color: black;
+    font-weight: 300;
+}
+
+#calendar  a.fc-list-heading-main, #calendar  a.fc-list-heading-alt {
+    color: black;
+    font-weight: 500;
+}
+
+
+

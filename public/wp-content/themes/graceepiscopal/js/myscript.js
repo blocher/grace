@@ -530,5 +530,29 @@ jQuery(document).ready(function() {
         calendar.init();
     }
 
+    var div = jQuery("#calendar");
+    if ( div.length ) {
+        jQuery('#calendar').fullCalendar({
+            events: '/wp-content/themes/graceepiscopal/ajax/get-calendar-events.php',
+            header: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            buttonIcons: {
+                prev: 'left-single-arrow',
+                next: 'right-single-arrow',
+                prevYear: 'left-double-arrow',
+                nextYear: 'right-double-arrow'
+            },
+            editable: false,
+            eventLimit: false, // allow "more" link when too many events
+            navLinks: true,
+            handleWindowResize: true,
+            displayEventTime: true,
+            theme: false,
+        });
+    }
+
 });
 

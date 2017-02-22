@@ -78,8 +78,6 @@ if ($timber_loaded && $acf_loaded) {
             wp_register_script('underscore-js', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', array('jquery'), '1.8.3', FALSE);
             wp_enqueue_script('underscore-js');
 
-            wp_register_script('moment-js', '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.1.0/moment.min.js', array('jquery'), '2.10.6', FALSE);
-            wp_enqueue_script('moment-js');
 
             // wp_register_script('calendar-js', '//cdn.rawgit.com/kylestetz/CLNDR/master/clndr.min.js', array('jquery'), '1.3.4', FALSE);
             // wp_enqueue_script('calendar-js');
@@ -101,11 +99,20 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_style('roboto', '//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500italic,700,500,700italic,900,900italic', [], null);
             wp_enqueue_style('fontawesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', [], '4.7.0');
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', [], '1.17');
+            wp_enqueue_style('full-calendar', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.min.css', [], '3.2.0');
+
+            wp_enqueue_style('full-calendar-print', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css', [], '3.2.0',  "print");
+
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.17');
 
             wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.18');
 
             wp_enqueue_style('gravity-forms-minimal-icons', get_template_directory_uri() . '/css/gravity-forms/style-icons.css', ['mainstyle', 'gravity-forms-minimal'], '1.18');
+
+
+
+
+
         }
 
         function enqueue_scripts()
@@ -133,7 +140,12 @@ if ($timber_loaded && $acf_loaded) {
 
             //wp_enqueue_script('blackandwhite-js', get_template_directory_uri() . '/js/jquery.BlackAndWhite.js', [], null, true);
 
-            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', [], '1.9', true);
+
+            wp_enqueue_script('moment-js', '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js', ['jquery'], '2.17.1', true);
+
+            wp_enqueue_script('full-calendar-js', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.js', ['jquery', 'moment-js'], '3.2.0', true);
+
+            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.9', true);
 
         }
 
