@@ -292,11 +292,11 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 
 /* Alert */
 
-.alert {
+a.alert {
 
 	position:relative;
 	height:auto;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	border: 0;
 	border-radius: 0;
 	line-height: 1.5;
@@ -305,6 +305,22 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 	margin-bottom: 0;
 	display: block;
 
+}
+
+
+a.alert strong {
+	font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+
+	a.alert {
+		font-size: 1em;
+	}
+
+	a.alert strong {
+		font-size: 1.3em;
+	}
 }
 
 /*.menu_block_alert {
@@ -3157,6 +3173,8 @@ div.dataTables_wrapper div.dataTables_length select {
 a.alert-blue:hover {
 	color: white;
 }
+
+
 
 .fc-content {
     padding: 5px;
