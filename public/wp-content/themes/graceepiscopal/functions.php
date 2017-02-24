@@ -33,11 +33,10 @@ if ($timber_loaded && $acf_loaded) {
             add_action( 'admin_head', [$this,'googletag_manager_admin'] );
 
             if (function_exists('acf_add_options_page')) {
-                acf_add_options_page();
-                acf_add_options_sub_page('Sitewide');
-                acf_add_options_sub_page('Homepage');
-                acf_add_options_sub_page('Social');
-                acf_add_options_sub_page('Newcomers Panel');
+                acf_add_options_page('Sitewide Options');
+                acf_add_options_page('Homepage Options');
+                acf_add_options_page('Newcomers Panel Options');
+                acf_add_options_page('Social Options');
             }
 
             add_theme_support( 'menus' );
