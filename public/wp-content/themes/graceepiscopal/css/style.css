@@ -323,6 +323,10 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 	margin: 0;
 }
 
+.visitors-panel ul  {
+	margin: 15px;
+}
+
 .visitors-panel .btn-row {
 	margin-top: 45px;
 }
@@ -357,9 +361,10 @@ blockquote:before {content:'“'; position:absolute; left:15px; top:13px; font-s
 }
 
 .visitors-panel-close {
-	position: relative;
-	top: 10px;
-	left: 10px;
+	position: absolute;
+
+	right: 8px;
+	bottom: 8px;
 	color:white;
 	cursor: pointer;
 }
