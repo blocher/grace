@@ -1360,9 +1360,18 @@ footer {
 }
 footer h4 {color:#fff;}
 
-footer textarea, footer input[type="text"] {
-	color: white;
+footer textarea, footer input {
+	color: black;
 	border-color: white;
+}
+
+input.error {
+	color: #a94442 !important;
+	border: solid 2px #a94442 !important;
+}
+
+footer .alert{
+	margin: 15px 5px 5px 5px;
 }
 
 footer a {

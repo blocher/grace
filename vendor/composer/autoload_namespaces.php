@@ -9,5 +9,6 @@ return array(
     'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),
     'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'Google_' => array($vendorDir . '/google/apiclient/src'),
+    'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
     'Buzz' => array($vendorDir . '/kriswallsmith/buzz/lib'),
 );

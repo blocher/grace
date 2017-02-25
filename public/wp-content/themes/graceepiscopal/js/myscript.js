@@ -560,3 +560,43 @@ jQuery(document).ready(function() {
 
 });
 
+jQuery( document ).ready(function( $ ) {
+    $('.btn-mailchimp').click(function() {
+      var form = $(this).closest('form');
+      $('footer input[type=text], footer input[type=email]').removeClass('error');
+      $('.error_div, .success_div').html('');
+      $('.error_div').slideUp();
+      $('.success_div').slideUp();
+      var data = {};
+        $.each(form.serializeArray(), function(_, kv) {
+          data[kv.name] = kv.value;
+        });
+      $('.footer-signup-spin').show();
+      $.get("/wp-content/themes/graceepiscopal/ajax/mailchimp-signup.php", data, function(data, status){
+          if (data.status=='error' && data.error_type=='validation') {
+            $('.error_div').html('');
+            $.each(data.errors, function( index, value ) {
+                $('input[name=' + index +']').addClass('error');
+                $('.error_div').html($('.error_div').html() + value + ' ');
+
+            });
+            $('.error_div').slideDown();
+            $('.footer-signup-spin').hide();
+          } else if (data.status=='error') {
+            console.log(data.errors);
+            $('.error_div').html(data.errors.join('; '));
+            $('.error_div').slideDown();
+            $('.footer-signup-spin').hide();
+          } else {
+            $('input').removeClass('error');
+            $('.error_div').html('');
+            $('.error_div').slideUp();
+            $('.success_div').html('Thanks for signing up!  Look forward to your first email soon.');
+            $('.success_div').slideDown().delay(3000).slideUp(300);
+            $('#footer-signup input[type=text], #footer-signup  input[type=email]').val('');
+            $('.footer-signup-spin').hide();
+          }
+      },'json');
+    });
+});
+
