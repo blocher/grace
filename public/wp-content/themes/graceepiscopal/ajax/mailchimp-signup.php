@@ -112,7 +112,9 @@ if (is_wp_error($req)) {
   $res['errors'][] = 'We were unable to record your submission.  Please try again soon. (' . $req->get_error_message($req->get_error_code()) . ')';
   echo json_encode($res); die();
 } else {
-  GFAPI::send_notifications(13,$req);
+  $entry = GFAPI::get_entry( $req );
+  $form = GFAPI::get_form( 13 );
+  GFAPI::send_notifications($form,$entry);
   $res['status'] = 'success';
   if ($mc_success==false) {
     $res['status'] = 'error';
