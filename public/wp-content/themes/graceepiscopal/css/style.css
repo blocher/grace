@@ -1439,7 +1439,7 @@ footer a {
 /*-----------------------------------------------------------------------------------*/
 .social li {
 	display:inline-block;
-	margin:0 7px 10px 0;
+	margin:20px 7px 10px 0;
 }
 .social li a {
 	display:block;
@@ -1461,7 +1461,23 @@ footer a {
 
 
 
+.btn-mailchimp {
+	height: 100%;
+	width: 100%;
+	margin: 3px 3px 0 0;
+	color: white !important;
+	background: transparent !important;
+	border: 1px solid white !important;
+	border-radius: 2px !important;
+}
 
+.first_name_div, .email_div {
+	padding-right: 4px;
+}
+
+.last_name_div, .submit_div {
+	padding-left: 4px;
+}
 
 /*-----------------------------------------------------------------------------------*/
 /*	CONTACT FORM
@@ -1516,6 +1532,8 @@ input[type="color"]:focus {
 	color:#666;
 	border-color:#ccc;
 }
+
+
 
 
 .contact_btn {
