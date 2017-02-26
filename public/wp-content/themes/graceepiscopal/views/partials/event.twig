@@ -9,7 +9,7 @@
 
     <div class="col-xs-8 event-details">
       <div class="row event-time-type">
-        <span class="event-time"><i class="fa fa-clock-o"></i> {{ time }}</span>
+        <span class="event-time"><i class="fa fa-clock-o"></i> {% if all_day %}All Day{% else %}{{ time }}{% endif %}</span>
       </div>
 
       <div class="row">

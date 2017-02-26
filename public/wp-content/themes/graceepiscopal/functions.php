@@ -486,7 +486,7 @@ function post_process_event( $post_id ) {
         'event_description',
         'event_start_time',
         'event_end_time',
-        'location',
+        'event_location',
     ];
 
     foreach ($fields as $field) {

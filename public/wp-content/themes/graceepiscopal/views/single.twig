@@ -38,15 +38,23 @@
                 {% else %}
                    <div class="single_blog_post_descr">
                     <div class="single_blog_post_title">{{ post.event_title_use }}</div>
-                    <p>Start: {{ post.event_start_time_use }}</p>
-                    <p>End: {{ post.event_end_time_use }}</p>
-                    {% if post.location_use %}
-                     <p>Location: {{ post.location_use }}</p>
-                    {% endif %}
-                  </div>
+                    <div class="row">
+                      <div class="event-info-row">
+                        <p><span class="fa fa-calendar fa-inline"></span>&nbsp;&nbsp;{{ post.start_date }}</p>
+                        {% if post.all_day == false %}
+                           <p><span class="fa fa-clock-o fa-inline"></span>&nbsp;&nbsp;{{ post.start_time}}{% if post.same_start_and_end == false %} to {{ post.end_time}} {% endif %}</p>
+                        {% endif %}
+                        {% if post.location_use %}
+                          <p><span class="fa fa-map-marker fa-inline"></span>&nbsp;&nbsp;{{ post.event_location_use}}</p>
+                        {% endif %}
+                        {% if post.google_url %}
+                          <p><span class="fa fa-external-link fa-inline"></span>&nbsp;&nbsp;<a href="{{ post.google_url}}" target="_blank">View on Google Calendar</a></p>
+                        {% endif %}
+                      </div>
+                    </div>
 
                   <div class="single_blog_post_content">
-                    <p class="margbot50">{{ post.event_description_use }}</p>
+                    <p class="margbot50">{{ post.event_description_use|nl2br }}</p>
                   </div>
                 {% endif %}
 

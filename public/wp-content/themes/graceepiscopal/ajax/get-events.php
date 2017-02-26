@@ -134,6 +134,7 @@ foreach ($events as $event) {
     'month' => $start->format('F'),
     'day' => $start->format('j'),
     'time' => $start->format('g:i A'),
+    'all_day' => (new ExtendedTimberPost($event->ID))->all_day(),
 
   ];
   $event_output .= Timber::compile('partials/event.twig', $data);

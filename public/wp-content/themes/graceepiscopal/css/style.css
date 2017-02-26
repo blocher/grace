@@ -187,7 +187,7 @@ li {padding:0; margin:0; }
 	margin:0 0 0  15px;
 }
 
-p {margin:0 0 20px;}
+p {margin:10px 0 10px;}
 
 
 h1, h2, h3, h4, h5, h6 {
@@ -2576,6 +2576,28 @@ figure.alignnone {
 	  font-size: 12px;
 	  line-height: 15px;
 	  overflow: hidden;
+	}
+}
+
+.event-info-row {
+	color: white;
+	background-color: #2B378F;
+	margin: 10px 0;
+	padding: 20px 20px;
+	width: 100%;
+	font-size: 1.3em;
+	display: inline-block;
+	border-radius: 10px;
+}
+
+.event-info-row a {
+	color: white;
+	font-weight: 300;
+}
+
+@media (max-width: 768px) {
+	.event-info-row {
+		border-radius: 0;
 	}
 }
 

@@ -1,4 +1,7 @@
 <?php
+
+	use \Carbon\Carbon;
+
 	class ExtendedTimberPost extends TimberPost {
 
 		function __construct($pid = null) {
@@ -213,6 +216,77 @@
 	    	}
 
 
+	    }
+
+	    function start_date($format='l F j, Y') {
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$time = new Carbon($this->event_start_time_use, new DateTimeZone('America/New_York'));
+	    	return $time->format($format);
+	    }
+
+	    function end_date($format='l F j, Y') {
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$time = new Carbon($this->event_end_time_use, new DateTimeZone('America/New_York'));
+	    	return $time->format($format);
+	    }
+
+	    function start_time($format='g:i A') {
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$time = new Carbon($this->event_start_time_use, new DateTimeZone('America/New_York'));
+	    	return $time->format($format);
+	    }
+
+	    function end_time($format='g:i A') {
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$time = new Carbon($this->event_end_time_use, new DateTimeZone('America/New_York'));
+	    	return $time->format($format);
+	    }
+
+	    function same_start_and_end() {
+
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$start = new Carbon($this->event_start_time_use, new DateTimeZone('America/New_York'));
+	    	$end = new Carbon($this->event_end_time_use, new DateTimeZone('America/New_York'));
+
+	    	return $start->eq($end);
+
+	    }
+
+	    function all_day() {
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$start = new Carbon($this->event_start_time_use, new DateTimeZone('America/New_York'));
+	    	$end = new Carbon($this->event_end_time_use, new DateTimeZone('America/New_York'));
+
+	    	return $start->format('G:i') == '0:00' && $end->format('G:i') == '23:59' ? true : false;
+	    }
+
+	    function multi_day() {
+	    	if ($this->post_type!='event') {
+	    		return;
+	    	}
+
+	    	$start = new Carbon($this->event_start_time_use, new DateTimeZone('America/New_York'));
+	    	$end = new Carbon($this->event_end_time_use, new DateTimeZone('America/New_York'));
+
+	    	return $start->format('F') != $end->format('F') || $start->format('j') != $end->format('j') ? true : false;
 	    }
 
 

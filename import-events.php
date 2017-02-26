@@ -51,7 +51,6 @@
   $end_time->addDays(365);
   $end_time = $end_time->format('c');
 
-  // Print the next 10 events on the user's calendar.
   $calendarId = 'scsdgvstpivoaop3f3564ok9ds@group.calendar.google.com';
   $optParams = array(
     'maxResults' => 6000,
@@ -77,7 +76,10 @@
       $end = $event->end->date . ' 23:59:59';
     }
     $end = new Carbon($end, new DateTimeZone('America/New_York'));
+    $end->subDay(1);
     $end = $end->format('Y-m-d H:i:s');
+
+    $location = $event->getLocation();
 
     $wp_event = [];
     $wp_event['event_title_google'] = $event->getSummary();
