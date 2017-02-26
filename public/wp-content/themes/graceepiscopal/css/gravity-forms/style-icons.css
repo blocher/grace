@@ -75,6 +75,14 @@ button.icon-search.icon-replacement:before {width:auto;}
 	text-decoration:none;
 	text-align:center;
 }
+
+@media (max-width: 377px) {
+    input[type="button"], input[type="submit"], input[type="reset"] {
+        padding: 1em 1em !important;
+    }
+}
+
+
 .select2-container .select2-choice {
     background: #efefef !important;
     border: none !important;

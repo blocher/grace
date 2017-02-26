@@ -104,9 +104,9 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.20');
 
-            wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.18');
+            wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.20');
 
-            wp_enqueue_style('gravity-forms-minimal-icons', get_template_directory_uri() . '/css/gravity-forms/style-icons.css', ['mainstyle', 'gravity-forms-minimal'], '1.18');
+            wp_enqueue_style('gravity-forms-minimal-icons', get_template_directory_uri() . '/css/gravity-forms/style-icons.css', ['mainstyle', 'gravity-forms-minimal'], '1.20');
 
 
 
