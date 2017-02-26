@@ -79,6 +79,7 @@ img.logo {
     height: 175px;
     border: 1px black solid;
     border-top: 0px;
+    padding: 12px;
 }
 @media (max-width: 767px) {
 
@@ -424,6 +425,7 @@ header {
 	float:left;
 	max-width: 350px;
 	margin-top: 15px;
+	background-color: white;
 }
 
 
