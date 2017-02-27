@@ -1,3 +1,5 @@
+RewriteCond %{HTTP_HOST} ^gracealex.org [NC]
+RewriteRule ^(.*)$ https://www.gracealex.org/$1 [L,R=301]
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
