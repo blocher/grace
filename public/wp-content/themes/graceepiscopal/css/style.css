@@ -3256,8 +3256,8 @@ div.dataTables_wrapper div.dataTables_length select {
 
 @media (max-width: 768px) {
 	.btn.btn-calendar {
-		padding: 4px;
-		font-size: .9em;
+		padding: 3px;
+		font-size: .75em;
 	}
 }
 

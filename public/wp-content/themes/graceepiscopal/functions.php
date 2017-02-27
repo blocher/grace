@@ -103,7 +103,7 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_style('full-calendar-print', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css', [], '3.2.0',  "print");
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.22');
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.23');
 
             wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.20');
 
@@ -145,7 +145,7 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_script('full-calendar-js', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.js', ['jquery', 'moment-js'], '3.2.0', true);
 
-            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.11', true);
+            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.12', true);
 
         }
 
