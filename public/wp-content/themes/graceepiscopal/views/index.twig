@@ -89,21 +89,73 @@
 				<div class="services_block" data-appear-top-offset="-200" data-animated="fadeInUp">
 
 					<!-- CONTAINER -->
-					<div class="container">
+					<div class="container-fluid">
 
 						<!-- ROW -->
-						<div class="row">
+						<div class="row row-flex row-flex-wrap info-boxes">
 
-								{% for widget in options.homepage_widgets %}
-									<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 col-height">
-										<div class="inner">
-											<div class="services_item" href="javascript:void(0);" >
+{# 								{% for widget in options.homepage_widgets %}
+									<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 ">
+										<div class="inner-old">
+											<div class="services_item" >
 												<p>{{ widget.widget_title }}</p>
 												{{ function('do_shortcode',widget.widget_content|replace({'<p>': '<span>', '</p>': '</span>'})) }}
 											</div>
 										</div>
 									</div>
-								{% endfor %}
+								{% endfor %} #}
+
+							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 sunday-services-box blue-overlay">
+									<div class="services_item" >
+										<p>{{ options.sunday_services_widget_title }}</p>
+										{% if options.which_sunday_widget_to_display=='School Year' %}
+											{{ function('do_shortcode',options.sunday_services_widget_content_school_year|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% elseif options.which_sunday_widget_to_display=='Summer' %}
+											{{ function('do_shortcode',options.sunday_services_widget_content_summer|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% else %}
+											{{ function('do_shortcode',options.sunday_services_widget_custom|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% endif %}
+									</div>
+							</div>
+							<style>.sunday-services-box:after { background-image:url({{ options.sunday_services_image }});}</style>
+
+							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 weekday-services-box  gold-overlay">
+									<div class="services_item" >
+										<p>{{ options.weekday_services_title }}</p>
+										<strong>
+										{% if options.which_weekday_widget_to_display=='Normal' %}
+											{{ function('do_shortcode',options.weekday_services_content_normal|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% elseif options.which_weekday_widget_to_display=='Lent' %}
+											{{ function('do_shortcode',options.weekday_services_content_lent|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% else %}
+											{{ function('do_shortcode',options.weekday_services_custom|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% endif %}
+									</strong>
+									</div>
+							</div>
+							<style>.weekday-services-box:after { background-image:url({{ options.weekday_services_image }});}</style>
+
+							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 contact-box blue-overlay">
+									<div class="services_item " >
+										<p>{{ options.contact_title }}</p>
+										{% if options.which_contact_widget_to_display == 'Normal' %}
+											{{ function('do_shortcode',options.contact_widget_content_normal|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+										{% else %}
+											{{ function('do_shortcode',options.contact_widget_content_custom) }}
+										{% endif %}
+									</div>
+							</div>
+							<style>.contact-box:after { background-image:url({{ options.contact_widget_image }});}</style>
+
+
+							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 sermons-box  gold-overlay">
+									<div class="services_item" >
+										<p>{{ options.sermon_widget_title }}</p>
+											{{ function('do_shortcode','[sermons]'|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+									</div>
+							</div>
+							<style>.sermons-box:after { background-image:url({{ options.sermon_widget_image }});}</style>
+
 						</div><!-- //ROW -->
 					</div><!-- //CONTAINER -->
 				</div><!-- //SERVICES -->

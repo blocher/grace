@@ -58,6 +58,7 @@ if ($timber_loaded && $acf_loaded) {
 
         function enqueue_styles()
         {
+             wp_enqueue_style('google-fonts', "https://fonts.googleapis.com/css?family=Lato|Volkhov", [], '1');
 
             //CSS
             wp_enqueue_style('bootstrap', "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", [], '3.3.7');
@@ -102,7 +103,7 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_style('full-calendar-print', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css', [], '3.2.0',  "print");
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.21');
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.22');
 
             wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.20');
 
@@ -144,7 +145,7 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_script('full-calendar-js', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.js', ['jquery', 'moment-js'], '3.2.0', true);
 
-            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.10', true);
+            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.11', true);
 
         }
 
@@ -402,7 +403,7 @@ function sermons_shortcode( $atts ){
     $args = [
 
       'post_type' => 'sermon',
-      'posts_per_page' => 2,
+      'posts_per_page' => 3,
       'order' => 'DESC',
       'orderby' => 'meta_value',
       'meta_key' => 'date_given',
@@ -560,5 +561,26 @@ function admin_event_js() {
 add_action('admin_footer', 'admin_event_js');
 
 
+function grace_login_logo() { ?>
+    <style type="text/css">
+        #login h1 a, .login h1 a {
+            background-image: url(<?php echo get_field('logo','option'); ?>);
+            width: 200px;
+            height: 200px;
+            background-size: cover;
+        }
+    </style>
+<?php }
+add_action( 'login_enqueue_scripts', 'grace_login_logo' );
 
+
+function grace_login_logo_url() {
+    return home_url();
+}
+add_filter( 'login_headerurl', 'grace_login_logo_url' );
+
+function grace_login_logo_url_title() {
+    return 'Grace Episcopal Church, Alexandria VA';
+}
+add_filter( 'login_headertitle', 'grace_login_logo_url_title' );
 
