@@ -3328,8 +3328,8 @@ div.dataTables_wrapper div.dataTables_length select {
     background-color: #2B378F;
 }
 
-a.alert-blue:hover {
-	color: white;
+a.alert-blue:hover, a.alert-blue:active, a.alert-blue:focus {
+	color: white !important;
 }
 
 

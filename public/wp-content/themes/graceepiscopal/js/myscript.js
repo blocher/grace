@@ -532,7 +532,7 @@ jQuery(document).ready(function() {
 
     var div = jQuery("#calendar");
     if ( div.length ) {
-        jQuery('#calendar').fullCalendar({
+        calendar =  jQuery('#calendar').fullCalendar({
             events: '/wp-content/themes/graceepiscopal/ajax/get-calendar-events.php',
             header: {
               left: 'prev,next today',
@@ -553,9 +553,12 @@ jQuery(document).ready(function() {
             theme: false,
             defaultView: 'listWeek',
             firstDay: 0,
-            height: 'auto'
+            height: 'auto',
+            contentHeight: 'auto'
 
         });
+        $('.fc-list-view .fc-scroller').css('height', 'auto');
+
     }
 
 });
