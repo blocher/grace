@@ -554,10 +554,16 @@ jQuery(document).ready(function() {
             defaultView: 'listWeek',
             firstDay: 0,
             height: 'auto',
-            contentHeight: 'auto'
+            contentHeight: 'auto',
+            eventAfterAllRender: function() {
+              $('.fc-list-view .fc-scroller').css('height', 'auto');
+            },
+            windowResize: function(view) {
+                $('.fc-list-view .fc-scroller').css('height', 'auto');
+            }
 
         });
-        $('.fc-list-view .fc-scroller').css('height', 'auto');
+
 
     }
 
