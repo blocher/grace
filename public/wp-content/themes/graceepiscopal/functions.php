@@ -584,3 +584,23 @@ function grace_login_logo_url_title() {
 }
 add_filter( 'login_headertitle', 'grace_login_logo_url_title' );
 
+add_filter('relevanssi_match', 'relevanssi_post_type_weights');
+
+function relevanssi_post_type_weights($match) {
+
+    $post_type = relevanssi_get_post_type($match->doc);
+    if ($post_type == 'page') {
+        $match->weight = $match->weight * 4;
+    } else {
+        $match->weight = $match->weight / 1.5;
+    }
+
+    $post_date = strtotime(get_the_time("Y-m-d", $match->doc));
+
+    if (abs(time() - $post_date) < 60*60*24*30) {
+        $match->weight = $match->weight * 3;
+    }
+
+    return $match;
+}
+
