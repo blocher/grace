@@ -643,3 +643,12 @@ function relevanssi_didyoumean_url_add_paramaters($url) {
 
     return $url . '&' . $qs;
 }
+
+add_filter('post_limits', 'postsperpage');
+function postsperpage($limits) {
+    if (is_search()) {
+        global $wp_query;
+        $wp_query->query_vars['posts_per_page'] = 30;
+    }
+    return $limits;
+}
