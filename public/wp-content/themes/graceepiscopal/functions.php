@@ -591,7 +591,7 @@ function relevanssi_post_type_weights($match) {
 
     $post_type = relevanssi_get_post_type($match->doc);
     if ($post_type == 'page') {
-        $match->weight = $match->weight * 5;
+        $match->weight = $match->weight * 10;
     } else {
         $match->weight = $match->weight / 1.5;
     }
