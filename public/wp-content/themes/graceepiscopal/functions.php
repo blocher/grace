@@ -54,6 +54,7 @@ if ($timber_loaded && $acf_loaded) {
             add_image_size( 'homepage_module', 370, 192, 1 );
             add_image_size( 'single_post', 1000, 553, 1 );
             add_image_size( 'page_header', 1278, 257, 1 );
+            add_image_size( 'search_results', 192, 176, 1 );
         }
 
         function enqueue_styles()
@@ -103,7 +104,7 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_style('full-calendar-print', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.print.css', [], '3.2.0',  "print");
 
-            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.25');
+            wp_enqueue_style('mainstyle', get_template_directory_uri() . '/css/style.css', ['full-calendar'], '1.26');
 
             wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.20');
 
@@ -590,7 +591,7 @@ function relevanssi_post_type_weights($match) {
 
     $post_type = relevanssi_get_post_type($match->doc);
     if ($post_type == 'page') {
-        $match->weight = $match->weight * 4;
+        $match->weight = $match->weight * 5;
     } else {
         $match->weight = $match->weight / 1.5;
     }
@@ -604,3 +605,41 @@ function relevanssi_post_type_weights($match) {
     return $match;
 }
 
+add_filter('query_vars', 'relevanssi_qvs');
+function relevanssi_qvs($qv) {
+    $qv[] = 'post_types';
+    return $qv;
+}
+
+
+add_filter('relevanssi_search_filters', 'relevanssi_post_type_filter');
+function relevanssi_post_type_filter($args) {
+    $post_types = get_query_var('post_types');
+    if (empty($post_types)) {
+      $args['post_type'] = 'page';
+    } else {
+      if (!is_array($post_types)) {
+        $args['post_type'] = explode(',',$post_types);
+      } else {
+        $args['post_type'] = $post_types;
+      }
+
+    }
+
+    return $args;
+}
+
+add_filter('relevanssi_didyoumean_url', 'relevanssi_didyoumean_url_add_paramaters');
+function relevanssi_didyoumean_url_add_paramaters($url) {
+
+    $extra = get_query_var('post_types');
+    if (empty($extra)) {
+        return $url;
+    };
+
+    $query_vars = $_GET;
+    unset($query_vars['s']);
+    $qs = http_build_query($query_vars);
+
+    return $url . '&' . $qs;
+}

@@ -3,7 +3,6 @@
 {% block template %}
 
 
-
     <!-- BLOG -->
     <section id="blog">
 
@@ -16,16 +15,43 @@
           <!-- BLOG BLOCK -->
           <div class="blog_block col-lg-12 col-md-12 padbot50">
 
-            <h1>Search results for <em>{{ search_term}}</em></h1>
+            <h1>Search results for <em>{{ search_term }}</em></h1>
+            {% if did_you_mean %}
+              {{ did_you_mean }}
+            {% endif %}
+            <form action="{{ site.url }}">
+              <div class='search-info-row'>
+                <div class=" row row-flex row-flex-wrap ">
+                  <div class="col-md-9">
+                    <span class="fa fa-search"></span>
+                    <input id="search-field" type="text" placeholder="Search" name="s" value="{{ search_term }}">
+                    <input class="btn btn-outline" type="submit" value="Search">
+
+                  </div>
+
+                  <div class="col-md-3">
+                      {% for key, value in post_types %}
+                        <input {% if value.checked %}checked="checked"{% endif %} type="checkbox" id="{{ key }}" value="{{ key }}" name="post_types[]">&nbsp;<label for="{{ key }}">{{ value.label }}</label><br>
+                      {% endfor %}
+                  </div>
+
+
+                </div>
+              </div>
+            </form>
 
             {% for post in posts %}
 
-             {% include 'partials/feed-post.twig' %}
+             {% include 'partials/search-feed-post.twig' %}
+
+            {% else %}
+
+              <h3>There were no search results for this search term.  Please try another search or choose additional content types for the list above.</h3>
 
             {% endfor %}
 
             <div class="site-pagination">
-              <div class="pagination-wrapper">
+              <div class="pagination-wrapper text-center">
                 <ul class="pagination clearfix">
 
                   {% for page in pagination.pages %}
