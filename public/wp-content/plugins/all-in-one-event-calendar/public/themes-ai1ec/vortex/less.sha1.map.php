@@ -38,6 +38,19 @@
     'linkColorHover' => '#335980',
     'monthViewDateBackground' => '#eaf4ff',
     'placeholderText' => '#999999',
+    'saasThemeActionColor' => '#ffffff',
+    'saasThemeActionMenuBackgroundColor' => '#67b128',
+    'saasThemeDateBlockBackgroundColor' => '#539a00',
+    'saasThemeDateBlockColor' => '#fff',
+    'saasThemePagePanelBackgroundColor' => '#eeeeee',
+    'saasThemePagePanelBorderColor' => '#dddddd',
+    'saasThemePagePanelLinksColor' => '#3d6b99',
+    'saasThemePageTextColor' => '#333333',
+    'saasThemePageTitleFontColor' => '#000',
+    'saasThemePageTitleFontFamily' => '"Helvetica Neue", Helvetica, Arial, sans-serif',
+    'saasThemePageTitleFontSize' => '68px',
+    'saasThemeTaxonomiesBackgroundColor' => '#272727',
+    'saasThemeTaxonomiesColor' => '#ffffff',
     'tableBackground' => '#ffffff',
     'tableLabelBackground' => '#f5f5f5',
     'tableLabelText' => '#9e9e9e',
@@ -332,6 +345,16 @@
       'size' => 10665,
       'sha1' => '8d7d0d81e445093ecc58577605c36320d2741ba7',
     ),
+    'less\\font-league-gothic.less' => 
+    array (
+      'size' => 677,
+      'sha1' => 'fad7c34931c2a1d45a19d882391210f61f966002',
+    ),
+    'less\\interactive_frontend.less' => 
+    array (
+      'size' => 2790,
+      'sha1' => '4e0de2217f0b95f318049aff0bdc244b39e765b3',
+    ),
     'less\\plugins\\datepicker3.less' => 
     array (
       'size' => 5690,
@@ -352,10 +375,20 @@
       'size' => 3946,
       'sha1' => 'b20c2d939abce946e6456845df993a8043e9e1ae',
     ),
+    'less\\saas-theme.less' => 
+    array (
+      'size' => 13063,
+      'sha1' => '3a38bd391885d76170fd6f4820e2cbb5e2dcdef2',
+    ),
+    'less\\sas.less' => 
+    array (
+      'size' => 1790,
+      'sha1' => '11db559322c76eeb84ba6388141d7257122ac43a',
+    ),
     'less\\style.less' => 
     array (
-      'size' => 20936,
-      'sha1' => '54917e6bb481eea9649ca08e9b7ba2221fdf31eb',
+      'size' => 21007,
+      'sha1' => 'a95f6f6d730ff3eed5013b6f0788835343a8a483',
     ),
     'less\\timely-font-awesome.less' => 
     array (
@@ -377,6 +410,11 @@
       'size' => 7322,
       'sha1' => '8a2e190b67e93b8ca39382552fbda0deb19baf72',
     ),
+    'less\\user_variables_st.php' => 
+    array (
+      'size' => 3833,
+      'sha1' => '35291b881a946836c7ee20c2a8152ade1ff8f659',
+    ),
     'less\\variables.less' => 
     array (
       'size' => 1248,
@@ -384,8 +422,8 @@
     ),
     'style.css' => 
     array (
-      'size' => 239,
-      'sha1' => '4041c1f91f77e5cc426c995c252ed5ba7193628d',
+      'size' => 213,
+      'sha1' => 'd2d11e0f5366362d3c0cc77b0b36915841f2988d',
     ),
   ),
 );
