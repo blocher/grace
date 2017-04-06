@@ -9,9 +9,9 @@ if (!empty($post_types_checked) &&  !is_array($post_types_checked)) {
   $post_types_checked = explode(',',$post_types_checked);
 }
 if (empty($post_types_checked)) {
-  $post_types_checked = ['page'];
+  $post_types_checked = ['page','news','grace_notes','bulletin_insert'];
 }
-$post_types = ['page'=>'Pages', 'news'=>'News', 'events'=>'Events', 'sermon'=>'Sermons', 'grace_notes' => 'Grace Notes', 'bulletin_insert' => 'Bulletin Inserts'];
+$post_types = ['page'=>'Pages', 'news'=>'News', 'event'=>'Events', 'sermon'=>'Sermons', 'grace_notes' => 'Grace Notes', 'bulletin_insert' => 'Bulletin Inserts', 'other_publication'=>'Other Publications'];
 
 foreach ($post_types as $key=>$value) {
   if (in_array($key, $post_types_checked)) {

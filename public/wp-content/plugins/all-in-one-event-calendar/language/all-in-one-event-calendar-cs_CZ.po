@@ -10,11 +10,51 @@ msgstr ""
 "X-Generator: GlotPress/1.0-alpha-1100\n"
 "Project-Id-Version: 2.3\n"
 
+#: app/view/admin/settings.php:209
+msgid "Calendar Type:"
+msgstr ""
+
+#: app/view/admin/settings.php:211
+msgid "Tourism"
+msgstr ""
+
+#: app/view/admin/settings.php:212
+msgid "Media"
+msgstr ""
+
+#: app/view/admin/settings.php:213
+msgid "Community Hubs"
+msgstr ""
+
+#: app/view/admin/settings.php:214
+msgid "Education"
+msgstr ""
+
+#: app/view/admin/settings.php:215
+msgid "Venue/Business"
+msgstr ""
+
+#: app/view/admin/settings.php:216
+msgid "Artist/Performer"
+msgstr ""
+
+#: app/view/admin/settings.php:217
+msgid "Church/Spiritual"
+msgstr ""
+
+#: app/view/admin/settings.php:218
+msgid "Association/Group"
+msgstr ""
+
+#: app/view/admin/settings.php:219
+msgid "Other"
+msgstr ""
+
 #: app/view/admin/add-new-event.php:312
 msgid "Timely Ticketing saves time & money. Create ticketing/registration right here and now. You do not pay any ticketing fees (other than regular PayPal transaction costs). Create as many ticketing/registration as you'd like.<br /><br />Ticketing feature is not enabled for this website. Please sign up for Ticketing plan <a href=\"https://time.ly/tickets-existing-users/\" target=\"_blank\">here</a>."
 msgstr ""
 
-#: app/view/event/single.php:211
+#: app/view/event/single.php:214
 msgid "This post was imported from a CSV/ICS file."
 msgstr ""
 
@@ -576,19 +616,19 @@ msgstr "Chyba při dekódování odpovědi"
 msgid "We were unable to get the Suggested Events from Time.ly Network"
 msgstr "Nebyli jsme schopni získat navrhované události ze sítě Time.ly"
 
-#: app/model/api/api-registration.php:41
+#: app/model/api/api-registration.php:42
 msgid "We were unable to Sign you In for Time.ly Network"
 msgstr "Nebyli jsme schopni vás přihlásit do sítě Time.ly"
 
-#: app/model/api/api-registration.php:68
+#: app/model/api/api-registration.php:70
 msgid "We were unable to Sign you Up for Time.ly Network"
 msgstr "Nebyli jsme schopni vás přihlásit do sítě Time.ly"
 
-#: app/model/api/api-registration.php:161
+#: app/model/api/api-registration.php:163
 msgid "We were unable to Sign you Out of Time.ly Network"
 msgstr "Nebyli jsme schopni vás odhlásit ze sítě Time.ly"
 
-#: app/model/api/api-registration.php:228
+#: app/model/api/api-registration.php:230
 msgid "We were unable to get the Sales information from Time.ly Network"
 msgstr "Nebyli jsme schopni získat obchodní informace ze sítě Time.ly"
 
@@ -1851,11 +1891,11 @@ msgstr "All-in-One Event Calendar byl deaktivován kvůli chybě:"
 msgid "Try reactivating plugin"
 msgstr "Zkuste znovu aktivovat doplněk."
 
-#: lib/exception/handler.php:581
+#: lib/exception/handler.php:584
 msgid "Toggle error details"
 msgstr "Přepnout na podrobnosti o chybě"
 
-#: lib/exception/handler.php:582
+#: lib/exception/handler.php:585
 msgid "Error Details:"
 msgstr "Podrobnosti k chybě:"
 
@@ -1963,7 +2003,7 @@ msgstr "Aktualizace databáze selhala. Ujistěte se, prosím, zda má uživatel 
 msgid "Error encountered: %s"
 msgstr "Došlo k chybě: %s"
 
-#: lib/date/system.php:202
+#: lib/date/system.php:203
 msgid "GMT%+d:%02d"
 msgstr "GMT%+d:%02d"
 
@@ -2039,7 +2079,7 @@ msgstr "noCAPTCHA veřejný klíč:"
 msgid "noCAPTCHA private key:"
 msgstr "noCAPTCHA osobní klíč:"
 
-#: lib/captcha/provider/nocaptcha.php:86 lib/captcha/provider/recaptcha.php:108
+#: lib/captcha/provider/nocaptcha.php:86 lib/captcha/provider/recaptcha.php:110
 msgid "Please try verifying you are human again."
 msgstr "Prosím ověřte znovu, že jste lidská bytost."
 
@@ -2104,11 +2144,11 @@ msgstr "Koupit vstupenky"
 msgid "Edit this occurrence (%s)"
 msgstr "Upravit tento výskyt (%s)"
 
-#: app/view/event/single.php:207
+#: app/view/event/single.php:210
 msgid "This post was replicated from another site's <a href=\"%s\" title=\"iCalendar feed\"><i class=\"ai1ec-fa ai1ec-fa-calendar\"></i> calendar feed</a>."
 msgstr "Tento příspěvek byl zkopírován z jiného webu <a href=\"%s\" title=\"iCalendar feed\"><i class=\"ai1ec-fa ai1ec-fa-calendar\"></i> calendar feed</a>."
 
-#: app/view/event/single.php:224
+#: app/view/event/single.php:227
 msgid "View original"
 msgstr "Zobrazit originál"
 
@@ -2511,11 +2551,11 @@ msgstr "Registrovat"
 msgid "Sign In"
 msgstr "Přihlásit"
 
-#: app/view/admin/settings.php:219
+#: app/view/admin/settings.php:231
 msgid "Save Settings"
 msgstr "Uložit nastavení"
 
-#: app/view/admin/settings.php:226
+#: app/view/admin/settings.php:238
 msgid "If the form below is not working please follow <a href=\"%s\">this link</a>."
 msgstr "Pokud formulář uvedený níže nefunguje, přejděte na <a href=\"%s\">tento odkaz</a>, prosím."
 
@@ -3229,11 +3269,11 @@ msgstr "Nepodařilo se nám aktualizovat událost v Time.ly prodeji vstupenek"
 msgid "This Event was replicated from another site. Any changes on Tickets were discarded."
 msgstr "Tato Událost byla zkopírována z jiné stránky. Veškeré změny lístků budou zahozeny."
 
-#: app/model/api/api-registration.php:200
+#: app/model/api/api-registration.php:202
 msgid "Payment preferences were not saved."
 msgstr "Platební předvolby nebyly uloženy."
 
-#: app/model/api/api-registration.php:191
+#: app/model/api/api-registration.php:193
 msgid "Payment preferences were saved."
 msgstr "Platební předvolby byly uloženy."
 

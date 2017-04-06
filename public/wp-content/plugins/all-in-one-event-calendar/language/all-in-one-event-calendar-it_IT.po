@@ -10,11 +10,51 @@ msgstr ""
 "X-Generator: GlotPress/1.0-alpha-1100\n"
 "Project-Id-Version: 2.3\n"
 
+#: app/view/admin/settings.php:209
+msgid "Calendar Type:"
+msgstr ""
+
+#: app/view/admin/settings.php:211
+msgid "Tourism"
+msgstr ""
+
+#: app/view/admin/settings.php:212
+msgid "Media"
+msgstr ""
+
+#: app/view/admin/settings.php:213
+msgid "Community Hubs"
+msgstr ""
+
+#: app/view/admin/settings.php:214
+msgid "Education"
+msgstr ""
+
+#: app/view/admin/settings.php:215
+msgid "Venue/Business"
+msgstr ""
+
+#: app/view/admin/settings.php:216
+msgid "Artist/Performer"
+msgstr ""
+
+#: app/view/admin/settings.php:217
+msgid "Church/Spiritual"
+msgstr ""
+
+#: app/view/admin/settings.php:218
+msgid "Association/Group"
+msgstr ""
+
+#: app/view/admin/settings.php:219
+msgid "Other"
+msgstr ""
+
 #: app/view/admin/add-new-event.php:312
 msgid "Timely Ticketing saves time & money. Create ticketing/registration right here and now. You do not pay any ticketing fees (other than regular PayPal transaction costs). Create as many ticketing/registration as you'd like.<br /><br />Ticketing feature is not enabled for this website. Please sign up for Ticketing plan <a href=\"https://time.ly/tickets-existing-users/\" target=\"_blank\">here</a>."
 msgstr ""
 
-#: app/view/event/single.php:211
+#: app/view/event/single.php:214
 msgid "This post was imported from a CSV/ICS file."
 msgstr ""
 
@@ -568,19 +608,19 @@ msgstr ""
 msgid "We were unable to get the Suggested Events from Time.ly Network"
 msgstr ""
 
-#: app/model/api/api-registration.php:41
+#: app/model/api/api-registration.php:42
 msgid "We were unable to Sign you In for Time.ly Network"
 msgstr ""
 
-#: app/model/api/api-registration.php:68
+#: app/model/api/api-registration.php:70
 msgid "We were unable to Sign you Up for Time.ly Network"
 msgstr ""
 
-#: app/model/api/api-registration.php:161
+#: app/model/api/api-registration.php:163
 msgid "We were unable to Sign you Out of Time.ly Network"
 msgstr ""
 
-#: app/model/api/api-registration.php:228
+#: app/model/api/api-registration.php:230
 msgid "We were unable to get the Sales information from Time.ly Network"
 msgstr ""
 
@@ -1843,11 +1883,11 @@ msgstr "Il Calendario-All-in-One è stato disabilitato a causa di un errore:"
 msgid "Try reactivating plugin"
 msgstr "Prova a riattivare il plugin"
 
-#: lib/exception/handler.php:581
+#: lib/exception/handler.php:584
 msgid "Toggle error details"
 msgstr "Espandi il dettaglio errore"
 
-#: lib/exception/handler.php:582
+#: lib/exception/handler.php:585
 msgid "Error Details:"
 msgstr "Dettaglio errore."
 
@@ -1957,7 +1997,7 @@ msgstr "Aggiornamento database fallito. Per favore assicurati che l'utente db de
 msgid "Error encountered: %s"
 msgstr "Errore riscontrato: %s"
 
-#: lib/date/system.php:202
+#: lib/date/system.php:203
 msgid "GMT%+d:%02d"
 msgstr "GMT%+d:%02d"
 
@@ -2033,7 +2073,7 @@ msgstr "chiave pubblica noCAPTCHA:"
 msgid "noCAPTCHA private key:"
 msgstr "chiave privata noCAPTCHA:"
 
-#: lib/captcha/provider/nocaptcha.php:86 lib/captcha/provider/recaptcha.php:108
+#: lib/captcha/provider/nocaptcha.php:86 lib/captcha/provider/recaptcha.php:110
 msgid "Please try verifying you are human again."
 msgstr "Per favore verifica nuovamente che sei un umano."
 
@@ -2098,11 +2138,11 @@ msgstr "Acquista Biglietti"
 msgid "Edit this occurrence (%s)"
 msgstr "Modifica questo avvenimento (%s)"
 
-#: app/view/event/single.php:207
+#: app/view/event/single.php:210
 msgid "This post was replicated from another site's <a href=\"%s\" title=\"iCalendar feed\"><i class=\"ai1ec-fa ai1ec-fa-calendar\"></i> calendar feed</a>."
 msgstr "Questo post è stato replicato da un'altro <a href=\"%s\" title=\"iCalendar feed\"><i class=\"ai1ec-fa ai1ec-fa-calendar\"></i> Feed Calendario</a>."
 
-#: app/view/event/single.php:224
+#: app/view/event/single.php:227
 msgid "View original"
 msgstr "Visualizza originale"
 
@@ -2504,11 +2544,11 @@ msgstr "Sottoscrivi"
 msgid "Sign In"
 msgstr "Annunciati"
 
-#: app/view/admin/settings.php:219
+#: app/view/admin/settings.php:231
 msgid "Save Settings"
 msgstr "Salva impostazioni"
 
-#: app/view/admin/settings.php:226
+#: app/view/admin/settings.php:238
 msgid "If the form below is not working please follow <a href=\"%s\">this link</a>."
 msgstr "Se il form sottostante non funziona per favore segui <a href=\"%s\">questo link</a>."
 
@@ -3224,11 +3264,11 @@ msgstr "Non è stato possibile aggiornare l'Evento su Timel.ly Ticketing"
 msgid "This Event was replicated from another site. Any changes on Tickets were discarded."
 msgstr "Questo Evento è stato replicato da un altro sito. Tutte le modifiche apportate al Ticket non verranno accettate."
 
-#: app/model/api/api-registration.php:200
+#: app/model/api/api-registration.php:202
 msgid "Payment preferences were not saved."
 msgstr "Le preferenze di pagamento non sono state salvate."
 
-#: app/model/api/api-registration.php:191
+#: app/model/api/api-registration.php:193
 msgid "Payment preferences were saved."
 msgstr "Le preferenze di pagamento sono state salvate."
 
