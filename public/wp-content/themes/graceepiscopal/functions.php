@@ -733,10 +733,10 @@ function parse_pdf( $post_id, $echo = false ) {
     }
 
     $post = get_post($post_id);
-    if (empty($post->post_content)) {
+    if (empty(trim($post->post_content))) {
         $post->post_content = $text;
     }
-    wp_update_post($post);
+    echo wp_update_post($post);
 
     return $post_string . ' Updated ';
 
