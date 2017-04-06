@@ -15,7 +15,8 @@
     "abraham/twitteroauth": "^0.6.2",
     "google/apiclient": "^2.0",
     "nesbot/carbon": "^1.22",
-    "pacely/mailchimp-apiv3": "dev-master"
+    "pacely/mailchimp-apiv3": "dev-master",
+    "smalot/pdfparser": "^0.10.0"
   },
   "repositories": [
     {

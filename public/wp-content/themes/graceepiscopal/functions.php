@@ -19,7 +19,6 @@ if ($timber_loaded && $acf_loaded) {
 
             add_action('wp_enqueue_scripts', array($this, 'enqueue_styles'));
             add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
-            add_action('admin_init', array($this, 'add_editor_styles'));
             add_action('after_setup_theme', array($this, 'add_image_sizes'));
 
             add_theme_support('post-thumbnails');
@@ -31,6 +30,8 @@ if ($timber_loaded && $acf_loaded) {
             add_action('init', array($this, 'allow_iframes_global'), 1);
 
             add_action( 'admin_head', [$this,'googletag_manager_admin'] );
+
+            add_action('admin_head', [$this,'admin_styles']);
 
             if (function_exists('acf_add_options_page')) {
                 acf_add_options_page('Sitewide Options');
@@ -48,6 +49,19 @@ if ($timber_loaded && $acf_loaded) {
             add_filter('timber_context', [$this, 'load_publications']);
 
             parent::__construct();
+        }
+
+
+
+        function admin_styles() {
+            ?>
+          <script>
+            jQuery('document').ready(function() {
+                jQuery("div[data-name='automatic_search_text'] input, div[data-name='automatic_search_text'] textarea").attr('disabled','disabled');
+            });
+
+          </script>';
+          <?php
         }
 
         function add_image_sizes() {
@@ -148,11 +162,6 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.14', true);
 
-        }
-
-        function add_editor_styles()
-        {
-            add_editor_style(get_template_directory_uri() . '/css/editor-style.min.css');
         }
 
         //allows iframes in post
@@ -651,4 +660,96 @@ function postsperpage($limits) {
         $wp_query->query_vars['posts_per_page'] = 30;
     }
     return $limits;
+}
+
+function parse_pdf( $post_id, $echo = false ) {
+
+    $title = get_the_title( $post_id );
+    $post_type = get_post_type( $post_id );
+
+    if (!in_array($post_type,['bulletin_insert','grace_notes','other_publication','sermon'])) {
+        return;
+    }
+    $post_title = get_the_title( $post_id );
+    $post_string = PHP_EOL . $post_id . ' | ' . $post_type . ' | ' . $post_title . ' | ';
+
+    $file = get_field('pdf', $post_id);
+
+    if (empty($file)) {
+        if ($echo) {
+            echo $post_string . ' No file ';
+        }
+        return $post_string . ' No file ';;
+    }
+
+
+    if (!isset($file['mime_type']) || $file['mime_type'] != 'application/pdf' ) {
+        if ($echo) {
+            $file['id']; echo $post_string . ' File not a pdf ';
+        }
+        return $post_string . ' File not a pdf ';
+    }
+
+    $path = get_attached_file($file['id']);
+
+    try {
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf    = $parser->parseFile($path);
+
+        $text = $pdf->getText();
+
+
+        switch ($post_type) {
+            case 'bulletin_insert' :
+                $field = 'field_58e2fe7dddb4d';
+                break;
+            case 'grace_notes' :
+                $field = 'field_58e2febed2d1b';
+                break;
+            case 'other_publication' :
+                $field = 'field_58e2fee5386a3';
+                break;
+            case 'sermon' :
+                $field = 'field_58e2ff121b3ab';
+                break;
+            default :
+                if ($echo) {
+                    echo $post_string . ' Wrong Post Type ';
+                }
+                return $post_string . ' Wrong Post Type ';
+        }
+
+        update_field($field, $text, $post_id);
+
+    } catch (Exception $e) {
+       if ($echo) {
+            echo $post_string . ' Error ' . $e->getMessage();
+        }
+        return $post_string . ' Error ' . $e->getMessage();
+    }
+
+    if ($echo) {
+        echo $post_string . ' Updated ';
+    }
+
+
+    return $post_string . ' Updated ';
+
+
+
+}
+add_action('acf/save_post', 'parse_pdf', 20);
+
+function clear_content_area() {
+
+    global $wpdb;
+
+    $sql = 'DELETE FROM grace_postmeta where meta_key = "sermon_content" OR meta_key = "_sermon_content" OR meta_key= "pdf_content" OR meta_key = "_pdf_content"';
+
+    $wpdb->query($sql);
+
+    $sql = 'UPDATE grace_posts SET post_content = "" where post_type="bulletin_insert" OR post_type="grace_notes" or post_type="other_publication" or post_type="sermon"';
+
+    $wpdb->query($sql);
+
 }

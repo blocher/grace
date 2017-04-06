@@ -15,7 +15,7 @@
                   <span class="fa {% if publication.type == "bulletin_insert" %} fa-bullhorn {% elseif publication.type == "grace_notes" %} fa-newspaper-o {% else %} fa-download {% endif %} fa-2x"></span>
                 </div>
                 <div class="post_item_content_small">
-                  <a class="title" target="_blank" href="{{ publication.get_field('pdf') }}">{{ publication.title }}</a>
+                  <a class="title" target="_blank" href="{{ publication.get_field('pdf').url }}">{{ publication.title }}</a>
                 </div>
               </div>
             {% endfor %}

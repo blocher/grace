@@ -145,6 +145,10 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
     public static $prefixesPsr0 = array (
         'S' => 
         array (
+            'Smalot\\PdfParser\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
+            ),
             'SimplePie' => 
             array (
                 0 => __DIR__ . '/..' . '/simplepie/simplepie/library',
@@ -178,6 +182,7 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
     );
 
     public static $classMap = array (
+        'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'EventsSearch' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/EventsSearch.php',
         'EventsSearchOld' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/EventsSearchOld.php',
         'ExtendedTimber' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/ExtendedTimber.php',
@@ -212,7 +217,20 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Exception.php',
         'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/Google/Service/Resource.php',
         'MailchimpIntegration' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/MailchimpIntegration.php',
+        'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
+        'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'Singleton' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/Singleton.php',
+        'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
+        'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
+        'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
+        'TCPDF_COLORS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_colors.php',
+        'TCPDF_FILTERS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_filters.php',
+        'TCPDF_FONTS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_fonts.php',
+        'TCPDF_FONT_DATA' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_font_data.php',
+        'TCPDF_IMAGES' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_images.php',
+        'TCPDF_IMPORT' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_import.php',
+        'TCPDF_PARSER' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_parser.php',
+        'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
         'TimberFunctions' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/includes/functions-timber.php',
         'TimberPostEvent' => __DIR__ . '/../..' . '/public/wp-content/themes/graceepiscopal/models/TimberPostEvent.php',
     );
