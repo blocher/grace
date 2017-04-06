@@ -10,6 +10,8 @@ if (!empty($post_types_checked) &&  !is_array($post_types_checked)) {
 }
 if (empty($post_types_checked)) {
   $post_types_checked = ['page','news','grace_notes','bulletin_insert'];
+  set_query_var('post_types', $post_types_checked);
+  $_GET['post_types'] = $post_types_checked;
 }
 $post_types = ['page'=>'Pages', 'news'=>'News', 'event'=>'Events', 'sermon'=>'Sermons', 'grace_notes' => 'Grace Notes', 'bulletin_insert' => 'Bulletin Inserts', 'other_publication'=>'Other Publications'];
 

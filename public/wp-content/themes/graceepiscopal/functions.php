@@ -758,3 +758,14 @@ function clear_content_area() {
     $wpdb->query($sql);
 
 }
+
+function relevanssi_search_filters($query) {
+    if (isset($_GET['post_types'])) {
+        return $query;
+    }
+    $query['post_type'] = ['page','news','grace_notes','bulletin_insert'];
+
+    return $query;
+}
+
+add_filter('relevanssi_search_filters','relevanssi_search_filters');
