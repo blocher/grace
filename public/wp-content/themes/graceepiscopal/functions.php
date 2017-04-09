@@ -69,6 +69,7 @@ if ($timber_loaded && $acf_loaded) {
             add_image_size( 'single_post', 1000, 553, 1 );
             add_image_size( 'page_header', 1278, 257, 1 );
             add_image_size( 'search_results', 192, 176, 1 );
+            add_image_size( 'visitors_image', 468, 275, 1 );
         }
 
         function enqueue_styles()
