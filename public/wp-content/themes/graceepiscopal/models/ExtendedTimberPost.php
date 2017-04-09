@@ -184,7 +184,6 @@
 	    }
 
 	    function main_image($size='page_header') {
-
 	    	if (has_post_thumbnail( $this->ID )) {
 					  return $this->get_thumbnail()->src($size);
 				}
