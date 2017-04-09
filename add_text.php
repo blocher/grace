@@ -13,10 +13,10 @@
     require_once( 'public/wp-load.php' );
   }
 
-  global $wpdb;
+  clear_content_area();
 
+  global $wpdb;
   $res = $wpdb->get_results('SELECT ID FROM grace_posts LIMIT 20000');
   foreach ($res as $row) {
     parse_pdf($row->ID, true);
   }
-  clear_content_area($row->ID);

@@ -668,6 +668,7 @@ function parse_pdf( $post_id, $echo = false ) {
     $post_type = get_post_type( $post_id );
 
     if (!in_array($post_type,['bulletin_insert','grace_notes','other_publication','sermon'])) {
+    //if (!in_array($post_type,['bulletin_insert'])) {
         return;
     }
     $post_title = get_the_title( $post_id );
@@ -697,6 +698,8 @@ function parse_pdf( $post_id, $echo = false ) {
         $pdf    = $parser->parseFile($path);
 
         $text = $pdf->getText();
+        $text = \ForceUTF8\Encoding::toUTF8($text);
+        //$text = \ForceUTF8\Encoding::fixUTF8($text);
 
 
         switch ($post_type) {
@@ -719,7 +722,7 @@ function parse_pdf( $post_id, $echo = false ) {
                 return $post_string . ' Wrong Post Type ';
         }
 
-        update_field($field, $text, $post_id);
+        echo update_field($field, $text, $post_id);
 
     } catch (Exception $e) {
        if ($echo) {
@@ -736,7 +739,15 @@ function parse_pdf( $post_id, $echo = false ) {
     if (empty(trim($post->post_content))) {
         $post->post_content = $text;
     }
-    echo wp_update_post($post);
+    $res = wp_update_post($post);
+    // if ($res==0) {
+    //     $post->post_content = iconv('ISO-8859-1','UTF-8', $post->post_content);
+    //     $res = wp_update_post($post);
+    //     update_field($field, $post->post_content, $post_id);
+    // }
+
+    echo $res;
+
 
     return $post_string . ' Updated ';
 

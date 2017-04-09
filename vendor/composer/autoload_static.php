@@ -165,6 +165,13 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
                 0 => __DIR__ . '/..' . '/google/apiclient/src',
             ),
         ),
+        'F' => 
+        array (
+            'ForceUTF8\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/neitanod/forceutf8/src',
+            ),
+        ),
         'D' => 
         array (
             'Doctrine\\Common\\Inflector\\' => 

@@ -16,7 +16,9 @@
     "google/apiclient": "^2.0",
     "nesbot/carbon": "^1.22",
     "pacely/mailchimp-apiv3": "dev-master",
-    "smalot/pdfparser": "^0.10.0"
+    "smalot/pdfparser": "^0.10.0",
+    "neitanod/forceutf8": "dev-master",
+    "tecnickcom/tcpdf": "6.2.12"
   },
   "repositories": [
     {
