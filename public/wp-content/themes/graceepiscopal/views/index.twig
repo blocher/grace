@@ -100,7 +100,7 @@
 					<ul class="slides">
 						{% for slide in slides %}
 							{% if slide.type == 'video' %}
-								<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="http://img.youtube.com/vi/{{ slide.youtube_id }}/0.jpg" alt="" /></li>
+								<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="https://img.youtube.com/vi/{{ slide.youtube_id }}/0.jpg" alt="" /></li>
 							{% else %}
 								<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="{{ TimberImage(slide.image).src('large') }}" alt="" /></li>
 							{% endif %}
