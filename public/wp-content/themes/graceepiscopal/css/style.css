@@ -2525,7 +2525,9 @@ input[type="color"]:focus {
 
 
 
-
+.ytplayer-container {
+	opacity: .6 !important;
+}
 
 
 

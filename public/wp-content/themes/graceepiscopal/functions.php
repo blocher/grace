@@ -88,8 +88,6 @@ if ($timber_loaded && $acf_loaded) {
 
 
 
-
-
             //JS
             wp_register_script('underscore-js', '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js', array('jquery'), '1.8.3', FALSE);
             wp_enqueue_script('underscore-js');
@@ -105,11 +103,15 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_script('bootstrap-js');
 
 
+
              wp_register_script('table-js', '//cdn.datatables.net/v/bs/dt-1.10.12/fh-3.1.2/r-2.1.0/datatables.min.js', array('jquery', 'bootstrap-js'), '1.10.12', FALSE);
             wp_enqueue_script('table-js');
 
             wp_register_script('calendar-js', get_template_directory_uri() . '/calendar/js/responsive-calendar.js', array('jquery'), '0.9', FALSE);
             wp_enqueue_script('calendar-js');
+
+            wp_register_script('jquery.youtubebackground.js', get_template_directory_uri() . '/js/jquery.youtubebackground.js', array('jquery'), '1.0.5', FALSE);
+            wp_enqueue_script('jquery.youtubebackground.js');
 
             // FONTS
             wp_enqueue_style('roboto', '//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500italic,700,500,700italic,900,900italic', [], null);
@@ -124,7 +126,6 @@ if ($timber_loaded && $acf_loaded) {
             wp_enqueue_style('gravity-forms-minimal', get_template_directory_uri() . '/css/gravity-forms/style.css', ['mainstyle'], '1.20');
 
             wp_enqueue_style('gravity-forms-minimal-icons', get_template_directory_uri() . '/css/gravity-forms/style-icons.css', ['mainstyle', 'gravity-forms-minimal'], '1.21');
-
 
 
 

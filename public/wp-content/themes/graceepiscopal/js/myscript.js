@@ -127,7 +127,7 @@ jQuery(window).load(function(){
 		controlNav: false,
 		directionNav: true,
 		animationLoop: true,
-		slideshow: true,
+		slideshow: false,
     slideshowSpeed: 4000,
 		prevText: "",
 		nextText: "",
@@ -619,4 +619,6 @@ jQuery( document ).ready(function( $ ) {
 
     });
 });
+
+
 

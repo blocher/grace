@@ -10,7 +10,11 @@
 					<ul class="slides">
 
 						{% for slide in slides %}
-							<li class="main-slide slide{{ loop.index }} slide" id="slide{{ loop.index }}" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
+							{% if slide.type == 'video' %}
+								<li class="main-slide slide{{ loop.index }} slide" id="slide{{ loop.index }}">
+							{% else %}
+								<li class="main-slide slide{{ loop.index }} slide" id="slide{{ loop.index }}" style="background-image:url({{ TimberImage(slide.image).src('large') }});">
+							{% endif %}
 
 								<a href="{{ slide.get_field('link') }}" class="flex_caption1">
 
@@ -20,6 +24,26 @@
 								</a>
 								<a class="slide_btn From{{ slide.read_more_slide_from | capitalize }}" href="{{ slide.get_field('link') }}" >{{ slide.read_more_text }}</a>
 							</li>
+
+							{% if slide.type == 'video' %}
+										<script>
+										jQuery('#slide{{ loop.index }}').YTPlayer({
+									    fitToBackground: true,
+									    videoId: '{{ slide.youtube_id }}',
+									    playerVars: {
+									      modestbranding: 0,
+									      autoplay: 1,
+									      controls: 1,
+									      showinfo: 0,
+									      branding: 0,
+									      rel: 0,
+									      autohide: 0,
+									      start: {{ slide. video_start_position }}
+									    }
+										});
+									</script>
+							{% endif %}
+
 						{% endfor %}
 					</ul>
 				{# 	<li class="slide1" style="background-image:url({{ theme.link }}/img/worship.jpg);">
@@ -75,7 +99,12 @@
 				<div id="carousel">
 					<ul class="slides">
 						{% for slide in slides %}
-							<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="{{ TimberImage(slide.image).src('large') }}" alt="" /></li>
+							{% if slide.type == 'video' %}
+								<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="http://img.youtube.com/vi/{{ slide.youtube_id }}/0.jpg" alt="" /></li>
+							{% else %}
+								<li class="mini-slide mini-slide-{{ loop.index }}" id="mini-slide{{ loop.index }}"><img src="{{ TimberImage(slide.image).src('large') }}" alt="" /></li>
+							{% endif %}
+							}
 						{% endfor %}
 					</ul>
 				</div><!-- //TOP SLIDER -->
