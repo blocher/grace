@@ -39,15 +39,14 @@
 									      rel: 0,
 									      autohide: 0,
 									      start: {{ slide. video_start_position }}
-									    }
+									    },
+									    callback: function() {
+										    jQuery('document').ready(function() {
+													jQuery('#slide{{ loop.index }}').data('ytPlayer').player.playVideo();
+												});
+										  }
 										});
-										jQuery('document').ready(function() {
-											var player{{ loop.index }} = jQuery('#slide{{ loop.index }}').data('ytPlayer').player;
-											console.log(player{{ loop.index }});
-											player{{ loop.index }}.playVideo();
-											console.log('player started');
 
-										});
 									</script>
 							{% endif %}
 
