@@ -42,7 +42,8 @@
 									    }
 										});
 										jQuery('document').ready(function() {
-											var player{{ loop.index }} = $('#slide{{ loop.index }}').data('ytPlayer').player;
+											var player{{ loop.index }} = jQuery('#slide{{ loop.index }}').data('ytPlayer').player;
+											console.log(player{{ loop.index }});
 											player{{ loop.index }}.playVideo();
 											console.log('player started');
 
