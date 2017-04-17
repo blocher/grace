@@ -41,6 +41,12 @@
 									      start: {{ slide. video_start_position }}
 									    }
 										});
+										jQuery('document').ready(function() {
+											var player{{ loop.index }} = $('#slide{{ loop.index }}').data('ytPlayer').player;
+											player{{ loop.index }}.playVideo();
+											console.log('player started');
+
+										});
 									</script>
 							{% endif %}
 
