@@ -162,7 +162,7 @@ if ($timber_loaded && $acf_loaded) {
 
             wp_enqueue_script('full-calendar-js', '//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.2.0/fullcalendar.js', ['jquery', 'moment-js'], '3.2.0', true);
 
-            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.15', true);
+            wp_enqueue_script('myscript-js', get_template_directory_uri() . '/js/myscript.js', ['full-calendar-js'], '1.16', true);
 
         }
 
