@@ -61,9 +61,9 @@
   );
   $results = $service->events->listEvents($calendarId, $optParams);
 
-
+  $google_ids = [];
   foreach ($results->getItems() as $event) {
-
+    $google_ids[] = $event->getId();
     $start = $event->start->dateTime;
     if (empty($start)) {
       $start = $event->start->date . ' 00:00:00';
@@ -125,4 +125,39 @@
     post_process_event($id);
     echo $id . PHP_EOL;
 
+
   }
+
+  $args = [
+    'date_query' => [
+      [
+        'after' => $start_time,
+        'before' => $end_time,
+
+      ],
+      'inclusive' => true,
+    ],
+   'meta_query' => [
+       [
+           'key' => 'google_id',
+           'value' => $google_ids,
+           'compare' => 'NOT IN',
+       ]
+   ],
+   'post_type' => 'event',
+   'post_status' => 'publish',
+   'nopaging' => true,
+  ];
+  $posts = get_posts($args);
+
+  echo 'TRASHING';
+
+  echo count($posts);
+
+  foreach ($posts as $post) {
+    echo $post->ID . 'trashing' . PHP_EOL;
+    wp_trash_post( $post->ID  );
+  }
+
+  $posts = get_posts($args);
+  echo count($posts);
