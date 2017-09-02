@@ -2,16 +2,16 @@
 Contributors: engelen
 Tags: admin,bulk actions,bulk,posts,terms,categories,tags,trash,untrash,delete,bulk delete,select all,edit posts,untrash all posts,delete all posts, trash all posts
 Requires at least: 3.5
-Tested up to: 4.5.2
-Stable tag: 1.1
+Tested up to: 4.8
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Adds an option to the admin posts and terms overviews to select all items (instead of just items on the current page) to bulk delete/restore posts and bulk delete terms. Supports CPTs and custom taxonomies.
+Adds an option to the admin posts and terms overview pages to select all items (instead of just the ones on the current page) to apply bulk actions. "Trash", "Restore", "Delete", and custom bulk actions are supported. Supports both CPTs and custom taxonomies.
 
 == Description ==
 
-Bulk Actions For All Posts adds an option to the posts overview in the WordPress Admin to select "All Posts". By default, WordPress only allows you to select the posts on the current page.
+**Bulk Actions: Select All** adds an option to the posts and taxonomy terms overviews in the WordPress Admin to select "All Entries". By default, WordPress only allows you to select the posts/terms on the current page.
 
 = Supported content types =
 The plugin works for posts, pages and custom post types. Furthermore, it supports categories, tags and custom taxonomies. At this point, it doesn't support comments and other object types besides post types and taxonomies.
@@ -36,6 +36,11 @@ For manual installation, please download the plugin and follow these steps:
 3. Bulk Actions Selects All also supports categories, tags and custom taxonomies
 
 == Changelog ==
+
+= 1.1.1 =
+* Added support for custom bulk actions
+* Added feedback notification for feature suggestions etc.
+* Fixed colspan issue when dynamically toggling columns' visibility
 
 = 1.1 =
 * Added support for bulk selection of terms

@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Bulk Actions Select All
-Version: 1.1
-Description: Adds an option to the admin posts overview page to select all posts (instead of just the ones on the current page) to bulk trash, restore and delete posts
+Version: 1.1.1
+Description: Adds an option to the admin posts and terms overview pages to select all items (instead of just the ones on the current page) to apply bulk actions. "Trash", "Restore", "Delete", and custom bulk actions are supported.
 Author: Jesper van Engelen
 Author URI: http://jespervanengelen.com
 Text Domain: basa
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if access directly
 
-define( 'BASA_VERSION', '1.1' );
+define( 'BASA_VERSION', '1.1.1' );
 define( 'BASA_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'BASA_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -49,7 +49,7 @@ class BASA {
 	 * @access protected
 	 * @since 1.0
 	 */
-	protected $version = '1.1';
+	protected $version = '1.1.1';
 
 	/**
 	 * Admin class instance
@@ -94,10 +94,14 @@ class BASA {
 		add_action( 'init', array( $this, 'localize' ), 3 );
 		
 		// Library
-		require_once BASA_PLUGIN_DIR . 'library/admin.php';
+		require_once BASA_PLUGIN_DIR . 'library/Admin.php';
 		
 		if ( is_admin() ) {
 			$this->admin();
+
+			// Load admin feedback class
+			require_once BASA_PLUGIN_DIR . 'library/AdminFeedback.php';
+			new BASA_AdminFeedback();
 		}
 		
 		// Plugin upgrade
@@ -154,23 +158,43 @@ class BASA {
 		$version = $this->get_version();
 		$db_version = get_option( 'basa_version' );
 		
-		$difference = version_compare( $db_version, $version );
-		
-		if ( $difference != 0 ) {
-			// Upgrade plugin
-			
-			// Save new version
-			update_option( 'basa_version', $version );
+		// First install
+		if ( ! $db_version ) {
+			// First install
+
+			// Save timestamp at which the plugin was installed (does nothing if it already exists)
+			add_option( 'basa_installed_timestamp', time() );
+
+			// Save version
+			add_option( 'basa_version', $version );
 
 			/**
-			 * Fires after the plugin is upgraded to a newer version.
+			 * Fires after the plugin is first installed
 			 *
-			 * @since 1.0
-			 *
-			 * @param string $old_version Plugin version before the upgrade
-			 * @param string $new_version Plugin version after the upgrade
+			 * @since 1.1.1
 			 */
-			do_action( 'basa/after_upgrade', $db_version, $version );
+			do_action( 'basa/after_install' );
+		}
+		else {
+			// Check whether the plugin has been upgraded
+			$difference = version_compare( $db_version, $version );
+			
+			if ( $difference != 0 ) {
+				// Upgrade plugin
+				
+				// Save new version
+				update_option( 'basa_version', $version );
+
+				/**
+				 * Fires after the plugin is upgraded to a newer version.
+				 *
+				 * @since 1.0
+				 *
+				 * @param string $old_version Plugin version before the upgrade
+				 * @param string $new_version Plugin version after the upgrade
+				 */
+				do_action( 'basa/after_upgrade', $db_version, $version );
+			}
 		}
 	}
 	
