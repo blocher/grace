@@ -11,6 +11,4 @@ return array(
     'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'Google_' => array($vendorDir . '/google/apiclient/src'),
     'ForceUTF8\\' => array($vendorDir . '/neitanod/forceutf8/src'),
-    'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib'),
-    'Buzz' => array($vendorDir . '/kriswallsmith/buzz/lib'),
 );

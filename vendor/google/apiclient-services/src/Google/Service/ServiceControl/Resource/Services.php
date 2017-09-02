@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2016 Google Inc.
+ * Copyright 2014 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -31,7 +31,15 @@ class Google_Service_ServiceControl_Resource_Services extends Google_Service_Res
    *
    * This method requires the `servicemanagement.services.quota` permission on the
    * specified service. For more information, see [Google Cloud
-   * IAM](https://cloud.google.com/iam). (services.allocateQuota)
+   * IAM](https://cloud.google.com/iam).
+   *
+   * **NOTE:** the client code **must** fail-open if the server returns one of the
+   * following quota errors: -   `PROJECT_STATUS_UNAVAILABLE` -
+   * `SERVICE_STATUS_UNAVAILABLE` -   `BILLING_STATUS_UNAVAILABLE` -
+   * `QUOTA_SYSTEM_UNAVAILABLE`
+   *
+   * The server may inject above errors to prohibit any hard dependency on the
+   * quota system. (services.allocateQuota)
    *
    * @param string $serviceName Name of the service as specified in the service
    * configuration. For example, `"pubsub.googleapis.com"`.
@@ -56,7 +64,7 @@ class Google_Service_ServiceControl_Resource_Services extends Google_Service_Res
    * seconds. In case of server errors, the client can rely on the cached results
    * for longer time.
    *
-   * NOTE: the `CheckRequest` has the size limit of 64KB.
+   * NOTE: the CheckRequest has the size limit of 64KB.
    *
    * This method requires the `servicemanagement.services.check` permission on the
    * specified service. For more information, see [Google Cloud
@@ -65,7 +73,9 @@ class Google_Service_ServiceControl_Resource_Services extends Google_Service_Res
    * @param string $serviceName The service name as specified in its service
    * configuration. For example, `"pubsub.googleapis.com"`.
    *
-   * See google.api.Service for the definition of a service name.
+   * See [google.api.Service](https://cloud.google.com/service-
+   * management/reference/rpc/google.api#google.api.Service) for the definition of
+   * a service name.
    * @param Google_Service_ServiceControl_CheckRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceControl_CheckResponse
@@ -103,7 +113,15 @@ class Google_Service_ServiceControl_Resource_Services extends Google_Service_Res
    *
    * This method requires the `servicemanagement.services.quota` permission on the
    * specified service. For more information, see [Google Cloud
-   * IAM](https://cloud.google.com/iam). (services.releaseQuota)
+   * IAM](https://cloud.google.com/iam).
+   *
+   * **NOTE:** the client code **must** fail-open if the server returns one of the
+   * following quota errors: -   `PROJECT_STATUS_UNAVAILABLE` -
+   * `SERVICE_STATUS_UNAVAILABLE` -   `BILLING_STATUS_UNAVAILABLE` -
+   * `QUOTA_SYSTEM_UNAVAILABLE`
+   *
+   * The server may inject above errors to prohibit any hard dependency on the
+   * quota system. (services.releaseQuota)
    *
    * @param string $serviceName Name of the service as specified in the service
    * configuration. For example, `"pubsub.googleapis.com"`.
@@ -129,7 +147,7 @@ class Google_Service_ServiceControl_Resource_Services extends Google_Service_Res
    * time window to avoid data loss risk more than 0.01% for business and
    * compliance reasons.
    *
-   * NOTE: the `ReportRequest` has the size limit of 1MB.
+   * NOTE: the ReportRequest has the size limit of 1MB.
    *
    * This method requires the `servicemanagement.services.report` permission on
    * the specified service. For more information, see [Google Cloud
@@ -138,7 +156,9 @@ class Google_Service_ServiceControl_Resource_Services extends Google_Service_Res
    * @param string $serviceName The service name as specified in its service
    * configuration. For example, `"pubsub.googleapis.com"`.
    *
-   * See google.api.Service for the definition of a service name.
+   * See [google.api.Service](https://cloud.google.com/service-
+   * management/reference/rpc/google.api#google.api.Service) for the definition of
+   * a service name.
    * @param Google_Service_ServiceControl_ReportRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Google_Service_ServiceControl_ReportResponse
