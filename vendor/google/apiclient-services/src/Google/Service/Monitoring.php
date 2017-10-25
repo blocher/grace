@@ -51,6 +51,8 @@ class Google_Service_Monitoring extends Google_Service
   public $projects_metricDescriptors;
   public $projects_monitoredResourceDescriptors;
   public $projects_timeSeries;
+  public $projects_uptimeCheckConfigs;
+  public $uptimeCheckIps;
   
   /**
    * Constructs the internal representation of the Monitoring service.
@@ -188,6 +190,14 @@ class Google_Service_Monitoring extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'interval.startTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
                 'interval.endTime' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -197,14 +207,6 @@ class Google_Service_Monitoring extends Google_Service
                   'type' => 'string',
                 ),
                 'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
-                'interval.startTime' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -342,15 +344,6 @@ class Google_Service_Monitoring extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'aggregation.groupByFields' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                  'repeated' => true,
-                ),
-                'interval.endTime' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'aggregation.alignmentPeriod' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -384,6 +377,114 @@ class Google_Service_Monitoring extends Google_Service
                   'type' => 'string',
                 ),
                 'view' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'aggregation.groupByFields' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'repeated' => true,
+                ),
+                'interval.endTime' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_uptimeCheckConfigs = new Google_Service_Monitoring_Resource_ProjectsUptimeCheckConfigs(
+        $this,
+        $this->serviceName,
+        'uptimeCheckConfigs',
+        array(
+          'methods' => array(
+            'create' => array(
+              'path' => 'v3/{+parent}/uptimeCheckConfigs',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'delete' => array(
+              'path' => 'v3/{+name}',
+              'httpMethod' => 'DELETE',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'get' => array(
+              'path' => 'v3/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v3/{+parent}/uptimeCheckConfigs',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+              ),
+            ),'patch' => array(
+              'path' => 'v3/{+name}',
+              'httpMethod' => 'PATCH',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'updateMask' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'name1' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->uptimeCheckIps = new Google_Service_Monitoring_Resource_UptimeCheckIps(
+        $this,
+        $this->serviceName,
+        'uptimeCheckIps',
+        array(
+          'methods' => array(
+            'list' => array(
+              'path' => 'v3/uptimeCheckIps',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

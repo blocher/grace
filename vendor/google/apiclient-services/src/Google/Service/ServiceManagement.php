@@ -88,11 +88,11 @@ class Google_Service_ServiceManagement extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'pageToken' => array(
+                'name' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'name' => array(
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
