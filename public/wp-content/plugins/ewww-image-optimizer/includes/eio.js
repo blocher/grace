@@ -1,8 +1,21 @@
 jQuery(document).ready(function($) {
 	var ewww_error_counter = 30;
 	if (!ewww_vars.scan_fail) {
-		$('#ewww-webp-rewrite').submit(function() {
+		$('#ewww-webp-rewrite #ewww-webp-insert').click(function() {
 			var ewww_webp_rewrite_action = 'ewww_webp_rewrite';
+			var ewww_webp_rewrite_data = {
+				action: ewww_webp_rewrite_action,
+				ewww_wpnonce: ewww_vars._wpnonce,
+			};
+			$.post(ajaxurl, ewww_webp_rewrite_data, function(response) {
+				$('#ewww-webp-rewrite-status').html('<b>' + response + '</b>');
+				ewww_webp_image = document.getElementById("webp-image").src;
+				document.getElementById("webp-image").src = ewww_webp_image + '#' + new Date().getTime();
+			});
+			return false;
+		});
+		$('#ewww-webp-rewrite #ewww-webp-remove').click(function() {
+			var ewww_webp_rewrite_action = 'ewww_webp_unwrite';
 			var ewww_webp_rewrite_data = {
 				action: ewww_webp_rewrite_action,
 				ewww_wpnonce: ewww_vars._wpnonce,
@@ -362,10 +375,12 @@ jQuery(document).ready(function($) {
 	});
 	}
 	function ewwwUpdateQuota() {
-		ewww_quota_update_data.ewww_wpnonce = ewww_vars._wpnonce;
-		$.post(ajaxurl, ewww_quota_update_data, function(response) {
-			$('#ewww-bulk-credits-available').html(response);
-		});
+		if ($('#ewww-bulk-credits-available').length > 0) {
+			ewww_quota_update_data.ewww_wpnonce = ewww_vars._wpnonce;
+			$.post(ajaxurl, ewww_quota_update_data, function(response) {
+				$('#ewww-bulk-credits-available').html(response);
+			});
+		}
 	}
 	function ewwwStartOpt () {
 		ewww_k = 0;
@@ -447,6 +462,7 @@ jQuery(document).ready(function($) {
 				$('#ewww-bulk-loading').html('<p style="color: red"><b>' + ewww_response.error + '</b></p>');
 				clearInterval(ewww_quota_update);
 				clearInterval(ewww_countdown);
+				ewwwUpdateQuota();
 			}
 			else if (ewww_k == 9) {
 				if ( ewww_response.results ) {
