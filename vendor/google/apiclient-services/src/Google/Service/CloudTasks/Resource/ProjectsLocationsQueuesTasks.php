@@ -36,7 +36,13 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    * PullTasksRequest.lease_duration or the lease will expire and the task will
    * become ready to be returned in a different PullTasksResponse. After the task
    * is acknowledged, it will not be returned by a later CloudTasks.PullTasks,
-   * CloudTasks.GetTask, or CloudTasks.ListTasks. (tasks.acknowledge)
+   * CloudTasks.GetTask, or CloudTasks.ListTasks.
+   *
+   * To acknowledge multiple tasks at the same time, use [HTTP
+   * batching](/storage/docs/json_api/v1/how-tos/batch) or the batching
+   * documentation for your client library, for example
+   * https://developers.google.com/api-client-library/python/guide/batch.
+   * (tasks.acknowledge)
    *
    * @param string $name Required.
    *
@@ -175,11 +181,10 @@ class Google_Service_CloudTasks_Resource_ProjectsLocationsQueuesTasks extends Go
    *
    * Authorization for Task.View.FULL requires `cloudtasks.tasks.fullView` [Google
    * IAM](/iam/) permission on the Task.name resource.
-   * @opt_param string orderBy
-   *
-   * Sort order used for the query. The fields supported for sorting are
-   * Task.schedule_time and PullMessage.tag. All results will be returned in
-   * approximately ascending order. The default ordering is by Task.schedule_time.
+   * @opt_param string orderBy Sort order used for the query. The only fields
+   * supported for sorting are `schedule_time` and `pull_message.tag`. All results
+   * will be returned in approximately ascending order. The default ordering is by
+   * `schedule_time`.
    * @opt_param string pageToken A token identifying the page of results to
    * return.
    *
