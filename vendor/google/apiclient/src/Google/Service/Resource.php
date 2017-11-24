@@ -191,6 +191,7 @@ class Google_Service_Resource
         $parameters
     );
 
+
     // NOTE: because we're creating the request by hand,
     // and because the service has a rootUrl property
     // the "base_uri" of the Http Client is not accounted for
@@ -228,7 +229,6 @@ class Google_Service_Resource
 
       return $request;
     }
-
     return $this->client->execute($request, $expectedClass);
   }
 

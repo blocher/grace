@@ -1,42 +1,12 @@
 <?php
 
-  ini_set('memory_limit','750M');
-  require_once('vendor/autoload.php');
-  use Carbon\Carbon;
-
-  if (empty($_SERVER['SERVER_NAME'])) {
-    $_SERVER['SERVER_NAME'] = 'CLI';
-  }
-
-  date_default_timezone_set('America/New_York');
-
-  if ( !defined('ABSPATH') ) {
-    require_once( 'public/wp-load.php' );
-  }
 
 
-  define('APPLICATION_NAME', 'Grace Calendar Sync');
-  define('SCOPES', implode(' ', array(
-    Google_Service_Calendar::CALENDAR_READONLY)
-  ));
 
-  if (php_sapi_name() != 'cli') {
-    throw new Exception('This application must be run on the command line.');
-  }
 
-  /**
-   * Returns an authorized API client.
-   * @return Google_Client the authorized client object
-   */
-  function getClient() {
-    $client = new Google_Client();
-    $client->setDeveloperKey('AIzaSyAqezaiecr8sKISZv7BV0sS2SnNXXKFav0');
-    $client->setApplicationName(APPLICATION_NAME);
-    $client->setScopes(SCOPES);
-    $client->setAccessType('offline');
 
-    return $client;
-  }
+
+
 
 
   // Get the API client and construct the service object.
@@ -51,18 +21,59 @@
   $end_time->addDays(365);
   $end_time = $end_time->format('c');
 
-  $calendarId = 'scsdgvstpivoaop3f3564ok9ds@group.calendar.google.com';
-  $optParams = array(
-    'maxResults' => 6000,
-    'orderBy' => 'startTime',
-    'singleEvents' => TRUE,
-    'timeMin' => $start_time,
-    'timeMax' => $end_time,
-  );
-  $results = $service->events->listEvents($calendarId, $optParams);
+  $sync_token = get_option( 'google_calendar_sync_token',false);
+  $sync_token = false;
 
-  $google_ids = [];
-  foreach ($results->getItems() as $event) {
+  $calendarId = 'scsdgvstpivoaop3f3564ok9ds@group.calendar.google.com';
+
+  if ($sync_token) {
+    $optParams= [
+      'syncToken' => $sync_token,
+    ];
+  } else {
+      $optParams = array(
+        'maxResults' => 100,
+        'singleEvents' => TRUE,
+        'timeMin' => $start_time,
+        'timeMax' => $end_time,
+        'showDeleted' => TRUE,
+        'calendarId' => $calendarId,
+      );
+
+  }
+
+
+  get_google_calendar_page($optParams, $service);
+
+  function get_google_calendar_page($optParams, $service, $calendarId) {
+
+    echo PHP_EOL . 'NEW PAGE' . PHP_EOL;
+
+    $results = $service->events->listEvents($calendarId, $optParams);
+
+    $google_ids = [];
+    foreach ($results->getItems() as $event) {
+      update_google_event($event);
+    }
+
+    if ($results->getNextPageToken()) {
+      $optParams = [
+        'nextPageToken' => $results->getNextPageToken(),
+      ];
+      get_page($optParams, $service, $calendarId);
+    } else {
+      update_option('google_calendar_sync_token', $results->getNextSyncToken());
+      echo 'sync token update: '  . $results->getNextSyncToken();
+      dd();
+    }
+
+  }
+
+  function update_google_event($event) {
+
+    $status = $event->status;
+
+    $status = $status == 'cancelled' ? 'trash' : 'publish';
     $google_ids[] = $event->getId();
     $start = $event->start->dateTime;
     if (empty($start)) {
@@ -99,7 +110,7 @@
            ]
        ],
        'post_type' => 'event',
-       'post_status' => ['publish', 'pending', 'draft','future','private']
+       'post_status' => ['publish', 'pending', 'draft','future','private','trash']
     );
 
     $posts = get_posts($args);
@@ -110,7 +121,7 @@
       'ID' => $id,
       'post_date' => $wp_event['event_start_time_google'],
       'post_title' => $wp_event['event_title_google'],
-      'post_status' => 'publish',
+      'post_status' => $status,
       'post_type' => 'event',
 
     ];
@@ -123,41 +134,10 @@
 
 
     post_process_event($id);
-    echo $id . PHP_EOL;
-
-
+    echo $id . ' | ' .  $wp_event['event_title_google'] . ' | ' . $status .  PHP_EOL;
   }
 
-  $args = [
-    'date_query' => [
-      [
-        'after' => $start_time,
-        'before' => $end_time,
 
-      ],
-      'inclusive' => true,
-    ],
-   'meta_query' => [
-       [
-           'key' => 'google_id',
-           'value' => $google_ids,
-           'compare' => 'NOT IN',
-       ]
-   ],
-   'post_type' => 'event',
-   'post_status' => 'publish',
-   'nopaging' => true,
-  ];
-  $posts = get_posts($args);
 
-  echo 'TRASHING';
 
-  echo count($posts);
 
-  foreach ($posts as $post) {
-    echo $post->ID . 'trashing' . PHP_EOL;
-    wp_trash_post( $post->ID  );
-  }
-
-  $posts = get_posts($args);
-  echo count($posts);
