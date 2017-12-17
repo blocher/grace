@@ -32,8 +32,13 @@
       $this->api_key = empty($this->api_key) ? 'dd2b1cb3f856d67427e314b8be4aeb3a-us13' : $this->api_key;
       $this->list_ids = empty($this->list_ids) ? ['4943e24031', '72250d5800'] : $this->list_ids;
 
-      $this->mc = new \Mailchimp\Mailchimp($this->api_key );
+      try {
+        $this->mc = new \Mailchimp\Mailchimp($this->api_key );
+      } catch (\Exception $e) {
+  
+      }
 
+      
     }
 
     /** Provides a uniform way of returning results from API key wheter succesful or not **/
