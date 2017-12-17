@@ -35,7 +35,7 @@
       try {
         $this->mc = new \Mailchimp\Mailchimp($this->api_key );
       } catch (\Exception $e) {
-  
+
       }
 
       
@@ -100,6 +100,7 @@
 
 
         } catch (Exception $e) {
+          $res['results'][] = $this->result('', $list_id, $e);
           $res['status']='error';
 
         }
