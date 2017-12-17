@@ -22,7 +22,12 @@
 
       //getting the api key, list id from ACF Options Page
       $this->api_key = get_field('mailchimp_api_key','option');
-      $this->list_ids = get_field('mailchimp_list_ids','option');
+      $list_ids = get_field('mailchimp_list_ids','option');
+
+      $this->list_ids = [];
+      foreach ($list_ids as $list_id) {
+        $this->list_ids[] = $list_id['list_id'];
+      }
 
       $this->api_key = empty($this->api_key) ? 'dd2b1cb3f856d67427e314b8be4aeb3a-us13' : $this->api_key;
       $this->list_ids = empty($this->list_ids) ? ['4943e24031', '72250d5800'] : $this->list_ids;
