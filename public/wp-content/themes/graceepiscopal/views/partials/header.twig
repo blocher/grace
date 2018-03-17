@@ -67,7 +67,7 @@
               <a class="menu_toggler hidden"><span class="fa fa-align-justify"></span></a>
               <!-- LOGO -->
               <div class="logo pull-left">
-                <a href="{{ site.url }}" ><img class="logo" src="{{ TimberImage(options.logo).src('thumbnail') }}"></a>
+                <a href="{{ options.logo_link|default(site.url) }}" ><img class="logo" src="{{ TimberImage(options.logo).src('thumbnail') }}"></a>
               </div><!-- //LOGO -->
 
               <!-- SEARCH FORM -->
