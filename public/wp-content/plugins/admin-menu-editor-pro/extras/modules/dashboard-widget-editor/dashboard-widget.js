@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-var AmeDashboardWidget = (function () {
+var AmeDashboardWidget = /** @class */ (function () {
     function AmeDashboardWidget(settings, widgetEditor) {
         var _this = this;
         this.isPresent = true;
@@ -176,7 +176,7 @@ var AmeDashboardWidget = (function () {
     AmeDashboardWidget._ = wsAmeLodash;
     return AmeDashboardWidget;
 }());
-var AmeActorAccessDictionary = (function () {
+var AmeActorAccessDictionary = /** @class */ (function () {
     function AmeActorAccessDictionary(initialData) {
         this.items = {};
         this.numberOfObservables = ko.observable(0);
@@ -219,7 +219,7 @@ var AmeActorAccessDictionary = (function () {
     };
     return AmeActorAccessDictionary;
 }());
-var AmeStandardWidgetWrapper = (function (_super) {
+var AmeStandardWidgetWrapper = /** @class */ (function (_super) {
     __extends(AmeStandardWidgetWrapper, _super);
     function AmeStandardWidgetWrapper(settings, widgetEditor) {
         var _this = _super.call(this, settings, widgetEditor) || this;
@@ -258,7 +258,7 @@ var AmeStandardWidgetWrapper = (function (_super) {
     };
     return AmeStandardWidgetWrapper;
 }(AmeDashboardWidget));
-var AmeCustomHtmlWidget = (function (_super) {
+var AmeCustomHtmlWidget = /** @class */ (function (_super) {
     __extends(AmeCustomHtmlWidget, _super);
     function AmeCustomHtmlWidget(settings, widgetEditor) {
         var _this = this;
@@ -290,7 +290,7 @@ var AmeCustomHtmlWidget = (function (_super) {
     };
     return AmeCustomHtmlWidget;
 }(AmeDashboardWidget));
-var AmeWelcomeWidget = (function (_super) {
+var AmeWelcomeWidget = /** @class */ (function (_super) {
     __extends(AmeWelcomeWidget, _super);
     function AmeWelcomeWidget(settings, widgetEditor) {
         var _this = this;
@@ -326,7 +326,7 @@ var AmeWelcomeWidget = (function (_super) {
     AmeWelcomeWidget.permanentId = 'special:welcome-panel';
     return AmeWelcomeWidget;
 }(AmeDashboardWidget));
-var AmeWidgetPropertyComponent = (function () {
+var AmeWidgetPropertyComponent = /** @class */ (function () {
     function AmeWidgetPropertyComponent(params) {
         this.widget = params['widget'];
         this.label = params['label'] || '';
@@ -340,3 +340,4 @@ ko.components.register('ame-widget-property', {
         element: 'ame-widget-property-template'
     }
 });
+//# sourceMappingURL=dashboard-widget.js.map

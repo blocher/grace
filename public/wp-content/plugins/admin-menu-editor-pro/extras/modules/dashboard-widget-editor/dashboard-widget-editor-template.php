@@ -147,37 +147,38 @@
 
 </div>
 
-<template id="ame-widget-property-template">
-	<label>
-		<!-- ko if: label -->
-			<span class="ame-widget-property-name" data-bind="text: label"></span><br>
-		<!-- /ko -->
-		<!-- ko template: { nodes: $componentTemplateNodes, data: widget } --><!-- /ko -->
-	</label>
-</template>
+<div style="display: none;">
+	<template id="ame-widget-property-template">
+		<label>
+			<!-- ko if: label -->
+				<span class="ame-widget-property-name" data-bind="text: label"></span><br>
+			<!-- /ko -->
+			<!-- ko template: { nodes: $componentTemplateNodes, data: widget } --><!-- /ko -->
+		</label>
+	</template>
 
-<template id="ame-custom-html-widget-template">
-	<ame-widget-property params="widget: $data, label: 'Content'">
-		<textarea data-bind="value: content"
-		          class="ame-widget-property-value"
-		          title="Content"
-		          rows="10">
-		</textarea>
-	</ame-widget-property>
+	<template id="ame-custom-html-widget-template">
+		<ame-widget-property params="widget: $data, label: 'Content'">
+			<textarea data-bind="value: content"
+			          class="ame-widget-property-value"
+			          title="Content"
+			          rows="10">
+			</textarea>
+		</ame-widget-property>
 
-	<ame-widget-property params="widget: $data, label: ''">
-		<input type="checkbox"
-		       data-bind="checked: filtersEnabled"
-		       class="ame-widget-property-value"
-		       title="Enable filters like automatic paragraphs, smart quotes and automatic tag balancing">
-		Apply content filters
-	</ame-widget-property>
-</template>
+		<ame-widget-property params="widget: $data, label: ''">
+			<input type="checkbox"
+			       data-bind="checked: filtersEnabled"
+			       class="ame-widget-property-value"
+			       title="Enable filters like automatic paragraphs, smart quotes and automatic tag balancing">
+			Apply content filters
+		</ame-widget-property>
+	</template>
 
-<template id="ame-welcome-widget-template">
-	<p class="howto">
-		This is a special widget. It can't be renamed or moved. Only users who have
-		the <code>edit_theme_options</code> capability can see it.
-	</p>
-</template>
-
+	<template id="ame-welcome-widget-template">
+		<p class="howto">
+			This is a special widget. It can't be renamed or moved. Only users who have
+			the <code>edit_theme_options</code> capability can see it.
+		</p>
+	</template>
+</div>

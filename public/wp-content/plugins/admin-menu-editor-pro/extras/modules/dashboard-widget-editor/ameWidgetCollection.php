@@ -291,8 +291,8 @@ class ameWidgetCollection {
 			throw new ameInvalidWidgetDataException(sprintf(
 				"Can't import widget settings that were created by a newer version of the plugin. '.
 				'Update the plugin and try again. (Newest supported format: '%s', input format: '%s'.)",
-				$input['format']['version'],
-				self::FORMAT_VERSION
+				self::FORMAT_VERSION,
+				$input['format']['version']
 			));
 		}
 

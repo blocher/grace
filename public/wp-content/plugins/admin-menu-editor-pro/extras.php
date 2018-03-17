@@ -40,6 +40,7 @@ class wsMenuEditorExtras {
 	private $virtual_caps_for_this_call = array();
 
 	private $fields_supporting_shortcodes = array('page_title', 'menu_title', 'file', 'css_class', 'hookname', 'icon_url');
+	private $current_shortcode_item = null;
 
 	/**
 	 * Class constructor.
@@ -76,6 +77,7 @@ class wsMenuEditorExtras {
 		foreach($info_shortcodes as $tag){
 			add_shortcode($tag, $shortcode_callback);
 		}
+		add_shortcode('ame-count-bubble', array($this, 'handle_count_shortcode'));
 		
 		//Output the menu-modification JS after the menu has been generated.
 		//'in_admin_header' is, AFAIK, the action that fires the soonest after menu
@@ -159,6 +161,18 @@ class wsMenuEditorExtras {
 		add_action('wslm_license_ui_logo-admin-menu-editor-pro', array($this, 'license_ui_logo'));
 		add_action('wslm_license_ui_details-admin-menu-editor-pro', array($this, 'license_ui_upgrade_link'), 10, 3);
 		add_filter('wslm_product_name-admin-menu-editor-pro', array($this, 'license_ui_product_name'), 10, 0);
+
+		/**
+		 * Add-on display and installation.
+		 */
+		//Disabled for now. This feature should be finished later.
+		/*
+		add_action('admin-menu-editor-display_addons', array($this, 'display_addons'));
+		add_action('admin_menu_editor-enqueue_scripts-settings', array($this, 'enqueue_addon_scripts'));
+
+		add_action('wp_ajax_ws_ame_activate_add_on', array($this, 'ajax_activate_addon'));
+		add_action('wp_ajax_ws_ame_activate_add_on', array($this, 'ajax_install_addon'));
+		//*/
 	}
 	
   /**
@@ -172,7 +186,9 @@ class wsMenuEditorExtras {
 			if ( isset($item[$field]) ) {
 				$value = $item[$field];
 				if ( strpos($value, '[') !== false ){
+					$this->current_shortcode_item = $item;
 					$item[$field] = do_shortcode($value);
+					$this->current_shortcode_item = null;
 				}
 			}
 		}
@@ -226,6 +242,40 @@ class wsMenuEditorExtras {
 		}
 		
 		return $info;
+	}
+
+	/**
+	 * Get the HTML code for the small "(123)" bubble in the title of the current menu item.
+	 *
+	 * The count bubble shortcode is intended for situations where the user wants to rename
+	 * a menu item like "WooCommerce -> Orders" that includes a small bubble showing the number
+	 * of pending orders (or plugin updates, comments awaiting moderation, etc). The shortcode
+	 * extracts the count from the default menu title and shows it in the custom title.
+	 *
+	 * @return string
+	 */
+	public function handle_count_shortcode() {
+		if (isset(
+			$this->current_shortcode_item,
+			$this->current_shortcode_item['defaults'],
+			$this->current_shortcode_item['defaults']['menu_title']
+		)) {
+			//Oh boy, this is excessive! Tests say it takes < 1 ms per shortcode,
+			//but it still seems wrong to go this far just to extract a <span> tag.
+			$title = $this->current_shortcode_item['defaults']['menu_title'];
+			if ( stripos($title, '<span') !== false ) {
+				$dom = new domDocument;
+				if ( @$dom->loadHTML($title) ) {
+					$xpath = new DOMXpath($dom);
+					$result = $xpath->query('//span[contains(@class,"update-plugins") or contains(@class,"awaiting-mod")]');
+					if ( $result->length > 0 ) {
+						$span = $result->item(0);
+						return $span->ownerDocument->saveHTML($span);
+					}
+				}
+			}
+		}
+		return '';
 	}
 	
 	/**
@@ -1928,6 +1978,149 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		}
 
 		return array();
+	}
+
+	public function display_addons() {
+		$addOns = $this->get_addons();
+		if ( empty($addOns) ) {
+			return;
+		}
+
+		echo '<tr><th>Add-ons</th><td><table class="ame-available-add-ons">';
+		foreach ($addOns as $slug => $addOn) {
+			printf('<tr class="ame-add-on-item" data-slug="%s">', esc_attr($slug));
+			printf(
+				'<td class="ame-add-on-heading">
+					<a href="%s" target="_blank" class="ame-add-on-details-link" title="View add-on details in a new tab">
+						<span class="ame-add-on-name">%s</span>
+					</a>
+				</td>',
+				esc_attr($addOn['detailsUrl']),
+				$addOn['name']
+			);
+
+			if ( $addOn['isActive'] ) {
+				echo '<td class="ame-add-on-status">Active</td>';
+			} else if ( $this->is_add_on_installed($slug) ) {
+				printf(
+					'<td class="ame-add-on-status">Installed</td>
+					 <td><button class="button ame-activate-add-on" data-nonce="%s">Activate</button></td>',
+					esc_attr(wp_create_nonce('ws_ame_activate_add_on-' . $slug))
+				);
+			} else if ( $this->can_download_add_on($slug) ) {
+				printf(
+					'<td class="ame-add-on-status">Available</td>
+					 <td><button class="button ame-install-add-on" data-nonce="%s">Install and Activate</button></td>',
+					esc_attr(wp_create_nonce('ws_ame_install_add_on-' . $slug))
+				);
+			} else {
+				$license = $this->get_license();
+				if ( $license->hasAddOn($slug) ) {
+					echo '<td class="ame-add-on-status">Download not available - no access to updates.</td>';
+				} else {
+					echo '<td class="ame-add-on-status">Not purchased</td>';
+				}
+			}
+
+			echo '</tr>';
+		}
+		echo '</table></td></tr>';
+	}
+
+	/**
+	 * Get all available add-ons including those that the user hasn't purchased.
+	 *
+	 * @return array
+	 */
+	private function get_addons() {
+		return array(
+			'wp-toolbar-editor' => array(
+				'slug'       => 'wp-toolbar-editor',
+				'name'       => 'WordPress Toolbar Editor',
+				'detailsUrl' => 'https://adminmenueditor.com/toolbar-editor/',
+				'isActive'   => defined('WS_ADMIN_BAR_EDITOR_FILE'),
+				'fileName'   => 'wp-toolbar-editor/load.php',
+			),
+			'ame-branding-add-on' => array(
+				'slug'       => 'ame-branding-add-on',
+				'name'       => 'Branding',
+				'detailsUrl' => 'https://adminmenueditor.com/',
+				'isActive'   => defined('AME_BRANDING_ADD_ON_FILE'),
+				'fileName'   => 'ame-branding-add-on/ame-branding-add-on.php',
+			),
+		);
+	}
+
+	private function is_add_on_installed($slug) {
+		$addOns = $this->get_addons();
+		if ( !isset($addOns[$slug]) ) {
+			return false;
+		}
+		return file_exists(WP_PLUGIN_DIR . '/' . $addOns[$slug]['fileName']);
+	}
+
+	/**
+	 * @param string $slug
+	 * @return bool
+	 */
+	private function can_download_add_on($slug) {
+		$license = $this->get_license();
+		if (!$license) {
+			return false;
+		}
+		return $license->canDownloadCurrentVersion() && $license->hasAddOn($slug);
+	}
+
+	private function get_license() {
+		global $ameProLicenseManager; /** @var Wslm_LicenseManagerClient $ameProLicenseManager */
+		if ( !$ameProLicenseManager ) {
+			return null;
+		}
+		return $ameProLicenseManager->getLicense();
+	}
+
+	public function enqueue_addon_scripts() {
+		wp_enqueue_auto_versioned_script(
+			'ws-ame-add-on-management',
+			plugins_url('extras/add-on-management.js', __FILE__),
+			array('jquery')
+		);
+
+		wp_localize_script(
+			'ws-ame-add-on-management',
+			'wsAmeAddOnData',
+			array(
+				'ajaxUrl' => self_admin_url('admin-ajax.php'),
+			)
+		);
+	}
+
+	public function ajax_activate_addon() {
+		if ( !isset($_POST['slug']) || !is_string($_POST['slug']) ) {
+			exit('Error: No add-on slug specified');
+		}
+
+		$slug = $_POST['slug'];
+		check_ajax_referer('ws_ame_activate_add_on-' . $slug);
+
+		$addOns = $this->get_addons();
+		if ( !isset($addOns[$slug]) ) {
+			exit('Error: Add-on not found');
+		}
+
+		if ( !current_user_can('activate_plugins') ) {
+			exit('You cannot activate plugins');
+		}
+
+		$result = activate_plugin($addOns[$slug]['fileName']);
+		if ( is_wp_error($result) ) {
+			exit($result->get_error_code() . ': ' . $result->get_error_message());
+		}
+		exit('OK');
+	}
+
+	public function ajax_install_addon() {
+
 	}
 }
 
