@@ -19,8 +19,7 @@
  * Service definition for ServiceConsumerManagement (v1).
  *
  * <p>
- * Provides management methods for configuring service producer resources on
- * Google Cloud.</p>
+ * Manages the service consumers of a Service Infrastructure service.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -34,9 +33,6 @@ class Google_Service_ServiceConsumerManagement extends Google_Service
   /** View and manage your data across Google Cloud Platform services. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
-  /** Manage your Google API service configuration. */
-  const SERVICE_MANAGEMENT =
-      "https://www.googleapis.com/auth/service.management";
 
   public $operations;
   public $services;
@@ -53,6 +49,7 @@ class Google_Service_ServiceConsumerManagement extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://serviceconsumermanagement.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'serviceconsumermanagement';
 
@@ -101,10 +98,6 @@ class Google_Service_ServiceConsumerManagement extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
-                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -112,6 +105,10 @@ class Google_Service_ServiceConsumerManagement extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
                 ),
               ),
             ),
@@ -161,6 +158,26 @@ class Google_Service_ServiceConsumerManagement extends Google_Service
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'applyProjectConfig' => array(
+              'path' => 'v1/{+name}:applyProjectConfig',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'attachProject' => array(
+              'path' => 'v1/{+name}:attachProject',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,

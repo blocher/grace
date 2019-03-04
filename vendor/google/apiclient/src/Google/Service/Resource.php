@@ -191,7 +191,6 @@ class Google_Service_Resource
         $parameters
     );
 
-
     // NOTE: because we're creating the request by hand,
     // and because the service has a rootUrl property
     // the "base_uri" of the Http Client is not accounted for
@@ -229,6 +228,7 @@ class Google_Service_Resource
 
       return $request;
     }
+
     return $this->client->execute($request, $expectedClass);
   }
 
@@ -255,8 +255,14 @@ class Google_Service_Resource
    */
   public function createRequestUri($restPath, $params)
   {
+    // Override the default servicePath address if the $restPath use a /
+    if ('/' == substr($restPath, 0, 1)) {
+      $requestUrl = substr($restPath, 1);
+    } else {
+      $requestUrl = $this->servicePath . $restPath;
+    }
+
     // code for leading slash
-    $requestUrl = $this->servicePath . $restPath;
     if ($this->rootUrl) {
       if ('/' !== substr($this->rootUrl, -1) && '/' !== substr($requestUrl, 0, 1)) {
         $requestUrl = '/' . $requestUrl;

@@ -29,8 +29,8 @@ class Google_Service_Storage_Resource_Objects extends Google_Service_Resource
    * Concatenates a list of existing objects into a new object in the same bucket.
    * (objects.compose)
    *
-   * @param string $destinationBucket Name of the bucket in which to store the new
-   * object.
+   * @param string $destinationBucket Name of the bucket containing the source
+   * objects. The destination object is stored in this bucket.
    * @param string $destinationObject Name of the new object. For information
    * about how to URL encode object names to be path safe, see Encoding URI Path
    * Parts.
@@ -260,6 +260,9 @@ class Google_Service_Storage_Resource_Objects extends Google_Service_Resource
    * delimiter. Objects whose names, aside from the prefix, contain delimiter will
    * have their name, truncated after the delimiter, returned in prefixes.
    * Duplicate prefixes are omitted.
+   * @opt_param bool includeTrailingDelimiter If true, objects that end in exactly
+   * one instance of delimiter will have their metadata included in items in
+   * addition to prefixes.
    * @opt_param string maxResults Maximum number of items plus prefixes to return
    * in a single page of responses. As duplicate prefixes are omitted, fewer total
    * results may be returned than requested. The service will use this parameter
@@ -480,6 +483,9 @@ class Google_Service_Storage_Resource_Objects extends Google_Service_Resource
    * delimiter. Objects whose names, aside from the prefix, contain delimiter will
    * have their name, truncated after the delimiter, returned in prefixes.
    * Duplicate prefixes are omitted.
+   * @opt_param bool includeTrailingDelimiter If true, objects that end in exactly
+   * one instance of delimiter will have their metadata included in items in
+   * addition to prefixes.
    * @opt_param string maxResults Maximum number of items plus prefixes to return
    * in a single page of responses. As duplicate prefixes are omitted, fewer total
    * results may be returned than requested. The service will use this parameter

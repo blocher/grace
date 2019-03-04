@@ -40,9 +40,9 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
   /**
    * Claims the website of a Merchant Center sub-account. (accounts.claimwebsite)
    *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
+   * @param string $merchantId The ID of the managing account. If this parameter
+   * is not the same as accountId, then this account must be a multi-client
+   * account and accountId must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account whose website is claimed.
    * @param array $optParams Optional parameters.
    *
@@ -63,8 +63,6 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    *
    * @param Google_Service_ShoppingContent_AccountsCustomBatchRequest $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
    * @return Google_Service_ShoppingContent_AccountsCustomBatchResponse
    */
   public function custombatch(Google_Service_ShoppingContent_AccountsCustomBatchRequest $postBody, $optParams = array())
@@ -77,11 +75,11 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    * Deletes a Merchant Center sub-account. (accounts.delete)
    *
    * @param string $merchantId The ID of the managing account. This must be a
-   * multi-client account.
+   * multi-client account, and accountId must be the ID of a sub-account of this
+   * account.
    * @param string $accountId The ID of the account.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
    * @opt_param bool force Flag to delete sub-accounts with products. The default
    * value is false.
    */
@@ -94,9 +92,9 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
   /**
    * Retrieves a Merchant Center account. (accounts.get)
    *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
+   * @param string $merchantId The ID of the managing account. If this parameter
+   * is not the same as accountId, then this account must be a multi-client
+   * account and accountId must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account.
    * @param array $optParams Optional parameters.
    * @return Google_Service_ShoppingContent_Account
@@ -114,8 +112,6 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
    * multi-client account.
    * @param Google_Service_ShoppingContent_Account $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
    * @return Google_Service_ShoppingContent_Account
    */
   public function insert($merchantId, Google_Service_ShoppingContent_Account $postBody, $optParams = array())
@@ -123,6 +119,24 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
     $params = array('merchantId' => $merchantId, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('insert', array($params), "Google_Service_ShoppingContent_Account");
+  }
+  /**
+   * Performs an action on a link between a Merchant Center account and another
+   * account. (accounts.link)
+   *
+   * @param string $merchantId The ID of the managing account. If this parameter
+   * is not the same as accountId, then this account must be a multi-client
+   * account and accountId must be the ID of a sub-account of this account.
+   * @param string $accountId The ID of the account that should be linked.
+   * @param Google_Service_ShoppingContent_AccountsLinkRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ShoppingContent_AccountsLinkResponse
+   */
+  public function link($merchantId, $accountId, Google_Service_ShoppingContent_AccountsLinkRequest $postBody, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId, 'accountId' => $accountId, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('link', array($params), "Google_Service_ShoppingContent_AccountsLinkResponse");
   }
   /**
    * Lists the sub-accounts in your Merchant Center account.
@@ -144,36 +158,14 @@ class Google_Service_ShoppingContent_Resource_Accounts extends Google_Service_Re
     return $this->call('list', array($params), "Google_Service_ShoppingContent_AccountsListResponse");
   }
   /**
-   * Updates a Merchant Center account. This method supports patch semantics.
-   * (accounts.patch)
-   *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
-   * @param string $accountId The ID of the account.
-   * @param Google_Service_ShoppingContent_Account $postBody
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
-   * @return Google_Service_ShoppingContent_Account
-   */
-  public function patch($merchantId, $accountId, Google_Service_ShoppingContent_Account $postBody, $optParams = array())
-  {
-    $params = array('merchantId' => $merchantId, 'accountId' => $accountId, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('patch', array($params), "Google_Service_ShoppingContent_Account");
-  }
-  /**
    * Updates a Merchant Center account. (accounts.update)
    *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
+   * @param string $merchantId The ID of the managing account. If this parameter
+   * is not the same as accountId, then this account must be a multi-client
+   * account and accountId must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account.
    * @param Google_Service_ShoppingContent_Account $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
    * @return Google_Service_ShoppingContent_Account
    */
   public function update($merchantId, $accountId, Google_Service_ShoppingContent_Account $postBody, $optParams = array())

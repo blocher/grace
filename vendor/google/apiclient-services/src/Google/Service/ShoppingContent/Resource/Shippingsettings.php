@@ -31,8 +31,6 @@ class Google_Service_ShoppingContent_Resource_Shippingsettings extends Google_Se
    *
    * @param Google_Service_ShoppingContent_ShippingsettingsCustomBatchRequest $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
    * @return Google_Service_ShoppingContent_ShippingsettingsCustomBatchResponse
    */
   public function custombatch(Google_Service_ShoppingContent_ShippingsettingsCustomBatchRequest $postBody, $optParams = array())
@@ -44,9 +42,9 @@ class Google_Service_ShoppingContent_Resource_Shippingsettings extends Google_Se
   /**
    * Retrieves the shipping settings of the account. (shippingsettings.get)
    *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
+   * @param string $merchantId The ID of the managing account. If this parameter
+   * is not the same as accountId, then this account must be a multi-client
+   * account and accountId must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to get/update
    * shipping settings.
    * @param array $optParams Optional parameters.
@@ -74,6 +72,21 @@ class Google_Service_ShoppingContent_Resource_Shippingsettings extends Google_Se
     return $this->call('getsupportedcarriers', array($params), "Google_Service_ShoppingContent_ShippingsettingsGetSupportedCarriersResponse");
   }
   /**
+   * Retrieves supported holidays for an account.
+   * (shippingsettings.getsupportedholidays)
+   *
+   * @param string $merchantId The ID of the account for which to retrieve the
+   * supported holidays.
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_ShoppingContent_ShippingsettingsGetSupportedHolidaysResponse
+   */
+  public function getsupportedholidays($merchantId, $optParams = array())
+  {
+    $params = array('merchantId' => $merchantId);
+    $params = array_merge($params, $optParams);
+    return $this->call('getsupportedholidays', array($params), "Google_Service_ShoppingContent_ShippingsettingsGetSupportedHolidaysResponse");
+  }
+  /**
    * Lists the shipping settings of the sub-accounts in your Merchant Center
    * account. (shippingsettings.listShippingsettings)
    *
@@ -93,38 +106,15 @@ class Google_Service_ShoppingContent_Resource_Shippingsettings extends Google_Se
     return $this->call('list', array($params), "Google_Service_ShoppingContent_ShippingsettingsListResponse");
   }
   /**
-   * Updates the shipping settings of the account. This method supports patch
-   * semantics. (shippingsettings.patch)
-   *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
-   * @param string $accountId The ID of the account for which to get/update
-   * shipping settings.
-   * @param Google_Service_ShoppingContent_ShippingSettings $postBody
-   * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
-   * @return Google_Service_ShoppingContent_ShippingSettings
-   */
-  public function patch($merchantId, $accountId, Google_Service_ShoppingContent_ShippingSettings $postBody, $optParams = array())
-  {
-    $params = array('merchantId' => $merchantId, 'accountId' => $accountId, 'postBody' => $postBody);
-    $params = array_merge($params, $optParams);
-    return $this->call('patch', array($params), "Google_Service_ShoppingContent_ShippingSettings");
-  }
-  /**
    * Updates the shipping settings of the account. (shippingsettings.update)
    *
-   * @param string $merchantId The ID of the managing account. If this account is
-   * not a multi-client account, then this parameter must be the same as
-   * accountId.
+   * @param string $merchantId The ID of the managing account. If this parameter
+   * is not the same as accountId, then this account must be a multi-client
+   * account and accountId must be the ID of a sub-account of this account.
    * @param string $accountId The ID of the account for which to get/update
    * shipping settings.
    * @param Google_Service_ShoppingContent_ShippingSettings $postBody
    * @param array $optParams Optional parameters.
-   *
-   * @opt_param bool dryRun Flag to run the request in dry-run mode.
    * @return Google_Service_ShoppingContent_ShippingSettings
    */
   public function update($merchantId, $accountId, Google_Service_ShoppingContent_ShippingSettings $postBody, $optParams = array())

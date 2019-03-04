@@ -20,18 +20,17 @@ class Google_Service_ShoppingContent_TestOrder extends Google_Collection
   protected $collection_key = 'promotions';
   protected $customerType = 'Google_Service_ShoppingContent_TestOrderCustomer';
   protected $customerDataType = '';
+  public $enableOrderinvoices;
   public $kind;
   protected $lineItemsType = 'Google_Service_ShoppingContent_TestOrderLineItem';
   protected $lineItemsDataType = 'array';
-  protected $paymentMethodType = 'Google_Service_ShoppingContent_TestOrderPaymentMethod';
-  protected $paymentMethodDataType = '';
+  public $notificationMode;
+  public $predefinedBillingAddress;
   public $predefinedDeliveryAddress;
   protected $promotionsType = 'Google_Service_ShoppingContent_OrderPromotion';
   protected $promotionsDataType = 'array';
   protected $shippingCostType = 'Google_Service_ShoppingContent_Price';
   protected $shippingCostDataType = '';
-  protected $shippingCostTaxType = 'Google_Service_ShoppingContent_Price';
-  protected $shippingCostTaxDataType = '';
   public $shippingOption;
 
   /**
@@ -47,6 +46,14 @@ class Google_Service_ShoppingContent_TestOrder extends Google_Collection
   public function getCustomer()
   {
     return $this->customer;
+  }
+  public function setEnableOrderinvoices($enableOrderinvoices)
+  {
+    $this->enableOrderinvoices = $enableOrderinvoices;
+  }
+  public function getEnableOrderinvoices()
+  {
+    return $this->enableOrderinvoices;
   }
   public function setKind($kind)
   {
@@ -70,19 +77,21 @@ class Google_Service_ShoppingContent_TestOrder extends Google_Collection
   {
     return $this->lineItems;
   }
-  /**
-   * @param Google_Service_ShoppingContent_TestOrderPaymentMethod
-   */
-  public function setPaymentMethod(Google_Service_ShoppingContent_TestOrderPaymentMethod $paymentMethod)
+  public function setNotificationMode($notificationMode)
   {
-    $this->paymentMethod = $paymentMethod;
+    $this->notificationMode = $notificationMode;
   }
-  /**
-   * @return Google_Service_ShoppingContent_TestOrderPaymentMethod
-   */
-  public function getPaymentMethod()
+  public function getNotificationMode()
   {
-    return $this->paymentMethod;
+    return $this->notificationMode;
+  }
+  public function setPredefinedBillingAddress($predefinedBillingAddress)
+  {
+    $this->predefinedBillingAddress = $predefinedBillingAddress;
+  }
+  public function getPredefinedBillingAddress()
+  {
+    return $this->predefinedBillingAddress;
   }
   public function setPredefinedDeliveryAddress($predefinedDeliveryAddress)
   {
@@ -119,20 +128,6 @@ class Google_Service_ShoppingContent_TestOrder extends Google_Collection
   public function getShippingCost()
   {
     return $this->shippingCost;
-  }
-  /**
-   * @param Google_Service_ShoppingContent_Price
-   */
-  public function setShippingCostTax(Google_Service_ShoppingContent_Price $shippingCostTax)
-  {
-    $this->shippingCostTax = $shippingCostTax;
-  }
-  /**
-   * @return Google_Service_ShoppingContent_Price
-   */
-  public function getShippingCostTax()
-  {
-    return $this->shippingCostTax;
   }
   public function setShippingOption($shippingOption)
   {

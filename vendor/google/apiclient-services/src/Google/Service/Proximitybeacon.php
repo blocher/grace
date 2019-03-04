@@ -51,6 +51,7 @@ class Google_Service_Proximitybeacon extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://proximitybeacon.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1beta1';
     $this->serviceName = 'proximitybeacon';
 
@@ -148,10 +149,6 @@ class Google_Service_Proximitybeacon extends Google_Service
               'path' => 'v1beta1/beacons',
               'httpMethod' => 'GET',
               'parameters' => array(
-                'pageToken' => array(
-                  'location' => 'query',
-                  'type' => 'string',
-                ),
                 'q' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -161,6 +158,10 @@ class Google_Service_Proximitybeacon extends Google_Service
                   'type' => 'integer',
                 ),
                 'projectId' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
@@ -253,11 +254,11 @@ class Google_Service_Proximitybeacon extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'projectId' => array(
+                'namespacedType' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),
-                'namespacedType' => array(
+                'projectId' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

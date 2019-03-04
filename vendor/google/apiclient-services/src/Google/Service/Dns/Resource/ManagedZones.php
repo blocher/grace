@@ -26,11 +26,13 @@
 class Google_Service_Dns_Resource_ManagedZones extends Google_Service_Resource
 {
   /**
-   * Create a new ManagedZone. (managedZones.create)
+   * (managedZones.create)
    *
-   * @param string $project Identifies the project addressed by this request.
+   * @param string $project
    * @param Google_Service_Dns_ManagedZone $postBody
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string clientOperationId
    * @return Google_Service_Dns_ManagedZone
    */
   public function create($project, Google_Service_Dns_ManagedZone $postBody, $optParams = array())
@@ -40,12 +42,13 @@ class Google_Service_Dns_Resource_ManagedZones extends Google_Service_Resource
     return $this->call('create', array($params), "Google_Service_Dns_ManagedZone");
   }
   /**
-   * Delete a previously created ManagedZone. (managedZones.delete)
+   * (managedZones.delete)
    *
-   * @param string $project Identifies the project addressed by this request.
-   * @param string $managedZone Identifies the managed zone addressed by this
-   * request. Can be the managed zone name or id.
+   * @param string $project
+   * @param string $managedZone
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string clientOperationId
    */
   public function delete($project, $managedZone, $optParams = array())
   {
@@ -54,12 +57,13 @@ class Google_Service_Dns_Resource_ManagedZones extends Google_Service_Resource
     return $this->call('delete', array($params));
   }
   /**
-   * Fetch the representation of an existing ManagedZone. (managedZones.get)
+   * (managedZones.get)
    *
-   * @param string $project Identifies the project addressed by this request.
-   * @param string $managedZone Identifies the managed zone addressed by this
-   * request. Can be the managed zone name or id.
+   * @param string $project
+   * @param string $managedZone
    * @param array $optParams Optional parameters.
+   *
+   * @opt_param string clientOperationId
    * @return Google_Service_Dns_ManagedZone
    */
   public function get($project, $managedZone, $optParams = array())
@@ -69,19 +73,14 @@ class Google_Service_Dns_Resource_ManagedZones extends Google_Service_Resource
     return $this->call('get', array($params), "Google_Service_Dns_ManagedZone");
   }
   /**
-   * Enumerate ManagedZones that have been created but not yet deleted.
    * (managedZones.listManagedZones)
    *
-   * @param string $project Identifies the project addressed by this request.
+   * @param string $project
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string dnsName Restricts the list to return only zones with this
-   * domain name.
-   * @opt_param int maxResults Optional. Maximum number of results to be returned.
-   * If unspecified, the server will decide how many results to return.
-   * @opt_param string pageToken Optional. A tag returned by a previous list
-   * request that was truncated. Use this parameter to continue a previous list
-   * request.
+   * @opt_param string dnsName
+   * @opt_param int maxResults
+   * @opt_param string pageToken
    * @return Google_Service_Dns_ManagedZonesListResponse
    */
   public function listManagedZones($project, $optParams = array())
@@ -89,5 +88,39 @@ class Google_Service_Dns_Resource_ManagedZones extends Google_Service_Resource
     $params = array('project' => $project);
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_Dns_ManagedZonesListResponse");
+  }
+  /**
+   * (managedZones.patch)
+   *
+   * @param string $project
+   * @param string $managedZone
+   * @param Google_Service_Dns_ManagedZone $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string clientOperationId
+   * @return Google_Service_Dns_Operation
+   */
+  public function patch($project, $managedZone, Google_Service_Dns_ManagedZone $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'managedZone' => $managedZone, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('patch', array($params), "Google_Service_Dns_Operation");
+  }
+  /**
+   * (managedZones.update)
+   *
+   * @param string $project
+   * @param string $managedZone
+   * @param Google_Service_Dns_ManagedZone $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string clientOperationId
+   * @return Google_Service_Dns_Operation
+   */
+  public function update($project, $managedZone, Google_Service_Dns_ManagedZone $postBody, $optParams = array())
+  {
+    $params = array('project' => $project, 'managedZone' => $managedZone, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('update', array($params), "Google_Service_Dns_Operation");
   }
 }

@@ -65,6 +65,7 @@ class Google_Service_Storage extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://www.googleapis.com/';
     $this->servicePath = 'storage/v1/';
+    $this->batchPath = 'batch/storage/v1';
     $this->version = 'v1';
     $this->serviceName = 'storage';
 
@@ -300,6 +301,25 @@ class Google_Service_Storage extends Google_Service
                 'projection' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'userProject' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),'lockRetentionPolicy' => array(
+              'path' => 'b/{bucket}/lockRetentionPolicy',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'bucket' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'ifMetagenerationMatch' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                  'required' => true,
                 ),
                 'userProject' => array(
                   'location' => 'query',
@@ -1074,6 +1094,10 @@ class Google_Service_Storage extends Google_Service
                   'location' => 'query',
                   'type' => 'string',
                 ),
+                'includeTrailingDelimiter' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
+                ),
                 'maxResults' => array(
                   'location' => 'query',
                   'type' => 'integer',
@@ -1342,6 +1366,10 @@ class Google_Service_Storage extends Google_Service
                 'delimiter' => array(
                   'location' => 'query',
                   'type' => 'string',
+                ),
+                'includeTrailingDelimiter' => array(
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ),
                 'maxResults' => array(
                   'location' => 'query',

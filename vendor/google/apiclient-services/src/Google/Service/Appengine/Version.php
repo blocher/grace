@@ -17,7 +17,7 @@
 
 class Google_Service_Appengine_Version extends Google_Collection
 {
-  protected $collection_key = 'libraries';
+  protected $collection_key = 'zones';
   protected $apiConfigType = 'Google_Service_Appengine_ApiConfigHandler';
   protected $apiConfigDataType = '';
   protected $automaticScalingType = 'Google_Service_Appengine_AutomaticScaling';
@@ -33,6 +33,8 @@ class Google_Service_Appengine_Version extends Google_Collection
   public $diskUsageBytes;
   protected $endpointsApiServiceType = 'Google_Service_Appengine_EndpointsApiService';
   protected $endpointsApiServiceDataType = '';
+  protected $entrypointType = 'Google_Service_Appengine_Entrypoint';
+  protected $entrypointDataType = '';
   public $env;
   public $envVariables;
   protected $errorHandlersType = 'Google_Service_Appengine_ErrorHandler';
@@ -60,10 +62,13 @@ class Google_Service_Appengine_Version extends Google_Collection
   protected $resourcesDataType = '';
   public $runtime;
   public $runtimeApiVersion;
+  public $runtimeChannel;
+  public $runtimeMainExecutablePath;
   public $servingStatus;
   public $threadsafe;
   public $versionUrl;
   public $vm;
+  public $zones;
 
   /**
    * @param Google_Service_Appengine_ApiConfigHandler
@@ -174,6 +179,20 @@ class Google_Service_Appengine_Version extends Google_Collection
   public function getEndpointsApiService()
   {
     return $this->endpointsApiService;
+  }
+  /**
+   * @param Google_Service_Appengine_Entrypoint
+   */
+  public function setEntrypoint(Google_Service_Appengine_Entrypoint $entrypoint)
+  {
+    $this->entrypoint = $entrypoint;
+  }
+  /**
+   * @return Google_Service_Appengine_Entrypoint
+   */
+  public function getEntrypoint()
+  {
+    return $this->entrypoint;
   }
   public function setEnv($env)
   {
@@ -373,6 +392,22 @@ class Google_Service_Appengine_Version extends Google_Collection
   {
     return $this->runtimeApiVersion;
   }
+  public function setRuntimeChannel($runtimeChannel)
+  {
+    $this->runtimeChannel = $runtimeChannel;
+  }
+  public function getRuntimeChannel()
+  {
+    return $this->runtimeChannel;
+  }
+  public function setRuntimeMainExecutablePath($runtimeMainExecutablePath)
+  {
+    $this->runtimeMainExecutablePath = $runtimeMainExecutablePath;
+  }
+  public function getRuntimeMainExecutablePath()
+  {
+    return $this->runtimeMainExecutablePath;
+  }
   public function setServingStatus($servingStatus)
   {
     $this->servingStatus = $servingStatus;
@@ -404,5 +439,13 @@ class Google_Service_Appengine_Version extends Google_Collection
   public function getVm()
   {
     return $this->vm;
+  }
+  public function setZones($zones)
+  {
+    $this->zones = $zones;
+  }
+  public function getZones()
+  {
+    return $this->zones;
   }
 }

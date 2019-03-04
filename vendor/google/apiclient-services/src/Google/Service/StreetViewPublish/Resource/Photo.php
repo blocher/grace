@@ -78,13 +78,19 @@ class Google_Service_StreetViewPublish_Resource_Photo extends Google_Service_Res
    *
    * * google.rpc.Code.PERMISSION_DENIED if the requesting user did not create the
    * requested Photo. * google.rpc.Code.NOT_FOUND if the requested Photo does not
-   * exist. (photo.get)
+   * exist. * google.rpc.Code.UNAVAILABLE if the requested Photo is still being
+   * indexed. (photo.get)
    *
    * @param string $photoId Required. ID of the Photo.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string view Specifies if a download URL for the photo bytes should
    * be returned in the Photo response.
+   * @opt_param string languageCode The BCP-47 language code, such as "en-US" or
+   * "sr-Latn". For more information, see
+   * http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. If
+   * language_code is unspecified, the user's language preference for Google
+   * services will be used.
    * @return Google_Service_StreetViewPublish_Photo
    */
   public function get($photoId, $optParams = array())
@@ -135,6 +141,7 @@ class Google_Service_StreetViewPublish_Resource_Photo extends Google_Service_Res
    * * google.rpc.Code.PERMISSION_DENIED if the requesting user did not create the
    * requested photo. * google.rpc.Code.INVALID_ARGUMENT if the request is
    * malformed. * google.rpc.Code.NOT_FOUND if the requested photo does not exist.
+   * * google.rpc.Code.UNAVAILABLE if the requested Photo is still being indexed.
    * (photo.update)
    *
    * @param string $id Required. A unique identifier for a photo.

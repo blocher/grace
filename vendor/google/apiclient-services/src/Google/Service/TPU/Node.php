@@ -22,13 +22,17 @@ class Google_Service_TPU_Node extends Google_Collection
   public $cidrBlock;
   public $createTime;
   public $description;
+  public $health;
   public $healthDescription;
   public $ipAddress;
+  public $labels;
   public $name;
   public $network;
   protected $networkEndpointsType = 'Google_Service_TPU_NetworkEndpoint';
   protected $networkEndpointsDataType = 'array';
   public $port;
+  protected $schedulingConfigType = 'Google_Service_TPU_SchedulingConfig';
+  protected $schedulingConfigDataType = '';
   public $serviceAccount;
   public $state;
   public $tensorflowVersion;
@@ -65,6 +69,14 @@ class Google_Service_TPU_Node extends Google_Collection
   {
     return $this->description;
   }
+  public function setHealth($health)
+  {
+    $this->health = $health;
+  }
+  public function getHealth()
+  {
+    return $this->health;
+  }
   public function setHealthDescription($healthDescription)
   {
     $this->healthDescription = $healthDescription;
@@ -80,6 +92,14 @@ class Google_Service_TPU_Node extends Google_Collection
   public function getIpAddress()
   {
     return $this->ipAddress;
+  }
+  public function setLabels($labels)
+  {
+    $this->labels = $labels;
+  }
+  public function getLabels()
+  {
+    return $this->labels;
   }
   public function setName($name)
   {
@@ -118,6 +138,20 @@ class Google_Service_TPU_Node extends Google_Collection
   public function getPort()
   {
     return $this->port;
+  }
+  /**
+   * @param Google_Service_TPU_SchedulingConfig
+   */
+  public function setSchedulingConfig(Google_Service_TPU_SchedulingConfig $schedulingConfig)
+  {
+    $this->schedulingConfig = $schedulingConfig;
+  }
+  /**
+   * @return Google_Service_TPU_SchedulingConfig
+   */
+  public function getSchedulingConfig()
+  {
+    return $this->schedulingConfig;
   }
   public function setServiceAccount($serviceAccount)
   {

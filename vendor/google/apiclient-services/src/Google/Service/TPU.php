@@ -16,7 +16,7 @@
  */
 
 /**
- * Service definition for TPU (v1alpha1).
+ * Service definition for TPU (v1).
  *
  * <p>
  * TPU API provides customers with access to Google TPU technology.</p>
@@ -35,8 +35,10 @@ class Google_Service_TPU extends Google_Service
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_locations;
+  public $projects_locations_acceleratorTypes;
   public $projects_locations_nodes;
   public $projects_locations_operations;
+  public $projects_locations_tensorflowVersions;
   
   /**
    * Constructs the internal representation of the TPU service.
@@ -48,7 +50,8 @@ class Google_Service_TPU extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://tpu.googleapis.com/';
     $this->servicePath = '';
-    $this->version = 'v1alpha1';
+    $this->batchPath = 'batch';
+    $this->version = 'v1';
     $this->serviceName = 'tpu';
 
     $this->projects_locations = new Google_Service_TPU_Resource_ProjectsLocations(
@@ -58,7 +61,7 @@ class Google_Service_TPU extends Google_Service
         array(
           'methods' => array(
             'get' => array(
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -68,7 +71,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1alpha1/{+name}/locations',
+              'path' => 'v1/{+name}/locations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -93,6 +96,52 @@ class Google_Service_TPU extends Google_Service
           )
         )
     );
+    $this->projects_locations_acceleratorTypes = new Google_Service_TPU_Resource_ProjectsLocationsAcceleratorTypes(
+        $this,
+        $this->serviceName,
+        'acceleratorTypes',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/acceleratorTypes',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+              ),
+            ),
+          )
+        )
+    );
     $this->projects_locations_nodes = new Google_Service_TPU_Resource_ProjectsLocationsNodes(
         $this,
         $this->serviceName,
@@ -100,7 +149,7 @@ class Google_Service_TPU extends Google_Service
         array(
           'methods' => array(
             'create' => array(
-              'path' => 'v1alpha1/{+parent}/nodes',
+              'path' => 'v1/{+parent}/nodes',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'parent' => array(
@@ -114,7 +163,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -124,7 +173,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -134,7 +183,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1alpha1/{+parent}/nodes',
+              'path' => 'v1/{+parent}/nodes',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'parent' => array(
@@ -152,7 +201,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'reimage' => array(
-              'path' => 'v1alpha1/{+name}:reimage',
+              'path' => 'v1/{+name}:reimage',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -160,13 +209,19 @@ class Google_Service_TPU extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
-                'tensorflowVersion' => array(
-                  'location' => 'query',
+              ),
+            ),'start' => array(
+              'path' => 'v1/{+name}:start',
+              'httpMethod' => 'POST',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
                   'type' => 'string',
+                  'required' => true,
                 ),
               ),
-            ),'reset' => array(
-              'path' => 'v1alpha1/{+name}:reset',
+            ),'stop' => array(
+              'path' => 'v1/{+name}:stop',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -186,7 +241,7 @@ class Google_Service_TPU extends Google_Service
         array(
           'methods' => array(
             'cancel' => array(
-              'path' => 'v1alpha1/{+name}:cancel',
+              'path' => 'v1/{+name}:cancel',
               'httpMethod' => 'POST',
               'parameters' => array(
                 'name' => array(
@@ -196,7 +251,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'delete' => array(
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'DELETE',
               'parameters' => array(
                 'name' => array(
@@ -206,7 +261,7 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'get' => array(
-              'path' => 'v1alpha1/{+name}',
+              'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
@@ -216,13 +271,17 @@ class Google_Service_TPU extends Google_Service
                 ),
               ),
             ),'list' => array(
-              'path' => 'v1alpha1/{+name}/operations',
+              'path' => 'v1/{+name}/operations',
               'httpMethod' => 'GET',
               'parameters' => array(
                 'name' => array(
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ),
+                'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
                 ),
                 'pageToken' => array(
                   'location' => 'query',
@@ -232,7 +291,49 @@ class Google_Service_TPU extends Google_Service
                   'location' => 'query',
                   'type' => 'integer',
                 ),
+              ),
+            ),
+          )
+        )
+    );
+    $this->projects_locations_tensorflowVersions = new Google_Service_TPU_Resource_ProjectsLocationsTensorflowVersions(
+        $this,
+        $this->serviceName,
+        'tensorflowVersions',
+        array(
+          'methods' => array(
+            'get' => array(
+              'path' => 'v1/{+name}',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'name' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+              ),
+            ),'list' => array(
+              'path' => 'v1/{+parent}/tensorflowVersions',
+              'httpMethod' => 'GET',
+              'parameters' => array(
+                'parent' => array(
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'filter' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'pageToken' => array(
+                  'location' => 'query',
+                  'type' => 'string',
+                ),
+                'orderBy' => array(
                   'location' => 'query',
                   'type' => 'string',
                 ),

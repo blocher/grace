@@ -52,6 +52,7 @@ class Google_Service_CloudRuntimeConfig extends Google_Service
     parent::__construct($client);
     $this->rootUrl = 'https://runtimeconfig.googleapis.com/';
     $this->servicePath = '';
+    $this->batchPath = 'batch';
     $this->version = 'v1';
     $this->serviceName = 'runtimeconfig';
 
@@ -90,6 +91,10 @@ class Google_Service_CloudRuntimeConfig extends Google_Service
                   'type' => 'string',
                   'required' => true,
                 ),
+                'pageSize' => array(
+                  'location' => 'query',
+                  'type' => 'integer',
+                ),
                 'filter' => array(
                   'location' => 'query',
                   'type' => 'string',
@@ -97,10 +102,6 @@ class Google_Service_CloudRuntimeConfig extends Google_Service
                 'pageToken' => array(
                   'location' => 'query',
                   'type' => 'string',
-                ),
-                'pageSize' => array(
-                  'location' => 'query',
-                  'type' => 'integer',
                 ),
               ),
             ),

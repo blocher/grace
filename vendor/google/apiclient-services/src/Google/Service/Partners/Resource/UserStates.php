@@ -30,9 +30,6 @@ class Google_Service_Partners_Resource_UserStates extends Google_Service_Resourc
    *
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string requestMetadata.trafficSource.trafficSourceId Identifier to
-   * indicate where the traffic comes from. An identifier has multiple letters
-   * created by a team which redirected the traffic to us.
    * @opt_param string requestMetadata.locale Locale to use for the current
    * request.
    * @opt_param string requestMetadata.userOverrides.ipAddress IP address to use
@@ -46,6 +43,9 @@ class Google_Service_Partners_Resource_UserStates extends Google_Service_Resourc
    * impersonate instead of the user's ID.
    * @opt_param string requestMetadata.partnersSessionId Google Partners session
    * ID.
+   * @opt_param string requestMetadata.trafficSource.trafficSourceId Identifier to
+   * indicate where the traffic comes from. An identifier has multiple letters
+   * created by a team which redirected the traffic to us.
    * @return Google_Service_Partners_ListUserStatesResponse
    */
   public function listUserStates($optParams = array())
