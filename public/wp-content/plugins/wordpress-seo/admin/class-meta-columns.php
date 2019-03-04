@@ -1,5 +1,7 @@
 <?php
 /**
+ * WPSEO plugin file.
+ *
  * @package WPSEO\Admin
  */
 
@@ -73,7 +75,7 @@ class WPSEO_Meta_Columns {
 		$added_columns['wpseo-metadesc'] = __( 'Meta Desc.', 'wordpress-seo' );
 
 		if ( $this->analysis_seo->is_enabled() ) {
-			$added_columns['wpseo-focuskw'] = __( 'Focus KW', 'wordpress-seo' );
+			$added_columns['wpseo-focuskw'] = __( 'Keyphrase', 'wordpress-seo' );
 		}
 
 		return array_merge( $columns, $added_columns );
@@ -127,7 +129,7 @@ class WPSEO_Meta_Columns {
 
 				if ( '' === $focuskw_val ) {
 					echo '<span aria-hidden="true">&#8212;</span><span class="screen-reader-text">',
-						esc_html__( 'Focus keyword not set.', 'wordpress-seo' ),
+						esc_html__( 'Focus keyphrase not set.', 'wordpress-seo' ),
 						'</span>';
 					return;
 				}
@@ -272,7 +274,7 @@ class WPSEO_Meta_Columns {
 	}
 
 	/**
-	 * Determines the Readabilty score filter to the meta query, based on the passed Readabilty filter.
+	 * Determines the Readability score filter to the meta query, based on the passed Readability filter.
 	 *
 	 * @param string $readability_filter The Readability filter to use to determine what further filter to apply.
 	 *
@@ -293,9 +295,9 @@ class WPSEO_Meta_Columns {
 	 */
 	protected function get_keyword_filter( $keyword_filter ) {
 		return array(
-			'post_type'  => get_query_var( 'post_type', 'post' ),
-			'meta_key'   => WPSEO_Meta::$meta_prefix . 'focuskw',
-			'meta_value' => sanitize_text_field( $keyword_filter ),
+			'post_type' => get_query_var( 'post_type', 'post' ),
+			'key'       => WPSEO_Meta::$meta_prefix . 'focuskw',
+			'value'     => sanitize_text_field( $keyword_filter ),
 		);
 	}
 
@@ -611,7 +613,7 @@ class WPSEO_Meta_Columns {
 
 		if ( WPSEO_Meta::get_value( 'focuskw', $post_id ) === '' ) {
 			$rank  = new WPSEO_Rank( WPSEO_Rank::NO_FOCUS );
-			$title = __( 'Focus keyword not set.', 'wordpress-seo' );
+			$title = __( 'Focus keyphrase not set.', 'wordpress-seo' );
 
 			return $this->render_score_indicator( $rank, $title );
 		}
@@ -725,7 +727,7 @@ class WPSEO_Meta_Columns {
 			$title = $rank->get_label();
 		}
 
-		return '<div aria-hidden="true" title="' . esc_attr( $title ) . '" class="wpseo-score-icon ' . esc_attr( $rank->get_css_class() ) . '"></div><span class="screen-reader-text">' . $title . '</span>';
+		return '<div aria-hidden="true" title="' . esc_attr( $title ) . '" class="wpseo-score-icon ' . esc_attr( $rank->get_css_class() ) . '"></div><span class="screen-reader-text wpseo-score-text">' . $title . '</span>';
 	}
 
 	/**

@@ -1,5 +1,7 @@
 <?php
 /**
+ * WPSEO plugin file.
+ *
  * @package WPSEO\Admin
  */
 
@@ -7,6 +9,7 @@
  * This class parses all the values for the general tab in the Yoast SEO settings metabox
  */
 class WPSEO_Taxonomy_Settings_Fields extends WPSEO_Taxonomy_Fields {
+
 	/**
 	 * @var array   Options array for the no-index options, including translated labels
 	 */
@@ -29,6 +32,7 @@ class WPSEO_Taxonomy_Settings_Fields extends WPSEO_Taxonomy_Fields {
 		$labels = $this->get_taxonomy_labels();
 		$fields = array(
 			'noindex'   => $this->get_field_config(
+				/* translators: %s = taxonomy name. */
 				esc_html( sprintf( __( 'Allow search engines to show this %s in search results?', 'wordpress-seo' ), $labels->singular_name ) ),
 				'',
 				'select',

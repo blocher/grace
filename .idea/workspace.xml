@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3af5481f-ae2b-4ffc-a8e1-89e9be5a0a20" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/grace.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="3af5481f-ae2b-4ffc-a8e1-89e9be5a0a20" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,31 +145,6 @@
               <item name="grace" type="b2602c69:ProjectViewProjectNode" />
               <item name="grace" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="grace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grace" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grace" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grace" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="plugins" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="grace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="grace" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="wp-content" type="462c0819:PsiDirectoryNode" />
-              <item name="themes" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -215,12 +181,12 @@
       <option name="presentableId" value="Default" />
       <updated>1551711198472</updated>
       <workItem from="1551711201003" duration="995000" />
-      <workItem from="1551720051398" duration="727000" />
+      <workItem from="1551720051398" duration="954000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1722000" />
+    <option name="totallyTimeSpent" value="1949000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="966" extended-state="6" />

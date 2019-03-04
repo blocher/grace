@@ -3,8 +3,8 @@ Contributors: scott.deluzio
 Tags: database, php, memory, version, wordpress, admin, debug, plugin, theme
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5VFWNLX2NQGQN
 Requires at least: 3.4.0
-Tested up to: 4.7
-Stable tag: 1.3.6
+Tested up to: 5.0.3
+Stable tag: 1.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ Debug Info provides the following information:
 
 * Apache version
 
-* Full phpinfo() server environment information 
+* Full phpinfo() server environment information
 
 Thanks to <a href="http://firstsiteguide.com">Ogi Djuraskovic</a> for the Spanish (es_ES) and Serbian (sr_RS) language translations.
 
@@ -43,10 +43,8 @@ No, however it may help identify potential issues.
 = I don't understand most of the information this plugin produces. =
 If you need help fixing a problem, the information this plugin produces is helpful in order to identify compatibility issues between themes and plugins or different WordPress versions. PHP information is provided to help identify any potential server side conflicts.
 
-If you are still stuck, you can always <a href="http://oizuled.com/">ask for help</a>.
-
 = I installed the plugin, and it hasn't helped identify the problem. =
-This plugin may not identify every problem your site may face. 
+This plugin may not identify every problem your site may face.
 
 For example, if your site gets hacked, this plugin will not be able to identify that. However, it will be able to identify if you are using an outdated version of WordPress or a theme, which may indicate potential security holes.
 
@@ -57,6 +55,9 @@ Sure! Once you have translated it, let me know and I'll be sure to get your tran
 1. Debug Info screenshot-1.png
 
 == Changelog ==
+= 1.3.7 =
+* Updated readme and contact info.
+
 = 1.3.6 =
 * Minor update
 
@@ -72,7 +73,7 @@ Sure! Once you have translated it, let me know and I'll be sure to get your tran
 
 = 1.3.2 =
 * Fixed a bug that caused an error when displaying Apache version in some cases.
-* Removed PHP memory usage data as this was only returning the amount of memory that is currently being allocated to your PHP script. This may be misleading when attempting to diagnose issues with other scripts. 
+* Removed PHP memory usage data as this was only returning the amount of memory that is currently being allocated to your PHP script. This may be misleading when attempting to diagnose issues with other scripts.
 * Included .pot file for translations.
 
 = 1.3.1 =
@@ -91,5 +92,5 @@ Sure! Once you have translated it, let me know and I'll be sure to get your tran
 * Initial release.
 
 == Upgrade Notice ==
-= 1.3.6 =
-* Minor update
+= 1.3.7 =
+* Updated readme and contact info.
