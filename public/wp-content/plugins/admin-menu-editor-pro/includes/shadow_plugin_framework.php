@@ -311,7 +311,7 @@ class MenuEd_ShadowPluginFramework {
 			$filename = $this->plugin_file;
 		}
 		
-		return (strpos( realpath($filename), realpath(WPMU_PLUGIN_DIR) ) !== false);
+		return (@strpos( realpath($filename), realpath(WPMU_PLUGIN_DIR) ) !== false);
 	}
 	
 	/**
