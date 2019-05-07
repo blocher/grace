@@ -30,7 +30,12 @@
  */
 class Google_Service_CloudIdentity extends Google_Service
 {
-
+  /** See, change, create, and delete any of the Cloud Identity Groups that you can access, including the members of each group. */
+  const CLOUD_IDENTITY_GROUPS =
+      "https://www.googleapis.com/auth/cloud-identity.groups";
+  /** See any Cloud Identity Groups that you can access, including group members and their emails. */
+  const CLOUD_IDENTITY_GROUPS_READONLY =
+      "https://www.googleapis.com/auth/cloud-identity.groups.readonly";
 
   public $groups;
   public $groups_memberships;

@@ -102,14 +102,14 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsTransferConfigs exten
    * be returned: `projects/{project_id}`.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string pageToken Pagination token, which can be used to request a
-   * specific page of `ListTransfersRequest` list results. For multiple-page
-   * results, `ListTransfersResponse` outputs a `next_page` token, which can be
-   * used as the `page_token` value to request the next page of list results.
    * @opt_param int pageSize Page size. The default page size is the maximum value
    * of 1000 results.
    * @opt_param string dataSourceIds When specified, only configurations of
    * requested data sources are returned.
+   * @opt_param string pageToken Pagination token, which can be used to request a
+   * specific page of `ListTransfersRequest` list results. For multiple-page
+   * results, `ListTransfersResponse` outputs a `next_page` token, which can be
+   * used as the `page_token` value to request the next page of list results.
    * @return Google_Service_BigQueryDataTransfer_ListTransferConfigsResponse
    */
   public function listProjectsTransferConfigs($parent, $optParams = array())
@@ -167,7 +167,8 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsTransferConfigs exten
    * Creates transfer runs for a time range [start_time, end_time]. For each date
    * - or whatever granularity the data source supports - in the range, one
    * transfer run is created. Note that runs are created per UTC time in the time
-   * range. (transferConfigs.scheduleRuns)
+   * range. DEPRECATED: use StartManualTransferRuns instead.
+   * (transferConfigs.scheduleRuns)
    *
    * @param string $parent Transfer configuration name in the form:
    * `projects/{project_id}/transferConfigs/{config_id}`.
@@ -180,5 +181,23 @@ class Google_Service_BigQueryDataTransfer_Resource_ProjectsTransferConfigs exten
     $params = array('parent' => $parent, 'postBody' => $postBody);
     $params = array_merge($params, $optParams);
     return $this->call('scheduleRuns', array($params), "Google_Service_BigQueryDataTransfer_ScheduleTransferRunsResponse");
+  }
+  /**
+   * Start manual transfer runs to be executed now with schedule_time equal to
+   * current time. The transfer runs can be created for a time range where the
+   * run_time is between start_time (inclusive) and end_time (exclusive), or for a
+   * specific run_time. (transferConfigs.startManualRuns)
+   *
+   * @param string $parent Transfer configuration name in the form:
+   * `projects/{project_id}/transferConfigs/{config_id}`.
+   * @param Google_Service_BigQueryDataTransfer_StartManualTransferRunsRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Google_Service_BigQueryDataTransfer_StartManualTransferRunsResponse
+   */
+  public function startManualRuns($parent, Google_Service_BigQueryDataTransfer_StartManualTransferRunsRequest $postBody, $optParams = array())
+  {
+    $params = array('parent' => $parent, 'postBody' => $postBody);
+    $params = array_merge($params, $optParams);
+    return $this->call('startManualRuns', array($params), "Google_Service_BigQueryDataTransfer_StartManualTransferRunsResponse");
   }
 }
