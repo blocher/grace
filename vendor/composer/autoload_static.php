@@ -76,6 +76,10 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         array (
             'Doctrine\\Common\\Inflector\\' => 26,
         ),
+        'C' => 
+        array (
+            'Carbon\\' => 7,
+        ),
         'B' => 
         array (
             'Buzz\\' => 5,
@@ -192,6 +196,10 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
         ),
+        'Carbon\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
+        ),
         'Buzz\\' => 
         array (
             0 => __DIR__ . '/..' . '/kriswallsmith/buzz/lib',
@@ -202,18 +210,7 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         ),
     );
 
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/..' . '/nesbot/carbon/src',
-    );
-
     public static $prefixesPsr0 = array (
-        'U' => 
-        array (
-            'UpdateHelper\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/kylekatarnls/update-helper/src',
-            ),
-        ),
         'S' => 
         array (
             'Smalot\\PdfParser\\' => 
@@ -280,7 +277,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0::$prefixDirsPsr4;
-            $loader->fallbackDirsPsr4 = ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0::$fallbackDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0::$prefixesPsr0;
             $loader->classMap = ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0::$classMap;
 

@@ -49,7 +49,7 @@ use Smalot\PdfParser\Element\ElementDate;
 class Document
 {
     /**
-     * @var Object[]
+     * @var PDFObject[]
      */
     protected $objects = array();
 
@@ -118,9 +118,11 @@ class Document
 
         // Extract document info
         if ($this->trailer->has('Info')) {
-            /** @var Object $info */
+            /** @var PDFObject $info */
             $info = $this->trailer->get('Info');
-            if ($info !== null) {
+            // This could be an ElementMissing object, so we need to check for
+            // the getHeader method first.
+            if ($info !== null && method_exists($info, 'getHeader')) {
                 $details = $info->getHeader()->getDetails();
             }
         }
@@ -145,7 +147,7 @@ class Document
     }
 
     /**
-     * @param Object[] $objects
+     * @param PDFObject[] $objects
      */
     public function setObjects($objects = array())
     {
@@ -155,7 +157,7 @@ class Document
     }
 
     /**
-     * @return Object[]
+     * @return PDFObject[]
      */
     public function getObjects()
     {
@@ -165,7 +167,7 @@ class Document
     /**
      * @param string $id
      *
-     * @return Object
+     * @return PDFObject
      */
     public function getObjectById($id)
     {
@@ -180,7 +182,7 @@ class Document
      * @param string $type
      * @param string $subtype
      *
-     * @return Object[]
+     * @return PDFObject[]
      */
     public function getObjectsByType($type, $subtype = null)
     {
@@ -198,7 +200,7 @@ class Document
     }
 
     /**
-     * @return \Object[]
+     * @return PDFObject[]
      */
     public function getFonts()
     {
@@ -257,12 +259,26 @@ class Document
         $pages = $this->getPages();
 
         foreach ($pages as $index => $page) {
+            /**
+             * In some cases, the $page variable may be null.
+             */
+            if (is_null($page)) {
+                continue;
+            }
             if ($text = trim($page->getText())) {
                 $texts[] = $text;
             }
         }
 
         return implode("\n\n", $texts);
+    }
+
+    /**
+     * @return Header
+     */
+    public function getTrailer()
+    {
+        return $this->trailer;
     }
 
     /**

@@ -15,7 +15,6 @@
       <path value="$PROJECT_DIR$/vendor/pacely/mailchimp-apiv3" />
       <path value="$PROJECT_DIR$/vendor/tecnickcom/tcpdf" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
-      <path value="$PROJECT_DIR$/vendor/smalot/pdfparser" />
       <path value="$PROJECT_DIR$/vendor/psr/log" />
       <path value="$PROJECT_DIR$/vendor/illuminate/contracts" />
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
@@ -32,7 +31,6 @@
       <path value="$PROJECT_DIR$/vendor/endroid/twitter" />
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
       <path value="$PROJECT_DIR$/vendor/psr/http-client" />
-      <path value="$PROJECT_DIR$/vendor/symfony/contracts" />
       <path value="$PROJECT_DIR$/vendor/symfony/options-resolver" />
       <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
       <path value="$PROJECT_DIR$/vendor/php-http/httplug" />
@@ -40,6 +38,8 @@
       <path value="$PROJECT_DIR$/vendor/php-http/message-factory" />
       <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
       <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
+      <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/smalot/pdfparser" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.3" />

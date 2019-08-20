@@ -35,7 +35,7 @@ namespace Smalot\PdfParser;
  *
  * @package Smalot\PdfParser
  */
-class Font extends Object
+class Font extends PDFObject
 {
     /**
      *
@@ -201,7 +201,8 @@ class Font extends Object
                     }
 
                     // Support for : <srcCode1> <srcCodeN> [<dstString1> <dstString2> ... <dstStringN>]
-                    $regexp = '/<(?P<from>[0-9A-F]+)> *<(?P<to>[0-9A-F]+)> *\[(?P<strings>[<>0-9A-F ]+)\][ \r\n]+/is';
+                    // Some PDF file has 2-byte Unicode values on new lines > added \r\n
+                    $regexp = '/<(?P<from>[0-9A-F]+)> *<(?P<to>[0-9A-F]+)> *\[(?P<strings>[\r\n<>0-9A-F ]+)\][ \r\n]+/is';
 
                     preg_match_all($regexp, $section, $matches);
 
@@ -248,11 +249,16 @@ class Font extends Object
      */
     public static function decodeHexadecimal($hexa, $add_braces = false)
     {
+        // Special shortcut for XML content.
+        if (stripos($hexa, '<?xml') !== false) {
+            return $hexa;
+        }
+
         $text  = '';
-        $parts = preg_split('/(<[a-z0-9]+>)/si', $hexa, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $parts = preg_split('/(<[a-f0-9]+>)/si', $hexa, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 
         foreach ($parts as $part) {
-            if (preg_match('/^<.*>$/', $part) && strpos($part, '<?xml') === false) {
+            if (preg_match('/^<.*>$/', $part) && stripos($part, '<?xml') === false) {
                 $part = trim($part, '<>');
                 if ($add_braces) {
                     $text .= '(';
@@ -356,16 +362,16 @@ class Font extends Object
         $font_space    = $this->getFontSpaceLimit();
 
         foreach ($commands as $command) {
-            switch ($command[Object::TYPE]) {
+            switch ($command[PDFObject::TYPE]) {
                 case 'n':
-                    if (floatval(trim($command[Object::COMMAND])) < $font_space) {
+                    if (floatval(trim($command[PDFObject::COMMAND])) < $font_space) {
                         $word_position = count($words);
                     }
                     continue(2);
 
                 case '<':
                     // Decode hexadecimal.
-                    $text = self::decodeHexadecimal('<' . $command[Object::COMMAND] . '>');
+                    $text = self::decodeHexadecimal('<' . $command[PDFObject::COMMAND] . '>');
 
                     if (mb_check_encoding($text, "UTF-8")) {
                         $unicode = true;
@@ -375,7 +381,7 @@ class Font extends Object
 
                 default:
                     // Decode octal (if necessary).
-                    $text = self::decodeOctal($command[Object::COMMAND]);
+                    $text = self::decodeOctal($command[PDFObject::COMMAND]);
             }
 
             // replace escaped chars
@@ -424,7 +430,7 @@ class Font extends Object
                         $char = $decoded;
                     } elseif ($this->has('DescendantFonts')) {
 
-                        if ($this->get('DescendantFonts') instanceof Object) {
+                        if ($this->get('DescendantFonts') instanceof PDFObject) {
                             $fonts   = $this->get('DescendantFonts')->getHeader()->getElements();
                         } else {
                             $fonts   = $this->get('DescendantFonts')->getContent();
@@ -434,7 +440,7 @@ class Font extends Object
                         foreach ($fonts as $font) {
                             if ($font instanceof Font) {
                                 if (($decoded = $font->translateChar($char, false)) !== false) {
-                                    $decoded = @iconv('Windows-1252', 'UTF-8//TRANSLIT//IGNORE', $decoded);
+                                    $decoded = mb_convert_encoding($decoded, 'UTF-8', 'Windows-1252');
                                     break;
                                 }
                             }
@@ -443,7 +449,7 @@ class Font extends Object
                         if ($decoded !== false) {
                             $char = $decoded;
                         } else {
-                            $char = @iconv('Windows-1252', 'UTF-8//TRANSLIT//IGNORE', $char);
+                            $char = mb_convert_encoding($char, 'UTF-8', 'Windows-1252');
                         }
                     } else {
                         $char = self::MISSING;
@@ -491,7 +497,7 @@ class Font extends Object
                     $text = $result;
 
                     if ($encoding->get('BaseEncoding')->equals('MacRomanEncoding')) {
-                        $text = @iconv('Mac', 'UTF-8//TRANSLIT//IGNORE', $text);
+                        $text = mb_convert_encoding($text, 'UTF-8', 'Mac');
 
                         return $text;
                     }
@@ -505,9 +511,9 @@ class Font extends Object
             if ($this->get('Encoding') instanceof Element &&
                 $this->get('Encoding')->equals('MacRomanEncoding')
             ) {
-                $text = @iconv('Mac', 'UTF-8//TRANSLIT//IGNORE', $text);
+                $text = mb_convert_encoding($text, 'UTF-8', 'ISO-8859-1');
             } else {
-                $text = @iconv('Windows-1252', 'UTF-8//TRANSLIT//IGNORE', $text);
+                $text = mb_convert_encoding($text, 'UTF-8', 'Windows-1252');
             }
         }
 

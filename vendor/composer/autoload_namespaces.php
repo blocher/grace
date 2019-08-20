@@ -6,7 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'UpdateHelper\\' => array($vendorDir . '/kylekatarnls/update-helper/src'),
     'Smalot\\PdfParser\\' => array($vendorDir . '/smalot/pdfparser/src'),
     'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),
     'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),

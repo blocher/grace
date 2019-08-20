@@ -32,7 +32,7 @@ return array(
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
     'Endroid\\Twitter\\' => array($vendorDir . '/endroid/twitter/src'),
     'Doctrine\\Common\\Inflector\\' => array($vendorDir . '/doctrine/inflector/lib/Doctrine/Common/Inflector'),
+    'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Buzz\\' => array($vendorDir . '/kriswallsmith/buzz/lib'),
     'Abraham\\TwitterOAuth\\' => array($vendorDir . '/abraham/twitteroauth/src'),
-    '' => array($vendorDir . '/nesbot/carbon/src'),
 );
