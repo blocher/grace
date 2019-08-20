@@ -77,19 +77,14 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    * sources provide a source_id of `-`. For example: organizations/123/sources/-
    * @param array $optParams Optional parameters.
    *
+   * @opt_param string fieldMask Optional. A field mask to specify the Finding
+   * fields to be listed in the response. An empty field mask will list all
+   * fields.
    * @opt_param string pageToken The value returned by the last
    * `ListFindingsResponse`; indicates that this is a continuation of a prior
    * `ListFindings` call, and that the system should return the next page of data.
-   * @opt_param string fieldMask Optional.
-   *
-   * A field mask to specify the Finding fields to be listed in the response. An
-   * empty field mask will list all fields.
    * @opt_param int pageSize The maximum number of results to return in a single
    * response. Default is 10, minimum is 1, maximum is 1000.
-   * @opt_param string readTime Time used as a reference point when filtering
-   * findings. The filter is limited to findings existing at the supplied time and
-   * their values are those at that specific time. Absence of this field will
-   * default to the API's version of NOW.
    * @opt_param string orderBy Expression that defines what fields and order to
    * use for sorting. The string value should follow SQL syntax: comma separated
    * list of fields. For example: "name,resource_properties.a_property". The
@@ -100,7 +95,11 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    * desc  ,   source_properties.a_property  " are equivalent.
    *
    * The following fields are supported: name parent state category resource_name
-   * event_time source_properties security_marks
+   * event_time source_properties security_marks.marks
+   * @opt_param string readTime Time used as a reference point when filtering
+   * findings. The filter is limited to findings existing at the supplied time and
+   * their values are those at that specific time. Absence of this field will
+   * default to the API's version of NOW.
    * @opt_param string compareDuration When compare_duration is set, the
    * ListFindingsResult's "state_change" attribute is updated to indicate whether
    * the finding had its state changed, the finding's state remained unchanged, or
@@ -148,8 +147,14 @@ class Google_Service_SecurityCommandCenter_Resource_OrganizationsSourcesFindings
    * The following field and operator combinations are supported:
    *
    * name: `=` parent: `=`, `:` resource_name: `=`, `:` state: `=`, `:` category:
-   * `=`, `:` external_uri: `=`, `:` event_time: `>`, `<`, `>=`, `<=`
-   * security_marks: `=`, `:` source_properties: `=`, `:`, `>`, `<`, `>=`, `<=`
+   * `=`, `:` external_uri: `=`, `:` event_time: `=`, `>`, `<`, `>=`, `<=`
+   *
+   *   Usage: This should be milliseconds since epoch or an RFC3339 string.
+   * Examples:     "event_time = \"2019-06-10T16:07:18-07:00\""     "event_time =
+   * 1560208038000"
+   *
+   * security_marks.marks: `=`, `:` source_properties: `=`, `:`, `>`, `<`, `>=`,
+   * `<=`
    *
    * For example, `source_properties.size = 100` is a valid filter string.
    * @return Google_Service_SecurityCommandCenter_ListFindingsResponse
