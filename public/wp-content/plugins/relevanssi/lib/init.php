@@ -79,18 +79,16 @@ function relevanssi_init() {
 	}
 
 	if ( 'done' !== get_option( 'relevanssi_indexed' ) ) {
-		/**
-		 * Prints out the "You do not have an index!" warning.
-		 */
-		function relevanssi_warning() {
-			$plugin = 'relevanssi';
-			if ( RELEVANSSI_PREMIUM ) {
-				$plugin = 'relevanssi-premium';
-			}
-			printf( "<div id='relevanssi-warning' class='update-nag'><p><strong>%s</strong></p></div>", esc_html__( 'You do not have an index! Remember to build the index (click the "Build the index" button), otherwise searching won\'t work.', 'relevanssi' ) );
-		}
 		if ( 'options-general.php' === $pagenow && $on_relevanssi_page ) {
-			add_action( 'admin_notices', 'relevanssi_warning' );
+			add_action(
+				'admin_notices',
+				function() {
+					printf(
+						"<div id='relevanssi-warning' class='update-nag'><p><strong>%s</strong></p></div>",
+						esc_html__( 'You do not have an index! Remember to build the index (click the "Build the index" button), otherwise searching won\'t work.', 'relevanssi' )
+					);
+				}
+			);
 		}
 	}
 
@@ -154,6 +152,48 @@ function relevanssi_init() {
 	if ( defined( 'WPSEO_FILE' ) ) {
 		require_once 'compatibility/yoast-seo.php';
 	}
+
+	if ( function_exists( 'seopress_get_toggle_titles_option' ) && '1' === seopress_get_toggle_titles_option() ) {
+		require_once 'compatibility/seopress.php';
+	}
+
+	if ( function_exists( 'members_content_permissions_enabled' ) ) {
+		require_once 'compatibility/members.php';
+	}
+
+	if ( defined( 'GROUPS_CORE_VERSION' ) ) {
+		require_once 'compatibility/groups.php';
+	}
+
+	if ( class_exists( 'MeprUpdateCtrl', false ) && MeprUpdateCtrl::is_activated() ) {
+		require_once 'compatibility/memberpress.php';
+	}
+
+	if ( defined( 'SIMPLE_WP_MEMBERSHIP_VER' ) ) {
+		require_once 'compatibility/simplemembership.php';
+	}
+
+	if ( function_exists( 'wp_jv_prg_user_can_see_a_post' ) ) {
+		require_once 'compatibility/wpjvpostreadinggroups.php';
+	}
+
+	if ( function_exists( 'rcp_user_can_access' ) ) {
+		require_once 'compatibility/restrictcontentpro.php';
+	}
+
+	// phpcs:disable WordPress.NamingConventions.ValidVariableName
+	global $userAccessManager;
+	if ( isset( $userAccessManager ) ) {
+		require_once 'compatibility/useraccessmanager.php';
+	}
+	// phpcs:enable WordPress.NamingConventions.ValidVariableName
+
+	if ( function_exists( 'pmpro_has_membership_access' ) ) {
+		require_once 'compatibility/paidmembershippro.php';
+	}
+
+	// Always required, the functions check if TablePress is active.
+	require_once 'compatibility/tablepress.php';
 }
 
 /**

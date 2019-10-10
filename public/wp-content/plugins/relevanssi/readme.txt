@@ -3,9 +3,9 @@ Contributors: msaari
 Donate link: https://www.relevanssi.com/buy-premium/
 Tags: search, relevance, better search
 Requires at least: 4.8.3
-Tested up to: 5.2.2
+Tested up to: 5.2.3
 Requires PHP: 5.6
-Stable tag: 4.3.1.1
+Stable tag: 4.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -129,6 +129,25 @@ Each document database is full of useless words. All the little words that appea
 * John Calahan for extensive 4.0 beta testing.
 
 == Changelog ==
+= 4.3.3 =
+* New feature: New filter hook `relevanssi_indexing_adjust` can be used to stop Relevanssi from adjusting the number of posts indexed at once during the indexing.
+* New feature: New filter hook `relevanssi_acf_field_value` filters ACF field values before they are indexed.
+* New feature: New filter hook `relevanssi_disabled_shortcodes` filters the array containing shortcodes that are disabled when indexing.
+* Removed feature: The `relevanssi_indexing_limit` option wasn't really used anymore, so it has been removed.
+* Changed behaviour: Indexing exclusions from Yoast SEO and SEOPress are applied in a different way in the indexing, making for a smoother indexing process.
+* Changed behaviour: WP Table Reloaded support has been removed; you really shouldn't be using WP Table Reloaded anymore.
+* Minor fix: Relevanssi won't choke on ACF fields with array or object values anymore.
+* Minor fix: Relevanssi uninstall process left couple of Relevanssi options in the database.
+* Minor fix: WPML language filter didn't work when `fields` was set to `ids` or `id=>parent`.
+
+= 4.3.2 =
+* New feature: SEOPress support, posts marked "noindex" in SEOPress are no longer indexed by Relevanssi by default.
+* Changed behaviour: Membership plugin compatibility is removed from `relevanssi_default_post_ok` function and has been moved to individual compatibility functions for each supported membership plugin. This makes it much easier to for example disable the membership plugin features if required.
+* Minor fix: The `searchform` shortcode now works better with different kinds of search forms.
+* Minor fix: Yoast SEO compatibility won't block indexing of posts with explicitly allowed indexing.
+* Minor fix: The `relevanssi_the_tags()` function printed out plain text, not HTML code like it should. The function now also accepts the post ID as a parameter.
+* Minor fix: Excerpt creation and highlighting have been improved a little.
+
 = 4.3.1.1 =
 * Remove notice about undefined index.
 
@@ -151,23 +170,13 @@ Each document database is full of useless words. All the little words that appea
 * Minor fix: Relevanssi admin pages have been examined for accessibility and form labels have been improved in many places.
 * Deprecated: `relevanssi_get_term_taxonomy()` function is deprecated and will be removed at some point in the future.
 
-= 4.2.0 =
-* New feature: The search form shortcode has a new parameter `dropdown` which can be used to add a category dropdown, like this: `[searchform dropdown="category"]`.
-* New feature: Relevanssi can now use the contents of the PDF files indexed with WP File Download.
-* New filter: `relevanssi_indexing_tokens` can be used to filter the tokens (individual words) before they are indexed.
-* Removed filter: `relevanssi_default_meta_query_relation` did not have any effect anymore.
-* Changed behaviour: The default taxonomy relation was set to AND in 4.1.4, but wasn't properly applied before. Now it is really switched.
-* Changed behaviour: New post types have been added to list of forbidden post types Relevanssi won't show as indexing options (ACF, TablePress and WooCommerce).
-* Major fix: Tax query processing has been completely refactored, eliminating all sorts of bugs, especially with various edge cases.
-* Major fix: Gutenberg block indexing only worked with the Gutenberg plugin enabled. It now works with WP 5.0 built-in Gutenberg as well. If you use Gutenberg blocks, reindex to get all the block content in the index.
-* Major fix: Excerpt-building and highlighting did not respect the "Keyword matching" setting. They do now, and the excerpts should be better now.
-* Major fix: AND searches needed queries that could get too long for the database to handle. This has been fixed and optimized.
-* Major fix: Taxonomy term subquery relations didn't work; now they are applied.
-* Minor fix: iOS uses curly quotes by default, and that didn't work as a phrase operator. Now phrase operator works with curly quotes and straight quotes.
-* Minor fix: The Did you mean broke with search terms longer than 255 characters.
-* Minor fix: Phrases with numbers and one word like "team 17" didn't work, because numbers weren't counted as words.
-
 == Upgrade notice ==
+= 4.3.3 =
+* Bug fixes and overall improvements.
+
+= 4.3.2 =
+* Yoast SEO compatibility fix, minor updates.
+
 = 4.3.1.1 =
 * Remove an error notice.
 
@@ -176,6 +185,3 @@ Each document database is full of useless words. All the little words that appea
 
 = 4.3.0 =
 * Major bug fixes for taxonomy queries, new features and smaller improvements.
-
-= 4.2.0 =
-* New features, bug fixes, smaller improvements.
