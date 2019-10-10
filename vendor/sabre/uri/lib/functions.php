@@ -53,7 +53,7 @@ function resolve(string $basePath, string $newPath): string
     $newParts['port'] = $pick('port');
 
     $path = '';
-    if ($delta['path']) {
+    if (is_string($delta['path']) and strlen($delta['path']) > 0) {
         // If the path starts with a slash
         if ('/' === $delta['path'][0]) {
             $path = $delta['path'];
@@ -373,7 +373,7 @@ function _parse_fallback(string $uri): array
         if ($matches['host']) {
             $result['host'] = $matches['host'];
         }
-        if ($matches['port']) {
+        if (isset($matches['port'])) {
             $result['port'] = (int) $matches['port'];
         }
         if (isset($matches['path'])) {

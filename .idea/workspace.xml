@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3af5481f-ae2b-4ffc-a8e1-89e9be5a0a20" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/grace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/grace.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/import-from-ics.php" beforeDir="false" afterPath="$PROJECT_DIR$/import-from-ics.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -66,6 +66,11 @@
     </include_path>
   </component>
   <component name="ProjectId" id="1PSoQT9bnXcK6iHrZeQyyCHVmqN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -113,6 +118,7 @@
       <workItem from="1566857261255" duration="50000" />
       <workItem from="1566857333921" duration="89000" />
       <workItem from="1566857616025" duration="4168000" />
+      <workItem from="1570718618513" duration="238000" />
     </task>
     <servers />
   </component>
@@ -149,5 +155,15 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1438" y="-878" width="667" height="422" key="find.popup" timestamp="1570718857182">
+      <screen x="847" y="-1177" width="1920" height="1177" />
+    </state>
+    <state x="1438" y="-878" width="667" height="422" key="find.popup/0.23.1680.952/-1073.-1177.1920.1177/847.-1177.1920.1177@847.-1177.1920.1177" timestamp="1570718857182" />
+    <state x="1437" y="-934" width="670" height="676" key="search.everywhere.popup" timestamp="1570718621935">
+      <screen x="847" y="-1177" width="1920" height="1177" />
+    </state>
+    <state x="1437" y="-934" width="670" height="676" key="search.everywhere.popup/0.23.1680.952/-1073.-1177.1920.1177/847.-1177.1920.1177@847.-1177.1920.1177" timestamp="1570718621935" />
   </component>
 </project>

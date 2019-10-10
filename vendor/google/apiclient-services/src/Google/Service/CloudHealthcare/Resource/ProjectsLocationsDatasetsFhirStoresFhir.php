@@ -75,20 +75,20 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * is required.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string start The response includes records subsequent to the start
-   * date. If no start date is provided, all records prior to the end date are in
-   * scope.
    * @opt_param string end The response includes records prior to the end date. If
    * no end date is provided, all records subsequent to the start date are in
    * scope.
    * @opt_param int _count Maximum number of resources in a page. Defaults to 100.
    * @opt_param string pageToken Used to retrieve the next or previous page of
    * results when using pagination. Value should be set to the value of page_token
-   * set in next or previous page links' url. Next and previous page are returned
+   * set in next or previous page links' urls. Next and previous page are returned
    * in the response bundle's links field, where `link.relation` is "previous" or
    * "next".
    *
    * Omit `page_token` if no previous request has been made.
+   * @opt_param string start The response includes records subsequent to the start
+   * date. If no start date is provided, all records prior to the end date are in
+   * scope.
    * @return Google_Service_CloudHealthcare_HttpBody
    */
   public function PatientEverything($name, $optParams = array())
@@ -370,17 +370,20 @@ class Google_Service_CloudHealthcare_Resource_ProjectsLocationsDatasetsFhirStore
    * day: `_at=2019-01-20` *  A specific second: `_at=2018-12-31T23:59:58Z`
    * @opt_param int count The maximum number of search results on a page. Defaults
    * to 1000.
+   * @opt_param string page Used to retrieve the first, previous, next, or last
+   * page of resource versions when using pagination. Value should be set to the
+   * value of `page` set in next or previous page links' URLs. Next and previous
+   * page are returned in the response bundle's links field, where `link.relation`
+   * is "previous" or "next".
+   *
+   * Omit `page` if no previous request has been made.
+   * @opt_param string _page_token Same as `page`. Please use either `page` or
+   * `_page_token`.
    * @opt_param string since Only include resource versions that were created at
    * or after the given instant in time. The instant in time uses the format YYYY-
    * MM-DDThh:mm:ss.sss+zz:zz (for example 2015-02-07T13:28:17.239+02:00 or
    * 2017-01-01T00:00:00Z). The time must be specified to the second and include a
    * time zone.
-   * @opt_param string page Used to retrieve the first, previous, next, or last
-   * page of resource versions when using pagination. Value should be set to the
-   * value of the `link.url` field returned in the response to the previous
-   * request, where `link.relation` is "first", "previous", "next" or "last".
-   *
-   * Omit `page` if no previous request has been made.
    * @return Google_Service_CloudHealthcare_HttpBody
    */
   public function history($name, $optParams = array())

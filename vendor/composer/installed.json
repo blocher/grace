@@ -1,61 +1,5 @@
 [
     {
-        "name": "abraham/twitteroauth",
-        "version": "0.6.6",
-        "version_normalized": "0.6.6.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/abraham/twitteroauth.git",
-            "reference": "fc0766220c79087ac8178625d34e88ca29160d5b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/abraham/twitteroauth/zipball/fc0766220c79087ac8178625d34e88ca29160d5b",
-            "reference": "fc0766220c79087ac8178625d34e88ca29160d5b",
-            "shasum": ""
-        },
-        "require": {
-            "ext-curl": "*",
-            "php": ">=5.5.0"
-        },
-        "require-dev": {
-            "phpmd/phpmd": "2.3.*",
-            "phpunit/phpunit": "4.8.*",
-            "squizlabs/php_codesniffer": "2.3.*"
-        },
-        "time": "2016-10-10T14:20:30+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Abraham\\TwitterOAuth\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Abraham Williams",
-                "email": "abraham@abrah.am",
-                "homepage": "https://abrah.am",
-                "role": "Developer"
-            }
-        ],
-        "description": "The most popular PHP library for use with the Twitter OAuth REST API.",
-        "homepage": "https://twitteroauth.com",
-        "keywords": [
-            "Twitter API",
-            "Twitter oAuth",
-            "api",
-            "oauth",
-            "rest",
-            "social",
-            "twitter"
-        ]
-    },
-    {
         "name": "doctrine/inflector",
         "version": "v1.3.0",
         "version_normalized": "1.3.0.0",
@@ -125,62 +69,6 @@
         ]
     },
     {
-        "name": "endroid/twitter",
-        "version": "1.3.4",
-        "version_normalized": "1.3.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/endroid/twitter.git",
-            "reference": "d28a097bf920917ea0aefe7c22df23ed5229ff01"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/endroid/twitter/zipball/d28a097bf920917ea0aefe7c22df23ed5229ff01",
-            "reference": "d28a097bf920917ea0aefe7c22df23ed5229ff01",
-            "shasum": ""
-        },
-        "require": {
-            "kriswallsmith/buzz": "~0.10",
-            "php": ">=5.4"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.0|^5.0",
-            "symfony/http-foundation": "^2.3|^3.0"
-        },
-        "time": "2017-04-29T22:36:29+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Endroid\\Twitter\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jeroen van den Enden",
-                "email": "info@endroid.nl",
-                "homepage": "http://endroid.nl/"
-            }
-        ],
-        "description": "Endroid Twitter",
-        "homepage": "https://github.com/endroid/Twitter",
-        "keywords": [
-            "bundle",
-            "endroid",
-            "symfony",
-            "twitter"
-        ]
-    },
-    {
         "name": "firebase/php-jwt",
         "version": "v5.0.0",
         "version_normalized": "5.0.0.0",
@@ -230,17 +118,17 @@
     },
     {
         "name": "google/apiclient",
-        "version": "v2.2.4",
-        "version_normalized": "2.2.4.0",
+        "version": "v2.4.0",
+        "version_normalized": "2.4.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-api-php-client.git",
-            "reference": "d6c7563bdf88d6a0719ea63e21c74dc86032364e"
+            "reference": "cd3c37998020d91ae4eafca4f26a92da4dabba83"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/d6c7563bdf88d6a0719ea63e21c74dc86032364e",
-            "reference": "d6c7563bdf88d6a0719ea63e21c74dc86032364e",
+            "url": "https://api.github.com/repos/googleapis/google-api-php-client/zipball/cd3c37998020d91ae4eafca4f26a92da4dabba83",
+            "reference": "cd3c37998020d91ae4eafca4f26a92da4dabba83",
             "shasum": ""
         },
         "require": {
@@ -249,7 +137,7 @@
             "google/auth": "^1.0",
             "guzzlehttp/guzzle": "~5.3.1||~6.0",
             "guzzlehttp/psr7": "^1.2",
-            "monolog/monolog": "^1.17",
+            "monolog/monolog": "^1.17|^2.0",
             "php": ">=5.4",
             "phpseclib/phpseclib": "~0.3.10||~2.0"
         },
@@ -265,7 +153,7 @@
         "suggest": {
             "cache/filesystem-adapter": "For caching certs and tokens (using Google_Client::setCache)"
         },
-        "time": "2019-08-19T18:09:46+00:00",
+        "time": "2019-09-11T17:38:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -293,17 +181,17 @@
     },
     {
         "name": "google/apiclient-services",
-        "version": "v0.111",
-        "version_normalized": "0.111.0.0",
+        "version": "v0.117",
+        "version_normalized": "0.117.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-api-php-client-services.git",
-            "reference": "3bdb4e5be7fe49f8737f7b3a8a3a32ca68ff8f97"
+            "reference": "ae2f0f6f626db67d83ea0a0cd15100b9d083874b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/3bdb4e5be7fe49f8737f7b3a8a3a32ca68ff8f97",
-            "reference": "3bdb4e5be7fe49f8737f7b3a8a3a32ca68ff8f97",
+            "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/ae2f0f6f626db67d83ea0a0cd15100b9d083874b",
+            "reference": "ae2f0f6f626db67d83ea0a0cd15100b9d083874b",
             "shasum": ""
         },
         "require": {
@@ -312,7 +200,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.8"
         },
-        "time": "2019-08-25T00:23:03+00:00",
+        "time": "2019-10-07T00:23:24+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -332,17 +220,17 @@
     },
     {
         "name": "google/auth",
-        "version": "v1.5.2",
-        "version_normalized": "1.5.2.0",
+        "version": "v1.6.0",
+        "version_normalized": "1.6.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/googleapis/google-auth-library-php.git",
-            "reference": "2ee962e5df3e9427fda859f1b0515d6d62c4afa5"
+            "reference": "6d5455b4c0f4a58b1f1b4bdf2ba49221123698b3"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/2ee962e5df3e9427fda859f1b0515d6d62c4afa5",
-            "reference": "2ee962e5df3e9427fda859f1b0515d6d62c4afa5",
+            "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/6d5455b4c0f4a58b1f1b4bdf2ba49221123698b3",
+            "reference": "6d5455b4c0f4a58b1f1b4bdf2ba49221123698b3",
             "shasum": ""
         },
         "require": {
@@ -361,9 +249,9 @@
             "sebastian/comparator": ">=1.2.3"
         },
         "suggest": {
-            "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings. Please require version ^2."
+            "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings or for token management. Please require version ^2."
         },
-        "time": "2019-07-22T21:01:31+00:00",
+        "time": "2019-10-01T18:35:05+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -578,8 +466,8 @@
     },
     {
         "name": "illuminate/contracts",
-        "version": "v5.8.33",
-        "version_normalized": "5.8.33.0",
+        "version": "v5.8.35",
+        "version_normalized": "5.8.35.0",
         "source": {
             "type": "git",
             "url": "https://github.com/illuminate/contracts.git",
@@ -624,17 +512,17 @@
     },
     {
         "name": "illuminate/support",
-        "version": "v5.8.33",
-        "version_normalized": "5.8.33.0",
+        "version": "v5.8.35",
+        "version_normalized": "5.8.35.0",
         "source": {
             "type": "git",
             "url": "https://github.com/illuminate/support.git",
-            "reference": "7aabcab4634a1c7865fa6acb6b1b810cf4b699ea"
+            "reference": "e63a495d3bf01654f70def1046fb925c4bb56506"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/illuminate/support/zipball/7aabcab4634a1c7865fa6acb6b1b810cf4b699ea",
-            "reference": "7aabcab4634a1c7865fa6acb6b1b810cf4b699ea",
+            "url": "https://api.github.com/repos/illuminate/support/zipball/e63a495d3bf01654f70def1046fb925c4bb56506",
+            "reference": "e63a495d3bf01654f70def1046fb925c4bb56506",
             "shasum": ""
         },
         "require": {
@@ -656,7 +544,7 @@
             "symfony/var-dumper": "Required to use the dd function (^4.2).",
             "vlucas/phpdotenv": "Required to use the env helper (^3.3)."
         },
-        "time": "2019-08-11T12:48:29+00:00",
+        "time": "2019-09-03T16:36:47+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -686,94 +574,23 @@
         "homepage": "https://laravel.com"
     },
     {
-        "name": "kriswallsmith/buzz",
-        "version": "0.17.2",
-        "version_normalized": "0.17.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kriswallsmith/Buzz.git",
-            "reference": "0d7e985003f074fca0ceb00bf2f650d749ae9710"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kriswallsmith/Buzz/zipball/0d7e985003f074fca0ceb00bf2f650d749ae9710",
-            "reference": "0d7e985003f074fca0ceb00bf2f650d749ae9710",
-            "shasum": ""
-        },
-        "require": {
-            "nyholm/psr7": "^1.0",
-            "php": "^7.1",
-            "php-http/httplug": "^1.1",
-            "psr/http-client": "^0.1",
-            "psr/http-factory": "^1.0",
-            "psr/http-message": "^1.0",
-            "symfony/options-resolver": "^3.4 || ^4.0"
-        },
-        "conflict": {
-            "http-interop/http-factory": "<0.4.1"
-        },
-        "provide": {
-            "php-http/client-implementation": "1.0"
-        },
-        "require-dev": {
-            "friendsofphp/php-cs-fixer": "^2.11",
-            "php-http/client-integration-tests": "^0.6.2",
-            "phpunit/phpunit": "^6.5.7",
-            "psr/log": "^1.0",
-            "symfony/phpunit-bridge": "^4.0"
-        },
-        "suggest": {
-            "ext-curl": "*"
-        },
-        "time": "2018-09-05T17:20:52+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Buzz\\": "lib"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Kris Wallsmith",
-                "email": "kris.wallsmith@gmail.com",
-                "homepage": "http://kriswallsmith.net/"
-            },
-            {
-                "name": "Tobias Nyholm",
-                "email": "tobias.nyholm@gmail.com",
-                "homepage": "http://tnyholm.se/"
-            }
-        ],
-        "description": "Lightweight HTTP client",
-        "homepage": "https://github.com/kriswallsmith/Buzz",
-        "keywords": [
-            "curl",
-            "http client"
-        ]
-    },
-    {
         "name": "monolog/monolog",
-        "version": "1.24.0",
-        "version_normalized": "1.24.0.0",
+        "version": "2.0.0",
+        "version_normalized": "2.0.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266"
+            "reference": "68545165e19249013afd1d6f7485aecff07a2d22"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
-            "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/68545165e19249013afd1d6f7485aecff07a2d22",
+            "reference": "68545165e19249013afd1d6f7485aecff07a2d22",
             "shasum": ""
         },
         "require": {
-            "php": ">=5.3.0",
-            "psr/log": "~1.0"
+            "php": "^7.2",
+            "psr/log": "^1.0.1"
         },
         "provide": {
             "psr/log-implementation": "1.0.0"
@@ -781,34 +598,37 @@
         "require-dev": {
             "aws/aws-sdk-php": "^2.4.9 || ^3.0",
             "doctrine/couchdb": "~1.0@dev",
-            "graylog2/gelf-php": "~1.0",
-            "jakub-onderka/php-parallel-lint": "0.9",
+            "elasticsearch/elasticsearch": "^6.0",
+            "graylog2/gelf-php": "^1.4.2",
+            "jakub-onderka/php-parallel-lint": "^0.9",
             "php-amqplib/php-amqplib": "~2.4",
             "php-console/php-console": "^3.1.3",
-            "phpunit/phpunit": "~4.5",
-            "phpunit/phpunit-mock-objects": "2.3.0",
+            "phpspec/prophecy": "^1.6.1",
+            "phpunit/phpunit": "^8.3",
+            "predis/predis": "^1.1",
+            "rollbar/rollbar": "^1.3",
             "ruflin/elastica": ">=0.90 <3.0",
-            "sentry/sentry": "^0.13",
             "swiftmailer/swiftmailer": "^5.3|^6.0"
         },
         "suggest": {
             "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
             "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
+            "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
             "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-            "ext-mongo": "Allow sending log messages to a MongoDB server",
+            "ext-mbstring": "Allow to work properly with unicode symbols",
+            "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
             "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-            "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
+            "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
             "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
             "php-console/php-console": "Allow sending log messages to Google Chrome",
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
-            "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-            "sentry/sentry": "Allow sending log messages to a Sentry server"
+            "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2018-11-05T09:00:11+00:00",
+        "time": "2019-08-30T09:56:44+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "2.0.x-dev"
+                "dev-master": "2.x-dev"
             }
         },
         "installation-source": "dist",
@@ -877,17 +697,17 @@
     },
     {
         "name": "nesbot/carbon",
-        "version": "2.23.1",
-        "version_normalized": "2.23.1.0",
+        "version": "2.25.1",
+        "version_normalized": "2.25.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/briannesbitt/Carbon.git",
-            "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02"
+            "reference": "d59c6cea9c4a3547bb6c0dfec451319abdaa4fb1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/767617a047e5b8b8b3b0b6023a2650847ed7df02",
-            "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02",
+            "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d59c6cea9c4a3547bb6c0dfec451319abdaa4fb1",
+            "reference": "d59c6cea9c4a3547bb6c0dfec451319abdaa4fb1",
             "shasum": ""
         },
         "require": {
@@ -903,7 +723,7 @@
             "phpunit/phpunit": "^7.5 || ^8.0",
             "squizlabs/php_codesniffer": "^3.4"
         },
-        "time": "2019-08-17T13:57:34+00:00",
+        "time": "2019-10-05T15:52:23+00:00",
         "bin": [
             "bin/carbon"
         ],
@@ -936,76 +756,12 @@
                 "homepage": "http://github.com/kylekatarnls"
             }
         ],
-        "description": "A API extension for DateTime that supports 281 different languages.",
+        "description": "An API extension for DateTime that supports 281 different languages.",
         "homepage": "http://carbon.nesbot.com",
         "keywords": [
             "date",
             "datetime",
             "time"
-        ]
-    },
-    {
-        "name": "nyholm/psr7",
-        "version": "1.2.0",
-        "version_normalized": "1.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/Nyholm/psr7.git",
-            "reference": "27c828a165ff936f9fe9056baa9cabe0c70a423c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/Nyholm/psr7/zipball/27c828a165ff936f9fe9056baa9cabe0c70a423c",
-            "reference": "27c828a165ff936f9fe9056baa9cabe0c70a423c",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1",
-            "php-http/message-factory": "^1.0",
-            "psr/http-factory": "^1.0",
-            "psr/http-message": "^1.0"
-        },
-        "provide": {
-            "psr/http-factory-implementation": "1.0",
-            "psr/http-message-implementation": "1.0"
-        },
-        "require-dev": {
-            "http-interop/http-factory-tests": "dev-master",
-            "php-http/psr7-integration-tests": "dev-master",
-            "phpunit/phpunit": "^7.5"
-        },
-        "time": "2019-08-22T18:22:08+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Nyholm\\Psr7\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Tobias Nyholm",
-                "email": "tobias.nyholm@gmail.com"
-            },
-            {
-                "name": "Martijn van der Ven",
-                "email": "martijn@vanderven.se"
-            }
-        ],
-        "description": "A fast PHP7 implementation of PSR-7",
-        "homepage": "http://tnyholm.se",
-        "keywords": [
-            "psr-17",
-            "psr-7"
         ]
     },
     {
@@ -1063,180 +819,18 @@
         ]
     },
     {
-        "name": "php-http/httplug",
-        "version": "v1.1.0",
-        "version_normalized": "1.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-http/httplug.git",
-            "reference": "1c6381726c18579c4ca2ef1ec1498fdae8bdf018"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-http/httplug/zipball/1c6381726c18579c4ca2ef1ec1498fdae8bdf018",
-            "reference": "1c6381726c18579c4ca2ef1ec1498fdae8bdf018",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4",
-            "php-http/promise": "^1.0",
-            "psr/http-message": "^1.0"
-        },
-        "require-dev": {
-            "henrikbjorn/phpspec-code-coverage": "^1.0",
-            "phpspec/phpspec": "^2.4"
-        },
-        "time": "2016-08-31T08:30:17+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Http\\Client\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Eric GELOEN",
-                "email": "geloen.eric@gmail.com"
-            },
-            {
-                "name": "Márk Sági-Kazár",
-                "email": "mark.sagikazar@gmail.com"
-            }
-        ],
-        "description": "HTTPlug, the HTTP client abstraction for PHP",
-        "homepage": "http://httplug.io",
-        "keywords": [
-            "client",
-            "http"
-        ]
-    },
-    {
-        "name": "php-http/message-factory",
-        "version": "v1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-http/message-factory.git",
-            "reference": "a478cb11f66a6ac48d8954216cfed9aa06a501a1"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-http/message-factory/zipball/a478cb11f66a6ac48d8954216cfed9aa06a501a1",
-            "reference": "a478cb11f66a6ac48d8954216cfed9aa06a501a1",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4",
-            "psr/http-message": "^1.0"
-        },
-        "time": "2015-12-19T14:08:53+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Http\\Message\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Márk Sági-Kazár",
-                "email": "mark.sagikazar@gmail.com"
-            }
-        ],
-        "description": "Factory interfaces for PSR-7 HTTP Message",
-        "homepage": "http://php-http.org",
-        "keywords": [
-            "factory",
-            "http",
-            "message",
-            "stream",
-            "uri"
-        ]
-    },
-    {
-        "name": "php-http/promise",
-        "version": "v1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-http/promise.git",
-            "reference": "dc494cdc9d7160b9a09bd5573272195242ce7980"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-http/promise/zipball/dc494cdc9d7160b9a09bd5573272195242ce7980",
-            "reference": "dc494cdc9d7160b9a09bd5573272195242ce7980",
-            "shasum": ""
-        },
-        "require-dev": {
-            "henrikbjorn/phpspec-code-coverage": "^1.0",
-            "phpspec/phpspec": "^2.4"
-        },
-        "time": "2016-01-26T13:27:02+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Http\\Promise\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Márk Sági-Kazár",
-                "email": "mark.sagikazar@gmail.com"
-            },
-            {
-                "name": "Joel Wurtz",
-                "email": "joel.wurtz@gmail.com"
-            }
-        ],
-        "description": "Promise used for asynchronous HTTP requests",
-        "homepage": "http://httplug.io",
-        "keywords": [
-            "promise"
-        ]
-    },
-    {
         "name": "phpseclib/phpseclib",
-        "version": "2.0.21",
-        "version_normalized": "2.0.21.0",
+        "version": "2.0.23",
+        "version_normalized": "2.0.23.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "9f1287e68b3f283339a9f98f67515dd619e5bf9d"
+            "reference": "c78eb5058d5bb1a183133c36d4ba5b6675dfa099"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/9f1287e68b3f283339a9f98f67515dd619e5bf9d",
-            "reference": "9f1287e68b3f283339a9f98f67515dd619e5bf9d",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/c78eb5058d5bb1a183133c36d4ba5b6675dfa099",
+            "reference": "c78eb5058d5bb1a183133c36d4ba5b6675dfa099",
             "shasum": ""
         },
         "require": {
@@ -1254,7 +848,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a few other cryptographic operations.",
             "ext-openssl": "Install the OpenSSL extension in order to speed up a wide variety of cryptographic operations."
         },
-        "time": "2019-07-12T12:53:49+00:00",
+        "time": "2019-09-17T03:41:22+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1272,28 +866,28 @@
         "authors": [
             {
                 "name": "Jim Wigginton",
-                "role": "Lead Developer",
-                "email": "terrafrost@php.net"
+                "email": "terrafrost@php.net",
+                "role": "Lead Developer"
             },
             {
                 "name": "Patrick Monnerat",
-                "role": "Developer",
-                "email": "pm@datasphere.ch"
+                "email": "pm@datasphere.ch",
+                "role": "Developer"
             },
             {
                 "name": "Andreas Fischer",
-                "role": "Developer",
-                "email": "bantu@phpbb.com"
+                "email": "bantu@phpbb.com",
+                "role": "Developer"
             },
             {
                 "name": "Hans-Jürgen Petrich",
-                "role": "Developer",
-                "email": "petrich@tronic-media.com"
+                "email": "petrich@tronic-media.com",
+                "role": "Developer"
             },
             {
                 "name": "Graham Campbell",
-                "role": "Developer",
-                "email": "graham@alt-three.com"
+                "email": "graham@alt-three.com",
+                "role": "Developer"
             }
         ],
         "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
@@ -1415,111 +1009,6 @@
             "container-interface",
             "container-interop",
             "psr"
-        ]
-    },
-    {
-        "name": "psr/http-client",
-        "version": "0.1.0",
-        "version_normalized": "0.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-fig/http-client.git",
-            "reference": "d4d3ec04b034120b0591ad9722a4c2be33a7dfec"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/http-client/zipball/d4d3ec04b034120b0591ad9722a4c2be33a7dfec",
-            "reference": "d4d3ec04b034120b0591ad9722a4c2be33a7dfec",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0",
-            "psr/http-message": "^1.0"
-        },
-        "time": "2018-02-03T12:55:20+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Psr\\Http\\Client\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
-            }
-        ],
-        "description": "Common interface for HTTP clients",
-        "homepage": "https://github.com/php-fig/http-client",
-        "keywords": [
-            "http",
-            "http-client",
-            "psr",
-            "psr-18"
-        ]
-    },
-    {
-        "name": "psr/http-factory",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-fig/http-factory.git",
-            "reference": "12ac7fcd07e5b077433f5f2bee95b3a771bf61be"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/http-factory/zipball/12ac7fcd07e5b077433f5f2bee95b3a771bf61be",
-            "reference": "12ac7fcd07e5b077433f5f2bee95b3a771bf61be",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=7.0.0",
-            "psr/http-message": "^1.0"
-        },
-        "time": "2019-04-30T12:38:16+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Psr\\Http\\Message\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
-            }
-        ],
-        "description": "Common interfaces for PSR-7 HTTP message factories",
-        "keywords": [
-            "factory",
-            "http",
-            "message",
-            "psr",
-            "psr-17",
-            "psr-7",
-            "request",
-            "response"
         ]
     },
     {
@@ -1717,17 +1206,17 @@
     },
     {
         "name": "sabre/uri",
-        "version": "2.1.2",
-        "version_normalized": "2.1.2.0",
+        "version": "2.1.3",
+        "version_normalized": "2.1.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/sabre-io/uri.git",
-            "reference": "c260a55cbd2083c03484f56f72fe042fee0c17ed"
+            "reference": "18f454324f371cbcabdad3d0d3755b4b0182095d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sabre-io/uri/zipball/c260a55cbd2083c03484f56f72fe042fee0c17ed",
-            "reference": "c260a55cbd2083c03484f56f72fe042fee0c17ed",
+            "url": "https://api.github.com/repos/sabre-io/uri/zipball/18f454324f371cbcabdad3d0d3755b4b0182095d",
+            "reference": "18f454324f371cbcabdad3d0d3755b4b0182095d",
             "shasum": ""
         },
         "require": {
@@ -1736,7 +1225,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6"
         },
-        "time": "2019-06-25T05:34:33+00:00",
+        "time": "2019-09-09T23:00:25+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1754,9 +1243,9 @@
         "authors": [
             {
                 "name": "Evert Pot",
-                "role": "Developer",
                 "email": "me@evertpot.com",
-                "homepage": "http://evertpot.com/"
+                "homepage": "http://evertpot.com/",
+                "role": "Developer"
             }
         ],
         "description": "Functions for making sense out of URIs.",
@@ -1931,17 +1420,17 @@
     },
     {
         "name": "simplepie/simplepie",
-        "version": "1.5.2",
-        "version_normalized": "1.5.2.0",
+        "version": "1.5.3",
+        "version_normalized": "1.5.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/simplepie/simplepie.git",
-            "reference": "0e8fe72132dad765d25db4cabc69a91139af1263"
+            "reference": "173663382a9346acd53df60c7ffb20689c9cf1f6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/simplepie/simplepie/zipball/0e8fe72132dad765d25db4cabc69a91139af1263",
-            "reference": "0e8fe72132dad765d25db4cabc69a91139af1263",
+            "url": "https://api.github.com/repos/simplepie/simplepie/zipball/173663382a9346acd53df60c7ffb20689c9cf1f6",
+            "reference": "173663382a9346acd53df60c7ffb20689c9cf1f6",
             "shasum": ""
         },
         "require": {
@@ -1960,7 +1449,7 @@
             "ext-mbstring": "",
             "mf2/mf2": "Microformat module that allows for parsing HTML for microformats"
         },
-        "time": "2018-08-02T05:43:58+00:00",
+        "time": "2019-09-22T23:21:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2047,62 +1536,6 @@
         }
     },
     {
-        "name": "symfony/options-resolver",
-        "version": "v4.3.4",
-        "version_normalized": "4.3.4.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/options-resolver.git",
-            "reference": "81c2e120522a42f623233968244baebd6b36cb6a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/options-resolver/zipball/81c2e120522a42f623233968244baebd6b36cb6a",
-            "reference": "81c2e120522a42f623233968244baebd6b36cb6a",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1.3"
-        },
-        "time": "2019-08-08T09:29:19+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "4.3-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\OptionsResolver\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony OptionsResolver Component",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "config",
-            "configuration",
-            "options"
-        ]
-    },
-    {
         "name": "symfony/polyfill-mbstring",
         "version": "v1.12.0",
         "version_normalized": "1.12.0.0",
@@ -2165,17 +1598,17 @@
     },
     {
         "name": "symfony/translation",
-        "version": "v4.3.4",
-        "version_normalized": "4.3.4.0",
+        "version": "v4.3.5",
+        "version_normalized": "4.3.5.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation.git",
-            "reference": "28498169dd334095fa981827992f3a24d50fed0f"
+            "reference": "fe6193b066c457c144333c06aaa869a2d42a167f"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation/zipball/28498169dd334095fa981827992f3a24d50fed0f",
-            "reference": "28498169dd334095fa981827992f3a24d50fed0f",
+            "url": "https://api.github.com/repos/symfony/translation/zipball/fe6193b066c457c144333c06aaa869a2d42a167f",
+            "reference": "fe6193b066c457c144333c06aaa869a2d42a167f",
             "shasum": ""
         },
         "require": {
@@ -2208,7 +1641,7 @@
             "symfony/config": "",
             "symfony/yaml": ""
         },
-        "time": "2019-08-26T08:55:16+00:00",
+        "time": "2019-09-27T14:37:39+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2243,17 +1676,17 @@
     },
     {
         "name": "symfony/translation-contracts",
-        "version": "v1.1.6",
-        "version_normalized": "1.1.6.0",
+        "version": "v1.1.7",
+        "version_normalized": "1.1.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/translation-contracts.git",
-            "reference": "325b17c24f3ee23cbecfa63ba809c6d89b5fa04a"
+            "reference": "364518c132c95642e530d9b2d217acbc2ccac3e6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/325b17c24f3ee23cbecfa63ba809c6d89b5fa04a",
-            "reference": "325b17c24f3ee23cbecfa63ba809c6d89b5fa04a",
+            "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/364518c132c95642e530d9b2d217acbc2ccac3e6",
+            "reference": "364518c132c95642e530d9b2d217acbc2ccac3e6",
             "shasum": ""
         },
         "require": {
@@ -2262,7 +1695,7 @@
         "suggest": {
             "symfony/translation-implementation": ""
         },
-        "time": "2019-08-02T12:15:04+00:00",
+        "time": "2019-09-17T11:12:18+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -2302,23 +1735,23 @@
     },
     {
         "name": "tecnickcom/tcpdf",
-        "version": "6.2.26",
-        "version_normalized": "6.2.26.0",
+        "version": "6.3.2",
+        "version_normalized": "6.3.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/tecnickcom/TCPDF.git",
-            "reference": "367241059ca166e3a76490f4448c284e0a161f15"
+            "reference": "9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/367241059ca166e3a76490f4448c284e0a161f15",
-            "reference": "367241059ca166e3a76490f4448c284e0a161f15",
+            "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b",
+            "reference": "9fde7bb9b404b945e7ea88fb7eccd23d9a4e324b",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2018-10-16T17:24:05+00:00",
+        "time": "2019-09-20T09:35:01+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -2348,8 +1781,8 @@
         "authors": [
             {
                 "name": "Nicola Asuni",
-                "role": "lead",
-                "email": "info@tecnick.com"
+                "email": "info@tecnick.com",
+                "role": "lead"
             }
         ],
         "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",

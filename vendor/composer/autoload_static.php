@@ -29,7 +29,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Contracts\\Translation\\' => 30,
             'Symfony\\Component\\Translation\\' => 30,
-            'Symfony\\Component\\OptionsResolver\\' => 34,
             'Sabre\\Xml\\' => 10,
             'Sabre\\VObject\\' => 14,
             'Sabre\\Uri\\' => 10,
@@ -39,13 +38,8 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
-            'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Psr\\Cache\\' => 10,
-        ),
-        'N' => 
-        array (
-            'Nyholm\\Psr7\\' => 12,
         ),
         'M' => 
         array (
@@ -56,12 +50,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         array (
             'Illuminate\\Support\\' => 19,
             'Illuminate\\Contracts\\' => 21,
-        ),
-        'H' => 
-        array (
-            'Http\\Promise\\' => 13,
-            'Http\\Message\\' => 13,
-            'Http\\Client\\' => 12,
         ),
         'G' => 
         array (
@@ -74,10 +62,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         array (
             'Firebase\\JWT\\' => 13,
         ),
-        'E' => 
-        array (
-            'Endroid\\Twitter\\' => 16,
-        ),
         'D' => 
         array (
             'Doctrine\\Common\\Inflector\\' => 26,
@@ -85,14 +69,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'C' => 
         array (
             'Carbon\\' => 7,
-        ),
-        'B' => 
-        array (
-            'Buzz\\' => 5,
-        ),
-        'A' => 
-        array (
-            'Abraham\\TwitterOAuth\\' => 21,
         ),
     );
 
@@ -112,10 +88,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
-        ),
-        'Symfony\\Component\\OptionsResolver\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/options-resolver',
         ),
         'Sabre\\Xml\\' => 
         array (
@@ -139,12 +111,7 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
-        ),
-        'Psr\\Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-client/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Container\\' => 
         array (
@@ -153,10 +120,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Psr\\Cache\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/cache/src',
-        ),
-        'Nyholm\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/nyholm/psr7/src',
         ),
         'Monolog\\' => 
         array (
@@ -173,18 +136,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Illuminate\\Contracts\\' => 
         array (
             0 => __DIR__ . '/..' . '/illuminate/contracts',
-        ),
-        'Http\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/promise/src',
-        ),
-        'Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
-        ),
-        'Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/httplug/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -206,10 +157,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         array (
             0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
-        'Endroid\\Twitter\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/endroid/twitter/src',
-        ),
         'Doctrine\\Common\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
@@ -217,14 +164,6 @@ class ComposerStaticInitf133bcb7ca0e82bd79a51c8501fc3ca0
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
-        ),
-        'Buzz\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/kriswallsmith/buzz/lib',
-        ),
-        'Abraham\\TwitterOAuth\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/abraham/twitteroauth/src',
         ),
     );
 
