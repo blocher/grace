@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3af5481f-ae2b-4ffc-a8e1-89e9be5a0a20" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/grace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/grace.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,24 +40,14 @@
       <path value="$PROJECT_DIR$/vendor/psr/simple-cache" />
       <path value="$PROJECT_DIR$/vendor/monolog/monolog" />
       <path value="$PROJECT_DIR$/vendor/illuminate/support" />
-      <path value="$PROJECT_DIR$/vendor/abraham/twitteroauth" />
       <path value="$PROJECT_DIR$/vendor/symfony/translation" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
-      <path value="$PROJECT_DIR$/vendor/kriswallsmith/buzz" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/promises" />
       <path value="$PROJECT_DIR$/vendor/simplepie/simplepie" />
-      <path value="$PROJECT_DIR$/vendor/endroid/twitter" />
       <path value="$PROJECT_DIR$/vendor/doctrine/inflector" />
-      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
-      <path value="$PROJECT_DIR$/vendor/symfony/options-resolver" />
-      <path value="$PROJECT_DIR$/vendor/nyholm/psr7" />
-      <path value="$PROJECT_DIR$/vendor/php-http/httplug" />
-      <path value="$PROJECT_DIR$/vendor/php-http/promise" />
-      <path value="$PROJECT_DIR$/vendor/php-http/message-factory" />
       <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
-      <path value="$PROJECT_DIR$/vendor/psr/http-factory" />
       <path value="$PROJECT_DIR$/vendor/symfony/translation-contracts" />
       <path value="$PROJECT_DIR$/vendor/smalot/pdfparser" />
       <path value="$PROJECT_DIR$/vendor/sabre/vobject" />
@@ -118,7 +108,7 @@
       <workItem from="1566857261255" duration="50000" />
       <workItem from="1566857333921" duration="89000" />
       <workItem from="1566857616025" duration="4168000" />
-      <workItem from="1570718618513" duration="238000" />
+      <workItem from="1570718618513" duration="1598000" />
     </task>
     <servers />
   </component>
@@ -161,9 +151,9 @@
       <screen x="847" y="-1177" width="1920" height="1177" />
     </state>
     <state x="1438" y="-878" width="667" height="422" key="find.popup/0.23.1680.952/-1073.-1177.1920.1177/847.-1177.1920.1177@847.-1177.1920.1177" timestamp="1570718857182" />
-    <state x="1437" y="-934" width="670" height="676" key="search.everywhere.popup" timestamp="1570718621935">
+    <state x="1437" y="-934" width="670" height="676" key="search.everywhere.popup" timestamp="1570721725243">
       <screen x="847" y="-1177" width="1920" height="1177" />
     </state>
-    <state x="1437" y="-934" width="670" height="676" key="search.everywhere.popup/0.23.1680.952/-1073.-1177.1920.1177/847.-1177.1920.1177@847.-1177.1920.1177" timestamp="1570718621935" />
+    <state x="1437" y="-934" width="670" height="676" key="search.everywhere.popup/0.23.1680.952/-1073.-1177.1920.1177/847.-1177.1920.1177@847.-1177.1920.1177" timestamp="1570721725243" />
   </component>
 </project>
