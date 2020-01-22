@@ -25,10 +25,10 @@ class ImportEvents
             $_SERVER['SERVER_NAME'] = 'CLI';
         }
 
-        ini_set('memory_limit', '750M');
+        ini_set('memory_limit', '7000M');
         require_once('vendor/autoload.php');
         if ( ! defined('ABSPATH')) {
-            require_once('public/wp-load.php');
+            require_once('public_html/wp-load.php');
         }
 
     }
@@ -37,10 +37,10 @@ class ImportEvents
     {
 
         $start_time = new Carbon('now', new DateTimeZone('America/New_York'));
-        $start_time->subDays(120);
+        $start_time->subDays(15);
 
         $end_time = new Carbon('now', new DateTimeZone('America/New_York'));
-        $end_time->addDays(365);
+        $end_time->addDays(120);
 
         $cal       =
             file_get_contents("https://GraceAlex.breezechms.com/events/feed/9DUBF14LvEQYYhMvIdSnzGlEo7vOSUVvuG64WhYUHwp01y01V7E9FVR538klExXEtxd9v6VjJeY4zmb%2BLHUCJQ%3D%3D/4xuBh19K7XVSQ%2BdCXeRfwfSOUIlXRBvL1zm2befVGov7uPcgEp0E937c0LLjCtFMDa2Mi4Wz5oibLH1RL2rwcw%3D%3D");
@@ -99,8 +99,10 @@ class ImportEvents
 
             post_process_event($id);
             $ids[] = $id;
-            print("Imported " . $title . PHP_EOL);
+            error_log("Imported " . $title . ' ' . $start->format('c') . PHP_EOL);
         }
+
+        error_log("Imported or updated " . count($ids) . ' events ' . PHP_EOL);
 
         $args = [
             'post_date'   => [
@@ -125,8 +127,8 @@ class ImportEvents
             wp_delete_post($post->ID);
         }
 
-        print ("Imported or updated " . count($ids) . ' events' . PHP_EOL);
-        print ("Deleted " . count($for_deletion) . ' events' . PHP_EOL);
+        error_log("Imported or updated " . count($ids) . ' events ' . PHP_EOL);
+        error_log("Deleted " . count($for_deletion) . ' events' . PHP_EOL);
 
 
     }

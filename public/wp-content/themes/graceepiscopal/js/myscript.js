@@ -442,14 +442,14 @@ var calendar = (function ($) {
       $("#events-heading").html('<span class="fa fa-spin fa-spinner fa-1x"></span>');
 			$('#upcoming-events').html('<span class="fa fa-spin fa-spinner fa-2x"></span>');
 			$('html, body').animate({
-	        scrollTop: $('.hearings-section .section-title').offset().top
+	        scrollTop: $('.events-box').offset().top
 	    }, 200);
 		};
 
     var init = function() {
 
 
-    	var data = {type:"upcoming",limit:8};
+    	var data = {type:"upcoming",limit:6};
 	    $.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 	        $("#upcoming-events").html(data);
 	    });
@@ -480,7 +480,7 @@ var calendar = (function ($) {
         	var data = {type:"month",start_year:this.currentYear,start_month: this.currentMonth+1};
         	$.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 			        $("#upcoming-events").html(data);
-              $("#events-heading").html("Events in " + $("[data-head-month]").first().html()  + " " + $("[data-head-year]").first().html());
+              $("#events-heading").html("<strong>Events</strong>  in " + $("[data-head-month]").first().html()  + " " + $("[data-head-year]").first().html());
 				   });
           $('.reset-events-btn').show();
         }
@@ -497,7 +497,7 @@ var calendar = (function ($) {
       	var data = {type:"single",start_day:$(this).data('day'),start_month:$(this).data('month'),start_year:$(this).data('year'),limit:100};
 		    $.get("wp-content/themes/graceepiscopal/ajax/get-events.php", data, function(data, status){
 		        $("#upcoming-events").html(data);
-            $("#events-heading").html("Events on " + $("[data-head-month]").first().html()  + " " + day + ", " + $("[data-head-year]").first().html());
+            $("#events-heading").html("<strong>Events</strong> on " + $("[data-head-month]").first().html()  + " " + day + ", " + $("[data-head-year]").first().html());
 		    });
         $('.reset-events-btn').show();
       });

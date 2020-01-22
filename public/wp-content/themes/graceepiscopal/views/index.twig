@@ -140,7 +140,7 @@
 									</div>
 								{% endfor %} #}
 
-							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 sunday-services-box blue-overlay">
+							<div class="info-box col-lg-3 col-md-3 col-sm-12 col-xs-12 sunday-services-box blue-overlay">
 									<div class="services_item" >
 										<p>{{ options.sunday_services_widget_title }}</p>
 										{% if options.which_sunday_widget_to_display=='School Year' %}
@@ -151,45 +151,59 @@
 											{{ function('do_shortcode',options.sunday_services_widget_custom|replace({'<p>': '<span>', '</p>': '</span>'})) }}
 										{% endif %}
 									</div>
+
+                                    <div class="services_item" >
+                                    <p>{{ options.weekday_services_title }}</p>
+                                    <strong>
+                                        {% if options.which_weekday_widget_to_display=='Normal' %}
+                                            {{ function('do_shortcode',options.weekday_services_content_normal|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+                                        {% elseif options.which_weekday_widget_to_display=='Lent' %}
+                                            {{ function('do_shortcode',options.weekday_services_content_lent|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+                                        {% else %}
+                                            {{ function('do_shortcode',options.weekday_services_custom|replace({'<p>': '<span>', '</p>': '</span>'})) }}
+                                        {% endif %}
+                                    </strong>
+                                </div>
 							</div>
 							<style>.sunday-services-box:after { background-image:url({{ options.sunday_services_image }});}</style>
 
-							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 weekday-services-box  gold-overlay">
-									<div class="services_item" >
-										<p>{{ options.weekday_services_title }}</p>
-										<strong>
-										{% if options.which_weekday_widget_to_display=='Normal' %}
-											{{ function('do_shortcode',options.weekday_services_content_normal|replace({'<p>': '<span>', '</p>': '</span>'})) }}
-										{% elseif options.which_weekday_widget_to_display=='Lent' %}
-											{{ function('do_shortcode',options.weekday_services_content_lent|replace({'<p>': '<span>', '</p>': '</span>'})) }}
-										{% else %}
-											{{ function('do_shortcode',options.weekday_services_custom|replace({'<p>': '<span>', '</p>': '</span>'})) }}
-										{% endif %}
-									</strong>
-									</div>
-							</div>
-							<style>.weekday-services-box:after { background-image:url({{ options.weekday_services_image }});}</style>
+                            <div class="info-box col-lg-4 col-md-4 col-sm-12 col-xs-12  events-box blue-overlay">
+                                <div class="services_item">
+                                    <p class="section-title" id="events-heading"><strong>Upcoming</strong> Events</p>
 
-							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 contact-box blue-overlay">
-									<div class="services_item " >
-										<p>{{ options.contact_title }}</p>
-										{% if options.which_contact_widget_to_display == 'Normal' %}
-											{{ function('do_shortcode',options.contact_widget_content_normal|replace({'<p>': '<span>', '</p>': '</span>'})) }}
-										{% else %}
-											{{ function('do_shortcode',options.contact_widget_content_custom) }}
-										{% endif %}
-									</div>
-							</div>
-							<style>.contact-box:after { background-image:url({{ options.contact_widget_image }});}</style>
+                                    <div  id="upcoming-events">
+                                        <span class="fa fa-spin fa-spinner fa-3x"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-box col-lg-5 col-md-5 col-sm-12 col-xs-12   contact-box blue-overlay">
+                                <div class="services_item">
+                                    <p><strong>Events</strong> Calendar</p>
+                                    {% include('partials/calendar.twig') %}
+                                </div>
+                            </div>
+
+{#							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 contact-box blue-overlay">#}
+{#									<div class="services_item " >#}
+{#										<p>{{ options.contact_title }}</p>#}
+{#										{% if options.which_contact_widget_to_display == 'Normal' %}#}
+{#											{{ function('do_shortcode',options.contact_widget_content_normal|replace({'<p>': '<span>', '</p>': '</span>'})) }}#}
+{#										{% else %}#}
+{#											{{ function('do_shortcode',options.contact_widget_content_custom) }}#}
+{#										{% endif %}#}
+{#									</div>#}
+{#							</div>#}
+{#							<style>.contact-box:after { background-image:url({{ options.contact_widget_image }});}</style>#}
 
 
-							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 sermons-box  gold-overlay">
-									<div class="services_item" >
-										<p>{{ options.sermon_widget_title }}</p>
-											{{ function('do_shortcode','[sermons]'|replace({'<p>': '<span>', '</p>': '</span>'})) }}
-									</div>
-							</div>
-							<style>.sermons-box:after { background-image:url({{ options.sermon_widget_image }});}</style>
+{#							<div class="info-box col-lg-3 col-md-3 col-sm-6 col-xs-6 col-ss-12 sermons-box  gold-overlay">#}
+{#									<div class="services_item" >#}
+{#										<p>{{ options.sermon_widget_title }}</p>#}
+{#											{{ function('do_shortcode','[sermons]'|replace({'<p>': '<span>', '</p>': '</span>'})) }}#}
+{#									</div>#}
+{#							</div>#}
+{#							<style>.sermons-box:after { background-image:url({{ options.sermon_widget_image }});}</style>#}
 
 						</div><!-- //ROW -->
 					</div><!-- //CONTAINER -->
@@ -630,37 +644,37 @@
 					</div><!-- //TESTIMONIALS --> #}
 
 
-<section class="hearings-section">
+{#<section class="hearings-section">#}
 
 
-    <div class="row">
-      <h2 class="section-title" id="events-heading">Upcoming Events</h2>
-    </div>
+{#    <div class="row">#}
+{#      <h2 class="section-title" id="events-heading">Upcoming Events</h2>#}
+{#    </div>#}
 
-    <div class="row">
+{#    <div class="row">#}
 
-      {#-- Hearings Column --#}
-      <div class="col-md-7" id="upcoming-events">
+{#      #}{#-- Hearings Column --#}
+{#      <div class="col-md-7" id="upcoming-events">#}
 
- 		  <span class="fa fa-spin fa-spinner fa-3x"></span>
-      </div>
+{# 		  <span class="fa fa-spin fa-spinner fa-3x"></span>#}
+{#      </div>#}
 
-      {#-- Calendar Column --#}
-      <div class="col-md-5">
+{#      #}{#-- Calendar Column --#}
+{#      <div class="col-md-5">#}
 
-        {% include('partials/calendar.twig') %}
+{#        {% include('partials/calendar.twig') %}#}
 
-      </div>
+{#      </div>#}
 
-    </div>
+{#    </div>#}
 
-    <div class="see-more-wrapper row center">
-    	<a class="btn btn-default reset-events-btn">Upcoming events</a>
-      <a class="btn btn-default" href="{{ home_url }}/calendar">Full Calendar</a>
-    </div>
+{#    <div class="see-more-wrapper row center">#}
+{#    	<a class="btn btn-default reset-events-btn">Upcoming events</a>#}
+{#      <a class="btn btn-default" href="{{ home_url }}/calendar">Full Calendar</a>#}
+{#    </div>#}
 
 
-</section>
+{#</section>#}
 
 
 			<section class="lastest-news-section">
