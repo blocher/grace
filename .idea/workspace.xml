@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3af5481f-ae2b-4ffc-a8e1-89e9be5a0a20" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/wp-content/themes/graceepiscopal/views/partials/footer.twig" beforeDir="false" afterPath="$PROJECT_DIR$/public/wp-content/themes/graceepiscopal/views/partials/footer.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/wp-content/themes/graceepiscopal/ajax/mailchimp-signup.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/wp-content/themes/graceepiscopal/ajax/mailchimp-signup.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +103,7 @@
       <workItem from="1586352776696" duration="937000" />
       <workItem from="1586792632649" duration="316000" />
       <workItem from="1601236810416" duration="1380000" />
-      <workItem from="1601239317275" duration="1121000" />
+      <workItem from="1601239317275" duration="1796000" />
     </task>
     <servers />
   </component>
@@ -145,5 +145,9 @@
       <screen x="0" y="23" width="1680" height="947" />
     </state>
     <state x="100" y="123" width="1480" height="747" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.23.1680.947@0.23.1680.947" timestamp="1601238423823" />
+    <state x="541" y="251" width="598" height="490" key="find.popup" timestamp="1601241380661">
+      <screen x="0" y="23" width="1680" height="947" />
+    </state>
+    <state x="541" y="251" width="598" height="490" key="find.popup/0.23.1680.947@0.23.1680.947" timestamp="1601241380661" />
   </component>
 </project>

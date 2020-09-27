@@ -83,11 +83,12 @@ if (!empty($errors)) {
 
 /**** We've passed validatio.  Let's add to Mailchimp. ****/
 
-$mc = new MailchimpIntegration();
-$mc_res = $mc->subscribe_or_update($email,$fname,$lname);
-$subscriber_id = empty($mc_res['subscriber_id']) ? 'FAILED TO SUBSCRIBE TO MAILCHIMP' : $mc_res['subscriber_id'];
-$mc_success = empty($mc_res['subscriber_id']) ? false : true;
+//$mc = new MailchimpIntegration();
+//$mc_res = $mc->subscribe_or_update($email,$fname,$lname);
+//$subscriber_id = empty($mc_res['subscriber_id']) ? 'FAILED TO SUBSCRIBE TO MAILCHIMP' : $mc_res['subscriber_id'];
+//$mc_success = empty($mc_res['subscriber_id']) ? false : true;
 
+$mc_success = true;
 
 /*** We've passed validation.  Now let's do gravity forms **/
 
@@ -104,7 +105,7 @@ $entry['status']='Active';
 $entry['1']=$fname;
 $entry['2']=$lname;
 $entry['3']=$email;
-$entry['4']=$subscriber_id;
+$entry['4']=false;
 
 $req = GFAPI::add_entry( $entry );
 if (is_wp_error($req)) {
@@ -123,6 +124,6 @@ if (is_wp_error($req)) {
   $res['form_id'] = 13;
   $res['entry_id'] = $req;
   $res['entry'] = $entry;
-  $res['mailchimp_subscriber_id'] = $subscriber_id;
+  $res['mailchimp_subscriber_id'] = false;
   echo json_encode($res); die();
 }
