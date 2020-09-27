@@ -99,6 +99,14 @@ function relevanssi_generate_indexing_query( $valid_status, $extend = false, $re
 	global $wpdb, $relevanssi_variables;
 	$relevanssi_table = $relevanssi_variables['relevanssi_table'];
 
+	if ( 'off' === get_option( 'relevanssi_index_image_files', 'off' ) ) {
+		$restriction .= "
+		AND post.ID NOT IN (
+		SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment'
+		AND post_mime_type LIKE 'image%' )
+	";
+	}
+
 	/**
 	 * Filters the WHERE restriction for indexing queries.
 	 *
@@ -109,9 +117,25 @@ function relevanssi_generate_indexing_query( $valid_status, $extend = false, $re
 	 *
 	 * @param string The WHERE restriction.
 	 *
-	 * @return string The modified WHERE restriction.
+	 * @param array $restriction An array with two values: 'mysql' for the MySQL
+	 * query restriction to modify, 'reason' for the reason of restriction.
 	 */
-	$restriction = apply_filters( 'relevanssi_indexing_restriction', $restriction );
+	$restriction = apply_filters(
+		'relevanssi_indexing_restriction',
+		array(
+			'mysql'  => $restriction,
+			'reason' => '',
+		)
+	);
+
+	/**
+	 * Backwards compatibility for the change in filter parameters in Premium
+	 * 2.8.0 in March 2020. Remove this eventually.
+	 */
+	if ( is_string( $restriction ) ) {
+		$restriction['mysql']  = $restriction;
+		$restriction['reason'] = 'relevanssi_indexing_restriction filter';
+	}
 
 	if ( ! $extend ) {
 		$q = "SELECT post.ID
@@ -127,14 +151,19 @@ function relevanssi_generate_indexing_query( $valid_status, $extend = false, $re
 				)
 			))
 		AND post.ID NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_relevanssi_hide_post' AND meta_value = 'on')
-		$restriction ORDER BY post.ID DESC $limit";
+		{$restriction['mysql']} ORDER BY post.ID DESC $limit";
 	} else {
+		$processed_post_filter = 'r.doc is null';
+		if ( 'noindex' !== get_option( 'relevanssi_internal_links', 'noindex' ) ) {
+			$processed_post_filter = "(r.doc is null OR r.doc NOT IN (SELECT DISTINCT(doc) FROM $relevanssi_table WHERE link = 0))";
+		}
+
 		$q = "SELECT post.ID
 		FROM $wpdb->posts post
 		LEFT JOIN $wpdb->posts parent ON (post.post_parent=parent.ID)
 		LEFT JOIN $relevanssi_table r ON (post.ID=r.doc)
 		WHERE
-		r.doc is null
+		$processed_post_filter
 		AND
 			(post.post_status IN ($valid_status)
 			OR
@@ -146,10 +175,15 @@ function relevanssi_generate_indexing_query( $valid_status, $extend = false, $re
 			)
 		)
 		AND post.ID NOT IN (SELECT post_id FROM $wpdb->postmeta WHERE meta_key = '_relevanssi_hide_post' AND meta_value = 'on')
-		$restriction ORDER BY post.ID DESC $limit";
+		{$restriction['mysql']} ORDER BY post.ID DESC $limit";
 	}
 
-	return $q;
+	/**
+	 * Filters the Relevanssi indexing query.
+	 *
+	 * @param string $q The indexing MySQL query.
+	 */
+	return apply_filters( 'relevanssi_indexing_query', $q );
 }
 
 /**
@@ -193,14 +227,20 @@ function relevanssi_post_type_restriction() {
 /**
  * Generates a list of valid post statuses.
  *
- * Generates a list of valid post statuses to use in indexing. By default, Relevanssi
- * accepts 'publish', 'draft', 'private', 'pending', and 'future'. If you need to use
- * a custom post status, you can use the 'relevanssi_valid_status' filter hook to add
- * your own post status to the list of valid statuses.
+ * Generates a list of valid post statuses to use in indexing. By default,
+ * Relevanssi accepts 'publish', 'draft', 'private', 'pending', and 'future'. If
+ * you need to use a custom post status, you can use the
+ * 'relevanssi_valid_status' filter hook to add your own post status to the list
+ * of valid statuses.
  *
- * @return string A comma-separated list of valid post statuses ready for MySQL.
+ * @param boolean $return_array If true, return array; default false, return
+ * string.
+ *
+ * @return string|array A comma-separated list of escaped valid post statuses
+ * ready for MySQL, or an unfiltered array, depending on the $return_array
+ * parameter.
  */
-function relevanssi_valid_status_array() {
+function relevanssi_valid_status_array( $return_array = false ) {
 	/**
 	 * Filters the valid status array.
 	 *
@@ -210,7 +250,12 @@ function relevanssi_valid_status_array() {
 	 * @return array Array of post statuses.
 	 */
 	$valid_status_array = apply_filters( 'relevanssi_valid_status', array( 'publish', 'draft', 'private', 'pending', 'future' ) );
-	$valid_status       = array();
+
+	if ( $return_array ) {
+		return $valid_status_array;
+	}
+
+	$valid_status = array();
 
 	if ( is_array( $valid_status_array ) && count( $valid_status_array ) > 0 ) {
 		foreach ( $valid_status_array as $status ) {
@@ -229,21 +274,23 @@ function relevanssi_valid_status_array() {
  * Builds the index.
  *
  * @global object $wpdb                 The WordPress database interface.
- * @global array  $relevanssi_variables The Relevanssi global variables array, used
- * for table names.
+ * @global array  $relevanssi_variables The Relevanssi global variables array,
+ * used for table names.
  *
  * @param boolean|int $extend_offset If numeric, offsets the indexing by that
- * amount. If true, doesn't truncate the index before indexing. If false, truncates
- * index before indexing. Default false.
- * @param boolean     $verbose       Not used anymore, kept for backwards compatibility.
- * @param int         $post_limit    How many posts to index. Default null, no limit.
+ * amount. If true, doesn't truncate the index before indexing. If false,
+ * truncates index before indexing. Default false.
+ * @param boolean     $verbose       Not used anymore, kept for backwards
+ * compatibility.
+ * @param int         $post_limit    How many posts to index. Default null, no
+ * limit.
  * @param boolean     $is_ajax       If true, indexing is done in AJAX context.
  * Default false.
  *
- * @return array In AJAX context, returns array with two values: 'indexing_complete'
- * tells whether indexing is completed or not, and 'indexed' returns the number of
- * posts indexed. Outside AJAX context, these values are returned as an array in
- * format of array(completed, posts indexed).
+ * @return array In AJAX context, returns array with two values:
+ * 'indexing_complete' tells whether indexing is completed or not, and 'indexed'
+ * returns the number of posts indexed. Outside AJAX context, these values are
+ * returned as an array in format of array(completed, posts indexed).
  */
 function relevanssi_build_index( $extend_offset = false, $verbose = null, $post_limit = null, $is_ajax = false ) {
 	global $wpdb, $relevanssi_variables;
@@ -261,7 +308,7 @@ function relevanssi_build_index( $extend_offset = false, $verbose = null, $post_
 			relevanssi_premium_indexing();
 		}
 
-		update_option( 'relevanssi_index', '' );
+		update_option( 'relevanssi_index', '', false );
 	}
 
 	$indexing_query_args = relevanssi_indexing_query_args( $extend_offset, $post_limit );
@@ -319,11 +366,11 @@ function relevanssi_build_index( $extend_offset = false, $verbose = null, $post_
 
 	if ( ( 0 === $size ) || ( count( $content ) < $size ) ) {
 		$complete = true;
-		update_option( 'relevanssi_indexed', 'done' );
-	}
+		update_option( 'relevanssi_indexed', 'done', false );
 
-	// Update the document count variable.
-	relevanssi_update_doc_count();
+		// Update the document count variable.
+		relevanssi_async_update_doc_count();
+	}
 
 	wp_suspend_cache_addition( false );
 
@@ -367,6 +414,9 @@ function relevanssi_build_index( $extend_offset = false, $verbose = null, $post_
  * Default false.
  * @param boolean    $debug              If true, echo out debugging information.
  * Default false.
+ *
+ * @return string|int Number of insert queries run, or -1 if the indexing fails,
+ * or 'hide' in case the post is hidden or 'donotindex' if a filter blocks this.
  */
 function relevanssi_index_doc( $index_post, $remove_first = false, $custom_fields = '', $bypass_global_post = false, $debug = false ) {
 	global $wpdb, $post, $relevanssi_variables;
@@ -409,6 +459,11 @@ function relevanssi_index_doc( $index_post, $remove_first = false, $custom_field
 			if ( $previous_post || $post_was_null ) {
 				$post = $previous_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 			}
+			update_post_meta(
+				$post->ID,
+				'_relevanssi_noindex_reason',
+				__( 'Relevanssi index exclude', 'relevanssi' )
+			);
 			return 'hide';
 		}
 	}
@@ -426,14 +481,21 @@ function relevanssi_index_doc( $index_post, $remove_first = false, $custom_field
 	 *
 	 * Allows you to filter whether a post is indexed or not.
 	 *
-	 * @param boolean If true, the post is not indexed. Default false.
-	 * @param int     The post ID.
+	 * @param boolean|string If not false, the post is not indexed. The value
+	 * can be a boolean, or a string containing an explanation for the
+	 * exclusion. Default false.
+	 * @param int            The post ID.
 	 */
-	if ( true === apply_filters( 'relevanssi_do_not_index', false, $post->ID ) ) {
+	$do_not_index = apply_filters( 'relevanssi_do_not_index', false, $post->ID );
+	if ( $do_not_index ) {
 		// Filter says no.
-		if ( $debug ) {
-			relevanssi_debug_echo( 'relevanssi_do_not_index returned true.' );
+		if ( true === $do_not_index ) {
+			$do_not_index = __( 'Blocked by a filter function', 'relevanssi' );
 		}
+		if ( $debug ) {
+			relevanssi_debug_echo( 'relevanssi_do_not_index says exclude, because: ' . $do_not_index );
+		}
+		update_post_meta( $post->ID, '_relevanssi_noindex_reason', $do_not_index );
 		$index_this_post = false;
 	}
 
@@ -524,6 +586,8 @@ function relevanssi_index_doc( $index_post, $remove_first = false, $custom_field
 		$wpdb->query( $query ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
+	delete_post_meta( $post->ID, '_relevanssi_noindex_reason' );
+
 	if ( $previous_post || $post_was_null ) {
 		$post = $previous_post; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
@@ -575,7 +639,14 @@ function relevanssi_index_taxonomy_terms( &$insert_data, $post_id, $taxonomy, $d
 	 * @param int    The post ID.
 	 */
 	$term_string = apply_filters( 'relevanssi_tag_before_tokenize', trim( $term_string ), $post_term, $taxonomy, $post_id );
-	$term_tokens = relevanssi_tokenize( $term_string, true, $min_word_length );
+
+	/** This filter is documented in lib/indexing.php */
+	$term_tokens = apply_filters(
+		'relevanssi_indexing_tokens',
+		relevanssi_tokenize( $term_string, true, $min_word_length ),
+		'taxonomy-' . $taxonomy
+	);
+
 	if ( count( $term_tokens ) > 0 ) {
 		foreach ( $term_tokens as $token => $count ) {
 			$n++;
@@ -706,16 +777,22 @@ function relevanssi_update_child_posts( $new_status, $old_status, $post ) {
  * Indexes a published post.
  *
  * @param int     $post_id            The post ID.
- * @param boolean $bypass_global_post If tru, bypass the global $post object. Default false.
+ * @param boolean $bypass_global_post If true, bypass the global $post object.
+ * Default false.
+ *
+ * @return string|int Returns 'auto-draft' if the post is an auto draft and
+ * thus skipped, or the relevanssi_index_doc() return value.
+ *
+ * @see relevanssi_index_doc()
  */
 function relevanssi_publish( $post_id, $bypass_global_post = false ) {
 	$post_status = get_post_status( $post_id );
 	if ( 'auto-draft' === $post_status ) {
-		return;
+		return 'auto-draft';
 	}
 
 	$custom_fields = relevanssi_get_custom_fields();
-	relevanssi_index_doc( $post_id, true, $custom_fields, $bypass_global_post );
+	return relevanssi_index_doc( $post_id, true, $custom_fields, $bypass_global_post );
 }
 
 /**
@@ -730,13 +807,22 @@ function relevanssi_publish( $post_id, $bypass_global_post = false ) {
  * @global object $wpdb The WP database interface.
  *
  * @param int $post_id The post ID.
+ *
+ * @return string|int Returns 'auto-draft' if the post is an auto draft and
+ * thus skipped, 'revision' for revisions, 'removed' if the post is removed or
+ * the relevanssi_index_doc() return value from relevanssi_publish().
+ *
+ * @see relevanssi_publish()
  */
 function relevanssi_insert_edit( $post_id ) {
 	global $wpdb;
+	if ( 'revision' === relevanssi_get_post_type( $post_id ) ) {
+		return 'revision';
+	}
 
 	$post_status = get_post_status( $post_id );
 	if ( 'auto-draft' === $post_status ) {
-		return;
+		return 'auto-draft';
 	}
 
 	if ( 'inherit' === $post_status ) {
@@ -748,54 +834,45 @@ function relevanssi_insert_edit( $post_id ) {
 	$index_this_post = true;
 
 	/* Documented in lib/indexing.php. */
-	$restriction = apply_filters( 'relevanssi_indexing_restriction', '' );
-	if ( ! empty( $restriction ) ) {
+	$restriction = apply_filters(
+		'relevanssi_indexing_restriction',
+		array(
+			'mysql'  => '',
+			'reason' => '',
+		)
+	);
+	if ( ! empty( $restriction['mysql'] ) ) {
 		// Check the indexing restriction filter: if the post passes the filter, this
 		// should return the post ID.
-		$is_unrestricted = $wpdb->get_var( "SELECT ID FROM $wpdb->posts AS post WHERE ID = $post_id $restriction" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		$is_unrestricted = $wpdb->get_var(
+			"SELECT ID FROM $wpdb->posts AS post WHERE ID = $post_id {$restriction['mysql']}" // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		);
 		if ( ! $is_unrestricted ) {
 			$index_this_post = false;
 		}
 	}
 
-	$index_statuses = apply_filters( 'relevanssi_valid_status', array( 'publish', 'private', 'draft', 'future', 'pending' ) );
+	$return_array   = true;
+	$index_statuses = relevanssi_valid_status_array( $return_array );
 	if ( ! in_array( $post_status, $index_statuses, true ) ) {
 		$index_this_post = false;
 	}
 
 	if ( $index_this_post ) {
 		$bypass_global_post = true;
-		relevanssi_publish( $post_id, $bypass_global_post );
+		$return_value       = relevanssi_publish( $post_id, $bypass_global_post );
 	} else {
 		// The post isn't supposed to be indexed anymore, remove it from index.
 		relevanssi_remove_doc( $post_id );
+		update_post_meta(
+			$post_id,
+			'_relevanssi_noindex_reason',
+			trim( $restriction['reason'] )
+		);
+		$return_value = 'removed';
 	}
 
-	relevanssi_update_doc_count();
-}
-
-/**
- * Triggers comment indexing when a comment is edited.
- *
- * @author OdditY
- *
- * @param int $comment_id Comment id.
- */
-function relevanssi_comment_edit( $comment_id ) {
-	$action = 'update';
-	relevanssi_index_comment( $comment_id, $action );
-}
-
-/**
- * Triggers comment indexing when a comment is deleted.
- *
- * @author OdditY
- *
- * @param int $comment_id Comment ID.
- */
-function relevanssi_comment_remove( $comment_id ) {
-	$action = 'remove';
-	relevanssi_index_comment( $comment_id, $action );
+	return $return_value;
 }
 
 /**
@@ -803,71 +880,43 @@ function relevanssi_comment_remove( $comment_id ) {
  *
  * @author OdditY
  *
- * @param int    $comment_id Commend ID.
- * @param string $action     What to do: 'add', 'update', 'remove'. Default 'add'.
+ * @param int $comment_id Commend ID.
+ *
+ * @see relevanssi_comment_remove
+ * @see relevanssi_comment_edit
+ * @see relevanssi_publish
+ *
+ * @return int|string The relevanssi_publish return value, "nocommentfound" if
+ * the comment doesn't exist or "donotindex" if it cannot be indexed.
+ * comment indexing is disabled.
  */
-function relevanssi_index_comment( $comment_id, $action = 'add' ) {
-	global $wpdb;
-
+function relevanssi_index_comment( $comment_id ) {
 	$comment_indexing_type = get_option( 'relevanssi_index_comments' );
 	$no_pingbacks          = false;
-	$post_id               = null;
 
-	switch ( $comment_indexing_type ) {
-		case 'all':
-			// All.
-			break;
-		case 'normal':
-			// Exclude trackbacks and pingbacks.
-			$no_pingbacks = true;
-			break;
-		default:
-			// No indexing.
-			return;
+	if ( 'normal' === $comment_indexing_type ) {
+		$no_pingbacks = true;
 	}
-	switch ( $action ) {
-		case 'update':
-			// Update, reindex the post.
-			$comment = get_comment( $comment_id );
-			if ( $no_pingbacks && ! empty( $comment->comment_type ) ) {
-				break;
-			}
-			$post_id = $comment->comment_post_ID;
-			break;
-		case 'remove':
-			// Remove, empty the comment and reindex the post.
-			$comment = get_comment( $comment_id );
-			if ( $no_pingbacks && ! empty( $comment->comment_type ) ) {
-				break;
-			}
-			$post_id = $comment->comment_post_ID;
-			if ( $post_id ) {
-				// Empty comment_content and reindex, then let WP delete the empty comment.
-				$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->comments SET comment_content='' WHERE comment_ID=%d", $comment_id ) );
-			}
-			break;
-		default:
-			// Add new comment.
-			$comment = get_comment( $comment_id );
-			if ( $no_pingbacks && ! empty( $comment->comment_type ) ) {
-				break;
-			}
-			if ( 1 !== intval( $comment->comment_approved ) ) {
-				// Comment isn't approved, do not index.
-				break;
-			}
-			$post_id = $comment->comment_post_ID;
-			break;
+	if ( 'normal' !== $comment_indexing_type && 'all' !== $comment_indexing_type ) {
+		return 'donotindex';
 	}
-	if ( $post_id ) {
-		relevanssi_publish( $post_id );
+
+	$comment = get_comment( $comment_id );
+	if ( ! $comment ) {
+		return 'nocommentfound';
 	}
+	if ( $no_pingbacks && 'pingback' === $comment->comment_type ) {
+		return 'donotindex';
+	}
+	if ( 1 !== intval( $comment->comment_approved ) ) {
+		// Comment isn't approved, do not index.
+		return 'donotindex';
+	}
+	return relevanssi_publish( $comment->comment_post_ID );
 }
 
 /**
  * Returns the comment text for a post.
- *
- * @global object $wpdb The WordPress database interface.
  *
  * @param int $post_id The post ID.
  *
@@ -875,8 +924,6 @@ function relevanssi_index_comment( $comment_id, $action = 'add' ) {
  * and the comment text.
  */
 function relevanssi_get_comments( $post_id ) {
-	global $wpdb;
-
 	/**
 	 * If this filter returns true, the comments for the post are not indexed.
 	 *
@@ -908,8 +955,21 @@ function relevanssi_get_comments( $post_id ) {
 			'number' => $limit,
 			'type'   => $comment_types,
 		);
-		$comments = get_approved_comments( $post_id, $args );
-
+		$comments = get_approved_comments(
+			$post_id,
+			/**
+			 * Filters the arguments for get_approved_comments().
+			 *
+			 * Useful for indexing custom comment types, for example.
+			 *
+			 * @param array An array of arguments. Don't adjust 'offset' or
+			 * 'number' to avoid problems.
+			 */
+			apply_filters(
+				'relevanssi_get_approved_comments_args',
+				$args
+			)
+		);
 		if ( count( $comments ) === 0 ) {
 			break;
 		}
@@ -975,18 +1035,12 @@ function relevanssi_remove_doc( $post_id, $keep_internal_links = false ) {
 			return;
 		}
 
-		$doc_count = get_option( 'relevanssi_doc_count' );
-
 		$rows_updated = $wpdb->query(
 			$wpdb->prepare(
 				'DELETE FROM ' . $relevanssi_variables['relevanssi_table'] . ' WHERE doc=%d', // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$post_id
 			)
 		);
-
-		if ( $rows_updated && $rows_updated > 0 ) {
-			update_option( 'relevanssi_doc_count', $doc_count - $rows_updated );
-		}
 	}
 }
 
@@ -1188,6 +1242,8 @@ function relevanssi_index_custom_fields( &$insert_data, $post_id, $custom_fields
 		relevanssi_add_repeater_fields( $custom_fields, $post_id );
 	}
 
+	$custom_fields = array_filter( $custom_fields );
+
 	if ( $debug ) {
 		relevanssi_debug_echo( 'Custom fields to index: ' . implode( ', ', $custom_fields ) );
 	}
@@ -1201,7 +1257,6 @@ function relevanssi_index_custom_fields( &$insert_data, $post_id, $custom_fields
 		 * @param int    $post_id The post ID.
 		 */
 		$values = apply_filters( 'relevanssi_custom_field_value', get_post_meta( $post_id, $field, false ), $field, $post_id );
-
 		if ( empty( $values ) || ! is_array( $values ) ) {
 			continue;
 		}
@@ -1229,15 +1284,23 @@ function relevanssi_index_custom_fields( &$insert_data, $post_id, $custom_fields
 			}
 
 			if ( $debug ) {
-				relevanssi_debug_echo( "\tKey: " . $field . ' – value: ' . $value );
+				relevanssi_debug_echo( "\tKey: " . $field . ' - value: ' . $value );
+			}
+
+			$context      = 'custom_field';
+			$remove_stops = true;
+			if ( '_relevanssi_pdf_content' === $field ) {
+				$context      = 'body';
+				$remove_stops = 'body';
 			}
 
 			/** This filter is documented in lib/indexing.php */
 			$value_tokens = apply_filters(
 				'relevanssi_indexing_tokens',
-				relevanssi_tokenize( $value, true, $min_word_length ),
-				'custom_field'
+				relevanssi_tokenize( $value, $remove_stops, $min_word_length ),
+				$context
 			);
+
 			foreach ( $value_tokens as $token => $count ) {
 				$n++;
 				if ( ! isset( $insert_data[ $token ]['customfield'] ) ) {
@@ -1419,7 +1482,9 @@ function relevanssi_index_content( &$insert_data, $post, $min_word_length, $debu
 
 	if ( 'on' === get_option( 'relevanssi_expand_shortcodes' ) ) {
 		// TablePress support.
-		$tablepress_controller = relevanssi_enable_tablepress_shortcodes();
+		if ( function_exists( 'relevanssi_enable_tablepress_shortcodes' ) ) {
+			$tablepress_controller = relevanssi_enable_tablepress_shortcodes();
+		}
 
 		relevanssi_disable_shortcodes();
 
@@ -1435,6 +1500,18 @@ function relevanssi_index_content( &$insert_data, $post, $min_word_length, $debu
 	remove_shortcode( 'noindex' );
 	add_shortcode( 'noindex', 'relevanssi_noindex_shortcode' );
 
+	/**
+	 * Filters the post content after shortcodes but before HTML stripping.
+	 *
+	 * @param string $contents The post content.
+	 * @param object $post     The full post object.
+	 */
+	$contents = apply_filters(
+		'relevanssi_post_content_after_shortcodes',
+		$contents,
+		$post
+	);
+
 	$contents = relevanssi_strip_invisibles( $contents );
 
 	// Premium feature for better control over internal links.
@@ -1444,7 +1521,6 @@ function relevanssi_index_content( &$insert_data, $post, $min_word_length, $debu
 
 	$contents = preg_replace( '/<[a-zA-Z\/][^>]*>/', ' ', $contents );
 	$contents = wp_strip_all_tags( $contents );
-	$contents = wp_encode_emoji( $contents );
 
 	/**
 	 * Filters the post content in indexing before tokenization.
@@ -1530,6 +1606,7 @@ function relevanssi_disable_shortcodes() {
 		'gravityform', // Gravity Forms.
 		'sdm_latest_downloads', // SDM Simple Download Monitor.
 		'slimstat', // Slimstat Analytics.
+		'ninja_tables', // Ninja Tables.
 	);
 
 	$disable_shortcodes = get_option( 'relevanssi_disable_shortcodes' );
@@ -1564,6 +1641,7 @@ function relevanssi_disable_shortcodes() {
  * insert query values before and after the conversion.
  *
  * @global $wpdb The WordPress database interface.
+ * @global $relevanssi_variables Used for the Relevanssi db table name.
  *
  * @param array  $insert_data An array of term => data pairs, where data has
  * token counts for the term in different contexts.
@@ -1572,7 +1650,12 @@ function relevanssi_disable_shortcodes() {
  * @return array An array of values clauses for an INSERT query.
  */
 function relevanssi_convert_data_to_values( $insert_data, $post ) {
-	global $wpdb;
+	global $wpdb, $relevanssi_variables;
+
+	$charset = $wpdb->get_col_charset(
+		$relevanssi_variables['relevanssi_table'],
+		'term'
+	);
 
 	/**
 	 * Sets the indexed post 'type' column in the index.
@@ -1608,6 +1691,10 @@ function relevanssi_convert_data_to_values( $insert_data, $post ) {
 		$mysqlcolumn        = isset( $data['mysqlcolumn'] ) ? $data['mysqlcolumn'] : 0;
 		$taxonomy_detail    = isset( $data['taxonomy_detail'] ) ? $data['taxonomy_detail'] : '';
 		$customfield_detail = isset( $data['customfield_detail'] ) ? $data['customfield_detail'] : '';
+
+		if ( 'utf8' === $charset ) {
+			$term = wp_encode_emoji( $term );
+		}
 
 		$term = trim( $term );
 

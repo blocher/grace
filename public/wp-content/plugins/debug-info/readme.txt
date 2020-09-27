@@ -3,8 +3,8 @@ Contributors: scott.deluzio
 Tags: database, php, memory, version, wordpress, admin, debug, plugin, theme
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5VFWNLX2NQGQN
 Requires at least: 3.4.0
-Tested up to: 5.1.1
-Stable tag: 1.3.8
+Tested up to: 5.5.0
+Stable tag: 1.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -55,6 +55,9 @@ Sure! Once you have translated it, let me know and I'll be sure to get your tran
 1. Debug Info screenshot-1.png
 
 == Changelog ==
+= 1.3.9 =
+* Updated tested up to version.
+
 = 1.3.8 =
 * Moved plugin menu from under Dashboard to under Tools.
 * Removed unnecessary links from report page.
@@ -101,11 +104,5 @@ Sure! Once you have translated it, let me know and I'll be sure to get your tran
 * Initial release.
 
 == Upgrade Notice ==
-= 1.3.8 =
-* Moved plugin menu from under Dashboard to under Tools.
-* Removed unnecessary links from report page.
-* Updated code to better best practices.
-* Updated active plugin list to list plugin name, and not the file path.
-* Added plugin version number to the list of active plugins.
-* Added a link to the plugin URI if available.
-* Added translatable strings and updated POT file.
+= 1.3.9 =
+* Updated tested up to version.

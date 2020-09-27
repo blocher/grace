@@ -43,14 +43,15 @@ class ImportEvents
         $end_time->addDays(120);
 
         $cal       =
-            file_get_contents("https://GraceAlex.breezechms.com/events/feed/9DUBF14LvEQYYhMvIdSnzGlEo7vOSUVvuG64WhYUHwp01y01V7E9FVR538klExXEtxd9v6VjJeY4zmb%2BLHUCJQ%3D%3D/4xuBh19K7XVSQ%2BdCXeRfwfSOUIlXRBvL1zm2befVGov7uPcgEp0E937c0LLjCtFMDa2Mi4Wz5oibLH1RL2rwcw%3D%3D");
+            file_get_contents("https://GraceAlex.breezechms.com/events/feed/WX7N9LgpV6FfjcJWTBmBDtyzIG6fgNwDsZ17a8Sov5PS9EVr5%2BsEkkasuuRfc7r4seMKZOMcjXh3nXv%2F43ZqjQ%3D%3D/9rp1LZrzydKiAKs0036jD2OMxbTgSsmjDLD3DGXn%2BPYCVo4cLHOuqd0vX2FzjFpJtQk8erZy6ZiqZbz7MenfFw%3D%3D");
+
         $vcalendar = VObject\Reader::read($cal);
         $vcalendar = $vcalendar->expand($start_time, $end_time);
         $ids = [];
         foreach ($vcalendar->VEVENT as $event) {
             $status      = 'publish';
-            $start       = (new Carbon($event->DTSTART, "UTC"))->setTimezone('America/New_York');
-            $end         = (new Carbon($event->DTEND, "UTC"))->setTimezone('America/New_York');
+            $start       = (new Carbon($event->DTSTART, "America/Detroit"))->setTimezone('America/New_York');
+            $end         = (new Carbon($event->DTEND, "America/Detroit"))->setTimezone('America/New_York');
             $location    = $event->LOCATION ?? null;
             $title       = (string)$event->SUMMARY;
             $description =

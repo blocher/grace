@@ -67,6 +67,12 @@ function relevanssi_options() {
 			relevanssi_remove_all_stopwords();
 		}
 
+		if ( isset( $_REQUEST['repopulatestopwords'] ) ) {
+			check_admin_referer( plugin_basename( $relevanssi_variables['file'] ), 'relevanssi_options' );
+			$verbose = true;
+			relevanssi_populate_stopwords( $verbose );
+		}
+
 		if ( isset( $_REQUEST['addbodystopword'] ) ) {
 			check_admin_referer( plugin_basename( $relevanssi_variables['file'] ), 'relevanssi_options' );
 			relevanssi_add_body_stopword( $_REQUEST['addbodystopword'] );
@@ -80,6 +86,11 @@ function relevanssi_options() {
 		if ( isset( $_REQUEST['removeallbodystopwords'] ) ) {
 			check_admin_referer( plugin_basename( $relevanssi_variables['file'] ), 'relevanssi_options' );
 			relevanssi_remove_all_body_stopwords();
+		}
+
+		if ( isset( $_REQUEST['update_counts'] ) ) {
+			check_admin_referer( 'update_counts' );
+			relevanssi_update_counts();
 		}
 	}
 
@@ -130,6 +141,10 @@ function update_relevanssi_options() {
 
 		if ( ! isset( $_REQUEST['relevanssi_expand_shortcodes'] ) ) {
 			$_REQUEST['relevanssi_expand_shortcodes'] = 'off';
+		}
+
+		if ( ! isset( $_REQUEST['relevanssi_index_image_files'] ) ) {
+			$_REQUEST['relevanssi_index_image_files'] = 'off';
 		}
 	}
 
@@ -285,9 +300,9 @@ function update_relevanssi_options() {
 	}
 
 	if ( 'indexing' === $_REQUEST['tab'] ) {
-		update_option( 'relevanssi_index_taxonomies_list', array_keys( $index_taxonomies_list ) );
+		update_option( 'relevanssi_index_taxonomies_list', array_keys( $index_taxonomies_list ), false );
 		if ( RELEVANSSI_PREMIUM ) {
-			update_option( 'relevanssi_index_terms', array_keys( $index_terms_list ) );
+			update_option( 'relevanssi_index_terms', array_keys( $index_terms_list ), false );
 		}
 	}
 
@@ -296,7 +311,7 @@ function update_relevanssi_options() {
 	}
 
 	if ( count( $index_post_types ) > 0 ) {
-		update_option( 'relevanssi_index_post_types', array_keys( $index_post_types ) );
+		update_option( 'relevanssi_index_post_types', array_keys( $index_post_types ), false );
 	}
 
 	if ( isset( $_REQUEST['relevanssi_index_fields_select'] ) ) {
@@ -309,10 +324,10 @@ function update_relevanssi_options() {
 		}
 		if ( 'some' === $_REQUEST['relevanssi_index_fields_select'] ) {
 			if ( isset( $_REQUEST['relevanssi_index_fields'] ) ) {
-				$fields_option = $_REQUEST['relevanssi_index_fields'];
+				$fields_option = rtrim( $_REQUEST['relevanssi_index_fields'], " \t\n\r\0\x0B," );
 			}
 		}
-		update_option( 'relevanssi_index_fields', $fields_option );
+		update_option( 'relevanssi_index_fields', $fields_option, false );
 	}
 
 	if ( isset( $_REQUEST['relevanssi_trim_logs'] ) ) {
@@ -360,7 +375,7 @@ function update_relevanssi_options() {
 	}
 
 	if ( isset( $_REQUEST['relevanssi_admin_search'] ) ) {
-		update_option( 'relevanssi_admin_search', $_REQUEST['relevanssi_admin_search'] );
+		update_option( 'relevanssi_admin_search', $_REQUEST['relevanssi_admin_search'], false );
 	}
 	if ( isset( $_REQUEST['relevanssi_excerpts'] ) ) {
 		update_option( 'relevanssi_excerpts', $_REQUEST['relevanssi_excerpts'] );
@@ -399,25 +414,28 @@ function update_relevanssi_options() {
 		update_option( 'relevanssi_class', $_REQUEST['relevanssi_class'] );
 	}
 	if ( isset( $_REQUEST['relevanssi_expst'] ) ) {
-		update_option( 'relevanssi_exclude_posts', $_REQUEST['relevanssi_expst'] );
+		update_option( 'relevanssi_exclude_posts', trim( $_REQUEST['relevanssi_expst'], ' ,' ) );
 	}
 	if ( isset( $_REQUEST['relevanssi_hilite_title'] ) ) {
 		update_option( 'relevanssi_hilite_title', $_REQUEST['relevanssi_hilite_title'] );
 	}
 	if ( isset( $_REQUEST['relevanssi_index_comments'] ) ) {
-		update_option( 'relevanssi_index_comments', $_REQUEST['relevanssi_index_comments'] );
+		update_option( 'relevanssi_index_comments', $_REQUEST['relevanssi_index_comments'], false );
 	}
 	if ( isset( $_REQUEST['relevanssi_index_author'] ) ) {
-		update_option( 'relevanssi_index_author', $_REQUEST['relevanssi_index_author'] );
+		update_option( 'relevanssi_index_author', $_REQUEST['relevanssi_index_author'], false );
 	}
 	if ( isset( $_REQUEST['relevanssi_index_excerpt'] ) ) {
-		update_option( 'relevanssi_index_excerpt', $_REQUEST['relevanssi_index_excerpt'] );
+		update_option( 'relevanssi_index_excerpt', $_REQUEST['relevanssi_index_excerpt'], false );
+	}
+	if ( isset( $_REQUEST['relevanssi_index_image_files'] ) ) {
+		update_option( 'relevanssi_index_image_files', $_REQUEST['relevanssi_index_image_files'], false );
 	}
 	if ( isset( $_REQUEST['relevanssi_fuzzy'] ) ) {
 		update_option( 'relevanssi_fuzzy', $_REQUEST['relevanssi_fuzzy'] );
 	}
 	if ( isset( $_REQUEST['relevanssi_expand_shortcodes'] ) ) {
-		update_option( 'relevanssi_expand_shortcodes', $_REQUEST['relevanssi_expand_shortcodes'] );
+		update_option( 'relevanssi_expand_shortcodes', $_REQUEST['relevanssi_expand_shortcodes'], false );
 	}
 	if ( isset( $_REQUEST['relevanssi_implicit_operator'] ) ) {
 		update_option( 'relevanssi_implicit_operator', $_REQUEST['relevanssi_implicit_operator'] );
@@ -630,16 +648,15 @@ function relevanssi_query_log() {
 		print( "<form method='post'>" );
 		wp_nonce_field( 'relevanssi_reset_logs', '_relresnonce', true, true );
 		printf(
-			'<p><label for="relevanssi_reset_code">%s</label></p></form>',
-			sprintf(
-				// Translators: %1$s is the input field, %2$s is the submit button.
-				__( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					'To reset the logs, type "reset" into the box here %1$s and click %2$s',
-					'relevanssi'
-				),
-				' <input type="text" id="relevanssi_reset_code" name="relevanssi_reset_code" />',
-				' <input type="submit" name="relevanssi_reset" value="Reset" class="button" />'
-			)
+			'<p><label for="relevanssi_reset_code">%s</label>
+			<input type="text" id="relevanssi_reset_code" name="relevanssi_reset_code" />
+			<input type="submit" name="relevanssi_reset" value="%s" class="button" /></p></form>',
+			// Translators: do not translate "reset".
+			esc_html__(
+				'To reset the logs, type "reset" into the box here and click the Reset button',
+				'relevanssi'
+			),
+			esc_html__( 'Reset', 'relevanssi' )
 		);
 	}
 
@@ -743,7 +760,12 @@ function relevanssi_date_queries( $days, $title, $version = 'good' ) {
 		$url = get_bloginfo( 'url' );
 		foreach ( $queries as $query ) {
 			$search_parameter = rawurlencode( $query->query );
-			$query_url        = $url . '/?s=' . $search_parameter;
+			/**
+			 * Filters the query URL for the user searches page.
+			 *
+			 * @param string Query URL.
+			 */
+			$query_url = apply_filters( 'relevanssi_user_searches_query_url', $url . '/?s=' . $search_parameter );
 			printf(
 				"<tr><td><a href='%s'>%s</a></td><td style='padding: 3px 5px; text-align: center'>%d</td><td style='padding: 3px 5px; text-align: center'>%d</td></tr>",
 				esc_attr( $query_url ),
@@ -978,6 +1000,7 @@ function relevanssi_add_admin_scripts( $hook ) {
 		'reload_state'         => __( 'Reload the page to refresh the state of the index.', 'relevanssi' ),
 		'pdf_reset_confirm'    => __( 'Are you sure you want to delete all attachment content from the index?', 'relevanssi' ),
 		'pdf_reset_done'       => __( 'Relevanssi attachment data wiped clean.', 'relevanssi' ),
+		'pdf_reset_problems'   => __( 'There were problems wiping the Relevanssi attachment data clean.', 'relevanssi' ),
 		'hour'                 => __( 'hour', 'relevanssi' ),
 		'hours'                => __( 'hours', 'relevanssi' ),
 		'about'                => __( 'about', 'relevanssi' ),

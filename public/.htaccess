@@ -1,3 +1,12 @@
+# HTTPS forced by SG-Optimizer
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+# END HTTPS
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
@@ -7,4 +16,6 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
+
 # END WordPress
+AddHandler application/x-httpd-php74 .php .php5 .php4 .php3
