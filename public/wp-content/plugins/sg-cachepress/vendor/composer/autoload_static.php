@@ -45,6 +45,13 @@ class ComposerStaticInitc338f7fbd7d73a58c836a6fc15bad979
                 0 => __DIR__ . '/..' . '/sepia/po-parser/src',
             ),
         ),
+        'N' => 
+        array (
+            'Net_DNS2' => 
+            array (
+                0 => __DIR__ . '/..' . '/pear/net_dns2',
+            ),
+        ),
     );
 
     public static $classMap = array (

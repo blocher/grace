@@ -19,6 +19,7 @@ class Rest {
 		$this->misc_helper          = new Rest_Helper_Misc();
 		$this->image_helper         = new Rest_Helper_Images();
 		$this->environment_helper   = new Rest_Helper_Environment();
+		$this->cloudflare_helper    = new Rest_Helper_Cloudflare();
 
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
@@ -47,6 +48,7 @@ class Rest {
 		$this->register_options_routes();
 		$this->register_environment_rest_routes();
 		$this->register_multisite_rest_routes();
+		$this->register_cloudflare_routes();
 		$this->register_misc_rest_routes();
 	}
 
@@ -271,6 +273,37 @@ class Rest {
 			self::REST_NAMESPACE, '/disable-multisite-optimization/', array(
 				'methods'  => 'POST',
 				'callback' => array( $this->multisite_helper, 'disable_multisite_optimization' ),
+				'permission_callback' => array( $this, 'check_permissions' ),
+			)
+		);
+	}
+
+	/**
+	 * Register Cloudflare routes.
+	 *
+	 * @since  5.7
+	 */
+	public function register_cloudflare_routes() {
+		register_rest_route(
+			self::REST_NAMESPACE, '/authenticate-cloudflare/', array(
+				'methods'  => 'POST',
+				'callback' => array( $this->cloudflare_helper, 'authenticate' ),
+				'permission_callback' => array( $this, 'check_permissions' ),
+			)
+		);
+
+		register_rest_route(
+			self::REST_NAMESPACE, '/purge-cloudflare-cache/', array(
+				'methods'  => 'GET',
+				'callback' => array( $this->cloudflare_helper, 'purge_cloudflare_cache_from_rest' ),
+				'permission_callback' => array( $this, 'check_permissions' ),
+			)
+		);
+
+		register_rest_route(
+			self::REST_NAMESPACE, '/deauthenticate-cloudflare/', array(
+				'methods'  => 'GET',
+				'callback' => array( $this->cloudflare_helper, 'deauthenticate' ),
 				'permission_callback' => array( $this, 'check_permissions' ),
 			)
 		);

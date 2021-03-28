@@ -1,36 +1,12 @@
 <?php
 namespace SiteGround_Optimizer\Options;
 
-use SiteGround_Optimizer\Htaccess\Htaccess;
 use SiteGround_Optimizer\Supercacher\Supercacher;
 
 /**
  * Handle PHP compatibility checks.
  */
 class Options {
-
-	/**
-	 * The constructor.
-	 *
-	 * @since 5.0.0
-	 */
-	public function __construct() {
-		$this->htaccess_service = new Htaccess();
-
-		add_filter(
-			'pre_update_option_siteground_optimizer_enable_gzip_compression',
-			array( $this, 'toogle_gzip_comporession' ),
-			10,
-			2
-		);
-		add_filter(
-			'pre_update_option_siteground_optimizer_enable_browser_caching',
-			array( $this, 'toogle_browser_caching' ),
-			10,
-			2
-		);
-	}
-
 	/**
 	 * Check if a single boolean setting is enabled.
 	 *
@@ -191,46 +167,6 @@ class Options {
 	}
 
 	/**
-	 * Handle enable/disable gzip compression.
-	 *
-	 * @since  5.0.0
-	 *
-	 * @param  mixed $value     The new value.
-	 * @param  mixed $old_value The old value.
-	 *
-	 * @return mixed            The new or old value, depending of the result.
-	 */
-	public function toogle_gzip_comporession( $value, $old_value ) {
-		if ( 1 === $value ) {
-			$result = $this->htaccess_service->enable( 'gzip' );
-		} else {
-			$result = $this->htaccess_service->disable( 'gzip' );
-		}
-
-		return true === $result ? $value : $old_value;
-	}
-
-	/**
-	 * Handle enable/disable browser caching.
-	 *
-	 * @since  5.0.0
-	 *
-	 * @param  mixed $value     The new value.
-	 * @param  mixed $old_value The old value.
-	 *
-	 * @return mixed            The new or old value, depending of the result.
-	 */
-	public function toogle_browser_caching( $value, $old_value ) {
-		if ( 1 === $value ) {
-			$result = $this->htaccess_service->enable( 'browser-caching' );
-		} else {
-			$result = $this->htaccess_service->disable( 'browser-caching' );
-		}
-
-		return true === $result ? $value : $old_value;
-	}
-
-	/**
 	 * Checks if the `option_key` paramether exists in rest data.
 	 *
 	 * @since  5.0.0
@@ -260,6 +196,10 @@ class Options {
 		global $blog_id;
 
 		$prefix = $wpdb->get_blog_prefix( $blog_id );
+		$plain_options = array(
+			'cloudflare_email',
+			'cloudflare_auth_key',
+		);
 
 		$options = array();
 
@@ -290,7 +230,11 @@ class Options {
 			// Try to unserialize the value.
 			$value = maybe_unserialize( $option->value );
 
-			if ( ! is_array( $value ) && null !== filter_var( $value, FILTER_VALIDATE_BOOLEAN ) ) {
+			if (
+				! is_array( $value ) &&
+				null !== filter_var( $value, FILTER_VALIDATE_BOOLEAN ) &&
+				! in_array( $option->name, $plain_options )
+			) {
 				$value = intval( $value );
 			}
 
@@ -384,6 +328,46 @@ class Options {
 	}
 
 	/**
+	 * Get all post types.
+	 *
+	 * @since  5.7.0
+	 *
+	 * @return array $post_types All post types and their names.
+	 */
+	public function get_post_types() {
+		// Get the post types object.
+		$post_types_result = get_post_types(
+			array(
+				'public'   => true,
+				'_builtin' => false,
+			),
+			'object'
+		);
+
+		// Set the default ones.
+		$post_types = array(
+			array(
+				'value' => 'post',
+				'title' => 'Post',
+			),
+			array(
+				'value' => 'page',
+				'title' => 'Page',
+			),
+		);
+
+		// Add the custom types to the default ones.
+		foreach ( $post_types_result as $type ) {
+			$post_types[] = array(
+				'value' => $type->name,
+				'title' => $type->label,
+			);
+		}
+
+		return $post_types;
+	}
+
+	/**
 	 * Prepare response message for react app.
 	 *
 	 * @since  5.0.0
@@ -410,7 +394,7 @@ class Options {
 			'siteground_optimizer_optimize_css'              => __( 'CSS Minification', 'sg-cachepress' ),
 			'siteground_optimizer_combine_css'               => __( 'CSS Combination', 'sg-cachepress' ),
 			'siteground_optimizer_combine_javascript'        => __( 'JavaScript Files Combination', 'sg-cachepress' ),
-			'siteground_optimizer_combine_google_fonts'      => __( 'Google Fonts Combination', 'sg-cachepress' ),
+			'siteground_optimizer_optimize_web_fonts'     	 => __( 'Web Fonts Optimization', 'sg-cachepress' ),
 			'siteground_optimizer_remove_query_strings'      => __( 'Query Strings Removal', 'sg-cachepress' ),
 			'siteground_optimizer_disable_emojis'            => __( 'Emoji Removal Filter', 'sg-cachepress' ),
 			'siteground_optimizer_optimize_images'           => __( 'New Images Optimization', 'sg-cachepress' ),
@@ -432,6 +416,7 @@ class Options {
 			'siteground_optimizer_heartbeat_control'         => __( 'Heartbeat Optimization', 'sg-cachepress' ),
 			'siteground_optimizer_database_optimization'     => __( 'Scheduled Database Maintenance', 'sg-cachepress' ),
 			'siteground_optimizer_dns_prefetch'              => __( 'DNS Prefetching', 'sg-cachepress' ),
+			'siteground_optimizer_cloudflare_optimization'   => __( 'Cloudflare Optimization', 'sg-cachepress' ),
 		);
 
 		// Get the option name. Fallback to `Option` if the option key doens't exists in predefined messages.

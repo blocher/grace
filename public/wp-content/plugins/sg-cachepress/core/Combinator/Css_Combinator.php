@@ -15,6 +15,9 @@ class Css_Combinator extends Abstract_Combinator {
 	 * @var array Array containing all styles that will be loaded.
 	 */
 	private $combined_styles_exclude_list = array(
+		'amelia-elementor-widget-font',
+		'amelia_booking_styles_vendor',
+		'amelia_booking_styles',
 		'uag-style',
 		'buy_sell_ads_pro_template_stylesheet', // Too big file.
 	);
@@ -264,7 +267,8 @@ class Css_Combinator extends Abstract_Combinator {
 			$dir = trailingslashit( dirname( $url ) );
 
 			$content = $this->check_for_imports( $content, $url );
-
+			// Change font-display to swap.
+			$content = $this->swap_font_display( $content );
 			// Remove source maps urls.
 			$content = preg_replace(
 				'~^(\/\/|\/\*)(#|@)\s(sourceURL|sourceMappingURL)=(.*)(\*\/)?$~m',
@@ -334,6 +338,43 @@ class Css_Combinator extends Abstract_Combinator {
 		}
 
 		// Finally return the content.
+		return $content;
+	}
+
+	/**
+	 * Swap the display properties for the font-face.
+	 *
+	 * @since  5.7.0
+	 *
+	 * @param  string $content The file content.
+	 *
+	 * @return string          The content with swaped font-display.
+	 */
+	public function swap_font_display( $content ) {
+		// Bail if Font Optimization is disabled.
+		if ( 0 === get_option( 'siteground_optimizer_optimize_web_fonts', 1 ) ) {
+			return $content;
+		}
+
+		// Check for font-face in the style.
+		preg_match_all( '/@font-face\s*{([\s\S]*?)}/i', $content, $matches );
+
+		// Bail ifthere are no font-faces.
+		if ( empty( $matches ) ) {
+			return $content;
+		}
+
+		// Loop through all matches and swap the display property.
+		foreach ( $matches[1] as $match ) {
+			// Get all font display properies.
+			preg_match_all( '/font-display:.([a-zA-Z]+)/i', $match, $result );
+
+			// Add the swap display.
+			$new = empty( $result[0] ) ? $match . ";font-display: swap;\n" : str_replace( $result[0], 'font-display: swap', $match );
+
+			$content = str_replace( $match, $new, $content );
+		}
+
 		return $content;
 	}
 }

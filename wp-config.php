@@ -30,6 +30,7 @@ define( 'DB_PASSWORD', 'secret' );
 /** MySQL hostname */
 define( 'DB_HOST', '127.0.0.1' );
 
+
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
 

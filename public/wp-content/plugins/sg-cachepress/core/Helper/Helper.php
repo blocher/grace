@@ -14,6 +14,8 @@ use SiteGround_Optimizer\Config\Config;
 use SiteGround_Optimizer\I18n\I18n;
 use SiteGround_Optimizer\Heartbeat_Control\Heartbeat_Control;
 use SiteGround_Optimizer\Database_Optimizer\Database_Optimizer;
+use SiteGround_Optimizer\DNS\Cloudflare;
+use SiteGround_Optimizer\Settings\Settings;
 
 /**
  * Helper functions and main initialization class.
@@ -26,8 +28,8 @@ class Helper {
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'is_plugin_installed' ) );
 		add_action( 'init', array( $this, 'hide_warnings_in_rest_api' ) );
-		add_filter( 'xmlrpc_login_error', array( $this, 'filter_xmlrpc_login_error' ), 10, 2 );
 		add_action( 'wp_head', array( $this, 'add_plugin_info_comment' ), 1, 2 );
+		add_filter( 'site_status_tests', array( $this, 'sitehealth_remove_https_status' ) );
 
 		set_error_handler( array( $this, 'error_handler' ) );
 
@@ -51,6 +53,7 @@ class Helper {
 		new Rest();
 
 		// Init the supercacher.
+		// DO NOT REMOVE $this->supercacher, as its used from `sg_cachepress_purge_cache` helper function.
 		$this->supercacher = new Supercacher();
 
 		// Init the memcacher.
@@ -74,6 +77,12 @@ class Helper {
 		// Init the Database Optimizer.
 		new Database_Optimizer();
 
+		// Init Cloudflare API.
+		new Cloudflare();
+
+		// Init Settings class.
+		new Settings();
+
 	}
 
 	/**
@@ -95,7 +104,7 @@ class Helper {
 	 *
 	 * @since  5.0.0
 	 *
-	 * @return object The {@link Siteground_Migrator_Api_Service} instance.
+	 * @return object The instance.
 	 */
 	public static function setup_wp_filesystem() {
 		global $wp_filesystem;
@@ -108,7 +117,6 @@ class Helper {
 
 		return $wp_filesystem;
 	}
-
 
 	/**
 	 * Check if wp cron is disabled and send error message.
@@ -232,24 +240,6 @@ class Helper {
 	}
 
 	/**
-	 * Send notification to SiteGround on login error
-	 *
-	 * @since  5.2.4
-	 *
-	 * @param  string $this_error The XML-RPC error message.
-	 * @param  object $user       WP_User object.
-	 *
-	 * @return string             The XML-RPC error message.
-	 */
-	public function filter_xmlrpc_login_error( $this_error, $user ) {
-		if ( function_exists( 'c74ce9b9ffdebe0331d8e43e97206424_notify' ) ) {
-			c74ce9b9ffdebe0331d8e43e97206424_notify( 'wpxmlrpc', getcwd(), 'UNKNOWN' );
-		}
-
-		return $this_error;
-	}
-
-	/**
 	 * Checks if the plugin run on the new SiteGround interface.
 	 *
 	 * @since  5.3.0
@@ -267,5 +257,61 @@ class Helper {
 	 */
 	public function add_plugin_info_comment() {
 		echo '<!-- Optimized by SG Optimizer plugin version - ' . \SiteGround_Optimizer\VERSION . ' -->';
+	}
+
+	/**
+	 * Checks what are the upload dir permissions.
+	 *
+	 * @since  5.7.11
+	 *
+	 * @return boolean True/false
+	 */
+	public static function check_upload_dir_permissions() {
+		// If the function does not exist the file permissions are correct.
+		if ( ! function_exists( 'fileperms' ) ) {
+			return true;
+		}
+
+		// Check if directory permissions are set accordingly.
+		if ( 700 <= intval( substr( sprintf( '%o', fileperms( self::get_uploads_dir() ) ), -3 ) ) ) {
+			return true;
+		}
+
+		// Return false if permissions are below 700.
+		return false;
+	}
+
+	/**
+	 * Get WordPress uploads dir
+	 *
+	 * @since  5.7.11
+	 *
+	 * @return string Path to the uploads dir.
+	 */
+	public static function get_uploads_dir() {
+		// Get the uploads dir.
+		$upload_dir = wp_upload_dir();
+
+		$base_dir = $upload_dir['basedir'];
+
+		if ( defined( 'UPLOADS' ) ) {
+			$base_dir = ABSPATH . UPLOADS;
+		}
+
+		return $base_dir;
+	}
+
+	/**
+	 * Remove the https module from Site Heatlh, because our plugin provide the same functionality.
+	 *
+	 * @since  5.7.17
+	 *
+	 * @param  array $tests An associative array, where the $tests is either direct or async, to declare if the test should run via Ajax calls after page load.
+	 *
+	 * @return array        Tests with removed https_status module.
+	 */
+	public function sitehealth_remove_https_status( $tests ) {
+		unset( $tests['async']['https_status'] );
+		return $tests;
 	}
 }

@@ -3,7 +3,7 @@ Contributors: Hristo Sg, siteground, sstoqnov, stoyangeorgiev
 Tags: nginx, caching, speed, memcache, memcached, performance, siteground, nginx, supercacher
 Requires at least: 4.7
 Requires PHP: 5.5
-Tested up to: 5.5.1
+Tested up to: 5.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,23 +22,27 @@ For detailed information on our plugin and how it works, please check out our [S
 
 = SuperCacher Settings = 
 
-In this tab, you can configure your Dynamic Caching to store your content in the server's memory for faster access and Memcached which stores frequently executed queries to your database and reuses them for better performance. Make sure you've enabled them from your Site Tools or cPanel before using the plugin. You can enable/disable the automatic cache purge, exclude URLs from the cache to keep them dynamic and test your pages if they are properly cached.
+In this tab, you can configure your Dynamic Caching to store your content in the server’s memory for faster access and Memcached which stores frequently executed queries to your database and reuses them for better performance. Make sure you’ve enabled them from your Site Tools or cPanel before using the plugin. You can also enable Automatic Cache purge. This will perform a Full Purge on page, posts, and category deletion, plugin and theme activation, deactivation, or update, and on WordPress core updates. Enabling the Browser-specific caching will create different cache versions based on the user agent used. From Exclude Post Types you can exclude the ones you don’t want to be cached at all. You can also exclude specific URLs or use a wildcard to exclude any sub-pages of a specific “parent-page”. We have also provided a test tool where you can check if a specific URL has Dynamic caching actually running.
 
 = Environment Optimization = 
 
-Here, you can force HTTPS for your site, enable or disable Gzip Compression and Browser Caching rules. You can activate the Database Optimisation which will remove all unnecessary items from your database and optimize it. Use DNS-Prefetching to increase load speeds for external resources. You can also manage Heartbeat Control to modify the frequency of the WP Heartbeat for different locations.
+Here, you can force HTTPS for your site, enable or disable Gzip Compression and Browser Caching rules. You can activate Database Optimization which will remove all unnecessary items from your database and optimize its tables. If you are using the InnoDB storage engine, the optimization of tables is done automatically by the engine. Use DNS-Prefetching to increase load speeds for external resources. It works by resolving the domain name, before a resource is requested. You can also manage Heartbeat Control to modify the frequency of the WP Heartbeat for different locations. By default, the WordPress Heartbeat API checks every 15 seconds on your post edit pages and every 60 seconds on your dashboard and front end whether there are scheduled tasks to be executed. With this option, you can make the checks run less frequently or completely disable them.
 
 = Frontend Optimization =
 
-In this tab, you can enable or disable Minification of your HTML, JS and CSS resources. You can activate/deactivate JS and CSS combinations to reduce the numbers of requests to the server. You can Optimize loading of Google Fonts by combining them to reduce the HTTP requestс. You can Disable Emojis support in your pages to prevent WordPress from detecting and generating emojis on your pages. You can also Remove Query Strings from static resources to improve their caching.
+In this tab, you can enable or disable Minification of your HTML, JS and CSS resources. You can activate/deactivate JS and CSS combinations to reduce the numbers of requests to the server. With the Web Fonts Optimization we’re changing the default way we load Google fonts. A preconnect link for Google's font repository will be added in your head tag. This informs the browser that your page intends to establish a connection to another origin, and that you'd like the process to start as soon as possible. In addition, all other local fonts will be preloaded so browsers can cache and render them faster. Also when combined with CSS Combination, we will change the font-display property to swap or add it if it's missing, so we ensure faster rendering. You can Disable Emojis support in your pages to prevent WordPress from detecting and generating emojis on your pages. You can also Remove Query Strings from static resources to improve their caching.
 
 = Image Optimization = 
 
-Here, you can enable or disable automatic optimization for your newly uploaded images or bulk optimize your old ones. You can also enable or disable Lazy Load for various assets such as iframes, videos, thumbnails, widgets, shortcodes and more. You can also enable Lazy Load for mobile requests. You have an option to exclude specific images from Lazy Loading.
+Here, you can enable or disable automatic optimization for your newly uploaded images or bulk optimize your old ones. You can enable the generation of WebP images for newly uploaded images or generate WebP copies of your existing ones. WebP is a next generation image format supported by modern browsers which greatly reduces the size of your images. If the browser does not support WebP, the original images will be loaded. If you wish, you can delete all WebP copies of your images and original images will be loaded by default. You can also enable or disable Lazy Load for various assets such as iframes, videos, thumbnails, widgets, shortcodes and more. You can also enable Lazy Load for mobile requests. You have an option to exclude specific images from Lazy Loading. This is done by adding the class of the image in the tab.
 
-= Performance Test =
+= Speed Test =
 
-Our performance check is powered by Google PageSpeed. Here you can check how well is your website optimized. The detailed tests result will provide you with additional information on what can be optimized more.
+Our performance check is powered by Google PageSpeed. Here you can check how well your website is optimized. The detailed tests result will provide you with additional information on what can be optimized more.
+
+= Full-page Caching on CloudFlare =
+
+Тhis optimization links your WordPress site with Cloudflare and sets the necessary rules and workers in order to enable full-page caching on Cloudflare edges in order to improve your TTFB and overall site performance. The tab will be available only if you have properly configured your installation to work with the CDN.
 
 = Plugin Compatibility =
 
@@ -173,9 +177,14 @@ In version 5.0 we've added full WP-CLI support for all plugin options and functi
 * wp sg optimize gzip enable|disable - enables or disables Gzip compression for your site
 * wp sg optimize browsercache enable|disable - enables or disables Browser caching rules
 * wp sg optimize dynamic-cache enable|disable - enables or disables Dynamic caching rules
-* wp sg optimize google-fonts enable|disable - enables or disables Google Fonts Combination
+* wp sg optimize web-fonts enable|disable - enables or disables Web Fonts Optimization
 * wp sg optimize fix_insecure_content enable|disable - enables or disables Insecure Content Fix
-* wp sg status dynamic-cache|autoflush-cache|mobile-cache|html|js|js-async|css|combine-css|querystring|emojis|images|lazyload_images|lazyload_gravatars|lazyload_thumbnails|lazyload_responsive|lazyload_textwidgets|gzip|browser-caching|memcache|ssl|ssl-fix|google-fonts|combine-js|webp - returns optimization current status (enabled|disabled)
+* wp sg optimize database-optimization enable|disable - enables or disables the DB Optimization
+* wp sg optimize dns-prefetch enable|disable add|remove|urls <value> - enables or disables the DNS Prefetching, add, remove or list urls.
+* wp sg optimize heartbeat-control enable|disable frontend|dashboard|post --frequency=<frequency> enables or disables the Heartbeat control for a specific location and sets the frequency
+* wp sg status dynamic-cache|autoflush-cache|mobile-cache|html|js|js-async|css|combine-css|querystring|emojis|images|lazyload_images|lazyload_gravatars|lazyload_thumbnails|lazyload_responsive|lazyload_textwidgets|gzip|browser-caching|memcache|ssl|ssl-fix|web-fonts|combine-js|webp - returns optimization current status (enabled|disabled)
+* wp sg settings export - exports the current plugin settings
+* wp sg settings import --hash=<string> - imports plugin settings and applies them
 
 = Requirements =
 
@@ -207,6 +216,84 @@ Our plugin uses a cookie in order to function properly. It does not store person
 1. Go to Plugins -> Installed Plugins and click the 'Activate' link under the WordPress SG Optimizer listing
 
 == Changelog ==
+
+= Version 5.7.18 =
+* Improved REST API cache invalidation
+
+= Version 5.7.17 =
+* Improved WordPress 5.7 support
+
+= Version 5.7.16 =
+* Improved Contact Form 7 support
+* Improved Amelia booking support
+* Improved support for sites with custom wp-content dir
+
+= Version 5.7.15 =
+* Improved Contact Form 7 support  
+
+= Version 5.7.14 =
+* Improved Vary:User-Agent handling
+
+= Version 5.7.13 =
+* Add settings import/export cli command
+* Exclude XML sitemaps from optimizations
+* Fix DNS Resolver fatal error for non existing hosts
+* Fix Cloudflare optimization for sites with custom wp-content dir
+* Improved Speed Test description for Webfonts optimization
+
+= Version 5.7.12 =
+* Improved Feed Cache Flush
+
+= Version 5.7.11 =
+* Improved CloudFlare Optimization
+* Add CloudFlare multisite support
+* Improved RevSlider support
+* Add uploads permissions check
+
+= Version 5.7.10 =
+* Revert to old HTML Minification
+
+= Version 5.7.9 =
+* Fixed bug with WooCommerce ajax
+
+= Version 5.7.8 =
+* Fix HTML Minification Refactoring
+
+= Version 5.7.7 =
+* HTML Minification Refactoring
+
+= Version 5.7.6 =
+* Improved cache flush, on automatic assets deletion
+
+= Version 5.7.5 =
+* Improved Flatsome UX Builder support
+* Improved Essential Addons for Elementor support
+* Updated readme
+
+= Version 5.7.4 =
+* Improved Leverage Browser Caching rules
+* Add exclude by post type
+* Improved Cloudflare cache purge
+
+= Version 5.7.3 =
+* Improved cache purge on Cludflare activation
+* Improved deauthentication of Cloudflare
+* Text improvements
+
+= Version 5.7.2 =
+* Fixed bug when external assets are not cleared properly
+* Improved detection of active Cloudflare
+* Text improvements
+
+= Version 5.7.1 =
+* Fixed bug with clearing cache from helper function
+
+= Version 5.7.0 =
+* Full-page Caching on CloudFlare
+* Web Fonts Optimization
+
+= Version 5.6.8 =
+* Improved SSL Replace patterns
 
 = Version 5.6.7 =
 * Improved JS & CSS Combination exclude list

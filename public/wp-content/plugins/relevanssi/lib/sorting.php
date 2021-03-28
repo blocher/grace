@@ -154,7 +154,7 @@ function relevanssi_get_compare_values( $key, $item_1, $item_2 ) {
 	if ( 'meta_value' === $key || 'meta_value_num' === $key ) {
 		global $wp_query;
 		// Get the name of the field from the global WP_Query.
-		$key = $wp_query->query_vars['meta_key'];
+		$key = $wp_query->query_vars['meta_key'] ?? null;
 
 		if ( empty( $key ) ) {
 			// If empty, try the Relevanssi meta_query.
@@ -172,7 +172,6 @@ function relevanssi_get_compare_values( $key, $item_1, $item_2 ) {
 					$key = $meta_row['key'];
 				}
 			}
-
 			if ( empty( $key ) ) {
 				// The key is not set.
 				return array( '', '' );
@@ -234,6 +233,9 @@ function relevanssi_get_compare_values( $key, $item_1, $item_2 ) {
 	if ( is_array( $key2 ) ) {
 		$key2 = relevanssi_flatten_array( $key2 );
 	}
+
+	$key1 = $key1 ?? '';
+	$key2 = $key2 ?? '';
 
 	$keys = array(
 		'key1' => $key1,
@@ -313,15 +315,9 @@ function relevanssi_filter_compare( $key1, $key2 ) {
 
 	// Set the default values so that if the key is not found in the array, it's last.
 	$max_key = max( $order );
-	$val_1   = $max_key + 1;
-	$val_2   = $max_key + 1;
 
-	if ( isset( $order[ $key1 ] ) ) {
-		$val_1 = $order[ $key1 ];
-	}
-	if ( isset( $order[ $key2 ] ) ) {
-		$val_2 = $order[ $key2 ];
-	}
+	$val_1 = isset( $order[ $key1 ] ) ? $order[ $key1 ] : $max_key + 1;
+	$val_2 = isset( $order[ $key2 ] ) ? $order[ $key2 ] : $max_key + 1;
 
 	return $val_1 - $val_2;
 }

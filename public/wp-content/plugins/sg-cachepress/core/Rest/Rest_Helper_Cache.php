@@ -135,6 +135,30 @@ class Rest_Helper_Cache extends Rest_Helper {
 	}
 
 	/**
+	 * Update excluded post types.
+	 *
+	 * @since  5.7.0
+	 *
+	 * @param  object $request Request data.
+	 */
+	public function update_excluded_post_types( $request ) {
+		$data = $this->validate_and_get_option_value( $request, 'excluded_post_types' );
+
+		// Convert the json urls to array.
+		$post_types = json_decode( $data, true );
+
+		// Update the option.
+		$result = update_option( 'siteground_optimizer_excluded_post_types', $post_types );
+
+		wp_send_json(
+			array(
+				'success' => $result,
+				'data'    => $post_types,
+			)
+		);
+	}
+
+	/**
 	 * Test if url is cached.
 	 *
 	 * @since  5.0.0
@@ -143,9 +167,10 @@ class Rest_Helper_Cache extends Rest_Helper {
 	 */
 	public function test_cache( $request ) {
 		// Get the url.
-		$url = $this->validate_and_get_option_value( $request, 'url' );
+		$url           = $this->validate_and_get_option_value( $request, 'url' );
+		$is_cloudflare = $this->validate_and_get_option_value( $request, 'isCloudflare', false );
 		// Check if the url is cached.
-		$is_cached = Supercacher::test_cache( $url );
+		$is_cached = Supercacher::test_cache( $url, true, (bool) $is_cloudflare );
 		// Send response to the app.
 		wp_send_json_success( array( 'cached' => $is_cached ) );
 	}

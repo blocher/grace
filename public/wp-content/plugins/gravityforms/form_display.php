@@ -985,7 +985,7 @@ class GFFormDisplay {
                         <div class='gform_heading'>";
 				if ( $display_title ) {
 					$form_string .= "
-                            <h3 class='gform_title'>" . $form['title'] . '</h3>';
+                            <h3 class='gform_title'>" . esc_html( $form['title'] ) . '</h3>';
 				}
 				if ( $display_description ) {
 					$form_string .= "
@@ -1099,7 +1099,7 @@ class GFFormDisplay {
 				 * @param array $form The Form object to filter through
 				 */
 				$previous_button = gf_apply_filters( array( 'gform_previous_button', $form_id ), $previous_button, $form );
-				$form_string .= '</div>' . self::gform_footer( $form, 'gform_page_footer ' . $form['labelPlacement'], $ajax, $field_values, $previous_button, $display_title, $display_description, $is_postback ) . '
+				$form_string .= '</div>' . self::gform_footer( $form, 'gform_page_footer ' . $form['labelPlacement'], $ajax, $field_values, $previous_button, $display_title, $display_description, $tabindex ) . '
                         </div>'; //closes gform_page
 			}
 
@@ -1403,13 +1403,28 @@ class GFFormDisplay {
 		return $page;
 	}
 
+	/**
+	 * Creates the honeypot field object for the given form.
+	 *
+	 * @since unknown
+	 *
+	 * @param array $form The form the honeypot field is to be created for.
+	 *
+	 * @return GF_Field
+	 */
 	private static function get_honeypot_field( $form ) {
 		$max_id     = self::get_max_field_id( $form );
 		$labels     = self::get_honeypot_labels();
-		$properties = array( 'type' => 'honeypot', 'label' => $labels[ rand( 0, 3 ) ], 'id' => $max_id + 1, 'cssClass' => 'gform_validation_container', 'description' => __( 'This field is for validation purposes and should be left unchanged.', 'gravityforms' ) );
-		$field      = GF_Fields::create( $properties );
+		$properties = array(
+			'type'        => 'honeypot',
+			'label'       => $labels[ rand( 0, 3 ) ],
+			'id'          => $max_id + 1,
+			'cssClass'    => 'gform_validation_container',
+			'description' => __( 'This field is for validation purposes and should be left unchanged.', 'gravityforms' ),
+			'formId'      => absint( $form['id'] ),
+		);
 
-		return $field;
+		return GF_Fields::create( $properties );
 	}
 
 	/**

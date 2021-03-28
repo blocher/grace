@@ -5,8 +5,8 @@ use SiteGround_Optimizer\Minifier\Minifier;
 use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Combinator\Css_Combinator;
 use SiteGround_Optimizer\Combinator\Js_Combinator;
-use SiteGround_Optimizer\Combinator\Fonts_Combinator;
-use SiteGround_Optimizer\DNS_Prefetch\DNS_Prefetch;
+use SiteGround_Optimizer\Combinator\Fonts_Optimizer;
+use SiteGround_Optimizer\DNS\Prefetch;
 
 /**
  * Parser functions and main initialization class.
@@ -37,12 +37,12 @@ class Parser {
 	 */
 	public function run( $html ) {
 		// Do not run optimizations for amp.
-		if ( $this->is_amp_enabled( $html ) ) {
+		if (
+			$this->is_amp_enabled( $html ) ||
+			$this->is_xml( $html ) ||
+			is_feed()
+		) {
 			return $html;
-		}
-
-		if ( Options::is_enabled( 'siteground_optimizer_optimize_html' ) ) {
-			$html = Minifier::get_instance()->run( $html );
 		}
 
 		if ( Options::is_enabled( 'siteground_optimizer_combine_css' ) ) {
@@ -53,13 +53,18 @@ class Parser {
 			$html = Js_Combinator::get_instance()->run( $html );
 		}
 
-		if ( Options::is_enabled( 'siteground_optimizer_combine_google_fonts' ) ) {
-			$html = Fonts_Combinator::get_instance()->run( $html );
+		if ( Options::is_enabled( 'siteground_optimizer_optimize_web_fonts' ) ) {
+			$html = Fonts_Optimizer::get_instance()->run( $html );
 		}
-		
+
 		if ( Options::is_enabled( 'siteground_optimizer_dns_prefetch' ) ) {
-			$html = DNS_Prefetch::get_instance()->run( $html );
+			$html = Prefetch::get_instance()->run( $html );
 		}
+
+		if ( Options::is_enabled( 'siteground_optimizer_optimize_html' ) ) {
+			$html = Minifier::get_instance()->run( $html );
+		}
+
 		return $html;
 	}
 
@@ -79,6 +84,24 @@ class Parser {
 		$run_amp_check = preg_match( '/<html[^>]+(amp|⚡)[^>]*>/', $is_amp );
 
 		return $run_amp_check;
+	}
+
+	/**
+	 * Check if the provided html is a xml.
+	 *
+	 * @since  5.7.13
+	 *
+	 * @param  string $html The page html.
+	 *
+	 * @return bool $run_xml_check Wheter the page xml sitemap.
+	 */
+	public function is_xml( $html ) {
+		// Get the first 200 chars of the file to make the preg_match check faster.
+		$is_xml = substr( $html, 0, 200 );
+
+		$run_xml_check = preg_match( '/<\?xml version="/', $is_xml );
+
+		return $run_xml_check;
 	}
 
 	/**

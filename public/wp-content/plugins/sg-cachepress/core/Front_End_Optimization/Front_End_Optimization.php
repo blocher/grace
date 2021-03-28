@@ -50,6 +50,12 @@ class Front_End_Optimization {
 		'uncode-app',
 		'uncode-plugins',
 		'uncode-init',
+		'lodash',
+		'wp-api-fetch',
+		'wp-i18n',
+		'wp-polyfill',
+		'wp-url',
+		'wp-hooks',
 	);
 
 	/**
@@ -137,7 +143,7 @@ class Front_End_Optimization {
 			Options::is_enabled( 'siteground_optimizer_optimize_html' ) ||
 			Options::is_enabled( 'siteground_optimizer_combine_css' ) ||
 			Options::is_enabled( 'siteground_optimizer_combine_javascript' ) ||
-			Options::is_enabled( 'siteground_optimizer_combine_google_fonts' ) ||
+			Options::is_enabled( 'siteground_optimizer_optimize_web_fonts' ) ||
 			Options::is_enabled( 'siteground_optimizer_dns_prefetch' )
 		) {
 			new Parser();
@@ -166,17 +172,10 @@ class Front_End_Optimization {
 			return;
 		}
 
-		// Get the uploads dir.
-		$upload_dir = wp_upload_dir();
-
-		$base_dir = $upload_dir['basedir'];
-
-		if ( defined( 'UPLOADS' ) ) {
-			$base_dir = ABSPATH . UPLOADS;
-		}
+		$uploads_dir = Helper::get_uploads_dir();
 
 		// Build the assets dir name.
-		$directory = $base_dir . '/siteground-optimizer-assets';
+		$directory = $uploads_dir . '/siteground-optimizer-assets';
 
 		// Check if directory exists and try to create it if not.
 		$is_directory_created = ! is_dir( $directory ) ? $this->create_directory( $directory ) : true;
@@ -372,7 +371,7 @@ class Front_End_Optimization {
 	 *
 	 * @return bool True/false.
 	 */
-	private function check_for_builders() {
+	public function check_for_builders() {
 
 		$builder_paramas = apply_filters(
 			'sgo_pb_params',
@@ -384,6 +383,7 @@ class Front_End_Optimization {
 				'tve',
 				'preview',
 				'elementor-preview',
+				'uxb_iframe',
 			)
 		);
 

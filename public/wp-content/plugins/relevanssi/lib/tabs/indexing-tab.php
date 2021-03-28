@@ -141,8 +141,8 @@ function relevanssi_indexing_tab() {
 		</p>
 		<p><?php echo esc_html( $terms_count ); ?> <?php echo esc_html( _n( 'term in the index.', 'terms in the index.', $terms_count, 'relevanssi' ) ); ?><br />
 		<?php echo esc_html( $lowest_doc ); ?> <?php esc_html_e( 'is the lowest post ID indexed.', 'relevanssi' ); ?></p>
-		<?php /** Translators: %1$s opens the a tag, %2$s closes it. */ ?>
-		<p class="description">(<?php printf( esc_html__( 'These values may be inaccurate. If you need exact values, %1$supdate the counts%2$s' ), '<a href="' . esc_attr( $update_url ) . '">', '</a>' ); ?>.)</p>
+		<?php /* Translators: %1$s opens the a tag, %2$s closes it. */ ?>
+		<p class="description">(<?php printf( esc_html__( 'These values may be inaccurate. If you need exact values, %1$supdate the counts%2$s', 'relevanssi' ), '<a href="' . esc_attr( $update_url ) . '">', '</a>' ); ?>.)</p>
 		</td>
 	</tr>
 	</table>
@@ -427,29 +427,13 @@ function relevanssi_indexing_tab() {
 	</tr>
 
 	<?php
-	if ( function_exists( 'relevanssi_form_disable_shortcodes' ) ) {
-		relevanssi_form_disable_shortcodes();
-	}
+		do_action( 'relevanssi_indexing_tab_shortcodes' );
 	?>
 
 	</table>
 
 	<?php
-	if ( function_exists( 'relevanssi_form_index_users' ) ) {
-		relevanssi_form_index_users();
-	}
-	if ( function_exists( 'relevanssi_form_index_synonyms' ) ) {
-		relevanssi_form_index_synonyms();
-	}
-	if ( function_exists( 'relevanssi_form_index_taxonomies' ) ) {
-		relevanssi_form_index_taxonomies();
-	}
-	if ( function_exists( 'relevanssi_form_index_post_type_archives' ) ) {
-		relevanssi_form_index_post_type_archives();
-	}
-	if ( function_exists( 'relevanssi_form_index_pdf_parent' ) ) {
-		relevanssi_form_index_pdf_parent();
-	}
+		do_action( 'relevanssi_indexing_tab' );
 	?>
 
 	<h2><?php esc_html_e( 'Advanced indexing settings', 'relevanssi' ); ?></h2>
@@ -528,15 +512,7 @@ function relevanssi_indexing_tab() {
 		</td>
 	</tr>
 	<?php
-	if ( function_exists( 'relevanssi_form_thousands_separator' ) ) {
-		relevanssi_form_thousands_separator();
-	}
-	if ( function_exists( 'relevanssi_form_mysql_columns' ) ) {
-		relevanssi_form_mysql_columns();
-	}
-	if ( function_exists( 'relevanssi_form_internal_links' ) ) {
-		relevanssi_form_internal_links();
-	}
+	do_action( 'relevanssi_indexing_tab_advanced' );
 	?>
 
 	</table>

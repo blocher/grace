@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Sepia' => array($vendorDir . '/sepia/po-parser/src'),
+    'Net_DNS2' => array($vendorDir . '/pear/net_dns2'),
 );

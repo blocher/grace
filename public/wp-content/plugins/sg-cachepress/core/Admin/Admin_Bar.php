@@ -2,6 +2,7 @@
 namespace SiteGround_Optimizer\Admin;
 
 use SiteGround_Optimizer\Supercacher\Supercacher;
+use SiteGround_Optimizer\DNS\Cloudflare;
 
 /**
  * Add purge button functionality to admin bar.

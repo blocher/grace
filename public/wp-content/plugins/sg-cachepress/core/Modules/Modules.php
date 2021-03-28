@@ -1,6 +1,8 @@
 <?php
 namespace SiteGround_Optimizer\Modules;
 
+require_once \SiteGround_Optimizer\DIR . '/vendor/pear/net_dns2/Net/DNS2.php';
+
 use SiteGround_Optimizer\Multisite\Multisite;
 use SiteGround_Optimizer\Admin\Admin;
 use SiteGround_Optimizer\Options\Options;
@@ -51,21 +53,34 @@ class Modules {
 		'ssl'             => array(
 			'title'   => 'Enable HTTPS',
 			'text' => '',
+			'tab'  => 'environment',
 			'weight'  => 0,
 			'options' => array(
 				'siteground_optimizer_ssl_enabled',
 			),
 		),
-		'phpchecker'      => array(
-			'title'   => 'PHP Compatibility Checker',
-			'text' => '',
-			'weight'  => 0,
-			'options' => array(),
+		'hearbeat_control' => array(
+			'title' => 'WordPress Heartbeat Optimization',
+			'text' => 'Enable this option to allow SG Optimizer to control the WordPress Heartbeat API.',
+			'weight' => 80,
+			'tab'  => 'environment',
+			'options' => array(
+				'siteground_optimizer_heartbeat_control',
+			),
+		),
+		'database_optimization' => array(
+			'title' => 'Scheduled Database Maintenance',
+			'text' => 'Enable this option to regularly cleanup your database and keep it small and optimized.',
+			'weight' => 60,
+			'tab'  => 'environment',
+			'options' => array(
+				'siteground_optimizer_database_optimization' ),
 		),
 		'gzip'            => array(
 			'title'   => 'GZIP Compression',
 			'text' => '',
 			'weight'  => 0,
+			'tab'  => 'environment',
 			'options' => array(
 				'siteground_optimizer_enable_gzip_compression',
 			),
@@ -74,6 +89,7 @@ class Modules {
 			'title'   => 'Browser Caching',
 			'text' => '',
 			'weight'  => 0,
+			'tab'  => 'environment',
 			'options' => array(
 				'siteground_optimizer_enable_browser_caching',
 			),
@@ -132,13 +148,13 @@ class Modules {
 				'siteground_optimizer_combine_css',
 			),
 		),
-		'optimize_google_fonts'   => array(
-			'title'   => 'Optimize Loading of Google Fonts',
-			'text' => 'Combine the loading of Google fonts reducing the number of HTTP requests.',
+		'optimize_web_fonts'   => array(
+			'title'   => 'Optimize Loading of Web Fonts',
+			'text' => 'Combine the loading of Google fonts reducing the number of HTTP requests and properly preload other fonts used by your theme and builder.',
 			'weight'  => 87,
 			'tab'  => 'frontend',
 			'options' => array(
-				'siteground_optimizer_combine_google_fonts',
+				'siteground_optimizer_optimize_web_fonts',
 			),
 		),
 		'query_strings'   => array(
@@ -217,7 +233,8 @@ class Modules {
 			'title' => 'Environment Optimization',
 			'modules' => array(
 				'ssl',
-				'phpchecker',
+				'hearbeat_control',
+				'database_optimization',
 				'gzip',
 				'browser_cache',
 			),
@@ -240,7 +257,10 @@ class Modules {
 			),
 		),
 		'analytics' => array(
-			'title' => 'Performance Test',
+			'title' => 'Speed Test',
+		),
+		'cloudflare' => array(
+			'title' => 'Cloudflare',
 		),
 	);
 
@@ -254,8 +274,9 @@ class Modules {
 	 * @var array List of multisite tabs.
 	 */
 	public $multisite_tabs = array(
-		'global' => 'Global Settings',
+		'global'     => 'Global Settings',
 		'defaults'   => 'Per Site Defaults',
+		'cloudflare' => 'CloudFlare',
 	);
 
 	/**
@@ -474,6 +495,8 @@ class Modules {
 		add_action( 'network_admin_notices', array( $this, 'cache_plugins_notice' ) );
 		add_action( 'network_admin_notices', array( $this, 'blocking_plugins_notice' ) );
 
+		add_action( 'wp_login', array( $this, 'has_cloudflare' ) );
+
 		if ( 1 === (int) get_option( 'disable_conflicting_modules', 0 ) ) {
 			add_action( 'plugins_loaded', array( $this, 'disable_modules' ) );
 		}
@@ -684,6 +707,10 @@ class Modules {
 			$active_tabs[ $tab_slug ] = __( $tab['title'], 'sg-cachepress' );
 		}
 
+		if ( ! Options::is_enabled( 'siteground_optimizer_has_cloudflare' ) ) {
+			unset( $active_tabs['cloudflare'] );
+		}
+
 		// Return the tabs.
 		if ( ! is_multisite() ) {
 			// Return the tabs.
@@ -843,6 +870,65 @@ class Modules {
 		}
 
 		return array();
+	}
+
+	/**
+	 * Check if the current domain has cloudflare
+	 *
+	 * @since  5.7.0
+	 *
+	 * @return boolean True/False.
+	 */
+	public function has_cloudflare() {
+		if ( Options::is_enabled( 'siteground_optimizer_has_cloudflare' ) ) {
+			return;
+		}
+
+		$resolver = new \Net_DNS2_Resolver(
+			array(
+				'nameservers' => array( '1.1.1.1', '8.8.8.8' ),
+			)
+		);
+
+		// Parse the url.
+		$url_parts = parse_url( site_url( '/' ) );
+
+		try {
+			// Get the A record info.
+			$dns_resolver_response = $resolver->query( $url_parts['host'], 'A' );
+		} catch ( \Exception $e ) {
+			return;
+		}
+
+
+		if ( empty( $dns_resolver_response->answer ) ) {
+			return;
+		}
+
+		foreach ( $dns_resolver_response->answer as $record ) {
+			if ( is_a( $record, 'Net_DNS2_RR_A' ) ) {
+				$a_record = $record;
+				break;
+			}
+		}
+
+		if ( empty( $a_record->address ) ) {
+			return;
+		}
+
+		// Make a request to the site url.
+		$response = wp_remote_get( 'http://' . $a_record->address );
+
+		// Retrieve response headers.
+		$headers = wp_remote_retrieve_headers( $response );
+
+		// Check if the server is cloudflare.
+		if (
+			! empty( $headers['server'] ) &&
+			'cloudflare' === $headers['server']
+		) {
+			update_option( 'siteground_optimizer_has_cloudflare', 1 );
+		}
 	}
 
 }

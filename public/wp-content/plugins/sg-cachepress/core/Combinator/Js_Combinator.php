@@ -16,6 +16,9 @@ class Js_Combinator extends Abstract_Combinator {
 	 * @var array Array containing all excluded inline content.
 	 */
 	private $excluded_inline_content = array(
+		'CDATA',
+		'window.bookly',
+		'var _iub',
 		'#fld_',
 		'.shop-filter',
 		'var markersData',
@@ -409,6 +412,8 @@ class Js_Combinator extends Abstract_Combinator {
 		'wpp_params',
 		'_taboola',
 		'.ratingbox',
+		'wp.apiFetch.nonceMiddleware',
+		'initMap',
 	);
 
 	/**
@@ -485,6 +490,12 @@ class Js_Combinator extends Abstract_Combinator {
 		'uncode-app',
 		'uncode-plugins',
 		'uncode-init',
+		'lodash',
+		'wp-api-fetch',
+		'wp-i18n',
+		'wp-polyfill',
+		'wp-url',
+		'wp-hooks',
 	);
 
 	/**
@@ -643,7 +654,7 @@ class Js_Combinator extends Abstract_Combinator {
 		$atts = Options::is_enabled( 'siteground_optimizer_optimize_javascript_async' ) ? 'defer' : '';
 
 		// Add combined script tag.
-		// phpcs:ignore 
+		// phpcs:ignore
 		return str_replace( '</body>', '<script ' . $atts . ' src="' . $tag_data['url'] . '"></script>' . $move_after . '</body>', $html );
 	}
 

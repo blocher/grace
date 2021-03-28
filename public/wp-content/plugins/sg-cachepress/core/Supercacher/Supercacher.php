@@ -2,6 +2,7 @@
 namespace SiteGround_Optimizer\Supercacher;
 
 use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
+use SiteGround_Optimizer\DNS\Cloudflare;
 /**
  * SG CachePress main plugin class
  */
@@ -66,11 +67,12 @@ class Supercacher {
 		add_action( 'update_option_siteground_optimizer_enable_cache', array( $this, 'purge_everything' ) );
 		add_action( 'update_option_siteground_optimizer_autoflush_cache', array( $this, 'purge_everything' ) );
 		add_action( 'update_option_siteground_optimizer_enable_memcached', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_siteground_optimizer_combine_css', array( $this, 'delete_assets' ) );
+		add_action( 'update_option_siteground_optimizer_combine_css', array( $this, 'delete_assets' ), 10, 0 );
 		add_action( 'pll_save_post', array( $this, 'flush_memcache' ) );
 
 		// Delete assets (minified js and css files) every 30 days.
 		add_action( 'siteground_delete_assets', array( $this, 'delete_assets' ) );
+		add_action( 'siteground_delete_assets', array( $this, 'purge_cache' ), 11 );
 		add_filter( 'cron_schedules', array( $this, 'add_siteground_cron_schedule' ) );
 
 		// Schedule a cron job that will delete all assets (minified js and css files) every 30 days.
@@ -159,7 +161,18 @@ class Supercacher {
 	 * @return bool True on success, false on failure.
 	 */
 	public function purge_index_cache() {
-		return $this->purge_cache_request( get_home_url( '/' ), false );
+		return $this->purge_cache_request( get_home_url( null, '/' ), false );
+	}
+
+	/**
+	 * Purge rest api cache.
+	 *
+	 * @since  5.7.18
+	 *
+	 * @return bool True on success, false on failure.
+	 */
+	public function purge_rest_cache() {
+		return $this->purge_cache_request( get_rest_url() );
 	}
 
 	/**
@@ -173,6 +186,11 @@ class Supercacher {
 	 * @return bool True if the cache is deleted, false otherwise.
 	 */
 	public static function purge_cache_request( $url, $include_child_paths = true ) {
+		// Flush the Cloudflare cache if the optimization is enabled.
+		if ( 1 === intval( get_option( 'siteground_optimizer_cloudflare_optimization', 0 ) ) ) {
+			Cloudflare::get_instance()->purge_cache();
+		}
+
 		// Bail if the url is empty.
 		if ( empty( $url ) ) {
 			return;
@@ -282,7 +300,7 @@ class Supercacher {
 	 *
 	 * @return bool                  True if the cache is enabled, false otherwise.
 	 */
-	public static function test_cache( $url, $maybe_dynamic = true ) {
+	public static function test_cache( $url, $maybe_dynamic = true, $is_cloudflare_check = false ) {
 		// Bail if the url is empty.
 		if ( empty( $url ) ) {
 			return;
@@ -291,9 +309,12 @@ class Supercacher {
 		// Add slash at the end of the url.
 		$url = trailingslashit( $url );
 
-		// Bail if the url is excluded.
-		if ( SuperCacher_Helper::is_url_excluded( $url ) ) {
-			return false;
+		// Check if the url is excluded for dynamic checks only.
+		if ( false === $is_cloudflare_check ) {
+			// Bail if the url is excluded.
+			if ( SuperCacher_Helper::is_url_excluded( $url ) ) {
+				return false;
+			}
 		}
 
 		// Make the request.
@@ -311,10 +332,12 @@ class Supercacher {
 			return false;
 		}
 
+		$cache_header = false === $is_cloudflare_check ? 'x-proxy-cache' : 'cf-cache-status';
+
 		// Check if the url has a cache header.
 		if (
-			isset( $headers['x-proxy-cache'] ) &&
-			'HIT' === strtoupper( $headers['x-proxy-cache'] )
+			isset( $headers[ $cache_header ] ) &&
+			'HIT' === strtoupper( $headers[ $cache_header ] )
 		) {
 			return true;
 		}
@@ -350,17 +373,27 @@ class Supercacher {
 	 * Delete plugin assets
 	 *
 	 * @since  5.1.0
+	 *
+	 * @param bool|string $dir Directory to clean up.
 	 */
-	public static function delete_assets() {
-		$assets_dir = Front_End_Optimization::get_instance()->assets_dir;
-		$files = scandir( $assets_dir );
+	public static function delete_assets( $dir = false ) {
+		if ( false === $dir ) {
+			$dir = Front_End_Optimization::get_instance()->assets_dir;
+		}
+
+		// Scan the assets dir.
+		$all_files = scandir( $dir );
+
+		// Get only files and directories.
+		$files = array_diff( $all_files, array( '.', '..' ) );
 
 		foreach ( $files as $filename ) {
 			// Build the filepath.
-			$maybe_file = trailingslashit( $assets_dir ) . $filename;
+			$maybe_file = trailingslashit( $dir ) . $filename;
 
 			// Bail if the file is not a file.
 			if ( ! is_file( $maybe_file ) ) {
+				self::delete_assets( $maybe_file );
 				continue;
 			}
 

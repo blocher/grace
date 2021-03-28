@@ -46,19 +46,24 @@ class Htaccess {
 	 */
 	private $types = array(
 		'gzip'            => array(
-			'enabled'  => '/\#\s+GZIP enabled by SG-Optimizer/si',
-			'disabled' => '/\#\s+GZIP enabled by SG-Optimizer(.+?)\#\s+END\s+GZIP\n/ims',
+			'enabled'     => '/\#\s+GZIP enabled by SG-Optimizer/si',
+			'disabled'    => '/\#\s+GZIP enabled by SG-Optimizer(.+?)\#\s+END\s+GZIP\n/ims',
 			'disable_all' => '/\#\s+GZIP enabled by SG-Optimizer(.+?)\#\s+END\s+GZIP\n|<IfModule mod_deflate\.c>(.*?\n)<\/IfModule>|# BEGIN WP Rocket(.*)# END WP Rocket/ims',
 		),
 		'browser-caching' => array(
-			'enabled'  => '/\#\s+Leverage Browser Caching by SG-Optimizer/si',
-			'disabled' => '/\#\s+Leverage Browser Caching by SG-Optimizer(.+?)\#\s+END\s+LBC\n/ims',
+			'enabled'     => '/\#\s+Leverage Browser Caching by SG-Optimizer/si',
+			'disabled'    => '/\#\s+Leverage Browser Caching by SG-Optimizer(.+?)\#\s+END\s+LBC\n/ims',
 			'disable_all' => '/\#\s+Leverage Browser Caching by SG-Optimizer(.+?)\#\s+END\s+LBC\n|<IfModule mod_expires\.c>(.*?\n?)(<\/IfModule>\n\s)?<\/IfModule>/ims',
 		),
-		'ssl'           => array(
+		'ssl'             => array(
 			'enabled'     => '/HTTPS forced by SG-Optimizer/si',
 			'disabled'    => '/\#\s+HTTPS\s+forced\s+by\s+SG-Optimizer(.+?)\#\s+END\s+HTTPS(\n)?/ims',
 			'disable_all' => '/\#\s+HTTPS\s+forced\s+by\s+SG-Optimizer(.+?)\#\s+END\s+HTTPS(\n)?/ims',
+		),
+		'user-agent-vary' => array(
+			'enabled'     => '/\#\s+SGO Unset Vary/si',
+			'disabled'    => '/\#\s+SGO\s+Unset\s+Vary(.+?)\#\s+SGO\s+Unset\s+Vary\s+END(\n)?/ims',
+			'disable_all' => '/\#\s+SGO\s+Unset\s+Vary(.+?)\#\s+SGO\s+Unset\s+Vary\s+END(\n)?/ims',
 		),
 	);
 
@@ -186,7 +191,7 @@ class Htaccess {
 		}
 
 		// Generate the new content of htaccess.
-		$new_content = $new_rule . PHP_EOL . $content;
+		$new_content = ( 'user-agent-vary' === $type ) ? $content . PHP_EOL . $new_rule : $new_rule . PHP_EOL . $content;
 
 		// Return the result.
 		return $this->lock_and_write( $new_content );
@@ -236,79 +241,4 @@ class Htaccess {
 		// Return the result.
 		return preg_match( $this->types[ $type ]['enabled'], $content );
 	}
-
-	/**
-	 * Return the current php version.
-	 *
-	 * @since  5.0.0
-	 *
-	 * @return float $php_version The php version.
-	 */
-	public function get_php_version() {
-		// Try to get the php version from htaccess.
-		$maybe_php_version = $this->check_htaccess_php_version( get_home_path() );
-
-		// Get the server php version if it was not found in htaccess files.
-		if ( false === $maybe_php_version ) {
-			return array(
-				'version'          => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
-				'has_been_changed' => 0,
-			);
-		}
-
-		// Finally return the php version info.
-		return array(
-			'version'          => $maybe_php_version,
-			'has_been_changed' => 1,
-		);
-	}
-
-	/**
-	 * Check recursively for php in htaccess files.
-	 *
-	 * @since  5.1.2
-	 *
-	 * @param  string $path The path to wp dir.
-	 *
-	 * @return mixed        Php version if found, false otherwise.
-	 */
-	private function check_htaccess_php_version( $path ) {
-		$file = trailingslashit( $path ) . '.htaccess';
-
-
-		// Check if the file exists.
-		if ( file_exists( $file ) && is_readable( $file ) ) {
-			// Check if the version has changed in .htaccess.
-			preg_match(
-				'/^(?:\s+)?AddHandler\s+application\/x-httpd-(?:php)?(\w+(?:\-php)?)\s+\.php\s+\.php5\s+\.php4\s+\.php3/m',
-				$this->wp_filesystem->get_contents( $file ),
-				$matches
-			);
-
-			// Generate the php version from matches.
-			if ( ! empty( $matches[1] ) ) {
-				// Get the recommended version from database
-				// if the htaccess has rule for recommended php version.
-				if ( 'recommended-php' === $matches[1] ) {
-					return $matches[1];
-				}
-
-				// Build the php version.
-				$split = str_split( $matches[1] );
-				return $split[0] . '.' . $split[1];
-			}
-
-			return $this->check_htaccess_php_version( dirname( $path ) );
-		}
-
-
-		// Bail if the path if the main dir.
-		if ( '/' === $path ) {
-			return false;
-		}
-
-		// Continue with parent directories.
-		return $this->check_htaccess_php_version( dirname( $path ) );
-	}
-
 }

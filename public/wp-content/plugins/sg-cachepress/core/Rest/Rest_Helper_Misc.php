@@ -40,6 +40,8 @@ class Rest_Helper_Misc extends Rest_Helper {
 			'combine_css_exclude',
 			'dns_prefetch_urls',
 			'combine_javascript_exclude',
+			'fonts_preload_urls',
+			'post_types_exclude',
 		);
 
 		// Get the type and handles data from the request.
@@ -62,7 +64,7 @@ class Rest_Helper_Misc extends Rest_Helper {
 
 		$handles = array_values( $handles );
 
-		if ( in_array( $type, array( 'minify_html_exclude', 'excluded_lazy_load_classes', 'dns_prefetch_urls' ) ) ) {
+		if ( in_array( $type, array( 'minify_html_exclude', 'excluded_lazy_load_classes', 'dns_prefetch_urls', 'fonts_preload_urls' ) ) ) {
 			$handles = $handle;
 		}
 

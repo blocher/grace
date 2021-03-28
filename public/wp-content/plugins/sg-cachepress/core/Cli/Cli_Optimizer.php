@@ -44,7 +44,7 @@ class Cli_Optimizer {
 	 *  - lazyload
 	 *  - gzip
 	 *  - webp
-	 *  - google-fonts
+	 *  - web-fonts
 	 *  - browsercache
 	 *  - fix_insecure_content
 	 *  - database-optimization
@@ -76,7 +76,7 @@ class Cli_Optimizer {
 			case 'js-async':
 			case 'combine-js':
 			case 'combine-css':
-			case 'google-fonts':
+			case 'web-fonts':
 			case 'webp':
 			case 'images':
 			case 'dns-prefetch':
