@@ -590,7 +590,7 @@ add_filter( 'login_headerurl', 'grace_login_logo_url' );
 function grace_login_logo_url_title() {
     return 'Grace Episcopal Church, Alexandria VA';
 }
-add_filter( 'login_headertitle', 'grace_login_logo_url_title' );
+add_filter( 'login_headertext', 'grace_login_logo_url_title' );
 
 add_filter('relevanssi_match', 'relevanssi_post_type_weights');
 
