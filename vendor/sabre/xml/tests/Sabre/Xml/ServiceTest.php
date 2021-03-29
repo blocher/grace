@@ -36,13 +36,18 @@ class ServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($ns, $writer->namespaceMap);
     }
 
-    public function testEmptyInputParse()
+    /**
+     * @dataProvider providesEmptyInput
+     *
+     * @param string|resource $input
+     */
+    public function testEmptyInputParse($input)
     {
-        $resource = fopen('php://input', 'r');
-        $util = new Service();
         $this->expectException('\Sabre\Xml\ParseException');
         $this->expectExceptionMessage('The input element to parse is empty. Do not attempt to parse');
-        $util->parse($resource, '/sabre.io/ns');
+
+        $util = new Service();
+        $util->parse($input, '/sabre.io/ns');
     }
 
     /**
@@ -105,14 +110,18 @@ XML;
         );
     }
 
-    public function testEmptyInputExpect()
+    /**
+     * @dataProvider providesEmptyInput
+     *
+     * @param string|resource $input
+     */
+    public function testEmptyInputExpect($input)
     {
-        //$resource = \fopen('')
-        $resource = fopen('php://input', 'r');
-        $util = new Service();
         $this->expectException('\Sabre\Xml\ParseException');
         $this->expectExceptionMessage('The input element to parse is empty. Do not attempt to parse');
-        $util->expect('foo', $resource, '/sabre.io/ns');
+
+        $util = new Service();
+        $util->expect('foo', $input, '/sabre.io/ns');
     }
 
     /**
@@ -142,11 +151,9 @@ XML;
         );
     }
 
-    /**
-     * @expectedException \Sabre\Xml\LibXMLException
-     */
     public function testInvalidNameSpace()
     {
+        $this->expectException(LibXMLException::class);
         $xml = '<D:propfind xmlns:D="DAV:"><D:prop><bar:foo xmlns:bar=""/></D:prop></D:propfind>';
 
         $util = new Service();
@@ -171,7 +178,12 @@ XML;
         $util->namespaceMap = [
             'http://sabre.io/ns' => 's',
         ];
+        /**
+         * @var PropFindTestAsset
+         */
         $result = $util->expect('{DAV:}propfind', $xml);
+        $this->assertIsObject($result);
+        $this->assertInstanceOf(PropFindTestAsset::class, $result);
         $this->assertEquals(false, $result->allProp);
         $this->assertEquals([], $result->properties);
     }
@@ -210,10 +222,10 @@ XML;
 
     /**
      * @depends testGetReader
-     * @expectedException \Sabre\Xml\ParseException
      */
     public function testExpectWrong()
     {
+        $this->expectException(ParseException::class);
         $xml = <<<XML
 <root xmlns="http://sabre.io/ns">
   <child>value</child>
@@ -326,11 +338,9 @@ XML;
         $this->assertEquals($input, $writtenXml);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testWriteVoNotFound()
     {
+        $this->expectException(\InvalidArgumentException::class);
         $service = new Service();
         $service->writeValueObject(new \StdClass());
     }
@@ -343,12 +353,19 @@ XML;
         ], Service::parseClarkNotation('{http://sabredav.org/ns}elem'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testParseClarkNotationFail()
     {
+        $this->expectException(\InvalidArgumentException::class);
         Service::parseClarkNotation('http://sabredav.org/ns}elem');
+    }
+
+    public function providesEmptyInput()
+    {
+        $emptyResource = fopen('php://input', 'r');
+        $data[] = [$emptyResource];
+        $data[] = [''];
+
+        return $data;
     }
 
     public function providesEmptyPropfinds()

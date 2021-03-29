@@ -30,11 +30,13 @@
  */
 class Google_Service_HomeGraphService extends Google_Service
 {
-
+  /** Private Service: https://www.googleapis.com/auth/homegraph. */
+  const HOMEGRAPH =
+      "https://www.googleapis.com/auth/homegraph";
 
   public $agentUsers;
   public $devices;
-  
+
   /**
    * Constructs the internal representation of the HomeGraphService service.
    *
@@ -86,6 +88,10 @@ class Google_Service_HomeGraphService extends Google_Service
               'parameters' => array(),
             ),'reportStateAndNotification' => array(
               'path' => 'v1/devices:reportStateAndNotification',
+              'httpMethod' => 'POST',
+              'parameters' => array(),
+            ),'requestLink' => array(
+              'path' => 'v1/devices:requestLink',
               'httpMethod' => 'POST',
               'parameters' => array(),
             ),'requestSync' => array(

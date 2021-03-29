@@ -18,20 +18,29 @@
 class Google_Service_AccessApproval_AccessApprovalSettings extends Google_Collection
 {
   protected $collection_key = 'notificationEmails';
+  public $enrolledAncestor;
   protected $enrolledServicesType = 'Google_Service_AccessApproval_EnrolledService';
   protected $enrolledServicesDataType = 'array';
   public $name;
   public $notificationEmails;
 
+  public function setEnrolledAncestor($enrolledAncestor)
+  {
+    $this->enrolledAncestor = $enrolledAncestor;
+  }
+  public function getEnrolledAncestor()
+  {
+    return $this->enrolledAncestor;
+  }
   /**
-   * @param Google_Service_AccessApproval_EnrolledService
+   * @param Google_Service_AccessApproval_EnrolledService[]
    */
   public function setEnrolledServices($enrolledServices)
   {
     $this->enrolledServices = $enrolledServices;
   }
   /**
-   * @return Google_Service_AccessApproval_EnrolledService
+   * @return Google_Service_AccessApproval_EnrolledService[]
    */
   public function getEnrolledServices()
   {

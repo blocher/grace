@@ -31,8 +31,11 @@ class Google_Service_Compute_BackendService extends Google_Collection
   protected $consistentHashDataType = '';
   public $creationTimestamp;
   public $customRequestHeaders;
+  public $customResponseHeaders;
   public $description;
   public $enableCDN;
+  protected $failoverPolicyType = 'Google_Service_Compute_BackendServiceFailoverPolicy';
+  protected $failoverPolicyDataType = '';
   public $fingerprint;
   public $healthChecks;
   protected $iapType = 'Google_Service_Compute_BackendServiceIAP';
@@ -41,7 +44,12 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public $kind;
   public $loadBalancingScheme;
   public $localityLbPolicy;
+  protected $logConfigType = 'Google_Service_Compute_BackendServiceLogConfig';
+  protected $logConfigDataType = '';
+  protected $maxStreamDurationType = 'Google_Service_Compute_Duration';
+  protected $maxStreamDurationDataType = '';
   public $name;
+  public $network;
   protected $outlierDetectionType = 'Google_Service_Compute_OutlierDetection';
   protected $outlierDetectionDataType = '';
   public $port;
@@ -49,6 +57,8 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public $protocol;
   public $region;
   public $securityPolicy;
+  protected $securitySettingsType = 'Google_Service_Compute_SecuritySettings';
+  protected $securitySettingsDataType = '';
   public $selfLink;
   public $sessionAffinity;
   public $timeoutSec;
@@ -62,14 +72,14 @@ class Google_Service_Compute_BackendService extends Google_Collection
     return $this->affinityCookieTtlSec;
   }
   /**
-   * @param Google_Service_Compute_Backend
+   * @param Google_Service_Compute_Backend[]
    */
   public function setBackends($backends)
   {
     $this->backends = $backends;
   }
   /**
-   * @return Google_Service_Compute_Backend
+   * @return Google_Service_Compute_Backend[]
    */
   public function getBackends()
   {
@@ -147,6 +157,14 @@ class Google_Service_Compute_BackendService extends Google_Collection
   {
     return $this->customRequestHeaders;
   }
+  public function setCustomResponseHeaders($customResponseHeaders)
+  {
+    $this->customResponseHeaders = $customResponseHeaders;
+  }
+  public function getCustomResponseHeaders()
+  {
+    return $this->customResponseHeaders;
+  }
   public function setDescription($description)
   {
     $this->description = $description;
@@ -162,6 +180,20 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public function getEnableCDN()
   {
     return $this->enableCDN;
+  }
+  /**
+   * @param Google_Service_Compute_BackendServiceFailoverPolicy
+   */
+  public function setFailoverPolicy(Google_Service_Compute_BackendServiceFailoverPolicy $failoverPolicy)
+  {
+    $this->failoverPolicy = $failoverPolicy;
+  }
+  /**
+   * @return Google_Service_Compute_BackendServiceFailoverPolicy
+   */
+  public function getFailoverPolicy()
+  {
+    return $this->failoverPolicy;
   }
   public function setFingerprint($fingerprint)
   {
@@ -225,6 +257,34 @@ class Google_Service_Compute_BackendService extends Google_Collection
   {
     return $this->localityLbPolicy;
   }
+  /**
+   * @param Google_Service_Compute_BackendServiceLogConfig
+   */
+  public function setLogConfig(Google_Service_Compute_BackendServiceLogConfig $logConfig)
+  {
+    $this->logConfig = $logConfig;
+  }
+  /**
+   * @return Google_Service_Compute_BackendServiceLogConfig
+   */
+  public function getLogConfig()
+  {
+    return $this->logConfig;
+  }
+  /**
+   * @param Google_Service_Compute_Duration
+   */
+  public function setMaxStreamDuration(Google_Service_Compute_Duration $maxStreamDuration)
+  {
+    $this->maxStreamDuration = $maxStreamDuration;
+  }
+  /**
+   * @return Google_Service_Compute_Duration
+   */
+  public function getMaxStreamDuration()
+  {
+    return $this->maxStreamDuration;
+  }
   public function setName($name)
   {
     $this->name = $name;
@@ -232,6 +292,14 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public function getName()
   {
     return $this->name;
+  }
+  public function setNetwork($network)
+  {
+    $this->network = $network;
+  }
+  public function getNetwork()
+  {
+    return $this->network;
   }
   /**
    * @param Google_Service_Compute_OutlierDetection
@@ -286,6 +354,20 @@ class Google_Service_Compute_BackendService extends Google_Collection
   public function getSecurityPolicy()
   {
     return $this->securityPolicy;
+  }
+  /**
+   * @param Google_Service_Compute_SecuritySettings
+   */
+  public function setSecuritySettings(Google_Service_Compute_SecuritySettings $securitySettings)
+  {
+    $this->securitySettings = $securitySettings;
+  }
+  /**
+   * @return Google_Service_Compute_SecuritySettings
+   */
+  public function getSecuritySettings()
+  {
+    return $this->securitySettings;
   }
   public function setSelfLink($selfLink)
   {

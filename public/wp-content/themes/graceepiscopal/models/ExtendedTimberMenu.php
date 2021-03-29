@@ -1,7 +1,7 @@
 <?php
- 
-	class ExtendedTimberMenu extends TimberMenu {
-		
-		var $MenuItemClass = 'ExtendedTimberMenuItem';
 
-	}
+class ExtendedTimberMenu extends TimberMenu {
+
+	var $MenuItemClass = 'ExtendedTimberMenuItem';
+
+}

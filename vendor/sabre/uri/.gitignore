@@ -4,12 +4,5 @@ composer.lock
 
 # Tests
 tests/cov/
-
-# Composer binaries
-bin
-
-# Vim
-.*.swp
-
-# development stuff
+tests/.phpunit.result.cache
 .php_cs.cache

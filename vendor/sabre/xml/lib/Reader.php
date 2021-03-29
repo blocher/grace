@@ -55,7 +55,11 @@ class Reader extends XMLReader
      */
     public function parse(): array
     {
-        $previousEntityState = libxml_disable_entity_loader(true);
+        $previousEntityState = null;
+        $shouldCallLibxmlDisableEntityLoader = (\PHP_VERSION_ID < 80000);
+        if ($shouldCallLibxmlDisableEntityLoader) {
+            $previousEntityState = libxml_disable_entity_loader(true);
+        }
         $previousSetting = libxml_use_internal_errors(true);
 
         try {
@@ -78,7 +82,9 @@ class Reader extends XMLReader
             }
         } finally {
             libxml_use_internal_errors($previousSetting);
-            libxml_disable_entity_loader($previousEntityState);
+            if ($shouldCallLibxmlDisableEntityLoader) {
+                libxml_disable_entity_loader($previousEntityState);
+            }
         }
 
         return $result;
@@ -118,7 +124,7 @@ class Reader extends XMLReader
      * If the $elementMap argument is specified, the existing elementMap will
      * be overridden while parsing the tree, and restored after this process.
      *
-     * @return array|string
+     * @return array|string|null
      */
     public function parseInnerTree(array $elementMap = null)
     {
@@ -147,7 +153,9 @@ class Reader extends XMLReader
                 throw new ParseException('This should never happen (famous last words)');
             }
 
-            while (true) {
+            $keepOnParsing = true;
+
+            while ($keepOnParsing) {
                 if (!$this->isValid()) {
                     $errors = libxml_get_errors();
 
@@ -169,7 +177,8 @@ class Reader extends XMLReader
                     case self::END_ELEMENT:
                         // Ensuring we are moving the cursor after the end element.
                         $this->read();
-                        break 2;
+                        $keepOnParsing = false;
+                        break;
                     case self::NONE:
                         throw new ParseException('We hit the end of the document prematurely. This likely means that some parser "eats" too many elements. Do not attempt to continue parsing.');
                     default:
@@ -223,7 +232,7 @@ class Reader extends XMLReader
         }
 
         $value = call_user_func(
-            $this->getDeserializerForElementName($name),
+            $this->getDeserializerForElementName((string) $name),
             $this
         );
 
