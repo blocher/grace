@@ -10,7 +10,6 @@ if ( $args['post_type'] == 'event' || $args['post_type'] == 'ai1ec_event' ) {
 }
 $data = Timber::get_context();
 
-
 $data['posts']      = Timber::get_posts( $args, $class );
 $data['pagination'] = Timber::get_pagination();
 

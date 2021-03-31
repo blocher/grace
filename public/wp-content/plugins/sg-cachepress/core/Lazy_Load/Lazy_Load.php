@@ -55,7 +55,7 @@ class Lazy_Load {
 		wp_enqueue_script(
 			'siteground-optimizer-lazy-sizes-js',
 			\SiteGround_Optimizer\URL . '/assets/js/lazysizes.min.js',
-			array( 'jquery' ), // Dependencies.
+			array(), // Dependencies.
 			\SiteGround_Optimizer\VERSION,
 			true
 		);

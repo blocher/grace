@@ -107,6 +107,24 @@ class Supercacher_Posts extends Supercacher {
 	}
 
 	/**
+	 * Purge the cache for the Post Page
+	 *
+	 * @since  5.7.20
+	 */
+	public function purge_blog_page() {
+		// Check if a blog page is set.
+		$blog_id = (int) get_option( 'page_for_posts' );
+
+		// Bail if home page is set for blog page. It will be handled by purge_index_page().
+		if ( empty( $blog_id ) ) {
+			return;
+		}
+
+		// Purge the cache for that post.
+		$this->purge_post_cache( $blog_id );
+	}
+
+	/**
 	 * Purge the cache of the post that has been changed and
 	 * it's parents, the index cache, and the post categories.
 	 *
@@ -140,6 +158,8 @@ class Supercacher_Posts extends Supercacher {
 		$this->purge_parents_cache( $post_id );
 		// Purge post terms cache.
 		$this->purge_post_terms( $post_id );
+		// Purge the blog page cache.
+		$this->purge_blog_page();
 		// Purge the index cache.
 		$this->purge_index_cache();
 		// Purge the feed cache.
@@ -147,5 +167,3 @@ class Supercacher_Posts extends Supercacher {
 	}
 
 }
-
-

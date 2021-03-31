@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '6bfca443878c58d058775e151275b05696b696b9',
+    'reference' => 'cbe61b4f53903bb29db21be8564f4136a1a46c8b',
     'name' => 'graceepiscopal/graceepiscopal',
   ),
   'versions' => 
@@ -63,7 +63,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '6bfca443878c58d058775e151275b05696b696b9',
+      'reference' => 'cbe61b4f53903bb29db21be8564f4136a1a46c8b',
     ),
     'guzzlehttp/guzzle' => 
     array (

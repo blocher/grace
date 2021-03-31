@@ -270,7 +270,7 @@ class Images_Optimizer_Webp {
 				break;
 			case 'lossless':
 			default:
-				$quality = 75;
+				$quality = 100;
 				$quality_type = '-lossless';
 				break;
 		}

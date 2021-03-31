@@ -217,6 +217,13 @@ Our plugin uses a cookie in order to function properly. It does not store person
 
 == Changelog ==
 
+= Version 5.7.20 =
+* Perform smart purge on the blog page when editing a post.
+* Remove jQuery Dependency from Lazy-load.
+
+= Version 5.7.19 =
+* Change loseless quality
+
 = Version 5.7.18 =
 * Improved REST API cache invalidation
 

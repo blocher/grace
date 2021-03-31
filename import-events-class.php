@@ -9,7 +9,7 @@ class ImportEvents {
 	protected $service;
 	protected $application_name = 'Grace Calendar Sync';
 	protected $scopes;
-	protected $calendarId = 'scsdgvstpivoaop3f3564ok9ds@group.calendar.google.com';
+	protected $calendarId = 'c_8npl4k7cfkuc0rj6gnvkasofno@group.calendar.google.com';
 	protected $start_time;
 	protected $end_time;
 
@@ -33,7 +33,7 @@ class ImportEvents {
 		ini_set( 'memory_limit', '750M' );
 		require_once 'vendor/autoload.php';
 		if ( ! defined( 'ABSPATH' ) ) {
-			require_once 'public/wp-load.php';
+			require_once 'public_html/wp-load.php';
 		}
 		date_default_timezone_set( 'America/New_York' );
 		if ( empty( $_SERVER['SERVER_NAME'] ) ) {
@@ -77,8 +77,6 @@ class ImportEvents {
 		$end = new Carbon( $end, new DateTimeZone( 'America/New_York' ) );
 		$end->subDay( 1 );
 		$end = $end->format( 'Y-m-d H:i:s' );
-
-		$location = $event->getLocation();
 
 		$wp_event                             = array();
 		$wp_event['event_title_google']       = $event->getSummary();
@@ -144,7 +142,6 @@ class ImportEvents {
 			}
 		}
 
-		$google_ids = array();
 		foreach ( $results->getItems() as $event ) {
 			$this->update_event( $event );
 		}
