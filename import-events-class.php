@@ -14,6 +14,8 @@ class ImportEvents {
 	protected $end_time;
 
 	public function __construct() {
+		$date = date( 'm/d/Y h:i:s a', time() );
+		echo 'beginning import at ' . $date . ' ' . PHP_EOL;
 
 		$this->bootstrap();
 		$this->setScopes();
@@ -21,28 +23,44 @@ class ImportEvents {
 		$this->setTimes();
 		$this->import();
 
-		echo 'constructed';
+		echo 'FINISHED' . PHP_EOL;
 
 	}
 
 	protected function bootstrap() {
 
+		echo 'CONFIRMING ON CLI' . PHP_EOL;
 		if ( php_sapi_name() != 'cli' ) {
 			throw new Exception( 'This application must be run on the command line.' );
 		}
+		echo 'SETTING MEMORY LIMIT' . PHP_EOL;
 		ini_set( 'memory_limit', '750M' );
+		echo 'autoloading' . PHP_EOL;
 		require_once 'vendor/autoload.php';
-		if ( ! defined( 'ABSPATH' ) ) {
-			require_once 'public_html/wp-load.php';
-		}
+		//      echo 'CHECKING IF WordPress IS LOADED';
+		//      if ( ! defined( 'ABSPATH' ) ) {
+		//          echo 'LOADING WordPress';
+		//          require_once 'public_html/wp-load.php';
+		//      }
+		echo 'SETTING TIMEZONE' . PHP_EOL;
 		date_default_timezone_set( 'America/New_York' );
+		echo 'CHECKING THAT SERVER NAME IS SET';
 		if ( empty( $_SERVER['SERVER_NAME'] ) ) {
+			echo 'SETTING SERVER NAME';
 			$_SERVER['SERVER_NAME'] = 'CLI';
 		}
+
+		echo 'PURGING CACHE';
+		sg_cachepress_purge_everything();
+
+		echo 'BOOTSTRAPPING COMPLETE' . PHP_EOL;
 
 	}
 
 	protected function setGoogleClientAndSerice() {
+
+		echo 'CONFIGURING GOOGLE CLIENT' . PHP_EOL;
+
 		$client = new Google_Client();
 		$client->setDeveloperKey( $this->developer_key );
 		$client->setApplicationName( $this->application_name );
@@ -51,6 +69,9 @@ class ImportEvents {
 		$this->client = $client;
 
 		$this->service = new Google_Service_Calendar( $client );
+
+		echo 'FINISHED CONFIGURING GOOGLE CLIENT' . PHP_EOL;
+
 	}
 
 	protected function setScopes() {
@@ -58,6 +79,12 @@ class ImportEvents {
 	}
 
 	protected function update_event( $event ) {
+
+		echo 'UPDATING EVENT' . PHP_EOL;
+
+		echo $event->visibility;
+		echo $event->summary;
+		echo $event->getSummary();
 
 		$status = $event->status;
 
@@ -123,7 +150,7 @@ class ImportEvents {
 
 	public function get_page( $optParams ) {
 
-		echo PHP_EOL . 'NEW PAGE' . PHP_EOL;
+		echo 'STARTING PAGE' . PHP_EOL;
 
 		try {
 			$results = $this->service->events->listEvents( $this->calendarId, $optParams );
@@ -143,7 +170,12 @@ class ImportEvents {
 		}
 
 		foreach ( $results->getItems() as $event ) {
-			$this->update_event( $event );
+			try {
+				$this->update_event( $event );
+			} catch ( Exception $e ) {
+				print( $e );
+				die();
+			}
 		}
 
 		if ( $results->getNextPageToken() ) {
@@ -158,25 +190,32 @@ class ImportEvents {
 			return $this->get_page( $optParams );
 		}
 		update_option( 'google_calendar_sync_token', $results->getNextSyncToken() );
-		echo 'sync token update: ' . $results->getNextSyncToken();
-		dd();
+		echo 'FINISHED IMPORT sync token: ' . $results->getNextSyncToken();
 
 	}
 
 	protected function setTimes() {
 
+		echo 'SETTING TIMES' . PHP_EOL;
+
 		$start_time = new Carbon( 'now', new DateTimeZone( 'America/New_York' ) );
-		$start_time->subDays( 120 );
+		$start_time->subDays( 15 );
 		$this->start_time = $start_time->format( 'c' );
 
 		$end_time = new Carbon( 'now', new DateTimeZone( 'America/New_York' ) );
-		$end_time->addDays( 365 );
+		$end_time->addDays( 90 );
 		$this->end_time = $end_time->format( 'c' );
+
+		echo 'FINISHING TIMES' . PHP_EOL;
 	}
 
 	public function import() {
 
+		echo 'STARTING IMPORT' . PHP_EOL;
+
 		$sync_token = get_option( 'google_calendar_sync_token', false );
+		$sync_token = false; # disabling sync tokne for now
+		print( $sync_token );
 
 		if ( $sync_token ) {
 			$optParams = array(
@@ -191,7 +230,14 @@ class ImportEvents {
 				'showDeleted'  => true,
 			);
 		}
-		return $this->get_page( $optParams );
+		$this->get_page( $optParams );
+
+		echo 'PURGING CACHE';
+		sg_cachepress_purge_everything();
+
+		$date = date( 'm/d/Y h:i:s a', time() );
+		echo 'ending import at ' . $date . ' ' . PHP_EOL;
+
 	}
 
 

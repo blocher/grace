@@ -1,4 +1,7 @@
 *.log
+.DS_Store
+public/wp-content/plugins/sg-cachepress/
+.idea/
 .htaccess
 sitemap.xml
 sitemap.xml.gz
