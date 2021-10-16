@@ -1,6 +1,6 @@
 <?php
 namespace SiteGround_Optimizer\Database_Optimizer;
-use SiteGround_Optimizer\Options\Options;
+
 /**
  * SG Database_Optimizer main plugin class.
  */
@@ -34,9 +34,6 @@ class Database_Optimizer {
 
 		// Set the BG processing class.
 		$this->background_process = new Database_Optimizer_Background();
-
-		// Add action for cron-job.
-		add_action( 'siteground_optimizer_database_optimization_cron', array( $this, 'optimize_database' ) );
 	}
 
 	/**

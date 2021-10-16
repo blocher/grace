@@ -9,19 +9,97 @@ use SiteGround_Optimizer\DNS\Cloudflare;
 class Supercacher {
 
 	/**
-	 * Child classes that have to be initialized.
+	 * The children classes and their hooks and options.
+	 *
+	 * @var array
+	 */
+	public $children = array(
+		'supercacher_posts'    => array(
+			array(
+				'option'   => 'purge_post_save',
+				'hook'     => 'save_post',
+				'priority' => 1,
+			),
+			array(
+				'option'   => 'purge_all_post_cache',
+				'hook'     => 'pll_save_post',
+				'priority' => 1,
+			),
+			array(
+				'option'   => 'purge_all_post_cache',
+				'hook'     => 'wp_trash_post',
+				'priority' => 1,
+			),
+		),
+		'supercacher_terms'    => array(
+			array(
+				'option'   => 'purge_term_and_index_cache',
+				'hook'     => 'edit_term',
+				'priority' => 1,
+			),
+		),
+		'supercacher_comments' => array(
+			array(
+				'option'   => 'purge_comment_post',
+				'hook'     => 'edit_comment',
+				'priority' => 1,
+			),
+			array(
+				'option'   => 'purge_comment_post',
+				'hook'     => 'delete_comment',
+				'priority' => 1,
+			),
+			array(
+				'option'   => 'purge_comment_post',
+				'hook'     => 'wp_set_comment_status',
+				'priority' => 1,
+			),
+			array(
+				'option'   => 'purge_comment_post',
+				'hook'     => 'wp_insert_comment',
+				'priority' => 1,
+			),
+		),
+	);
+
+	/**
+	 * Hooks which will be used to purge the queued URLs cache.
 	 *
 	 * @var array
 	 *
-	 * @since 5.0.0
+	 * @since 5.9.0
 	 */
-	public static $children = array(
-		'themes',
-		'plugins',
-		'posts',
-		'terms',
-		'comments',
-		// 'postmeta',
+	public $purge_hooks = array(
+		'purge_queue'      => array(
+			'edit_comment',
+			'delete_comment',
+			'wp_set_comment_status',
+			'wp_insert_comment',
+			'save_post',
+			'pll_save_post',
+			'wp_trash_post',
+			'edit_term',
+		),
+		'purge_everything' => array(
+			'automatic_updates_complete',
+			'_core_updated_successfully',
+			'update_option_permalink_structure',
+			'update_option_tag_base',
+			'update_option_category_base',
+			'wp_update_nav_menu',
+			'update_option_siteground_optimizer_enable_cache',
+			'update_option_siteground_optimizer_autoflush_cache',
+			'update_option_siteground_optimizer_enable_memcached',
+			'deactivate_plugin',
+			'activate_plugin',
+			'upgrader_process_complete',
+			'revslider_slide_updateSlideFromData_post',
+			'switch_theme',
+			'customize_save',
+			'edd_login_form_logged_in',
+			'create_term',
+			'delete_term',
+		),
 	);
 
 	/**
@@ -33,82 +111,11 @@ class Supercacher {
 	 */
 	private static $instance;
 
-	/**
-	 * Create a {@link Supercacher} instance.
-	 *
-	 * @since 5.0.0
-	 */
 	public function __construct() {
-		self::$instance = $this;
-
-		// Run the supercachers if the autoflush is enabled.
-		if ( 1 === (int) get_option( 'siteground_optimizer_autoflush_cache', 0 ) ) {
-			$this->run();
-		}
+		$this->supercacher_comments = new Supercacher_Comments();
+		$this->supercacher_posts    = new Supercacher_Posts();
+		$this->supercacher_terms    = new Supercacher_Terms();
 	}
-
-	/**
-	 * Run the hooks when we have to purge everything.
-	 *
-	 * @since  5.0.0
-	 */
-	public function run() {
-		add_action( 'automatic_updates_complete', array( $this, 'purge_everything' ) );
-		add_action( '_core_updated_successfully', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_permalink_structure', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_tag_base', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_category_base', array( $this, 'purge_everything' ) );
-		add_action( 'wp_update_nav_menu', array( $this, 'purge_everything' ) );
-		add_action( 'wp_ajax_widgets-order', array( $this, 'purge_everything' ), 1 );
-		add_action( 'wp_ajax_save-widget', array( $this, 'purge_everything' ), 1 );
-		add_action( 'woocommerce_create_refund', array( $this, 'purge_everything' ), 1 );
-		add_action( 'wp_ajax_delete-selected', array( $this, 'purge_everything' ), 1 );
-		add_action( 'wp_ajax_edit-theme-plugin-file', array( $this, 'purge_everything' ), 1 );
-		add_action( 'update_option_siteground_optimizer_enable_cache', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_siteground_optimizer_autoflush_cache', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_siteground_optimizer_enable_memcached', array( $this, 'purge_everything' ) );
-		add_action( 'update_option_siteground_optimizer_combine_css', array( $this, 'delete_assets' ), 10, 0 );
-		add_action( 'pll_save_post', array( $this, 'flush_memcache' ) );
-
-		// Delete assets (minified js and css files) every 30 days.
-		add_action( 'siteground_delete_assets', array( $this, 'delete_assets' ) );
-		add_action( 'siteground_delete_assets', array( $this, 'purge_cache' ), 11 );
-		add_filter( 'cron_schedules', array( $this, 'add_siteground_cron_schedule' ) );
-
-		// Schedule a cron job that will delete all assets (minified js and css files) every 30 days.
-		if ( ! wp_next_scheduled( 'siteground_delete_assets' ) ) {
-			wp_schedule_event( time(), 'siteground_every_two_days', 'siteground_delete_assets' );
-		}
-
-		$this->purge_on_other_events();
-		$this->purge_on_options_save();
-
-		$this->init_cachers();
-	}
-
-	/**
-	 * Create a new supercacher of type $type
-	 *
-	 * @since 5.0.0
-	 *
-	 * @param string $type The type of the supercacher.
-	 *
-	 * @throws Exception if the type is not supported.
-	 */
-	public static function factory( $type ) {
-		$type = str_replace( ' ', '_', ucwords( str_replace( '_', ' ', $type ) ) );
-
-		$class = __NAMESPACE__ . '\\Supercacher_' . $type;
-
-		if ( ! class_exists( $class ) ) {
-			throw new \Exception( 'Unknown supercacher type "' . $type . '".' );
-		}
-
-		$cacher = new $class();
-
-		$cacher->run();
-	}
-
 	/**
 	 * Get the singleton instance.
 	 *
@@ -117,18 +124,11 @@ class Supercacher {
 	 * @return \Supercacher The singleton instance.
 	 */
 	public static function get_instance() {
-		return self::$instance;
-	}
-
-	/**
-	 * Init supercacher children.
-	 *
-	 * @since  5.0.0
-	 */
-	public static function init_cachers() {
-		foreach ( self::$children as $child ) {
-			self::factory( $child );
+		if ( null == self::$instance ) {
+			self::$instance = new self();
 		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -150,7 +150,7 @@ class Supercacher {
 	 * @return bool True on success, false on failure.
 	 */
 	public function purge_everything() {
-		return $this->purge_cache_request( get_home_url( '/' ) );
+		return $this->purge_cache_request( get_home_url( null, '/' ) );
 	}
 
 	/**
@@ -186,30 +186,14 @@ class Supercacher {
 	 * @return bool True if the cache is deleted, false otherwise.
 	 */
 	public static function purge_cache_request( $url, $include_child_paths = true ) {
-		// Flush the Cloudflare cache if the optimization is enabled.
-		if ( 1 === intval( get_option( 'siteground_optimizer_cloudflare_optimization', 0 ) ) ) {
-			Cloudflare::get_instance()->purge_cache();
-		}
-
 		// Bail if the url is empty.
 		if ( empty( $url ) ) {
 			return;
 		}
 
-		$hostname            = str_replace( 'www.', '', parse_url( home_url(), PHP_URL_HOST ) );
-		$cache_server_socket = @fsockopen( $hostname, 80, $errno, $errstr, 2 );
-
-		if ( ! $cache_server_socket ) {
-			$hostname = '127.0.0.1';
-			$cache_server_socket = @fsockopen( $hostname, 80, $errno, $errstr, 2 );
-		}
-
-		if ( ! $cache_server_socket ) {
-			return false;
-		}
-
-		$parsed_url = parse_url( $url );
-		$main_path  = parse_url( $url, PHP_URL_PATH );
+		$hostname   = str_replace( 'www.', '', wp_parse_url( home_url(), PHP_URL_HOST ) );
+		$parsed_url = wp_parse_url( $url );
+		$main_path  = wp_parse_url( $url, PHP_URL_PATH );
 
 		if ( empty( $main_path ) ) {
 			$main_path = '/';
@@ -219,7 +203,7 @@ class Supercacher {
 		// We don't want to purge the entire cache.
 		if (
 			isset( $parsed_url['query'] ) &&
-			parse_url( home_url( '/' ), PHP_URL_PATH ) === $main_path
+			wp_parse_url( home_url( '/' ), PHP_URL_PATH ) === $main_path
 		) {
 			return;
 		}
@@ -229,21 +213,24 @@ class Supercacher {
 			$main_path .= '(.*)';
 		}
 
-		$request = sprintf(
-			"PURGE %s HTTP/1.0\r\nHost: %s\r\nConnection: Close\r\n\r\n",
-			$main_path,
-			$hostname
+		// Flush the cache.
+		exec(
+			sprintf(
+				"site-tools-client domain-all update id=%s flush_cache=1 path='%s'",
+				$hostname,
+				$main_path
+			),
+			$output,
+			$status
 		);
-
-		fwrite( $cache_server_socket, $request );
-
-		$response = fgets( $cache_server_socket );
-
-		fclose( $cache_server_socket );
 
 		do_action( 'siteground_optimizer_flush_cache', $url );
 
-		return preg_match( '/200/', $response );
+		if ( 0 === $status ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -260,7 +247,7 @@ class Supercacher {
 	 *
 	 * @since  5.0.0
 	 */
-	private function purge_on_options_save() {
+	public function purge_on_options_save() {
 
 		if (
 			isset( $_POST['action'] ) && // WPCS: CSRF ok.
@@ -276,7 +263,7 @@ class Supercacher {
 	 *
 	 * @since  5.0.0
 	 */
-	private function purge_on_other_events() {
+	public function purge_on_other_events() {
 		if (
 			isset( $_POST['save-header-options'] ) || // WPCS: CSRF ok.
 			isset( $_POST['removeheader'] ) || // WPCS: CSRF ok.
@@ -297,6 +284,7 @@ class Supercacher {
 	 *
 	 * @param  string $url           The url to test.
 	 * @param  bool   $maybe_dynamic Wheather to make additional request to check the cache again.
+	 * @param  bool   $is_cloudflare_check If we should check if url is excluded for dynamic checks only.
 	 *
 	 * @return bool                  True if the cache is enabled, false otherwise.
 	 */
@@ -351,25 +339,6 @@ class Supercacher {
 	}
 
 	/**
-	 * Adds custom cron schdule.
-	 *
-	 * @since 5.1.0
-	 *
-	 * @param array $schedules An array of non-default cron schedules.
-	 */
-	public function add_siteground_cron_schedule( $schedules ) {
-
-		if ( ! array_key_exists( 'siteground_every_two_days', $schedules ) ) {
-			$schedules['siteground_every_two_days'] = array(
-				'interval' => 172800,
-				'display' => __( 'Every two days', 'sg-cachepress' ),
-			);
-		}
-
-		return $schedules;
-	}
-
-	/**
 	 * Delete plugin assets
 	 *
 	 * @since  5.1.0
@@ -398,7 +367,43 @@ class Supercacher {
 			}
 
 			// Delete the file.
-			unlink( $maybe_file );
+			unlink( $maybe_file ); // phpcs:ignore
 		}
+	}
+
+	/**
+	 * Purge the cache for all elements in the queue.
+	 *
+	 * @since 5.8.3
+	 */
+	public function purge_queue() {
+		// Get the current purge queue.
+		$queue = get_option( 'siteground_optimizer_smart_cache_purge_queue', array() );
+
+		// Bail if the queue is empty.
+		if ( empty( $queue ) ) {
+			return;
+		}
+
+		if ( 10 > count( $queue ) ) {
+
+			// Purge the cache for all URLs in the queue.
+			foreach ( $queue as $url ) {
+				$this->purge_cache_request(
+					$url,
+					get_home_url( null, '/' ) === $url ? false : true
+				);
+			}
+		} else {
+			$this->purge_everything();
+		}
+
+		// Flush the Cloudflare cache if the optimization is enabled.
+		if ( 1 === intval( get_option( 'siteground_optimizer_cloudflare_optimization', 0 ) ) ) {
+			Cloudflare::get_instance()->purge_cache();
+		}
+
+		// Empty the purge queue after cache is cleared.
+		update_option( 'siteground_optimizer_smart_cache_purge_queue', array() );
 	}
 }

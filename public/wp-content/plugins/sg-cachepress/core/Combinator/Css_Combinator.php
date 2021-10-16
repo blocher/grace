@@ -2,6 +2,7 @@
 namespace SiteGround_Optimizer\Combinator;
 
 use SiteGround_Optimizer\Helper\Helper;
+use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
 /**
  * SG Css_Combinator main plugin class
@@ -35,8 +36,8 @@ class Css_Combinator extends Abstract_Combinator {
 		'[\s\'"])?',
 		'href\s*=\s*[\'"]\s*?',
 		'(',
-			'[^\'"]+\.css',
-			'(?:\?[^\'"]*)?',
+		'[^\'"]+\.css',
+		'(?:\?[^\'"]*)?',
 		')\s*?',
 		'[\'"]',
 		'([^>]+)?',
@@ -245,9 +246,15 @@ class Css_Combinator extends Abstract_Combinator {
 
 		$tag_data = $this->create_temp_file_and_get_url( $new_content, 'combined-css', 'css' );
 
+		$replace = '</title><link rel="stylesheet" id="' . $tag_data['handle'] . '" href="' . $tag_data['url'] . '" media="all" />'; //phpcs:ignore
+
+		if ( Options::is_enabled( 'siteground_optimizer_preload_combined_css' ) ) {
+			$replace .= ' <link rel="preload" href="' . $tag_data['url'] . '" as="style">';
+		}
+
 		// Add combined style tag.
 		// phpcs:ignore 
-		return str_replace( '</title>', '</title><link rel="stylesheet" id="' . $tag_data['handle'] . '" href="' . $tag_data['url'] . '" media="all" />', $html );
+		return preg_replace( '~<\/title>~', $replace, $html, 1 );
 	}
 
 	/**

@@ -28,6 +28,7 @@ use SiteGround_Optimizer\Install_Service\Install_5_6_7;
 use SiteGround_Optimizer\Install_Service\Install_5_7_0;
 use SiteGround_Optimizer\Install_Service\Install_5_7_4;
 use SiteGround_Optimizer\Install_Service\Install_5_7_14;
+use SiteGround_Optimizer\Install_Service\Install_5_9_2;
 use SiteGround_Optimizer\Install_Service\Install_Cleanup;
 use SiteGround_Optimizer\Supercacher\Supercacher;
 
@@ -67,9 +68,8 @@ class Install_Service {
 			new Install_5_7_0(),
 			new Install_5_7_4(),
 			new Install_5_7_14(),
+			new Install_5_9_2(),
 		);
-
-		add_action( 'upgrader_process_complete', array( $this, 'install' ) );
 	}
 
 	/**
@@ -92,6 +92,10 @@ class Install_Service {
 		}
 
 		Install_Cleanup::cleanup();
+
+		// Flush dynamic and memcache.
+		Supercacher::purge_cache();
+		Supercacher::flush_memcache();
 	}
 
 	/**
@@ -115,10 +119,6 @@ class Install_Service {
 				update_option( 'siteground_optimizer_version', $version );
 
 				update_option( 'siteground_optimizer_update_timestamp', time() );
-
-				// Flush dynamic and memcache.
-				Supercacher::purge_cache();
-				Supercacher::flush_memcache();
 			}
 		}
 	}

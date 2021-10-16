@@ -31,7 +31,7 @@ class Install_5_3_0 extends Install {
 		$this->htaccess_service->disable( 'browser-caching' );
 		$this->htaccess_service->enable( 'browser-caching' );
 
-		if ( Helper::is_avalon() ) {
+		if ( Helper::is_siteground() ) {
 			// $this->options_service->disable_option( 'siteground_optimizer_enable_browser_caching' );
 			$this->options_service->disable_option( 'siteground_optimizer_enable_gzip_compression' );
 

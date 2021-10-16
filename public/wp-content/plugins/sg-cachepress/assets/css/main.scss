@@ -1,6 +1,5 @@
-@import "../../node_modules/sg-styleguide/lib/styles/main.scss";
-@import "../../node_modules/sg-styleguide/lib/components/title/title.scss";
-
+@import "../../node_modules/@siteground/styleguide/lib/styles/main.scss";
+@import "../../node_modules/@siteground/styleguide/lib/components/title/title.scss";
 
 /* Additional Reset */
 
@@ -111,3 +110,6 @@ html {
 }
 
 .sg-radio-button__input { display: none !important; }
+
+.hide-last-divider .divider:last-of-type { display: none}
+

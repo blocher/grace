@@ -21,7 +21,7 @@ use SiteGround_Optimizer\Options\Options;
  */
 class Cli_Settings {
 	/**
-	 * Enable specific setting for SG Optimizer plugin.
+	 * Enable specific setting for SiteGround Optimizer plugin.
 	 *
 	 * ## OPTIONS
 	 *

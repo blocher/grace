@@ -1,12 +1,57 @@
 <?php
 namespace SiteGround_Optimizer\Lazy_Load;
 
-use SiteGround_Optimizer\Options\Options;
-use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
 /**
  * SG Lazy_Load_Images main plugin class
  */
 class Lazy_Load {
+
+	/**
+	 * Children classes.
+	 *
+	 * @var array
+	 */
+	public $children = array(
+		'lazyload_videos'  => array(
+			array(
+				'option' => 'videos',
+				'hook'   => 'the_content',
+			),
+		),
+		'lazyload_iframes' => array(
+			array(
+				'option' => 'iframes',
+				'hook'   => 'the_content',
+
+			),
+		),
+		'lazyload_images'  => array(
+			array(
+				'option' => 'images',
+				'hook'   => 'the_content',
+			),
+			array(
+				'option' => 'textwidgets',
+				'hook'   => 'widget_text',
+			),
+			array(
+				'option' => 'thumbnails',
+				'hook'   => 'post_thumbnail_html',
+			),
+			array(
+				'option' => 'gravatars',
+				'hook'   => 'get_avatar',
+			),
+			array(
+				'option' => 'woocommerce',
+				'hook'   => 'woocommerce_product_get_image',
+			),
+			array(
+				'option' => 'woocommerce',
+				'hook'   => 'woocommerce_single_product_image_thumbnail_html',
+			),
+		),
+	);
 
 	/**
 	 * The constructor.
@@ -14,35 +59,9 @@ class Lazy_Load {
 	 * @since 5.0.0
 	 */
 	public function __construct() {
-
-		if (
-			! Options::is_enabled( 'siteground_optimizer_lazyload_images' ) &&
-			! Options::is_enabled( 'siteground_optimizer_lazyload_iframes' ) &&
-			! Options::is_enabled( 'siteground_optimizer_lazyload_videos' )
-		) {
-			return;
-		}
-
-		if ( Front_End_Optimization::is_mobile() && ! Options::is_enabled( 'siteground_optimizer_lazyload_mobile' ) ) {
-			return;
-		}
-
-		// Disable the native lazyloading.
-		add_filter( 'wp_lazy_loading_enabled', '__return_false' );
-
-		new Lazy_Load_Images();
-
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_iframes' ) ) {
-			new Lazy_Load_Iframes();
-		}
-
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_videos' ) ) {
-			new Lazy_Load_Videos();
-		}
-
-		// Enqueue scripts and styles.
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_scripts' ) );
-
+		$this->lazyload_iframes = new Lazy_Load_Iframes();
+		$this->lazyload_videos  = new Lazy_Load_Videos();
+		$this->lazyload_images  = new Lazy_Load_Images();
 	}
 
 	/**

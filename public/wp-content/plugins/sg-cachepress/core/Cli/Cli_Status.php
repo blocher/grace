@@ -98,7 +98,7 @@ class Cli_Status {
 			'ssl'                   => 'siteground_optimizer_ssl_enabled',
 			'gzip'                  => 'siteground_optimizer_enable_gzip_compression',
 			'browser-caching'       => 'siteground_optimizer_enable_browser_caching',
-			'web-fonts'             => 'siteground_optimizer_optimize_web_fonts',
+			'google-fonts'          => 'siteground_optimizer_optimize_web_fonts',
 			'combine-js'            => 'siteground_optimizer_combine_javascript',
 			'webp'                  => 'siteground_optimizer_webp_support',
 			'database-optimization' => 'siteground_optimizer_database_optimization',

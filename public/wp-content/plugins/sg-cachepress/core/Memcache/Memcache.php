@@ -36,21 +36,6 @@ class Memcache {
 	const CRASHED_FILENAME = WP_CONTENT_DIR . '/memcache-crashed.txt';
 
 	/**
-	 * The constructor.
-	 *
-	 * @since 5.0.0
-	 */
-	public function __construct() {
-		if ( ! defined( 'WP_CLI' ) ) {
-			add_action( 'load-toplevel_page_sg-cachepress', array( $this, 'status_healthcheck' ) );
-		}
-
-		add_action( 'admin_init', array( $this, 'prepare_memcache_excludes' ) );
-
-		add_filter( 'pre_cache_alloptions', array( $this, 'maybe_exclude' ) );
-	}
-
-	/**
 	 * Check if the memcache connection is working
 	 * and reinitialize the dropin if not.
 	 *
@@ -164,7 +149,7 @@ class Memcache {
 		$port_file_content = $this->get_port_file_contents();
 
 		if ( ! $port_file_content ) {
-			if ( Helper::is_avalon() ) {
+			if ( Helper::is_siteground() ) {
 				return 11211;
 			}
 

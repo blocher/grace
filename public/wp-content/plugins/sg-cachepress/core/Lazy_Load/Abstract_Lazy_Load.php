@@ -13,18 +13,6 @@ abstract class Abstract_Lazy_Load {
 	public $regex_classes = '/class=["\'](.*?)["\']/is';
 
 	/**
-	 * The constructor.
-	 *
-	 * @since 5.6.0
-	 */
-	public function __construct() {
-		// Set priority.
-		$priority = get_option( 'siteground_optimizer_lazyload_shortcodes' ) ? 9999 : 10;
-
-		add_filter( 'the_content', array( $this, 'filter_html' ), $priority );
-	}
-
-	/**
 	 * Check if it's feed, the content is empty or there are conflicting plugins.
 	 *
 	 * @since  5.6.0

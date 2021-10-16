@@ -7,10 +7,10 @@
  * @link              http://www.siteground.com/
  *
  * @wordpress-plugin
- * Plugin Name:       SG Optimizer
+ * Plugin Name:       SiteGround Optimizer
  * Plugin URI:        https://siteground.com
  * Description:       This plugin will link your WordPress application with all the performance optimizations provided by SiteGround
- * Version:           5.7.20
+ * Version:           5.9.7
  * Author:            SiteGround
  * Author URI:        https://www.siteground.com
  * Text Domain:       sg-cachepress
@@ -20,6 +20,7 @@
 // Our namespace.
 namespace SiteGround_Optimizer;
 
+use SiteGround_Optimizer\Loader\Loader;
 use SiteGround_Optimizer\Helper\Helper;
 use SiteGround_Optimizer\Activator\Activator;
 use SiteGround_Optimizer\Deactivator\Deactivator;
@@ -31,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Define version constant.
 if ( ! defined( __NAMESPACE__ . '\VERSION' ) ) {
-	define( __NAMESPACE__ . '\VERSION', '5.7.20' );
+	define( __NAMESPACE__ . '\VERSION', '5.9.7' );
 }
 
 // Define slug constant.
@@ -64,10 +65,9 @@ require_once( \SiteGround_Optimizer\DIR . '/vendor/autoload.php' );
 register_activation_hook( __FILE__, array( new Activator(), 'activate' ) );
 register_deactivation_hook( __FILE__, array( new Deactivator(), 'deactivate' ) );
 
+// Initialize the loader.
+global $siteground_optimizer_loader;
 
-// Initialize helper.
-global $siteground_optimizer_helper;
-
-if ( ! isset( $siteground_optimizer_helper ) ) {
-	$siteground_optimizer_helper = new Helper();
+if ( ! isset( $siteground_optimizer_loader ) ) {
+    $siteground_optimizer_loader = new Loader();
 }

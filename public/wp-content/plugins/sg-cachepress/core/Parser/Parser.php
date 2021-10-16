@@ -14,19 +14,6 @@ use SiteGround_Optimizer\DNS\Prefetch;
 class Parser {
 
 	/**
-	 * The constructor.
-	 *
-	 * @since 5.0.0
-	 */
-	public function __construct() {
-		if ( ! defined( 'WP_CLI' ) ) {
-			// Add the hooks that we will use to combine the css.
-			add_action( 'init', array( $this, 'start_bufffer' ) );
-			add_action( 'shutdown', array( $this, 'end_buffer' ) );
-		}
-	}
-
-	/**
 	 * Run the parser.
 	 *
 	 * @since  5.5.2

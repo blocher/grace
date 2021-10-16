@@ -19,7 +19,7 @@ use SiteGround_Optimizer\Options\Options;
  */
 class Cli_Heartbeat {
 	/**
-	 * Enable specific setting for SG Optimizer plugin.
+	 * Enable specific setting for SiteGround Optimizer plugin.
 	 *
 	 * ## OPTIONS
 	 *
@@ -52,11 +52,11 @@ class Cli_Heartbeat {
 				\WP_CLI::error( 'Please, use the frequency argument with the command - wp sg heartbeat ' . $args[0] . ' enable --frequency=integer.' );
 			}
 
-			$frequency = intval( $assoc_args['frequency'] );
+			$frequency = round( intval( $assoc_args['frequency'] ) );
 
 			// Check if frequency is within the interval.
 			if ( $frequency < 15 || $frequency > 300 ) {
-				\WP_CLI::error( 'Frequency ' . $assoc_args['frequency'] . ' is not supported. Please choose a number between 15 and 300' );
+				\WP_CLI::error( 'Frequency ' . $frequency . ' is not supported. Please choose a number between 15 and 300' );
 			}
 
 			// Set the interval frequency.
@@ -71,6 +71,8 @@ class Cli_Heartbeat {
 			$result = Options::disable_option( $status_option );
 
 			$message = 'Heartbeat optimization for ' . $args[0] . ' was disabled';
+		} else {
+			$message = 'Unsupported argument ' . $args[1];
 		}
 
 		return true === $result ? \WP_CLI::success( $message ) : \WP_CLI::error( $message );

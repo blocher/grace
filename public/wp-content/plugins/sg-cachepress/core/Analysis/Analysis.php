@@ -1,5 +1,6 @@
 <?php
 namespace SiteGround_Optimizer\Analysis;
+
 use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Helper\Helper;
 
@@ -7,6 +8,82 @@ use SiteGround_Optimizer\Helper\Helper;
  * SG Analysis main plugin class
  */
 class Analysis {
+	/**
+	 * The number of speed tests we store in the database.
+	 *
+	 * @var integer
+	 */
+	private $speed_test_count = 10;
+
+	/**
+	 * The group keys, added to the audit array for purposes of the react app.
+	 *
+	 * @var array
+	 */
+	private $group_keys = array(
+		'coding_optimizations' => array(
+			'first-contentful-paint',
+			'resource-summary',
+			'largest-contentful-paint',
+			'total-byte-weight',
+			'uses-rel-preconnect',
+			'dom-size',
+			'long-tasks',
+			'mainthread-work-breakdown',
+			'uses-passive-event-listeners',
+			'preload-lcp-image',
+			'third-party-summary',
+			'time-to-first-byte',
+		),
+		'css_optimizations' => array(
+			'render-blocking-resources',
+			'largest-contentful-paint-element',
+			'total-blocking-time',
+			'max-potential-fid',
+			'interactive',
+			'first-contentful-paint',
+			'critical-request-chains',
+			'unminified-css',
+			'unused-css-rules',
+			'uses-rel-preload',
+			'font-display',
+		),
+		'javascript_optimizations' => array(
+			'render-blocking-resources',
+			'unminified-javascript',
+			'bootup-time',
+			'unused-javascript',
+			'no-document-write',
+			'user-timings',
+			'legacy-javascript',
+			'duplicated-javascript',
+		),
+		'media_optimizations' => array(
+			'uses-responsive-images',
+			'offscreen-images',
+			'uses-optimized-images',
+			'uses-webp-images',
+			'efficient-animated-content',
+			'non-composited-animations',
+			'third-party-facades',
+		),
+		'general_optimiazions' => array(
+			'server-response-time',
+			'uses-text-compression',
+			'redirects',
+			'uses-long-cache-ttl',
+		),
+	);
+
+	/**
+	 * Array containing audits that we need to check for additional actions.
+	 *
+	 * @var array
+	 */
+	private $additional_check = array(
+		'render-blocking-resources',
+	);
+
 	/**
 	 * Disable specific optimizations for a blog.
 	 *
@@ -21,9 +98,14 @@ class Analysis {
 			wp_send_json_error();
 		}
 
-		$messages = $this->get_optimization_messages();
-
-		$items = array();
+		$optimizations = $this->get_available_optimizations();
+		$items         = array(
+			'data'                     => array(),
+			'timeStamp'                => time(),
+			'optimizations'            => array(),
+			'human_readable_timestamp' => date( 'd M Y, G:i e' ),
+		);
+		$options = array();
 
 		foreach ( $result['lighthouseResult']['categories'] as $group ) {
 			foreach ( $group['auditRefs'] as $ref ) {
@@ -40,91 +122,236 @@ class Analysis {
 					continue;
 				}
 
-				$audit = $result['lighthouseResult']['audits'][ $ref['id'] ];
+				if ( 'server-response-time' === $ref['id'] ) {
+					$items['scores']['ttfb'] = round( $result['lighthouseResult']['audits'][ $ref['id'] ]['numericValue'] );
+				}
 
+				if ( 'first-contentful-paint' === $ref['id'] ) {
+					$items['scores']['fcp'] = $result['lighthouseResult']['audits'][ $ref['id'] ]['numericValue'];
+				}
+
+				$audit = $result['lighthouseResult']['audits'][ $ref['id'] ];
+				$optimization_group = 'other';
 				if ( in_array( $ref['group'], array( 'load-opportunities', 'diagnostics' ) ) ) {
-					if ( array_key_exists( $audit['id'], $messages ) ) {
-						$audit['action'] = $messages[ $audit['id'] ];
+
+					if ( array_key_exists( $audit['id'], $optimizations ) ) {
+						if ( ! empty( $optimizations[ $audit['id'] ] ) && ! Options::is_enabled( $audit['id'] ) ) {
+							$items['optimizations'] = array_merge( $items['optimizations'], $optimizations[ $audit['id'] ] );
+						}
+					}
+
+					$optimization_group = 'other';
+
+					foreach ( $this->group_keys as $key => $value ) {
+						if ( in_array( $audit['id'], $value ) ) {
+							$optimization_group = $key;
+						}
 					}
 
 					switch ( $audit['scoreDisplayMode'] ) {
 						case 'manual':
 						case 'notApplicable':
-							$items['passed']['data'][] = $audit;
+							$items['data']['passed']['data'][ $optimization_group ][] = $audit;
 							break;
 						case 'numeric':
 						case 'binary':
 						default:
 							if ( $audit['score'] >= 0.9 ) {
-								$items['passed']['data'][] = $audit;
+								$items['data']['passed']['data'][ $optimization_group ][] = $audit;
 							} else {
-								$items[ $ref['group'] ]['info'] = $result['lighthouseResult']['categoryGroups'][ $ref['group'] ];
-								$items[ $ref['group'] ]['data'][] = $audit;
+								$items['data'][ $ref['group'] ]['info'] = $result['lighthouseResult']['categoryGroups'][ $ref['group'] ];
+								$items['data'][ $ref['group'] ]['data'][ $optimization_group ][] = $audit;
 							}
 							break;
 					}
 				} else {
-					$items[ $ref['group'] ]['info'] = $result['lighthouseResult']['categoryGroups'][ $ref['group'] ];
-					$items[ $ref['group'] ]['data'][] = $audit;
+					$items['data'][ $ref['group'] ]['info'] = $result['lighthouseResult']['categoryGroups'][ $ref['group'] ];
+					// The optimization group may have to be left empty.
+					$items['data'][ $ref['group'] ]['data'][ $optimization_group ][] = $audit;
 				}
 			}
 		}
 
-		unset( $items['budgets'] );
-		unset( $items['diagnostics'] );
-		unset( $items['metrics'] );
+		unset( $items['data']['budgets'] );
+		unset( $items['data']['diagnostics'] );
+		unset( $items['data']['metrics'] );
 
-		$items['score'] = $result['lighthouseResult']['categories']['performance']['score'];
-
-		// Check if we need to add additional information to the results table.
-		if ( array_key_exists( 'data', $items['load-opportunities'] ) ) {
-			$items = $this->add_additional_info( $items );
+		$items['scores']['score'] = $result['lighthouseResult']['categories']['performance']['score'];
+		// Check if we need to group render blocking resources.
+		if ( ! empty( $items['data']['load-opportunities']['data'] ) &&
+			array_key_exists( 'javascript_optimizations', $items['data']['load-opportunities']['data'] ) ) {
+			$items = $this->group_render_blocking_assets( $items );
 		}
 
-		// Return the response.
+		if ( ! empty( $items['passed'] ) ) {
+			$items['passed']['info'] = array(
+				'title'       => __( 'The Following Areas of Your Site Are Well Optimized:', 'sg-cachepress' ),
+				'id'          => 'passed',
+			);
+		}
+
+		if ( ! empty( $items['load-opportunities'] ) ) {
+			$items['load-opportunities']['info'] = array(
+				'title'       => __( 'Opportunities to Optimize', 'sg-cachepress' ),
+				'id'          => 'opportunities',
+			);
+		}
+
+		$items['scores'] = $this->get_messages( $items['scores'] );
+
+		// Return the response and add additional info if necessary.
 		return $items;
 	}
+
 	/**
-	 * Add additional information to optimization opportunities
+	 * Loop items in order to move the necesary render-blocking information group.
 	 *
-	 * @since 5.7.13
+	 * @since  5.8.0
 	 *
-	 * @param array $items The array containing the results from the optimization test.
+	 * @param  array $items The array containing the speed test items.
 	 *
-	 * @return array $items The items and added additional informative messages.
+	 * @return array $items The array contaning the speed test items, but with proper cattegory set.
 	 */
-	public function add_additional_info( $items ) {
-		// Array containing the audits to which we want to add additional information.
-		$additional_optimization_info = array(
-			'uses-rel-preload',
-		);
+	public function group_render_blocking_assets( $items ) {
+		// Loop the oportunities results. A check for passed should also be added and change the load-opportunities to a variable.
+		foreach ( $items['data']['load-opportunities']['data']['javascript_optimizations'] as $item => $prop ) {
+			// Check if the item is in the additional check list.
+			if ( ! in_array( $prop['id'], $this->additional_check ) && empty( $prop['details']['items'] ) ) {
+				continue;
+			}
 
-		// Array containing the messages, asset type and savigns we can achieve.
-		$additional_info_keys = array(
-			'uses-rel-preload' => array(
-				'asset'              => 'url',
-				'savings'            => 'overallSavingsMs',
-				'additional_message' => __( 'Use <strong>Fonts Preloading</strong> and add the following fonts to the preload list:', 'sg-cachepress' ),
-			),
-		);
+			$resources = array(
+				'css' => array(),
+				'js' => array(),
+			);
 
-		// Loop trough the opportunities and check if we have a match with the additional info list.
-		foreach ( $items['load-opportunities']['data'] as $item => $prop ) {
+			foreach ( $prop['details']['items'] as $key => $item ) {
 
-			if ( in_array( $prop['id'], $additional_optimization_info ) && ! empty( $prop['details']['items'] ) ) {
+				preg_match( '~(?:\.|\/\/)(css|js|fonts)~', $item['url'], $matches );
 
-				// Add the additional text message to the existing message notification.
-				$items['load-opportunities']['data'][ $item ]['action'] .= $additional_info_keys[ $prop['id'] ]['additional_message'];
-
-				// Loop trough all items and add them based on the additional info keys.
-				foreach ( $prop['details']['items'] as $asset ) {
-
-					$items['load-opportunities']['data'][ $item ]['action'] .= '<br/>' . $asset[ $additional_info_keys[ $prop['id'] ]['asset'] ];
+				if ( empty( $matches[1] ) ) {
+					continue;
 				}
+
+				// Check from which array we must remove.
+				switch ( $matches[1] ) {
+					case 'css':
+					case 'fonts':
+						$resources['css'][] = $item;
+						break;
+					case 'js':
+						$resources['js'][] = $item;
+						break;
+				}
+			}
+
+
+			if ( ! empty( $resources['css'] ) ) {
+				if ( ! isset( $items['data']['load-opportunities']['data']['css_optimizations'] ) ) {
+					$items['data']['load-opportunities']['data']['css_optimizations'] = array();
+				}
+				$css_props = $prop;
+
+				$css_props['details']['items'] = $resources['css'];
+
+				$items['data']['load-opportunities']['data']['css_optimizations'][] = $css_props;
+			}
+
+			if ( ! empty( $resources['js'] ) ) {
+				$items['data']['load-opportunities']['data']['javascript_optimizations'][0]['details']['items'] = $resources['js'];
+			} else {
+				unset( $items['data']['load-opportunities']['data']['javascript_optimizations'][0] );
+			}
+
+			if ( empty( $items['data']['load-opportunities']['data']['javascript_optimizations'] ) ) {
+				unset( $items['data']['load-opportunities']['data']['javascript_optimizations'] );
 			}
 		}
 
 		return $items;
+	}
+
+	/**
+	 * Save the test results in the database.
+	 *
+	 * @since  5.8.0
+	 *
+	 * @param  array $items The array containing all speed results.
+	 */
+	public function save_test_result( $items ) {
+		// Get the results from previous stored tests.
+		$previous_tests = $this->get_test_results();
+
+		// Check if we need to delete a test in order to match the test count limit.
+		if ( ! empty( $previous_tests ) && $this->speed_test_count <= count( $previous_tests ) ) {
+			// Get the oldest test and delete it.
+			$oldest_test = array_pop( $previous_tests );
+			// Delete the oldest speed test stored in the database.
+			delete_option( $oldest_test['option_name'] );
+		}
+
+		// Add the speed test to the database. Set Autoload to 'no', since we only need these test when comparing.
+		add_option( 'sgo_speed_test_' . time(), $items, '', false );
+	}
+
+	/**
+	 * Get the available speed results from the database.
+	 *
+	 * @since  5.8.0
+	 *
+	 * @return array An Array containing all of the test's data.
+	 */
+	public function get_test_results() {
+		global $wpdb;
+
+		// Get the tests result stored in the db.
+		$result = $wpdb->get_results(
+			'SELECT * FROM ' . $wpdb->options . " WHERE option_name LIKE 'sgo_speed_test_%' ORDER BY option_name DESC",
+			ARRAY_A
+		);
+
+		return $result;
+	}
+
+	/**
+	 * Get the previous test results.
+	 *
+	 * @since  5.8.0
+	 *
+	 * @return array $data The results array.
+	 */
+	public function rest_get_test_results() {
+		// Get the results from the database.
+		$results = $this->get_test_results();
+		$data = array();
+
+		// Bail if no results are present.
+		if ( empty( $results ) ) {
+			return $data;
+		}
+
+		// Loop the results and make the arrays consistent.
+		foreach ( $results as $result ) {
+			$data[] = array(
+				'option_name' => $result['option_name'],
+				'result'      => get_option( $result['option_name'] ),
+			);
+		}
+
+		$previous_test = get_option( 'sgo_pre_migration_speed_test', false );
+
+		// Return the tests if a test from the previous host doesn't exists.
+		if ( false === $previous_test ) {
+			return $data;
+		}
+
+		$data[] = array(
+			'option_name'   => 'previous_test',
+			'result'        => $previous_test,
+			'previous_test' => 1,
+		);
+
+		return $data;
 	}
 
 	/**
@@ -134,276 +361,71 @@ class Analysis {
 	 *
 	 * @return array Custom analysis messages.
 	 */
-	public function get_optimization_messages() {
-		$messages = array(
-			'render-blocking-resources'  => array(
-				'enabled'  => array(
-					'siteground_optimizer_optimize_javascript_async',
-				),
-				'messages' => array(
-					'enabled' => __( 'Not all resources can be deferred, so you may continue to get this message, even after your site is well optimized.', 'sg-cachepress' ),
-					'default' => __( 'Enable the <strong>Defer Render-blocking JS</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> and exclude critical scripts from it to pass this audit. Note, that not all resources can be deferred, so you may continue to get this message, even after your site is well optimized.', 'sg-cachepress' ),
+	public function get_available_optimizations() {
+		$optimizations = array(
+			'render-blocking-resources' => array(
+				'optimize_javascript_async' => array(
+					'title' => __( 'Defer Render-blocking JS', 'sg-cachepress' ),
+					'message' => __( 'Defer loading of render-blocking JavaScript files for faster initial site load.', 'sg-cachepress' ),
 				),
 			),
-			'uses-responsive-images'     => array(
-				'enabled'  => array(
-					'siteground_optimizer_optimize_images',
-				),
-				'messages' => array(
-					'enabled' => __( 'Check your theme and if you\'re not using images larger than the positions they fit. If you\'ve recently switched between themes, try regenerating your thumbnails too.', 'sg-cachepress' ),
-					'default' => __( 'Make sure you’re not loading the original images but a properly sized thumbnail. In addition, you can enable the check the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#images">Image Optimization tab</a> to optimize new uploads and bulk optimize existing images in your site.', 'sg-cachepress' ),
+			'uses-responsive-images' => array(
+				'optimize_images' => array(
+					'title' => __( 'New Images Optimization', 'sg-cachepress' ),
+					'message' => __( 'We will automatically optimize all new images that you upload to your Media Library.', 'sg-cachepress' ),
 				),
 			),
-			'offscreen-images'           => array(
-				'enabled' => array(
-					'siteground_optimizer_lazyload_images',
-				),
-				'messages' => array(
-					'enabled' => __( 'Not all images can be lazy-loaded, so you may continue to get this message, even after your site is well optimized.', 'sg-cachepress' ),
-					'default' => __( 'To pass this check, go to the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#images">Image Optimization tab</a> and enable the <strong>Lazy Load Images</strong> option.', 'sg-cachepress' ),
+			'offscreen-images' => array(
+				'lazyload_images' => array(
+					'title' => __( 'Lazy Load Media', 'sg-cachepress' ),
+					'message' => __( 'Load images only when they are visible in the browser.', 'sg-cachepress' ),
 				),
 			),
-			'unminified-css'             => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>Minify CSS Files</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.Note, that you may keep getting this message because of the way your theme is structured.', 'sg-cachepress' ),
+			'unused-css-rules' => array(
+				'optimize_css' => array(
+					'title' => __( 'Combine CSS Files', 'sg-cachepress' ),
+					'message' => __( 'Combine multiple CSS files into one to lower the number of requests your site generates.', 'sg-cachepress' ),
 				),
 			),
-			'unminified-javascript'      => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>Minify JavaScript Files</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.', 'sg-cachepress' ),
+			'time-to-first-byte' => array(
+				'enable_cache' => array(
+					'title' => __( 'Dynamic Caching', 'sg-cachepress' ),
+					'message' => __( 'Store your content in the server’s memory for a faster access with this full-page caching solution powered by NGINX.', 'sg-cachepress' ),
 				),
 			),
-			'unused-css-rules'           => array(
-				'enabled' => array(
-					'siteground_optimizer_optimize_css',
+			'uses-rel-preload' => array(
+				'optimize_javascript_async' => array(
+					'title' => __( 'Defer Render-blocking JS', 'sg-cachepress' ),
+					'message' => __( 'Defer loading of render-blocking JavaScript files for faster initial site load.', 'sg-cachepress' ),
 				),
-				'messages' => array(
-					'enabled' => __( 'Even if your CSS is minified, you may still get this report due to the way your theme is structured.', 'sg-cachepress' ),
-					'default' => __( 'Enable the <strong>Minify CSS Files</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.Note, that you may keep getting this message because of the way your theme is structured.', 'sg-cachepress' ),
-				),
-			),
-			'uses-optimized-images'      => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable <strong>New Images Optimization</strong> and <strong>Existing Image Optimization</strong> options under the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#images">Image Optimization tab</a>.', 'sg-cachepress' ),
+				'optimize_web_fonts' => array(
+					'title' => __( 'Web Fonts Optimization', 'sg-cachepress' ),
+					'message' => __( 'With this optimization we\'re changing the default way to load Google fonts in order to save HTTP requests. In addition to that, all other fonts that your website uses will be properly preloaded so browsers take the least possible amount of time to cache and render them.', 'sg-cachepress' ),
 				),
 			),
-			'uses-webp-images'           => array(
-				'messages' => array(
-					'default' => Helper::is_avalon() ? __( 'Enable the <strong>WebP Support</strong> option under the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#images">Image Optimization tab</a>.', 'sg-cachepress' ) : __( 'WebP support will be available once we migrate your account to <a class="sg-link sg-with-color sg-typography sg-typography--break-all" target="_blank" href="https://www.siteground.com/blog/new-client-area-and-site-tools/">Site Tools</a>.', 'sg-cachepress' ),
+			'total-byte-weight' => array(
+				'optimize_html' => array(
+					'title' => __( 'Minify the HTML Output', 'sg-cachepress' ),
+					'message' => __( 'Removes unnecessary characters from your HTML output saving data and improving your site speed.', 'sg-cachepress' ),
+				),
+				'optimize_javascript' => array(
+					'title' => __( 'Minify JavaScript Files', 'sg-cachepress' ),
+					'message' => __( 'Minify your JavaScript files in order to reduce their size and reduce the number of requests to the server.', 'sg-cachepress' ),
+				),
+				'combine_css' => array(
+					'title' => __( 'Combine CSS Files', 'sg-cachepress' ),
+					'message' => __( 'Combine multiple CSS files into one to lower the number of requests your site generates.', 'sg-cachepress' ),
 				),
 			),
-			'uses-text-compression'      => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>GZIP Compression</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#environment">Environment Optimization tab</a>.', 'sg-cachepress' ),
-				),
-			),
-			'uses-rel-preconnect'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'When loading 3rd party resources, use the preconnect parameter to inform your browser that this is an important script: <link rel="preconnect" \'href="https://example.com">', 'sg-cachepress' ),
-				),
-			),
-			'time-to-first-byte'         => array(
-				'enabled' => array(
-					'siteground_optimizer_enable_cache',
-				),
-				'messages' => array(
-					'enabled' => __( 'Check if you have the Browser-Specific Caching enabled, if so, retry the test to make sure you\'re testing cached results.', 'sg-cachepress' ),
-					'default' => __( 'Enable the <strong>Dynamic Caching</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#supercacher">SuperCacher Settings</a> tab.', 'sg-cachepress' ),
-				),
-			),
-			'redirects'                  => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Make sure that you don\'t "chain" multiple redirects from one page to another. Use only www or non-www version of your website depending on your preferences.', 'sg-cachepress' ),
-				),
-			),
-			'uses-rel-preload'           => array(
-				'enabled' => array(
-					'siteground_optimizer_optimize_javascript_async',
-					'siteground_optimizer_optimize_web_fonts',
-				),
-				'messages' => array(
-					'enabled' => __( 'Not all resources can be deferred, so you may continue to get this message, even after your site is well optimized.', 'sg-cachepress' ),
-					'default' => __( 'Enable the <strong>Defer Render-blocking JS</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> and exclude critical scripts from it to pass this audit. You could also enable the <strong>Web Fonts Optimization</strong> and preload the necessary fonts by adding them in the preload list.', 'sg-cachepress' ),
-				),
-			),
-			'efficient-animated-content' => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'If you\'re using big animated GIFs on your site, try replacing them with actual videos which will provide better user experience and faster load times.', 'sg-cachepress' ),
-				),
-			),
-			'total-byte-weight'          => array(
-				'enabled' => array(
-					'siteground_optimizer_optimize_html',
-					'siteground_optimizer_optimize_javascript',
-					'siteground_optimizer_combine_css',
-				),
-				'messages' => array(
-					'enabled' => __( 'Check if you have the Browser-Specific Caching enabled, if so, retry the test to make sure you\'re testing cached results.', 'sg-cachepress' ),
-					'default' => __( 'Enable the <strong>Minify the HTML Output</strong>, <strong>Minify JavaScript Files</strong> and <strong>Minify CSS Files</strong> options in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.', 'sg-cachepress' ),
-				),
-			),
-			'uses-long-cache-ttl'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>Browser Caching</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#environment">Environment Optimization tab</a>.', 'sg-cachepress' ),
-				),
-			),
-			'dom-size'                   => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>GZIP Compression</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#environment">Environment Optimization tab</a>. In addition, consider reducing the size and amount of content in your page.', 'sg-cachepress' ),
-				),
-			),
-			'user-timings'               => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>Minify JavaScript Files</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.', 'sg-cachepress' ),
-				),
-			),
-			'bootup-time'                => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>Minify JavaScript Files</strong> option in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.', 'sg-cachepress' ),
-				),
-			),
-			'mainthread-work-breakdown'  => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Enable the <strong>Minify JavaScript Files</strong> and Defer Render-blocking JS options in the <a class="sg-link sg-with-color sg-typography sg-typography--break-all" href="#frontend">Frontend Optimization tab</a> to pass this audit.', 'sg-cachepress' ),
-				),
-			),
-			'third-party-summary'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Check for services like analytics tools, advertisement networks and tracking scrits and similar third party resources loaded outside of your site. Too many such scripts loaded may slow down your site signifficantly.', 'sg-cachepress' ),
-				),
-			),
-			'unused-javascript'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Check whether your theme is inserting JavaScript into pages that don\'t use it.', 'sg-cachepress' ),
-				),
-			),
-			'server-response-time'        => array(
-				'enabled' => array(
-					'siteground_optimizer_enable_cache',
-				),
-				'messages' => array(
-					'enabled' => __( 'Please, use the test functionality to make sure your <strong>Dynamic caching</strong> is working properly and contact support of there\'s a problem.', 'sg-cachepress' ),
-					'default' => __( 'Make sure you enable the <strong>Dynamic Caching</strong> in order to get the best loading speeds for your site.', 'sg-cachepress' ),
-				),
-			),
-			'duplicated-javascript'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Check the header.php file of your theme if there is a JavaScript file included manually more than once.', 'sg-cachepress' ),
-				),
-			),
-			'legacy-javascript'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Make sure you update your theme and plugins to their latest versions in order to avoid using legacy JavaScript.', 'sg-cachepress' ),
-				),
-			),
-			'no-document-write'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Please, contact your theme or plugin provider that uses document.write in their JavaScript.', 'sg-cachepress' ),
-				),
-			),
-			'non-composited-animations'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Check with your theme provider in order to detect any non-composited animations that can damage loading performance especially on mobile devices.', 'sg-cachepress' ),
-				),
-			),
-			'large-javascript-libraries'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Large JavaScript librarie take a lot of time to load and can damage your performance. Consider using equivalent smaller ones.', 'sg-cachepress' ),
-				),
-			),
-			'uses-passive-event-listeners'        => array(
-				'enabled' => array(),
-				'messages' => array(
-					'default' => __( 'Check for plugins that hook on events like mouse wheel down or touchpad scroll. Those listeners should be passive in order to keep good scrollig performance.', 'sg-cachepress' ),
+			'server-response-time' => array(
+				'enable_cache' => array(
+					'title' => __( 'Dynamic Caching', 'sg-cachepress' ),
+					'message' => __( 'Store your content in the server’s memory for a faster access with this full-page caching solution powered by NGINX.', 'sg-cachepress' ),
 				),
 			),
 		);
 
-		$response_messages = array();
-
-		foreach ( $messages as $type => $message ) {
-			if ( empty( $message['enabled'] ) ) {
-				$response_messages[ $type ] = $message['messages']['default'];
-				continue;
-			}
-
-			$failed_check = 0;
-			foreach ( $message['enabled'] as $option_name ) {
-				if ( ! Options::is_enabled( $option_name ) ) {
-					$failed_check++;
-				}
-			}
-
-			if ( 0 === $failed_check ) {
-				$response_messages[ $type ] = $message['messages']['enabled'];
-				continue;
-			}
-
-			$response_messages[ $type ] = $message['messages']['default'];
-		}
-
-		return $response_messages;
-	}
-
-	/**
-	 * Run the speed test.
-	 *
-	 * @since  5.4.0
-	 *
-	 * @param  string $url    The url to test.
-	 * @param  string $device The device type(mobile/desktop).
-	 *
-	 * @return array          The speed test result.
-	 */
-	public function run_analysis_rest( $url, $device = 'desktop' ) {
-		$analysis = $this->run_analysis( $url, $device );
-
-
-		if ( ! empty( $analysis['passed'] ) ) {
-			$analysis['passed']['info'] = array(
-				'title'       => __( 'The Following Areas of Your Site Are Well Optimized:', 'sg-cachepress' ),
-				'id'          => 'passed',
-			);
-		}
-
-		if ( ! empty( $analysis['load-opportunities'] ) ) {
-			$analysis['load-opportunities']['info'] = array(
-				'title'       => __( 'Opportunities to Optimize', 'sg-cachepress' ),
-				'id'          => 'opportunities',
-			);
-		}
-
-		$score = $analysis['score'];
-		unset( $analysis['score'] );
-
-		$response = array_merge(
-			$this->get_messages( $score ),
-			array(
-				'data'      => $analysis,
-				'timeStamp' => time(),
-			)
-		);
-
-		return $response;
+		return $optimizations;
 	}
 
 	/**
@@ -411,37 +433,92 @@ class Analysis {
 	 *
 	 * @since  5.4.0
 	 *
-	 * @param  int $score The score returned from Google.
+	 * @param  int $scores The score returned from Google.
 	 *
 	 * @return array      Messages.
 	 */
-	public function get_messages( $score ) {
-		$score = round( $score * 100 );
-
-		if ( $score < 90 && $score > 49 ) {
-			return array(
-				'score' => $score,
-				'class_name' => 'placeholder-without-svg placeholder-meduim',
-				'title'      => __( 'Almost there!', 'sg-cachepress' ),
-				'message'    => __( 'There are few more steps to achieve excellent results!', 'sg-cachepress' ),
-			);
-		}
-
-		if ( $score < 49 ) {
-			return array(
-				'score' => $score,
-				'class_name' => 'placeholder-without-svg placeholder-low',
-				'title'      => __( 'More optimization needed!', 'sg-cachepress' ),
-				'message'    => __( 'Your site is not performing in the best possible way, check out the optimization suggestions below.', 'sg-cachepress' ),
-			);
-		}
-
-		return array(
-			'score'      => $score,
-			'class_name' => 'placeholder-without-svg placeholder-top',
-			'title'      => __( 'Awesome! You have worked hard.', 'sg-cachepress' ),
-			'message'    => __( 'Your site is loading super fast!', 'sg-cachepress' ),
+	public function get_messages( $scores ) {
+		$data = array();
+		$descriptions = array(
+			'ttfb'  => __( 'Time to First Byte identifies the time at which your server sends a response.', 'sg-cachpress' ),
+			'score' => __( 'Summarizes the page\'s performance.', 'sg-cachpress' ),
+			'fcp'   => __( 'Speed Index shows how quickly the contents of a page are visibly populated.', 'sg-cachpress' ),
 		);
+
+		$conditions = array(
+			'fcp'   => array(
+				'low' => 2000,
+				'medium' => 4000,
+				'colors' => array(
+					'low' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-top',
+						'class_name_table' => 'success',
+					),
+					'medium' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-meduim',
+						'class_name_table' => 'warning',
+					),
+					'high' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-low',
+						'class_name_table' => 'error',
+					),
+				),
+			),
+			'ttfb'  => array(
+				'low' => 100,
+				'medium' => 600,
+				'colors' => array(
+					'low' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-top',
+						'class_name_table' => 'success',
+					),
+					'medium' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-meduim',
+						'class_name_table' => 'warning',
+					),
+					'high' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-low',
+						'class_name_table' => 'error',
+					),
+				),
+			),
+			'score' => array(
+				'low' => 0.49,
+				'medium' => 0.90,
+				'colors' => array(
+					'low' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-low',
+						'class_name_table' => 'error',
+					),
+					'medium' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-meduim',
+						'class_name_table' => 'warning',
+					),
+					'high' => array(
+						'class_name'       => 'placeholder-without-svg placeholder-top',
+						'class_name_table' => 'success',
+					),
+				),
+			),
+		);
+
+		foreach ( $scores as $key => $score ) {
+			if ( $score < $conditions[ $key ]['medium'] && $score > $conditions[ $key ]['low'] ) {
+				$data[ $key ] = array_merge( $conditions[ $key ]['colors']['medium'], array( 'score' => $score ) );
+				continue;
+			}
+
+			if ( $score < $conditions[ $key ]['low'] ) {
+				$data[ $key ] = array_merge( $conditions[ $key ]['colors']['low'], array( 'score' => $score ) );
+				continue;
+			}
+
+			$data[ $key ] = array_merge( $conditions[ $key ]['colors']['high'], array( 'score' => $score ) );
+		}
+
+		$data['descriptions'] = $descriptions;
+
+		return $data;
 	}
 
 	/**
@@ -462,9 +539,10 @@ class Analysis {
 		}
 
 		$full_url = home_url( '/' ) . trim( $url, '/' );
-
 		// Hit the url, so it can be cached, when Google Api make the request.
-		wp_remote_get( $full );
+		if ( 0 === $counter ) {
+			wp_remote_get( $full_url );
+		}
 
 		// Make the request.
 		$response = wp_remote_get(
@@ -485,7 +563,13 @@ class Analysis {
 		$response = json_decode( $response['body'], true );
 
 		// Return the analysis.
-		return $this->process_analysis( $response );
+		$items = $this->process_analysis( $response );
+		$items['device'] = $device;
+
+		// Save the test results in the database.
+		$this->save_test_result( $items );
+
+		return $items;
 	}
 
 	/**
@@ -495,13 +579,22 @@ class Analysis {
 	 *
 	 * @return bool/string False if the file is non existing/The array containing the speed-test results.
 	 */
-	public function get_pre_migration_test() {
+	public function check_for_premigration_test() {
+		global $wp_filesystem;
 		// Bail if the file does not exist.
 		if ( ! file_exists( Helper::get_uploads_dir() . '/pagespeed_results.json' ) ) {
 			return false;
 		}
 		// Return the string containing the pre-migration speed test.
-		return json_decode( file_get_contents( Helper::get_uploads_dir() . '/pagespeed_results.json' ), true );
+		$pre_migration_result = json_decode( $wp_filesystem->get_contents( Helper::get_uploads_dir() . '/pagespeed_results.json' ), true );
+
+		$data = array_merge( $this->process_analysis( $pre_migration_result ), array( 'device' => 'desktop' ) );
+
+		// Save the processed analysis in the database.
+		add_option( 'sgo_pre_migration_speed_test', $data, '', false );
+
+		// Remove the file from the folder.
+		$wp_filesystem->delete( Helper::get_uploads_dir() . '/pagespeed_results.json' );
 	}
 
 }

@@ -25,7 +25,7 @@ class Install_5_3_10 extends Install {
 	 */
 	public function install() {
 
-		if ( Helper::is_avalon() ) {
+		if ( Helper::is_siteground() ) {
 
 			$this->htaccess_service = new Htaccess();
 			$this->options_service = new Options();

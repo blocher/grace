@@ -19,9 +19,9 @@
  * @return array An array of phrases (strings).
  */
 function relevanssi_extract_phrases( string $query ) {
-	// iOS uses “” as the default quotes, so Relevanssi needs to understand
-	// that as well.
-	$normalized_query = str_replace( array( '”', '“' ), '"', $query );
+	// iOS uses “” or „“ as the default quotes, so Relevanssi needs to
+	// understand those as well.
+	$normalized_query = str_replace( array( '”', '“', '„' ), '"', $query );
 	$pos              = relevanssi_stripos( $normalized_query, '"' );
 
 	$phrases = array();
@@ -179,7 +179,17 @@ $custom_fields, string $excerpts ) : array {
 		$phrase  = $wpdb->esc_like( $phrase );
 		$phrase  = str_replace( array( '‘', '’', "'", '"', '”', '“', '“', '„', '´' ), '_', $phrase );
 		$phrase  = htmlspecialchars( $phrase );
-		$phrase  = esc_sql( $phrase );
+
+		/**
+		 * Filters each phrase before it's passed through esc_sql() and used in
+		 * the MySQL query. You can use this filter hook to for example run
+		 * htmlentities() on the phrase in case your database needs that.
+		 *
+		 * @param string $phrase The phrase after quotes are replaced with a
+		 * MySQL wild card and the phrase has been passed through esc_like() and
+		 * htmlspecialchars().
+		 */
+		$phrase = esc_sql( apply_filters( 'relevanssi_phrase', $phrase ) );
 
 		$excerpt = '';
 		if ( 'on' === $excerpts ) {

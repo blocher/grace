@@ -17,12 +17,12 @@ namespace SiteGround_Optimizer\Cli;
  */
 class Cli_Webp {
 	/**
-	 * Enable specific settging for SG Optimizer plugin.
+	 * Enable specific setting for SiteGround Optimizer plugin.
 	 *
 	 * ## OPTIONS
 	 *
-	 * <settging>
-	 * : Settging name.
+	 * <setting>
+	 * : setting name.
 	 * ---
 	 * options:
 	 *  - type

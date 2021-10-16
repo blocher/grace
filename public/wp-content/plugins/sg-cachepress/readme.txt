@@ -1,11 +1,11 @@
-=== SG Optimizer ===
-Contributors: Hristo Sg, siteground, sstoqnov, stoyangeorgiev
+=== SiteGround Optimizer ===
+Contributors: Hristo Sg, siteground, sstoqnov, stoyangeorgiev, elenachavdarova
 Tags: nginx, caching, speed, memcache, memcached, performance, siteground, nginx, supercacher
 Requires at least: 4.7
 Requires PHP: 5.5
-Tested up to: 5.7.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Tested up to: 5.8
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 With the SiteGround Optimizer enabled, you're getting the very best from your hosting environment!
 
@@ -13,16 +13,27 @@ With the SiteGround Optimizer enabled, you're getting the very best from your ho
 
 This plugin is designed to link WordPress with the SiteGround Performance services. It WILL NOT WORK on another hosting provider. 
 
-The SG Optimizer plugin has few different parts handling speciffic performance optimizations:
+The SiteGround Optimizer plugin has few different parts handling speciffic performance optimizations:
 
 == Configuration ==
 
-For detailed information on our plugin and how it works, please check out our [SG Optimizer Tutorial](https://www.siteground.com/tutorials/wordpress/sg-optimizer/ "SG Optimizer Tutorial").
+For detailed information on our plugin and how it works, please check out our [SiteGround Optimizer Tutorial](https://www.siteground.com/tutorials/wordpress/sg-optimizer/ "SiteGround Optimizer Tutorial").
 
 
 = SuperCacher Settings = 
 
 In this tab, you can configure your Dynamic Caching to store your content in the server’s memory for faster access and Memcached which stores frequently executed queries to your database and reuses them for better performance. Make sure you’ve enabled them from your Site Tools or cPanel before using the plugin. You can also enable Automatic Cache purge. This will perform a Full Purge on page, posts, and category deletion, plugin and theme activation, deactivation, or update, and on WordPress core updates. Enabling the Browser-specific caching will create different cache versions based on the user agent used. From Exclude Post Types you can exclude the ones you don’t want to be cached at all. You can also exclude specific URLs or use a wildcard to exclude any sub-pages of a specific “parent-page”. We have also provided a test tool where you can check if a specific URL has Dynamic caching actually running.
+
+You can allow other user roles to flush cache using the filter we've designed for that purpose. Make sure to use the user role capatability in the filter. Here's an example of the code, you can add to your functions.php file:
+
+	add_filter( 'sgo_purge_button_capabilities', 'sgo_add_new_role' );
+	function sgo_add_new_role( $default_capabilities ) {
+		// Allow new user role to flush cache.
+		$default_capabilities[] = 'delete_others_posts'; // For Editors.
+		$default_capabilities[] = 'edit_published_posts'; // For Authors.
+
+		return $default_capabilities;
+	}
 
 = Environment Optimization = 
 
@@ -160,31 +171,46 @@ You can exclude images from Lazy Load using the following filter:
 
 In version 5.0 we've added full WP-CLI support for all plugin options and functionalities. 
 
-* wp sg purge (url) - purges the entire cache or if URL is passed 
-* wp sg memcached enable|disable - enables or disables Memcached
-* wp sg forcehttps enable|disable - enables or disables HTTPS for your site
-* wp sg optimize - enables or disables different optimization options for your site:
-* wp sg optimize html enable|disable - enables or disables HTML minification
-* wp sg optimize js enable|disable - enables or disables JS minification
-* wp sg optimize css enable|disable - enables or disables CSS minification
-* wp sg optimize combine-css enable|disable - enables or disables CSS combination
-* wp sg optimize combine-js enable|disable - enables or disables JS combination
-* wp sg optimize querystring enable|disable - enables or disables query strings removal
-* wp sg optimize emojis enable|disable - enables or disables stripping of the Emoji scripts
-* wp sg optimize images enable|disable - enables or disables New image optimization
-* wp sg optimize webp enable|disable - enables or disables WebP image optimization
-* wp sg optimize lazyload enable|disable - enables or disables Lazy loading of images
-* wp sg optimize gzip enable|disable - enables or disables Gzip compression for your site
-* wp sg optimize browsercache enable|disable - enables or disables Browser caching rules
-* wp sg optimize dynamic-cache enable|disable - enables or disables Dynamic caching rules
-* wp sg optimize web-fonts enable|disable - enables or disables Web Fonts Optimization
-* wp sg optimize fix_insecure_content enable|disable - enables or disables Insecure Content Fix
-* wp sg optimize database-optimization enable|disable - enables or disables the DB Optimization
-* wp sg optimize dns-prefetch enable|disable add|remove|urls <value> - enables or disables the DNS Prefetching, add, remove or list urls.
-* wp sg optimize heartbeat-control enable|disable frontend|dashboard|post --frequency=<frequency> enables or disables the Heartbeat control for a specific location and sets the frequency
-* wp sg status dynamic-cache|autoflush-cache|mobile-cache|html|js|js-async|css|combine-css|querystring|emojis|images|lazyload_images|lazyload_gravatars|lazyload_thumbnails|lazyload_responsive|lazyload_textwidgets|gzip|browser-caching|memcache|ssl|ssl-fix|web-fonts|combine-js|webp - returns optimization current status (enabled|disabled)
-* wp sg settings export - exports the current plugin settings
-* wp sg settings import --hash=<string> - imports plugin settings and applies them
+* `wp sg purge (url)` - purges the entire cache or if URL is passed 
+* `wp sg memcached enable|disable` - enables or disables Memcached
+* `wp sg forcehttps enable|disable` - enables or disables HTTPS for your site
+* `wp sg optimize` - enables or disables different optimization options for your site:
+* `wp sg optimize html enable|disable` - enables or disables HTML minification
+* `wp sg optimize js enable|disable` - enables or disables JS minification
+* `wp sg optimize css enable|disable` - enables or disables CSS minification
+* `wp sg optimize combine-css enable|disable` - enables or disables CSS combination
+* `wp sg optimize combine-js enable|disable` - enables or disables JS combination
+* `wp sg optimize querystring enable|disable` - enables or disables query strings removal
+* `wp sg optimize emojis enable|disable` - enables or disables stripping of the Emoji scripts
+* `wp sg optimize images enable|disable` - enables or disables New image optimization
+* `wp sg optimize webp enable|disable` - enables or disables WebP image optimization
+* `wp sg optimize lazyload enable|disable` - enables or disables Lazy loading of images
+* `wp sg optimize gzip enable|disable` - enables or disables Gzip compression for your site
+* `wp sg optimize browsercache enable|disable` - enables or disables Browser caching rules
+* `wp sg optimize dynamic-cache enable|disable` - enables or disables Dynamic caching rules
+* `wp sg optimize web-fonts enable|disable` - enables or disables Web Fonts Optimization
+* `wp sg optimize fix_insecure_content enable|disable` - enables or disables Insecure Content Fix
+* `wp sg optimize database-optimization enable|disable` - enables or disables the DB Optimization
+* `wp sg optimize dns-prefetch enable|disable add|remove|urls <value>` - enables or disables the DNS Prefetching, add, remove or list urls.
+* `wp sg optimize heartbeat-control enable|disable frontend|dashboard|post --frequency=<frequency>` enables or disables the Heartbeat control for a specific location and sets the frequency
+* `wp sg settings export` - exports the current plugin settings
+* `wp sg settings import --hash=<string>` - imports plugin settings and applies them
+* `wp sg status (optimization option)` - returns optimization current status (enabled|disabled)
+
+= Available WP-CLI optimization options =
+
+* dynamic-cache|autoflush-cache|mobile-cache|browser-caching
+* html|js|css
+* combine-css|combine-js
+* js-async
+* querystring
+* emojis
+* images|webp
+* lazyload_images|lazyload_gravatars|lazyload_thumbnails|lazyload_responsive|lazyload_textwidgets
+* gzip
+* memcache
+* ssl|ssl-fix
+* web-fonts
 
 = Requirements =
 
@@ -203,8 +229,8 @@ Our plugin uses a cookie in order to function properly. It does not store person
 = Automatic Installation =
 
 1. Go to Plugins -> Add New
-1. Search for "SG Optimizer"
-1. Click on the Install button under the SG Optimizer plugin
+1. Search for "SiteGround Optimizer"
+1. Click on the Install button under the SiteGround Optimizer plugin
 1. Once the plugin is installed, click on the Activate plugin link
 
 = Manual Installation =
@@ -213,13 +239,67 @@ Our plugin uses a cookie in order to function properly. It does not store person
 1. Select the 'Upload' menu 
 1. Click the 'Choose File' button and point your browser to the sg-cachepress.zip file you've downloaded
 1. Click the 'Install Now' button
-1. Go to Plugins -> Installed Plugins and click the 'Activate' link under the WordPress SG Optimizer listing
+1. Go to Plugins -> Installed Plugins and click the 'Activate' link under the WordPress SiteGround Optimizer listing
 
 == Changelog ==
 
+= Version 5.9.7 =
+* Improved cache busting for themes utilizing custom post types
+
+= Version 5.9.6 =
+* Improved WP Json purging mechanisms
+* Added protection against cronjob loops caused by 3rd party plugins
+* Improved Spam comments handling
+
+= Version 5.9.5 =
+* Improved Page Builders Support (Elementor, Oxygen, Divi and others)
+
+= Version 5.9.4 =
+* Improved smart cache
+
+= Version 5.9.3 =
+* Fixed WebP regeneration issue
+
+= Version 5.9.2 =
+* Improved cache flush queue
+
+= Version 5.9.1 =
+* Minor bug fixes
+
+= Version 5.9.0 =
+* Plugin refactoring
+
+= Version 5.8.5 =
+* Improved CF detection
+* Minor bug fixes
+
+= Version 5.8.4 =
+* Improved cache purging mechanism
+
+= Version 5.8.3 =
+* Improved cache purge
+
+= Version 5.8.2 =
+* Improved speed tests
+* Improved Google Fonts combination
+* Improved HTTPS enforce
+
+= Version 5.8.1 =
+* Improved cache purge
+
+= Version 5.8.0 =
+* Added preloading for combined css scripts
+* New and improved performance test
+* Design improvements
+* Custom error handler removed
+* Increased WebP PNG optimization limit
+* Changed tutorials urls
+* Improved readme file
+* Minor bug fixes
+
 = Version 5.7.20 =
-* Perform smart purge on the blog page when editing a post.
-* Remove jQuery Dependency from Lazy-load.
+* Perform smart purge on the blog page when editing a post
+* Remove jQuery Dependency from Lazy-load
 
 = Version 5.7.19 =
 * Change loseless quality
@@ -444,11 +524,11 @@ Our plugin uses a cookie in order to function properly. It does not store person
 * NGINX Direct Delivery for Site Tools
 
 = Version 5.3.9 =
-* Improved check for SG Servers
+* Improved check for SiteGround Servers
 
 = Version 5.3.8 =
 * Fixed a bug when Memcached fails to purge when new WordPress version requiring a database update is released
-* Added alert and check if you’re running SG Optimizer on a host different than SiteGround
+* Added alert and check if you’re running SiteGround Optimizer on a host different than SiteGround
 * Improved compatibility with WooCommerce
 * Improved conditional styles combination
 * Improved image optimization process

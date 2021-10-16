@@ -1,24 +1,13 @@
 <?php
 namespace SiteGround_Optimizer\Supercacher;
 
+use SiteGround_Optimizer\Helper\Update_Queue_Trait;
+
 /**
  * SG CachePress class that handle comment updates and purge the cache.
  */
-class Supercacher_Comments extends Supercacher_Posts {
-
-	/**
-	 * Add the hooks when the cache has to be purged.
-	 *
-	 * @since  5.0.0
-	 */
-	public function run() {
-		add_action( 'comment_post', array( $this, 'purge_comment_post' ) );
-		add_action( 'edit_comment', array( $this, 'purge_comment_post' ) );
-		add_action( 'delete_comment', array( $this, 'purge_comment_post' ) );
-		add_action( 'wp_set_comment_status', array( $this, 'purge_comment_post' ) );
-		add_action( 'wp_insert_comment', array( $this, 'purge_comment_post' ) );
-	}
-
+class Supercacher_Comments {
+	use Update_Queue_Trait;
 	/**
 	 * Purge comment post cache.
 	 *
@@ -30,14 +19,20 @@ class Supercacher_Comments extends Supercacher_Posts {
 		// Get the comment data.
 		$commentdata = get_comment( $comment_id, OBJECT );
 
-		// Get the post id from the comment.
-		$comment_post_id = is_object( $commentdata ) ? $commentdata->comment_post_ID : $commentdata['comment_post_ID'];
-
-		// Purge the post cache.
-		$this->purge_post_cache( $comment_post_id );
+		// Check if the comment moderation is turned on or if the comment is marked as spam and what the current hook is.
+		if (
+			'wp_insert_comment' === current_action() &&
+			( 'spam' === $commentdata->comment_approved || 1 === intval( get_option( 'comment_moderation', 0 ) ) )
+		) {
+			return;
+		}
 
 		// Purge the rest api cache.
-		$this->purge_rest_cache();
+		$this->update_queue(
+			array(
+				get_rest_url(),
+				get_permalink( $commentdata->comment_post_ID ),
+			)
+		);
 	}
-
 }

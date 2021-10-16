@@ -11,7 +11,8 @@ class Rest_Helper_Images {
 	 * The constructor.
 	 */
 	public function __construct() {
-		$this->options = new Options();
+		$this->options          = new Options();
+		$this->images_optimizer = new Images_Optimizer();
 	}
 
 	/**
@@ -20,7 +21,6 @@ class Rest_Helper_Images {
 	 * @since  5.0.0
 	 */
 	public function optimize_images() {
-		$this->images_optimizer = new Images_Optimizer();
 		$this->images_optimizer->initialize();
 
 		wp_send_json_success(
@@ -54,7 +54,7 @@ class Rest_Helper_Images {
 			array(
 				'image_optimization_status'   => 1,
 				'image_optimization_stopped'  => 1,
-				'has_images_for_optimization' => $this->options->check_for_unoptimized_images(),
+				'has_images_for_optimization' => $this->options->check_for_unoptimized_images( 'image' ),
 			)
 		);
 	}
@@ -65,10 +65,10 @@ class Rest_Helper_Images {
 	 * @since  5.0.0
 	 */
 	public function check_image_optimizing_status() {
-		$unoptimized_images = $this->options->check_for_unoptimized_images();
+		$unoptimized_images = $this->options->check_for_unoptimized_images( 'image' );
 
 		if ( 0 === $unoptimized_images ) {
-			Images_Optimizer::complete();
+			$this->images_optimizer->complete();
 		}
 
 		$status = (int) get_option( 'siteground_optimizer_image_optimization_completed', 0 );
@@ -88,7 +88,7 @@ class Rest_Helper_Images {
 	 * @since  5.0.0
 	 */
 	public function reset_images_optimization() {
-		Images_Optimizer::reset_image_optimization_status();
+		$this->images_optimizer->reset_image_optimization_status();
 
 		wp_send_json_success();
 	}

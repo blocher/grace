@@ -3,9 +3,7 @@ namespace SiteGround_Optimizer\Admin;
 
 use SiteGround_Optimizer;
 
-use SiteGround_Optimizer\Admin\Admin_Bar;
 use SiteGround_Optimizer\Rest\Rest;
-use SiteGround_Optimizer\Htaccess\Htaccess;
 use SiteGround_Optimizer\Helper\Helper;
 use SiteGround_Optimizer\Multisite\Multisite;
 use SiteGround_Optimizer\Modules\Modules;
@@ -17,39 +15,6 @@ use SiteGround_Optimizer\I18n\I18n;
 class Admin {
 
 	/**
-	 * The constructor.
-	 */
-	public function __construct() {
-
-		$this->modules = new Modules();
-		$admin_bar     = new Admin_Bar();
-
-		add_action( 'wp_ajax_admin_bar_purge_cache', array( $admin_bar, 'purge_cache' ) );
-
-		// Bail if there is nothing to display.
-		if ( empty( $this->modules->get_active_tabs() ) ) {
-			return;
-		}
-
-		if ( is_network_admin() ) {
-			add_action( 'network_admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-		}
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
-		add_action( 'plugins_loaded', array( $this, 'hide_errors_and_notices' ) );
-
-		if ( ! $this->is_multisite_without_permissions() ) {
-			add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
-			// add_action( 'admin_notices', array( $this, 'memcache_notice' ) );
-			add_action( 'wp_ajax_dismiss_memcache_notice', array( $this, 'hide_memcache_notice' ) );
-			add_action( 'wp_ajax_dismiss_blocking_plugins_notice', array( $this, 'hide_blocking_plugins_notice' ) );
-			add_action( 'wp_ajax_dismiss_cache_plugins_notice', array( $this, 'hide_cache_plugins_notice' ) );
-		}
-	}
-
-	/**
 	 * Check if it's a multisite, but the single site
 	 * has no permisions to edit optimizer settings.
 	 *
@@ -57,7 +22,7 @@ class Admin {
 	 *
 	 * @return boolean True if there are no permissions, false otherwise.
 	 */
-	private function is_multisite_without_permissions() {
+	public function is_multisite_without_permissions() {
 		if (
 			is_multisite() &&
 			0 === (int) get_site_option( 'siteground_optimizer_supercacher_permissions', 0 ) &&
@@ -145,12 +110,12 @@ class Admin {
 			'rest_base'          => untrailingslashit( get_rest_url( null, Rest::REST_NAMESPACE ) ),
 			'home_url'           => Helper::get_home_url(),
 			'is_cron_disabled'   => Helper::is_cron_disabled(),
-			'is_avalon'          => Helper::is_avalon(),
-			'modules'            => $this->modules->get_active_modules(),
-			'tabs'               => $this->modules->get_active_tabs(),
+			'is_avalon'          => Helper::is_siteground(),
+			'modules'            => Modules::get_instance()->get_active_modules(),
+			'tabs'               => Modules::get_instance()->get_active_tabs(),
 			'locale'             => I18n::get_i18n_data_json(),
 			'update_timestamp'   => get_option( 'siteground_optimizer_update_timestamp', 0 ),
-			'cards'              => $this->modules->get_slider_modules(),
+			'cards'              => Modules::get_instance()->get_slider_modules(),
 			'is_shop'            => is_plugin_active( 'woocommerce/woocommerce.php' ) ? 1 : 0,
 			'localeSlug'         => join( '-', explode( '_', \get_user_locale() ) ),
 			'wp_nonce'           => wp_create_nonce( 'wp_rest' ),
@@ -220,7 +185,7 @@ class Admin {
 		$memcache_crashed = (int) get_site_option( 'siteground_optimizer_memcache_crashed', 0 );
 
 		$class = 'notice notice-error';
-		$message = __( 'SG Optimizer has detected that Memcached was turned off. If you want to use it, please enable it from your SiteGround control panel first.', 'sg-cachepress' );
+		$message = __( 'SiteGround Optimizer has detected that Memcached was turned off. If you want to use it, please enable it from your SiteGround control panel first.', 'sg-cachepress' );
 
 		if ( 1 === $memcache_crashed ) {
 			$message = __( 'Your site tried to store a single object above 1MB in Memcached which is above the limitation and will actually slow your site rather than speed it up. Please, check your Options table for obsolete data before enabling it again. Note that the service will be automatically disabled if such error occurs again.', 'sg-cachepress' );
@@ -241,7 +206,7 @@ class Admin {
 	 */
 	public function add_plugin_admin_menu() {
 		$page = \add_menu_page(
-			__( 'SG Optimizer', 'sg-cachepress' ), // Page title.
+			__( 'SiteGround Optimizer', 'sg-cachepress' ), // Page title.
 			__( 'SG Optimizer', 'sg-cachepress' ), // Menu item title.
 			'manage_options',
 			\SiteGround_Optimizer\PLUGIN_SLUG,   // Page slug.
@@ -256,7 +221,7 @@ class Admin {
 	 * @since  5.2.0
 	 */
 	public function admin_print_styles() {
-		echo '<style>.toplevel_page_sg-cachepress.menu-top .wp-menu-image img { width:20px;} </style>';
+		echo '<style>.toplevel_page_sg-cachepress.menu-top .wp-menu-image img { width:20px; display:inline;} </style>';
 	}
 
 

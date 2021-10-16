@@ -9,13 +9,13 @@
  * @return bool True if the cache is deleted, false otherwise.
  */
 function sg_cachepress_purge_cache( $url = false ) {
-	global $siteground_optimizer_helper;
+	global $siteground_optimizer_loader;
 
 	$url = empty( $url ) ? get_home_url( '/' ) : $url;
 
 	do_action( 'siteground_optimizer_flush_cache', $url );
 
-	return $siteground_optimizer_helper->supercacher->purge_cache_request( $url );
+	return $siteground_optimizer_loader->supercacher->purge_cache_request( $url );
 }
 
 /**
@@ -24,8 +24,8 @@ function sg_cachepress_purge_cache( $url = false ) {
  * @since  5.7.14
  */
 function sg_cachepress_purge_everything() {
-	global $siteground_optimizer_helper;
-	$siteground_optimizer_helper->supercacher->purge_cache();
-	$siteground_optimizer_helper->supercacher->flush_memcache();
-	$siteground_optimizer_helper->supercacher->delete_assets();
+	global $siteground_optimizer_loader;
+	$siteground_optimizer_loader->supercacher->purge_cache();
+	$siteground_optimizer_loader->supercacher->flush_memcache();
+	$siteground_optimizer_loader->supercacher->delete_assets();
 }

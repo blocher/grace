@@ -1,14 +1,7 @@
 <?php
 namespace SiteGround_Optimizer\Front_End_Optimization;
 
-use SiteGround_Optimizer\Options\Options;
-use SiteGround_Optimizer\Emojis_Removal\Emojis_Removal;
-use SiteGround_Optimizer\Lazy_Load\Lazy_Load;
-use SiteGround_Optimizer\Images_Optimizer\Images_Optimizer;
-use SiteGround_Optimizer\Minifier\Minifier;
 use SiteGround_Optimizer\Helper\Helper;
-use SiteGround_Optimizer\Parser\Parser;
-use SiteGround_Optimizer\Supercacher\Supercacher;
 /**
  * SG Front_End_Optimization main plugin class
  */
@@ -73,16 +66,6 @@ class Front_End_Optimization {
 	 * @since 5.0.0
 	 */
 	public function __construct() {
-		$this->run();
-	}
-
-	/**
-	 * Run the frontend optimization.
-	 *
-	 * @since  5.0.0
-	 */
-	private function run() {
-
 		// Set the assets dir path.
 		$this->set_assets_directory_path();
 
@@ -91,63 +74,6 @@ class Front_End_Optimization {
 			$this->blacklisted_async_scripts,
 			get_option( 'siteground_optimizer_async_javascript_exclude', array() )
 		);
-
-		add_action( 'siteground_optimizer_check_assets_dir', array( $this, 'check_assets_dir' ) );
-
-		// Schedule a cron job that will check for too big assets dir.
-		if (
-			! wp_next_scheduled( 'siteground_optimizer_check_assets_dir' ) &&
-			1 === intval( get_option( 'siteground_optimizer_combine_javascript', 0 ) )
-		) {
-			wp_schedule_event( time(), 'daily', 'siteground_optimizer_check_assets_dir' );
-		}
-
-		// Enabled images optimizer.
-		new Images_Optimizer();
-
-		if (
-			is_admin() ||
-			$this->check_for_builders()
-		) {
-			return;
-		}
-
-		// Remove query strings only if the option is emabled.
-		if ( Options::is_enabled( 'siteground_optimizer_remove_query_strings' ) ) {
-			// Filters for static style and script loaders.
-			add_filter( 'style_loader_src', array( $this, 'remove_query_strings' ) );
-			add_filter( 'script_loader_src', array( $this, 'remove_query_strings' ) );
-		}
-
-		// Disable emojis if the option is enabled.
-		if ( Options::is_enabled( 'siteground_optimizer_disable_emojis' ) ) {
-			new Emojis_Removal();
-		}
-
-		// Load the lazy load functionality.
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_images' ) ) {
-			new Lazy_Load();
-		}
-
-		// Enabled async load js files.
-		if ( Options::is_enabled( 'siteground_optimizer_optimize_javascript_async' ) ) {
-			add_action( 'wp_print_scripts', array( $this, 'prepare_scripts_for_async_load' ), PHP_INT_MAX );
-
-			// Add async attr to all scripts.
-			add_filter( 'script_loader_tag', array( $this, 'add_async_attribute' ), 10, 3 );
-		}
-
-		new Minifier();
-
-		if (
-			Options::is_enabled( 'siteground_optimizer_optimize_html' ) ||
-			Options::is_enabled( 'siteground_optimizer_combine_css' ) ||
-			Options::is_enabled( 'siteground_optimizer_combine_javascript' ) ||
-			Options::is_enabled( 'siteground_optimizer_optimize_web_fonts' ) ||
-			Options::is_enabled( 'siteground_optimizer_dns_prefetch' )
-		) {
-			new Parser();
-		}
 	}
 
 	/**
@@ -158,6 +84,10 @@ class Front_End_Optimization {
 	 * @return \Front_End_Optimization The singleton instance.
 	 */
 	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance;
 	}
 
@@ -365,38 +295,6 @@ class Front_End_Optimization {
 	}
 
 	/**
-	 * Checks if the page is being rendered via page builder.
-	 *
-	 * @since  5.1.2
-	 *
-	 * @return bool True/false.
-	 */
-	public function check_for_builders() {
-
-		$builder_paramas = apply_filters(
-			'sgo_pb_params',
-			array(
-				'fl_builder',
-				'vcv-action',
-				'et_fb',
-				'ct_builder',
-				'tve',
-				'preview',
-				'elementor-preview',
-				'uxb_iframe',
-			)
-		);
-
-		foreach ( $builder_paramas as $param ) {
-			if ( isset( $_GET[ $param ] ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Get styles and scripts loaded on the site.
 	 *
 	 * @since  5.2.0
@@ -405,6 +303,7 @@ class Front_End_Optimization {
 	 */
 	public function get_assets() {
 		// Get the global varialbes.
+		global $wp;
 		global $wp_styles;
 		global $wp_scripts;
 		// Remove the jet popup action to prevent fatal errros.
@@ -414,7 +313,7 @@ class Front_End_Optimization {
 
 		ob_start();
 		// Call the action to load the assets.
-		do_action( 'wp' );
+		do_action( 'wp', $wp );
 		do_action( 'wp_enqueue_scripts' );
 		do_action( 'elementor/editor/after_enqueue_styles' );
 		ob_get_clean();
@@ -532,35 +431,6 @@ class Front_End_Optimization {
 
 		// Otherwise return the path.
 		return $path;
-	}
-
-	/**
-	 * Test if the current browser runs on a mobile device (smart phone, tablet, etc.)
-	 *
-	 * @since  5.2.5
-	 *
-	 * @return boolean
-	 */
-	public static function is_mobile() {
-		if ( function_exists( 'wp_is_mobile' ) ) {
-			return wp_is_mobile();
-		}
-
-		if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
-			$is_mobile = false;
-		} elseif ( @strpos( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) !== false // many mobile devices (all iPhone, iPad, etc.)
-			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) !== false
-			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'Silk/' ) !== false
-			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'Kindle' ) !== false
-			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'BlackBerry' ) !== false
-			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false
-			|| @strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mobi' ) !== false ) {
-				$is_mobile = true;
-		} else {
-			$is_mobile = false;
-		}
-
-		return $is_mobile;
 	}
 
 	/**

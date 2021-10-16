@@ -67,7 +67,7 @@ class Rest_Helper_Webp {
 		wp_send_json_success(
 			array(
 				'webp_conversion_status'    => 1,
-				'has_images_for_conversion' => $this->options->check_for_non_converted_images(),
+				'has_images_for_conversion' => $this->options->check_for_unoptimized_images( 'webp' ),
 			)
 		);
 	}
@@ -78,10 +78,10 @@ class Rest_Helper_Webp {
 	 * @since  5.4.0
 	 */
 	public function check_webp_conversion_status() {
-		$non_converted_images = $this->options->check_for_non_converted_images();
+		$non_converted_images = $this->options->check_for_unoptimized_images( 'webp' );
 
 		if ( 0 === $non_converted_images ) {
-			Images_Optimizer_Webp::complete();
+			$this->webp_images_optimizer->complete();
 		}
 
 		$status = (int) get_option( 'siteground_optimizer_webp_conversion_completed', 0 );

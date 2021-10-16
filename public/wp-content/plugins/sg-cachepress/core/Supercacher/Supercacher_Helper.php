@@ -1,23 +1,12 @@
 <?php
 namespace SiteGround_Optimizer\Supercacher;
 
-use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
+use SiteGround_Optimizer\Helper\Helper;
 
 /**
  * SG CachePress class that help to split the logic in Supercacher.
  */
 class Supercacher_Helper {
-
-	/**
-	 * Add the hooks when the headers and cookies have to be set.
-	 *
-	 * @since  5.0.0
-	 */
-	public function __construct() {
-		add_action( 'wp_headers', array( $this, 'set_cache_headers' ) );
-		add_action( 'wp_login', array( $this, 'set_bypass_cookie' ) );
-		add_action( 'wp_logout', array( $this, 'remove_bypass_cookie' ) );
-	}
 
 	/**
 	 * Set headers cookie.
@@ -155,7 +144,7 @@ class Supercacher_Helper {
 		}
 
 		// We don't want to cache page builder edit page.
-		if ( Front_End_Optimization::get_instance()->check_for_builders() ) {
+		if ( Helper::check_for_builders() ) {
 			return false;
 		}
 

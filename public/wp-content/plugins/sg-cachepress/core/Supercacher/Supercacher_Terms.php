@@ -1,11 +1,13 @@
 <?php
 namespace SiteGround_Optimizer\Supercacher;
 
+use SiteGround_Optimizer\Helper\Update_Queue_Trait;
+
 /**
  * SG CachePress class that handle term actions and purge the cache.
  */
-class Supercacher_Terms extends Supercacher {
-
+class Supercacher_Terms {
+	use Update_Queue_Trait;
 	/**
 	 * Array of all taxonomies that should be ignored.
 	 *
@@ -17,20 +19,6 @@ class Supercacher_Terms extends Supercacher {
 	);
 
 	/**
-	 * Add the hooks when the cache has to be purged.
-	 *
-	 * @since  5.0.0
-	 */
-	public function run() {
-		// Purge everything when a term is added/deleted.
-		add_action( 'create_term', array( $this, 'purge_everything' ) );
-		add_action( 'delete_term', array( $this, 'purge_everything' ) );
-
-		// Purge only single term link when it has been edited.
-		add_action( 'edit_term', array( $this, 'purge_term_and_index_cache' ) );
-	}
-
-	/**
 	 * Purge single term cache.
 	 *
 	 * @since  5.0.0
@@ -39,7 +27,7 @@ class Supercacher_Terms extends Supercacher {
 	 *
 	 * @return bool         True on success, false on failure.
 	 */
-	public function purge_term_cache( $term_id ) {
+	public function get_term_url( $term_id ) {
 		// Get the term.
 		$term = \get_term( $term_id );
 
@@ -55,8 +43,7 @@ class Supercacher_Terms extends Supercacher {
 			return;
 		}
 
-		// Purge the term cache.
-		$this->purge_cache_request( $term_url );
+		return $term_url;
 	}
 
 	/**
@@ -67,14 +54,10 @@ class Supercacher_Terms extends Supercacher {
 	 * @param  int $term_id The term id.
 	 */
 	public function purge_term_and_index_cache( $term_id ) {
-		// Purge the rest api cache.
-		$this->purge_rest_cache();
-
-		// Purge the term cache.
-		$this->purge_term_cache( $term_id );
-
-		// Purge the index.php cache.
-		$this->purge_index_cache();
+		$this->update_queue( array(
+			get_rest_url(),
+			get_home_url( null, '/' ),
+			$this->get_term_url( $term_id ),
+		) );
 	}
-
 }

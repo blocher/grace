@@ -48,23 +48,6 @@ class Cloudflare {
 	private static $instance;
 
 	/**
-	 * The constructor
-	 *
-	 * @since 5.7.0
-	 */
-	public function __construct() {
-		// Bail if the setting is disabled.
-		if ( 0 === intval( get_option( 'siteground_optimizer_cloudflare_optimization', 0 ) ) ) {
-			return;
-		}
-
-		self::$instance = $this;
-
-		add_action( 'send_headers', array( $this, 'add_headers' ), PHP_INT_MAX );
-		add_action( 'template_redirect', array( $this, 'add_headers' ) );
-	}
-
-	/**
 	 * Get the singleton instance.
 	 *
 	 * @since 5.7.0

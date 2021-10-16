@@ -4,7 +4,6 @@ namespace SiteGround_Optimizer\Modules;
 require_once \SiteGround_Optimizer\DIR . '/vendor/pear/net_dns2/Net/DNS2.php';
 
 use SiteGround_Optimizer\Multisite\Multisite;
-use SiteGround_Optimizer\Admin\Admin;
 use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Helper\Helper;
 
@@ -61,7 +60,7 @@ class Modules {
 		),
 		'hearbeat_control' => array(
 			'title' => 'WordPress Heartbeat Optimization',
-			'text' => 'Enable this option to allow SG Optimizer to control the WordPress Heartbeat API.',
+			'text' => 'Enable this option to allow SiteGround Optimizer to control the WordPress Heartbeat API.',
 			'weight' => 80,
 			'tab'  => 'environment',
 			'options' => array(
@@ -131,7 +130,7 @@ class Modules {
 			),
 		),
 		'css'             => array(
-			'title'   => 'Mnify CSS Files',
+			'title'   => 'Minify CSS Files',
 			'text' => 'Minify your CSS files in order to reduce their size and reduce the number of requests to the server.',
 			'weight'  => 85,
 			'tab'  => 'frontend',
@@ -487,24 +486,6 @@ class Modules {
 	);
 
 	/**
-	 * The constructor.
-	 */
-	public function __construct() {
-		add_action( 'admin_notices', array( $this, 'blocking_plugins_notice' ) );
-		add_action( 'admin_notices', array( $this, 'cache_plugins_notice' ) );
-		add_action( 'network_admin_notices', array( $this, 'cache_plugins_notice' ) );
-		add_action( 'network_admin_notices', array( $this, 'blocking_plugins_notice' ) );
-
-		add_action( 'wp_login', array( $this, 'has_cloudflare' ) );
-
-		if ( 1 === (int) get_option( 'disable_conflicting_modules', 0 ) ) {
-			add_action( 'plugins_loaded', array( $this, 'disable_modules' ) );
-		}
-
-		self::$instance = $this;
-	}
-
-	/**
 	 * Get the singleton instance.
 	 *
 	 * @since 5.0.0
@@ -512,6 +493,10 @@ class Modules {
 	 * @return \Supercacher The singleton instance.
 	 */
 	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self();
+		}
+
 		return self::$instance;
 	}
 
@@ -559,7 +544,7 @@ class Modules {
 		}
 
 		$message = sprintf(
-			__( '<strong>Important message from SG Optimizer plugin</strong>: We have detected that there is duplicate functionality with other plugins installed on your site: <strong>%1$s</strong> and have deactivated the following functions from our plugin: <strong>%2$s</strong>. If you wish to enable them, please do that from the SG Optimizer config page.', 'sg-cachepress' ),
+			__( '<strong>Important message from SiteGround Optimizer plugin</strong>: We have detected that there is duplicate functionality with other plugins installed on your site: <strong>%1$s</strong> and have deactivated the following functions from our plugin: <strong>%2$s</strong>. If you wish to enable them, please do that from the SiteGround Optimizer config page.', 'sg-cachepress' ),
 			implode( ', ', $excluded['conflicting_plugins'] ),
 			implode( ', ', $this->get_modules_pretty_names( $excluded['excluded_modules'] ) )
 		);
@@ -594,7 +579,7 @@ class Modules {
 		}
 
 		$message = sprintf(
-			__( '<strong>Important warning from SG Optimizer plugin</strong>: We have detected that there is duplicate functionality with other plugins installed on your site: <strong>%s</strong>. Please note that having two plugins with the same functionality may actually decrease your site\'s performance and hurt your pages loading times so we recommend you to leave only one of the plugins active.', 'sg-cachepress' ),
+			__( '<strong>Important warning from SiteGround Optimizer plugin</strong>: We have detected that there is duplicate functionality with other plugins installed on your site: <strong>%s</strong>. Please note that having two plugins with the same functionality may actually decrease your site\'s performance and hurt your pages loading times so we recommend you to leave only one of the plugins active.', 'sg-cachepress' ),
 			implode( ', ', $excluded['conflicting_plugins'] )
 		);
 
@@ -798,7 +783,7 @@ class Modules {
 					array(
 						array(
 							'type'       => 'default',
-							'title'      => __( 'Welcome to SG Optimizer', 'sg-cachepress' ),
+							'title'      => __( 'Welcome to SiteGround Optimizer', 'sg-cachepress' ),
 							'text'       => __( 'Get the best performance for your WordPress website with our optimization plugin. It handles caching, system settings, and all the necessary configurations for a blazing-fast website. With the SiteGround Optimizer enabled, you’re getting the very best from your hosting environment!', 'sg-cachepress' ),
 							'icon'       => 'presentational-speed-caching',
 							'icon_color' => 'salmon',
@@ -825,7 +810,7 @@ class Modules {
 	public function get_optimizations() {
 		$optimizations = array();
 		$count         = 3;
-		$is_avalon     = Helper::is_avalon();
+		$is_siteground = Helper::is_siteground();
 
 		// Order the modules.
 		$keys = array_column( $this->modules, 'weight' );
@@ -848,7 +833,7 @@ class Modules {
 			}
 
 			// Or if the optimization is for avalon servers only.
-			if ( ! $is_avalon && ! empty( $module['avalon'] ) ) {
+			if ( ! $is_siteground && ! empty( $module['avalon'] ) ) {
 				continue;
 			}
 
@@ -873,7 +858,7 @@ class Modules {
 	}
 
 	/**
-	 * Check if the current domain has cloudflare
+	 * Check if the current domain has cloudflare.
 	 *
 	 * @since  5.7.0
 	 *

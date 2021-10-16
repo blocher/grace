@@ -1,7 +1,6 @@
 <?php
 namespace SiteGround_Optimizer\Lazy_Load;
 
-use SiteGround_Optimizer\Options\Options;
 /**
  * SG Lazy_Load_Images main plugin class
  */
@@ -42,36 +41,6 @@ class Lazy_Load_Images extends Abstract_Lazy_Load {
 		'$1src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-$2="$3"',
 		'$1data-$3="$4"',
 	);
-
-	/**
-	 * The constructor.
-	 *
-	 * @since 5.0.0
-	 */
-	public function __construct() {
-		parent::__construct();
-
-		// If enabled replace the 'src' attr with 'data-src' in text widgets.
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_textwidgets' ) ) {
-			add_filter( 'widget_text', array( $this, 'filter_html' ) );
-		}
-
-		// If enabled replace the 'src' attr with 'data-src' in the_post_thumbnail.
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_thumbnails' ) ) {
-			add_filter( 'post_thumbnail_html', array( $this, 'filter_html' ) );
-		}
-
-		// If enabled replace the 'src' attr with 'data-src' in the_post_thumbnail.
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_gravatars' ) ) {
-			add_filter( 'get_avatar', array( $this, 'filter_html' ) );
-		}
-
-		// If enabled replace the 'src' attr with 'data-src' in text widgets.
-		if ( Options::is_enabled( 'siteground_optimizer_lazyload_woocommerce' ) ) {
-			add_filter( 'woocommerce_product_get_image', array( $this, 'filter_html' ) );
-			add_filter( 'woocommerce_single_product_image_thumbnail_html', array( $this, 'filter_html' ) );
-		}
-	}
 
 	/**
 	 * Add classname to the html element.

@@ -1,47 +1,37 @@
 <?php
 namespace SiteGround_Optimizer\Supercacher;
 
+use SiteGround_Optimizer\Helper\Update_Queue_Trait;
+
 /**
  * SG CachePress main plugin class
  */
-class Supercacher_Posts extends Supercacher {
+class Supercacher_Posts {
+	use Update_Queue_Trait;
 
 	/**
-	 * Add the hooks when the cache has to be purged.
+	 * List of post types excluded from smart cache purge.
 	 *
-	 * @since  5.0.0
+	 * @since 5.9.4
+	 *
+	 * @var array.
 	 */
-	public function run() {
-		add_action( 'save_post', array( $this, 'purge_all_post_cache' ) );
-		add_action( 'pll_save_post', array( $this, 'purge_all_post_cache' ) );
-		add_action( 'wp_trash_post', array( $this, 'purge_all_post_cache' ) );
-	}
+	public $excluded_post_types = array(
+		// Spotlight-social-photo-feeds plugin.
+		'sl-insta-media',
+		'sl-insta-feed',
+		// Layerswp theme.
+		'custom_css',
+	);
 
 	/**
-	 * Purge the post cache and all child paths.
-	 *
-	 * @since  5.0.0
-	 *
-	 * @param  int $post_id The post id.
-	 *
-	 * @return bool True on success, false on failure.
-	 */
-	public function purge_post_cache( $post_id ) {
-		// Purge the rest api cache.
-		$this->purge_rest_cache();
-
-		// Purge the post cache.
-		return $this->purge_cache_request( get_permalink( $post_id ) );
-	}
-
-	/**
-	 * Purge the parent pages cache of certain post.
+	 * Get all parent pages of the certain post.
 	 *
 	 * @since  5.0.0
 	 *
 	 * @param  int $post_id The post id.
 	 */
-	public function purge_parents_cache( $post_id ) {
+	public function get_parents_urls( $post_id ) {
 		// Get post parents.
 		$parents = get_ancestors(
 			$post_id,
@@ -49,25 +39,30 @@ class Supercacher_Posts extends Supercacher {
 			'post_type'
 		);
 
+		$parents_urls = array();
+
 		// Bail if the post top level post.
 		if ( empty( $parents ) ) {
-			return;
+			return $parents_urls;
 		}
 
-		// Purge the cache of all parents.
+		// Adds all parents to the purge queue.
 		foreach ( $parents as $id ) {
-			$this->purge_post_cache( $id );
+			$parents_urls[] = get_permalink( $id );
 		}
+
+		// Return an array with URLs of all post parent pages.
+		return $parents_urls;
 	}
 
 	/**
-	 * Purge all post terms cache.
+	 * Get all post terms.
 	 *
 	 * @since  5.0.0
 	 *
 	 * @param  int $post_id The post id.
 	 */
-	public function purge_post_terms( $post_id ) {
+	public function get_post_terms( $post_id ) {
 		// Get all post taxonomies.
 		$taxonomies = get_post_taxonomies( $post_id );
 
@@ -80,9 +75,11 @@ class Supercacher_Posts extends Supercacher {
 			)
 		);
 
+		$term_urls = array();
+
 		// Bail if there are no term_ids.
 		if ( empty( $term_ids ) ) {
-			return;
+			return $term_urls;
 		}
 
 		// Init the terms cacher.
@@ -90,43 +87,51 @@ class Supercacher_Posts extends Supercacher {
 
 		// Loop through all terms ids and purge the cache.
 		foreach ( $term_ids as $id ) {
-			$supercacher_terms->purge_term_cache( $id );
+			$term_urls[] = $supercacher_terms->get_term_url( $id );
 		}
+
+		// Return an array with all post term URLs.
+		return $term_urls;
 	}
 
 	/**
-	 * Purge the feed cache.
-	 *
-	 * @since  5.7.12
-	 *
-	 * @return bool True on success, false on failure.
-	 */
-	public function purge_feed_cache() {
-		return $this->purge_cache_request( get_home_url( null, '/feed' ), true );
-
-	}
-
-	/**
-	 * Purge the cache for the Post Page
+	 * Get the Blog Page URL.
 	 *
 	 * @since  5.7.20
 	 */
-	public function purge_blog_page() {
+	public function get_blog_page() {
 		// Check if a blog page is set.
 		$blog_id = (int) get_option( 'page_for_posts' );
 
-		// Bail if home page is set for blog page. It will be handled by purge_index_page().
+		// Bail if home page is set for blog page.
 		if ( empty( $blog_id ) ) {
-			return;
+			return get_home_url( null, '/' );
 		}
 
 		// Purge the cache for that post.
-		$this->purge_post_cache( $blog_id );
+		return get_permalink( $blog_id );
 	}
 
 	/**
-	 * Purge the cache of the post that has been changed and
-	 * it's parents, the index cache, and the post categories.
+	 * Purge on post save.
+	 *
+	 * @since 5.9.0
+	 *
+	 * @param  int $post_id The post id.
+	 */
+	public function purge_post_save( $post_id ) {
+		// Purge all cache if a post is saved and the WPML plugin is active.
+		if ( class_exists( 'SitePress' ) ) {
+			return Supercacher::get_instance()->purge_everything();
+		}
+
+		// Continue with post cache purge.
+		$this->purge_all_post_cache( $post_id );
+	}
+
+	/**
+	 * Adds the post that has been changed and it's parents,
+	 * the index cache, and the post categories to the purge cache queue.
 	 *
 	 * @since  5.0.0
 	 *
@@ -135,13 +140,19 @@ class Supercacher_Posts extends Supercacher {
 	public function purge_all_post_cache( $post_id ) {
 		// Delete the index page only if this is the front page.
 		if ( (int) get_option( 'page_on_front' ) === $post_id ) {
-			// Purge the index cache.
-			$this->purge_index_cache();
+			// Add the index page to the cache purge queue.
+			$this->update_queue( array( get_home_url( null, '/' ) ) );
 			return;
 		}
 
 		// Get the post.
 		$post = get_post( $post_id );
+
+
+		// Bail if post type is excluded from cache purge.
+		if ( in_array( $post->post_type, $this->excluded_post_types ) ) {
+			return;
+		}
 
 		// Do not purge the cache for revisions and auto-drafts.
 		if (
@@ -152,18 +163,22 @@ class Supercacher_Posts extends Supercacher {
 			return;
 		}
 
-		// Purge the post cache.
-		$this->purge_post_cache( $post_id );
-		// Purge post parents cache.
-		$this->purge_parents_cache( $post_id );
-		// Purge post terms cache.
-		$this->purge_post_terms( $post_id );
-		// Purge the blog page cache.
-		$this->purge_blog_page();
-		// Purge the index cache.
-		$this->purge_index_cache();
-		// Purge the feed cache.
-		$this->purge_feed_cache();
+		// Add the URLs to the purge cache queue.
+		$this->update_queue(
+			array_merge(
+				// The post parent URLs.
+				$this->get_parents_urls( $post_id ),
+				// The post term URLs.
+				$this->get_post_terms( $post_id ),
+				// The default URLs.
+				array(
+					get_rest_url(), // The rest api URL.
+					get_permalink( $post_id ), // The post URL.
+					$this->get_blog_page(), // The blog page URL.
+					get_home_url( null, '/' ), // The home URL.
+					get_home_url( null, '/feed' ), // The Feed URL.
+				)
+			)
+		);
 	}
-
 }

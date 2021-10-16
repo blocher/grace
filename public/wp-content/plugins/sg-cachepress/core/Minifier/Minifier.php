@@ -2,7 +2,6 @@
 namespace SiteGround_Optimizer\Minifier;
 
 use SiteGround_Optimizer\Helper\Helper;
-use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
 use SiteGround_Optimizer\Supercacher\Supercacher;
 /**
@@ -94,18 +93,6 @@ class Minifier {
 		$this->assets_dir = Front_End_Optimization::get_instance()->assets_dir;
 
 		self::$instance = $this;
-
-		if ( Options::is_enabled( 'siteground_optimizer_optimize_javascript' ) ) {
-			// Minify the js files.
-			add_action( 'wp_print_scripts', array( $this, 'minify_scripts' ), 20 );
-			add_action( 'wp_print_footer_scripts', array( $this, 'minify_scripts' ) );
-		}
-
-		if ( Options::is_enabled( 'siteground_optimizer_optimize_css' ) ) {
-			// Minify the css files.
-			add_action( 'wp_print_styles', array( $this, 'minify_styles' ), 11 );
-			add_action( 'wp_print_footer_scripts', array( $this, 'minify_styles' ), 11 );
-		}
 
 		$this->js_ignore_list = array_merge(
 			$this->js_ignore_list,
@@ -233,10 +220,6 @@ class Minifier {
 
 		// Set the minified file last modification file equla to original file.
 		$this->wp_filesystem->touch( $new_file_path, $original_file_timestamp );
-
-		// Flush the cache for our new resource.
-		$new_file_url = str_replace( untrailingslashit( ABSPATH ), get_option( 'home' ), dirname( $new_file_path ) );
-		Supercacher::get_instance()->purge_cache_request( $new_file_url );
 
 		return true;
 

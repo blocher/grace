@@ -1,7 +1,6 @@
 <?php
 namespace SiteGround_Optimizer\Lazy_Load;
 
-use SiteGround_Optimizer\Options\Options;
 /**
  * SG Lazy_Load_Images main plugin class
  */

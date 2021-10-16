@@ -162,7 +162,7 @@ class Settings {
 			// Bail if the option is active by default on avalon server.
 			if (
 				! empty( $this->complex_options[ $option ]['disabled_on_avalon'] ) &&
-				Helper::is_avalon()
+				Helper::is_siteground()
 			) {
 				continue;
 			}

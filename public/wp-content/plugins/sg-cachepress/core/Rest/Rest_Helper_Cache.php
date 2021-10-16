@@ -26,7 +26,7 @@ class Rest_Helper_Cache extends Rest_Helper {
 		if ( empty( $port ) ) {
 			wp_send_json_error(
 				array(
-					'message' => __( 'SG Optimizer was unable to connect to the Memcached server and it was disabled. Please, check your SiteGround control panel and turn it on if disabled.', 'sg-cachepress' ),
+					'message' => __( 'SiteGround Optimizer was unable to connect to the Memcached server and it was disabled. Please, check your SiteGround control panel and turn it on if disabled.', 'sg-cachepress' ),
 				)
 			);
 		}
@@ -50,7 +50,7 @@ class Rest_Helper_Cache extends Rest_Helper {
 			if ( 11211 === $port ) {
 				wp_send_json_error(
 					array(
-						'message' => __( 'SG Optimizer was unable to connect to the Memcached server and it was disabled. Please, check your SiteGround control panel and turn it on if disabled.', 'sg-cachepress' ),
+						'message' => __( 'SiteGround Optimizer was unable to connect to the Memcached server and it was disabled. Please, check your SiteGround control panel and turn it on if disabled.', 'sg-cachepress' ),
 					)
 				);
 			}

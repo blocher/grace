@@ -30,7 +30,7 @@ class Install_5_5_0 extends Install {
 
 		if (
 			Options::is_enabled( 'siteground_optimizer_enable_browser_caching' ) &&
-			! Helper::is_avalon()
+			! Helper::is_siteground()
 		) {
 			$this->htaccess_service->enable( 'browser-caching' );
 		}
@@ -51,7 +51,7 @@ class Install_5_5_0 extends Install {
 			),
 		) );
 
-		update_option( 'siteground_optimizer_quality_webp', 75 );
-		update_option( 'siteground_optimizer_quality_type', 'lossless' );
+		update_option( 'siteground_optimizer_quality_webp', 85 );
+		update_option( 'siteground_optimizer_quality_type', 'lossy' );
 	}
 }

@@ -64,18 +64,14 @@ class Config {
 	public $wp_filesystem = null;
 
 	/**
-	 * Create a new helper.
+	 * The constructor.
 	 */
 	public function __construct() {
-
-		// Setup wp filesystem.
+		// Setup wp filesystem. - връщам се в конструктора 
 		if ( null === $this->wp_filesystem ) {
 			$this->wp_filesystem = Helper::setup_wp_filesystem();
 		}
-
-		add_action( 'wp_login', array( $this, 'update_config' ) );
 	}
-
 	/**
 	 * Create the config.
 	 *

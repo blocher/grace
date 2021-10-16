@@ -247,43 +247,23 @@ class Options {
 	/**
 	 * Checks if there are unoptimized images.
 	 *
-	 * @since  5.0.0
+	 * @since  5.9.0
 	 *
 	 * @return int The count of unoptimized images.
 	 */
-	public static function check_for_unoptimized_images() {
-		$images = get_posts(
-			array(
-				'post_type'      => 'attachment',
-				'post_mime_type' => 'image',
-				'posts_per_page' => -1,
-				'fields'         => 'ids',
-				'meta_query'     => array(
-					// Skip optimized images.
-					array(
-						'key'     => 'siteground_optimizer_is_optimized',
-						'compare' => 'NOT EXISTS',
-					),
-					// Also skip failed optimizations.
-					array(
-						'key'     => 'siteground_optimizer_optimization_failed',
-						'compare' => 'NOT EXISTS',
-					),
-				),
-			)
+	public static function check_for_unoptimized_images( $type ) {
+
+		$meta = array(
+			'image' => array(
+				'siteground_optimizer_is_optimized',
+				'siteground_optimizer_optimization_failed',
+			),
+			'webp'  => array(
+				'siteground_optimizer_is_converted_to_webp',
+				'siteground_optimizer_webp_conversion_failed',
+			),
 		);
 
-		return count( $images );
-	}
-
-	/**
-	 * Checks if there are non converted images.
-	 *
-	 * @since  5.4.0
-	 *
-	 * @return int The count of non converted images.
-	 */
-	public static function check_for_non_converted_images() {
 		$images = get_posts(
 			array(
 				'post_type'      => 'attachment',
@@ -293,12 +273,12 @@ class Options {
 				'meta_query'     => array(
 					// Skip optimized images.
 					array(
-						'key'     => 'siteground_optimizer_is_converted_to_webp',
+						'key'     => $meta[ $type ][0],
 						'compare' => 'NOT EXISTS',
 					),
 					// Also skip failed optimizations.
 					array(
-						'key'     => 'siteground_optimizer_webp_conversion_failed',
+						'key'     => $meta[ $type ][1],
 						'compare' => 'NOT EXISTS',
 					),
 				),
@@ -394,7 +374,7 @@ class Options {
 			'siteground_optimizer_optimize_css'              => __( 'CSS Minification', 'sg-cachepress' ),
 			'siteground_optimizer_combine_css'               => __( 'CSS Combination', 'sg-cachepress' ),
 			'siteground_optimizer_combine_javascript'        => __( 'JavaScript Files Combination', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_web_fonts'     	 => __( 'Web Fonts Optimization', 'sg-cachepress' ),
+			'siteground_optimizer_optimize_web_fonts'        => __( 'Web Fonts Optimization', 'sg-cachepress' ),
 			'siteground_optimizer_remove_query_strings'      => __( 'Query Strings Removal', 'sg-cachepress' ),
 			'siteground_optimizer_disable_emojis'            => __( 'Emoji Removal Filter', 'sg-cachepress' ),
 			'siteground_optimizer_optimize_images'           => __( 'New Images Optimization', 'sg-cachepress' ),

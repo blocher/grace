@@ -102,7 +102,8 @@ class Rest_Helper_Misc extends Rest_Helper {
 		}
 
 		$analysis = new Analysis();
-		$result = $analysis->run_analysis_rest( $url, $device );
+		$analysis->run_analysis( $url, $device );
+		$result = $analysis->rest_get_test_results();
 
 		// Send the response.
 		wp_send_json_success( $result );

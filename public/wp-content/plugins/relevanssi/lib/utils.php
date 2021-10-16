@@ -21,6 +21,28 @@ function get_relevanssi_taxonomy_walker() {
 }
 
 /**
+ * Adds apostrophes around a string.
+ *
+ * @param string $string The string.
+ *
+ * @return string The string with apostrophes around it.
+ */
+function relevanssi_add_apostrophes( $string ) {
+	return "'" . $string . "'";
+}
+
+/**
+ * Adds quotes around a string.
+ *
+ * @param string $string The string.
+ *
+ * @return string The string with quotes around it.
+ */
+function relevanssi_add_quotes( $string ) {
+	return '"' . $string . '"';
+}
+
+/**
  * Wraps the relevanssi_mb_trim() function so that it can be used as a callback
  * for array_walk().
  *
@@ -32,6 +54,25 @@ function get_relevanssi_taxonomy_walker() {
  */
 function relevanssi_array_walk_trim( string &$string ) {
 	$string = relevanssi_mb_trim( $string );
+}
+
+/**
+ * Converts sums in an array to averages, based on an array containing counts.
+ *
+ * Both arrays need to have (key, value) pairs with the same keys. The values
+ * in $array are then divided by the matching values in $counts, so when we have
+ * sums in $array and counts in $counts, we end up with averages.
+ *
+ * @param array $array  The array with sums, passed as reference.
+ * @param array $counts The array with counts.
+ */
+function relevanssi_average_array( array &$array, array $counts ) {
+	array_walk(
+		$array,
+		function ( &$value, $key ) use ( $counts ) {
+			$value = $value / $counts[ $key ];
+		}
+	);
 }
 
 /**
@@ -104,6 +145,52 @@ function relevanssi_debug_echo( string $notice ) {
 }
 
 /**
+ * Runs do_shortcode() on content, but safeguards the global $post to make sure
+ * it isn't changed by the shortcodes. If shortcode expansion is disabled in
+ * Relevanssi settings, runs strip_shortcodes() on the content.
+ *
+ * @uses relevanssi_disable_shortcodes() Disables problem shortcodes.
+ * @see do_shortcode()                   Expands shortcodes.
+ * @see strip_shortcodes()               Strips off shortcodes.
+ *
+ * @param string $content The content where the shortcodes are expanded.
+ *
+ * @return string
+ */
+function relevanssi_do_shortcode( string $content ) : string {
+	if ( 'on' === get_option( 'relevanssi_expand_shortcodes' ) ) {
+		// TablePress support.
+		if ( function_exists( 'relevanssi_enable_tablepress_shortcodes' ) ) {
+			$tablepress_controller = relevanssi_enable_tablepress_shortcodes();
+		}
+
+		relevanssi_disable_shortcodes();
+
+		/**
+		 * This needs to be global here, otherwise the safety mechanism doesn't
+		 * work correctly.
+		 */
+		global $post;
+
+		$global_post_before_shortcode = null;
+		if ( isset( $post ) ) {
+			$global_post_before_shortcode = $post;
+		}
+
+		$content = do_shortcode( $content );
+
+		if ( $global_post_before_shortcode ) {
+			$post = $global_post_before_shortcode; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		}
+
+		unset( $tablepress_controller );
+	} else {
+		$content = strip_shortcodes( $content );
+	}
+	return $content;
+}
+
+/**
  * Recursively flattens a multidimensional array to produce a string.
  *
  * @param array $array The source array.
@@ -116,6 +203,79 @@ function relevanssi_flatten_array( array $array ) {
 		$return_value .= ' ' . $value;
 	}
 	return trim( $return_value );
+}
+
+/**
+ * Generates from and to date values from ranges.
+ *
+ * Possible values in the $request array: 'from' and 'to' for direct dates,
+ * 'this_year' for Jan 1st to today, 'this_month' for 1st of month to today,
+ * 'last_month' for 1st of previous month to last of previous month,
+ * 'this_week' for Monday of this week to today (or Sunday, if the
+ * relevanssi_week_starts_on_sunday returns `true`), 'last_week' for the
+ * previous week, 'last_30' for from 30 days ago to today, 'last_7' for from
+ * 7 days ago to today.
+ *
+ * @param array  $request The request array where the settings are.
+ * @param string $from    The default 'from' date in "Y-m-d" format.
+ * @return array The from date in 'from' and the to date in 'to' in "Y-m-d"
+ * format.
+ */
+function relevanssi_from_and_to( array $request, string $from ) : array {
+	$today      = gmdate( 'Y-m-d' );
+	$week_start = 'monday';
+	$to         = $today;
+
+	/**
+	 * Controls whether the week starts on Sunday or Monday.
+	 *
+	 * @param boolean If `true`, week starts on Sunday. Default `false`, week
+	 * starts on Monday.
+	 */
+	if ( apply_filters( 'relevanssi_week_starts_on_sunday', false ) ) {
+		$week_start = 'sunday';
+	}
+	if ( ! isset( $request['everything'] ) && isset( $request['from'] ) && $request['from'] > $from ) {
+		$from = $request['from'];
+	}
+	if ( ! isset( $request['everything'] ) && isset( $request['to'] ) && $request['to'] < $today ) {
+		$to = $request['to'];
+	}
+	if ( isset( $request['this_year'] ) ) {
+		$from = gmdate( 'Y-m-d', strtotime( 'first day of january this year' ) );
+		$to   = gmdate( 'Y-m-d' );
+	}
+	if ( isset( $request['this_month'] ) ) {
+		$from = gmdate( 'Y-m-d', strtotime( 'first day of this month' ) );
+		$to   = gmdate( 'Y-m-d' );
+	}
+	if ( isset( $request['last_month'] ) ) {
+		$from = gmdate( 'Y-m-d', strtotime( 'first day of previous month' ) );
+		$to   = gmdate( 'Y-m-d', strtotime( 'last day of previous month' ) );
+	}
+	if ( isset( $request['this_week'] ) ) {
+		$from = gmdate( 'Y-m-d', strtotime( 'previous ' . $week_start ) );
+		$to   = gmdate( 'Y-m-d' );
+	}
+	if ( isset( $request['last_week'] ) ) {
+		$start = 'sunday' === $week_start ? gmdate( 'w' ) + 7 : gmdate( 'w' ) + 6;
+		$end   = 'sunday' === $week_start ? gmdate( 'w' ) + 1 : gmdate( 'w' );
+		$from  = gmdate( 'Y-m-d', strtotime( '-' . $start . ' days' ) );
+		$to    = gmdate( 'Y-m-d', strtotime( '-' . $end . ' days' ) );
+	}
+	if ( isset( $request['last_30'] ) ) {
+		$from = gmdate( 'Y-m-d', strtotime( '-30 days' ) );
+		$to   = gmdate( 'Y-m-d' );
+	}
+	if ( isset( $request['last_7'] ) ) {
+		$from = gmdate( 'Y-m-d', strtotime( '-7 days' ) );
+		$to   = gmdate( 'Y-m-d' );
+	}
+
+	return array(
+		'from' => $from,
+		'to'   => $to,
+	);
 }
 
 /**
@@ -140,6 +300,8 @@ function relevanssi_generate_closing_tags( array $tags ) {
 /**
  * Returns a post object based on ID, **type**id notation or an object.
  *
+ * @uses relevanssi_get_post_object() Fetches post objects.
+ *
  * @param int|string|WP_Post $source The source identified to parse, either a
  * post ID integer, a **type**id string or a post object.
  *
@@ -155,6 +317,10 @@ function relevanssi_get_an_object( $source ) {
 		// Convert from post ID to post.
 		$object = relevanssi_get_post_object( $source );
 		$format = 'id';
+	} elseif ( isset( $source->type ) ) {
+		// Convert from id=>type to post.
+		$object = relevanssi_get_post_object( $source->ID );
+		$format = 'id=>type';
 	} elseif ( ! isset( $source->post_content ) ) {
 		// Convert from id=>parent to post.
 		$object = relevanssi_get_post_object( $source->ID );
@@ -165,6 +331,28 @@ function relevanssi_get_an_object( $source ) {
 		'object' => $object,
 		'format' => $format,
 	);
+}
+
+/**
+ * Returns the attachment filename suffix.
+ *
+ * Reads the filename from $post->guid and returns the file suffix.
+ *
+ * @param WP_Post|int $post The post object or post ID.
+ * @return string The suffix if it is found, an empty string otherwise.
+ */
+function relevanssi_get_attachment_suffix( $post ) : string {
+	if ( ! is_object( $post ) ) {
+		$post = relevanssi_get_post( $post );
+		if ( ! $post ) {
+			return '';
+		}
+	}
+	if ( 'attachment' !== $post->post_type ) {
+		return '';
+	}
+	list( , $type ) = explode( '.', basename( $post->guid ) );
+	return $type;
 }
 
 /**
@@ -193,12 +381,12 @@ function relevanssi_get_current_language( bool $locale = true ) {
 		global $post;
 
 		if ( isset( $post ) ) {
-			if ( isset( $post->term_id ) ) {
+			if ( isset( $post->term_id ) && function_exists( 'pll_get_term_language' ) ) {
 				$current_language = pll_get_term_language( $post->term_id, $locale ? 'locale' : 'slug' );
-			} elseif ( ! isset( $post->user_id ) ) {
+			} elseif ( ! isset( $post->user_id ) && function_exists( 'pll_get_post_language' ) ) {
 				$current_language = pll_get_post_language( $post->ID, $locale ? 'locale' : 'slug' );
 			}
-		} else {
+		} elseif ( function_exists( 'pll_current_language' ) ) {
 			$current_language = pll_current_language( $locale ? 'locale' : 'slug' );
 		}
 	}
@@ -251,6 +439,8 @@ function relevanssi_get_current_language( bool $locale = true ) {
  * Uses get_permalink() to get the permalink, then adds the 'highlight'
  * parameter if necessary using relevanssi_add_highlight().
  *
+ * @see get_permalink()
+ *
  * @return string The permalink.
  */
 function relevanssi_get_permalink() {
@@ -260,6 +450,7 @@ function relevanssi_get_permalink() {
 	 * @param string The permalink, generated by get_permalink().
 	 */
 	$permalink = apply_filters( 'relevanssi_permalink', get_permalink() );
+
 	return $permalink;
 }
 
@@ -300,7 +491,50 @@ function relevanssi_get_post( $post_id, int $blog_id = -1 ) {
 }
 
 /**
+ * Fetches post meta value for a large group of posts with just one query.
+ *
+ * This function can be used to reduce the number of database queries. Instead
+ * of looping through an array of posts and calling get_post_meta() for each
+ * individual post, you can get all the values with this function with just one
+ * database query.
+ *
+ * @param array  $post_ids An array of post IDs.
+ * @param string $field    The name of the field.
+ *
+ * @return array An array of post_id, meta_value pairs.
+ */
+function relevanssi_get_post_meta_for_all_posts( array $post_ids, string $field ) : array {
+	global $wpdb;
+
+	$post_ids_string = implode( ',', $post_ids );
+	$meta_values     = array();
+
+	if ( $post_ids_string ) {
+		$meta_values = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT post_id, meta_value FROM $wpdb->postmeta
+                WHERE meta_key = %s
+				AND post_id IN ( $post_ids_string )", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
+				$field
+			)
+		);
+	}
+
+	$results = array();
+	foreach ( $meta_values as $row ) {
+		$results[ $row->post_id ] = $row->meta_value;
+	}
+
+	return $results;
+}
+
+/**
  * Returns an object based on ID.
+ *
+ * Wrapper to handle non-post cases (terms, user profiles). Regular posts are
+ * passed on to relevanssi_get_post().
+ *
+ * @uses relevanssi_get_post() Used to fetch regular posts.
  *
  * @param int|string $post_id An ID, either an integer post ID or a
  * **type**id string for terms and users.
@@ -375,6 +609,8 @@ function relevanssi_get_term_taxonomy( int $term_id ) {
  * Replacement for get_the_tags() that does the same, but applies Relevanssi
  * search term highlighting on the results.
  *
+ * @uses relevanssi_the_tags() Does the actual work.
+ *
  * @param string $before    What is printed before the tags, default ''.
  * @param string $separator The separator between items, default ', '.
  * @param string $after     What is printed after the tags, default ''.
@@ -390,7 +626,7 @@ function relevanssi_get_the_tags( string $before = '', string $separator = ', ',
  * Reads the highlighted title from $post->post_highlighted_title. Uses the
  * relevanssi_get_post() to fecth the post.
  *
- * @uses relevanssi_get_post()
+ * @uses relevanssi_get_post() Fetches post objects.
  *
  * @param int|WP_Post $post The post ID or a post object.
  *
@@ -413,6 +649,8 @@ function relevanssi_get_the_title( $post ) {
  * Returns an imploded string if the option exists and is an array, an empty
  * string otherwise.
  *
+ * @see implode()
+ *
  * @param array  $request An array of option values.
  * @param string $option  The key to check.
  * @param string $glue    The glue string for implode(), default ','.
@@ -428,6 +666,8 @@ function relevanssi_implode( array $request, string $option, string $glue = ',' 
 
 /**
  * Returns the intval of the option if it exists, null otherwise.
+ *
+ * @see intval()
  *
  * @param array  $request An array of option values.
  * @param string $option  The key to check.
@@ -484,10 +724,10 @@ function relevanssi_launch_ajax_action( string $action, array $payload_args = ar
 /**
  * Returns a legal value.
  *
- * @param array  $request  An array of option values.
- * @param string $option   The key to check.
- * @param array  $values   The legal values.
- * @param string $default  The default value.
+ * @param array  $request An array of option values.
+ * @param string $option  The key to check.
+ * @param array  $values  The legal values.
+ * @param string $default The default value.
  *
  * @return string|null A legal value or the default value, null if the option
  * isn't set.
@@ -506,8 +746,13 @@ function relevanssi_legal_value( array $request, string $option, array $values, 
 /**
  * Multibyte friendly case-insensitive string comparison.
  *
- * If multibyte string functions are available, do strcmp() after using
- * mb_strtoupper() to both strings. Otherwise use strcasecmp().
+ * If multibyte string functions are available, do strnatcmp() after using
+ * mb_strtoupper() to both strings. Otherwise use strnatcasecmp().
+ *
+ * @see strnatcasecmp() Falls back to this if multibyte functions are
+ * not available.
+ * @see strnatcmp()     Used to compare the strings.
+ * @see mb_strtoupper() Used to convert strings to uppercase.
  *
  * @param string $str1     First string to compare.
  * @param string $str2     Second string to compare.
@@ -577,6 +822,8 @@ function relevanssi_remove_quotes( string $string ) {
  * of (term => hits). The number of hits is not needed, so this function
  * discards it as a side effect.
  *
+ * @uses relevanssi_remove_quotes() This does the actual work.
+ *
  * @param array $array An array to process.
  *
  * @return array The same array with quotes removed from the keys.
@@ -622,6 +869,36 @@ function relevanssi_return_id_parent( $post_object ) {
 }
 
 /**
+ * Returns an ID=>type object from a post (or a term, or a user).
+ *
+ * @param WP_Post|WP_Term|WP_User $post_object The source object.
+ *
+ * @return object An object with the attributes ID and type set. Type is
+ * 'post', 'user', 'term' or 'post_type'. For terms, also fills in 'taxonomy',
+ * for post types 'name'.
+ */
+function relevanssi_return_id_type( $post_object ) {
+	$id_type_object = new stdClass();
+
+	if ( isset( $post_object->ID ) ) {
+		$id_type_object->ID   = $post_object->ID;
+		$id_type_object->type = 'post';
+	} elseif ( isset( $post_object->term_id ) ) {
+		$id_type_object->ID       = $post_object->term_id;
+		$id_type_object->type     = 'term';
+		$id_type_object->taxonomy = $post_object->taxonomy;
+	} elseif ( isset( $post_object->user_id ) ) {
+		$id_type_object->ID   = $post_object->user_id;
+		$id_type_object->type = 'user';
+	} else {
+		$id_type_object->ID          = 0;
+		$id_type_object->post_parent = 0;
+	}
+
+	return $id_type_object;
+}
+
+/**
  * Returns "off".
  *
  * Useful for returning "off" to filters easily.
@@ -635,6 +912,9 @@ function relevanssi_return_off() {
 /**
  * Gets a post object, returns ID, ID=>parent or the post object.
  *
+ * @uses relevanssi_return_id_type()   Used to return ID=>type results.
+ * @uses relevanssi_return_id_parent() Used to return ID=>parent results.
+ *
  * @param object $post         The post object.
  * @param string $return_value The value to return, possible values are 'id'
  * for returning the ID and 'id=>parent' for returning the ID=>parent object,
@@ -645,6 +925,8 @@ function relevanssi_return_off() {
 function relevanssi_return_value( $post, string $return_value ) {
 	if ( 'id' === $return_value ) {
 		return $post->ID;
+	} elseif ( 'id=>type' === $return_value ) {
+		return relevanssi_return_id_type( $post );
 	} elseif ( 'id=>parent' === $return_value ) {
 		return relevanssi_return_id_parent( $post );
 	}
@@ -708,14 +990,16 @@ function relevanssi_strip_all_tags( $content ) : string {
 	if ( ! is_string( $content ) ) {
 		$content = '';
 	}
-	return preg_replace( '/<[!a-zA-Z\/][^>]*>/', ' ', $content );
+	$content = preg_replace( '/<!--.*?-->/ms', '', $content );
+	$content = preg_replace( '/<[!a-zA-Z\/][^>].*?>/ms', ' ', $content );
+	return $content;
 }
 
 /**
  * Strips invisible elements from text.
  *
  * Strips <style>, <script>, <object>, <embed>, <applet>, <noscript>, <noembed>,
- * <iframe>, and <del> tags and their contents from the text.
+ * <iframe> and <del> tags and their contents and comments from the text.
  *
  * @param string $text The source text.
  *
@@ -736,6 +1020,7 @@ function relevanssi_strip_invisibles( $text ) {
 			'@<noembed[^>]*?.*?</noembed>@siu',
 			'@<iframe[^>]*?.*?</iframe>@siu',
 			'@<del[^>]*?.*?</del>@siu',
+			'@<!--.*?-->@siu',
 		),
 		' ',
 		$text
@@ -747,10 +1032,12 @@ function relevanssi_strip_invisibles( $text ) {
  * Strips tags from contents, keeping the allowed tags.
  *
  * The allowable tags are read from the relevanssi_excerpt_allowable_tags
- * option. Spaces are added between tags before removing the tags, so that
- * words don't get stuck together. The function also remove invisible content.
+ * option. Relevanssi also adds extra spaces after some tags to make sure words
+ * are not stuck together after the tags are removed. The function also removes
+ * invisible content.
  *
- * @see relevanssi_strip_invisibles
+ * @uses relevanssi_strip_invisibles() Used to remove scripts and other tags.
+ * @see  strip_tags()                  Used to remove tags.
  *
  * @param string|null $content The content.
  *
@@ -761,7 +1048,19 @@ function relevanssi_strip_tags( $content ) {
 		$content = strval( $content );
 	}
 	$content = relevanssi_strip_invisibles( $content );
-	$content = preg_replace( '/(<\/[^>]+?>)(<[^>\/][^>]*?>)/', '$1 $2', $content );
+
+	$space_tags = array(
+		'/(<\/?p.*?>)/',
+		'/(<\/?br.*?>)/',
+		'/(<\/?h[1-6].*?>)/',
+		'/(<\/?div.*?>)/',
+		'/(<\/?blockquote.*?>)/',
+		'/(<\/?hr.*?>)/',
+		'/(<\/?li.*?>)/',
+		'/(<img.*?>)/',
+	);
+
+	$content = preg_replace( $space_tags, '$1 ', $content );
 	return strip_tags(
 		$content,
 		get_option( 'relevanssi_excerpt_allowable_tags', '' )
@@ -799,7 +1098,7 @@ function relevanssi_stripos( $haystack, $needle, int $offset = 0 ) {
 		$needle_regex = str_replace(
 			array( '?', '*' ),
 			array( '.', '.*' ),
-			$needle
+			preg_quote( $needle, '/' )
 		);
 		$pos_found    = false;
 		while ( ! $pos_found ) {
@@ -919,6 +1218,8 @@ function relevanssi_substr( $string, int $start, $length = null ) {
  * Prints out the post excerpt from $post->post_excerpt, unless the post is
  * protected. Only works in the Loop.
  *
+ * @see post_password_required() Used to check for password requirements.
+ *
  * @global $post The global post object.
  */
 function relevanssi_the_excerpt() {
@@ -935,6 +1236,8 @@ function relevanssi_the_excerpt() {
  *
  * Uses get_permalink() to get the permalink, then adds the 'highlight'
  * parameter if necessary using relevanssi_add_highlight(), then echoes it out.
+ *
+ * @uses relevanssi_get_permalink() Fetches the current post permalink.
  */
 function relevanssi_the_permalink() {
 	echo esc_url( relevanssi_get_permalink() );

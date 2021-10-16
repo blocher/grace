@@ -4,7 +4,7 @@ namespace SiteGround_Optimizer\Supercacher;
 /**
  * SG CachePress class that handle comment updates and purge the cache.
  */
-class Supercacher_Postmeta extends Supercacher_Posts {
+class Supercacher_Postmeta extends Supercacher {
 	/**
 	 * Array of all metas that should be ignored.
 	 *

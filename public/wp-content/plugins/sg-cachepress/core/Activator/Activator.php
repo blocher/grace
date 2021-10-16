@@ -4,6 +4,7 @@ namespace SiteGround_Optimizer\Activator;
 use SiteGround_Optimizer\Helper\Helper;
 use SiteGround_Optimizer\Memcache\Memcache;
 use SiteGround_Optimizer\Options\Options;
+use SiteGround_Optimizer\Analysis\Analysis;
 use SiteGround_Optimizer\Install_Service\Install_Service;
 
 class Activator {
@@ -14,16 +15,19 @@ class Activator {
 	 */
 	public function activate() {
 		if ( ! file_exists( "/Z" ) ) {
-			echo '<div class="notice notice-error">' . esc_html__( 'The SG Optimizer plugin is designed to work only on SiteGround Servers. We\'ve deactivated it because it may render your site blank if used on another environment.', 'sg-cachpress' ) . '</div>';
+			echo '<div class="notice notice-error">' . esc_html__( 'The SiteGround Optimizer plugin is designed to work only on SiteGround Servers. We\'ve deactivated it because it may render your site blank if used on another environment.', 'sg-cachpress' ) . '</div>';
 
 			// Adding @ before will prevent XDebug output.
-			@trigger_error( esc_html__( 'The SG Optimizer plugin is designed to work only on SiteGround Servers.', 'sg-cachpress' ), E_USER_ERROR );
+			@trigger_error( esc_html__( 'The SiteGround Optimizer plugin is designed to work only on SiteGround Servers.', 'sg-cachpress' ), E_USER_ERROR );
 		}
 
 		$this->maybe_create_memcache_dropin();
 
 		$install_service = new Install_Service();
 		$install_service->install();
+
+		$analysis = new Analysis();
+		$analysis->check_for_premigration_test();
 	}
 
 	/**

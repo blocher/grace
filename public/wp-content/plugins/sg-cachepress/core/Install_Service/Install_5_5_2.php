@@ -30,7 +30,7 @@ class Install_5_5_2 extends Install {
 
 		if (
 			Options::is_enabled( 'siteground_optimizer_enable_browser_caching' ) &&
-			! Helper::is_avalon()
+			! Helper::is_siteground()
 		) {
 			$this->htaccess_service->enable( 'browser-caching' );
 		}

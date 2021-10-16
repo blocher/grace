@@ -9,20 +9,12 @@ use SiteGround_Optimizer\Options\Options;
 class Rest_Helper_Environment extends Rest_Helper {
 
 	/**
-	 * Link to json containing SiteGround supported PHP versions.
-	 *
-	 * @since 5.5.8
-	 */
-	const SUPPORTED_VERSIONS = 'https://updates.sgvps.net/supported-versions.json';
-
-	/**
 	 * The constructor.
 	 */
 	public function __construct() {
 		$this->ssl     = new Ssl();
 		$this->options = new Options();
 	}
-
 
 	/**
 	 * Enable the ssl

@@ -7,22 +7,14 @@ namespace SiteGround_Optimizer\Heartbeat_Control;
 class Heartbeat_Control {
 
 	/**
-	 * Create a {@link Heartbeat_Control} instance.
+	 * Get the options status and interval and set them for usage.
 	 *
-	 * @since 5.6.0
+	 * @since  5.9.0
 	 */
-	public function __construct() {
-		// Bail if the setting is disabled.
-		if ( 0 === intval( get_option( 'siteground_optimizer_heartbeat_control', 0 ) ) ) {
-			return;
-		}
-
-		if ( @strpos( $_SERVER['REQUEST_URI'], '/wp-admin/admin-ajax.php' ) ) {
-			return;
-		}
-
+	public function run() {
+		// Get the options status and interval and set them for usage.
 		$this->options = array(
-			'post' => array(
+			'post'      => array(
 				'status'   => intval( get_option( 'siteground_optimizer_heartbeat_post_status', 0 ) ),
 				'interval' => intval( get_option( 'siteground_optimizer_heartbeat_post_interval', 0 ) ),
 			),
@@ -30,16 +22,11 @@ class Heartbeat_Control {
 				'status'   => intval( get_option( 'siteground_optimizer_heartbeat_dashboard_status', 0 ) ),
 				'interval' => intval( get_option( 'siteground_optimizer_heartbeat_dashboard_interval', 0 ) ),
 			),
-			'frontend' => array(
+			'frontend'  => array(
 				'status'   => intval( get_option( 'siteground_optimizer_heartbeat_frontend_status', 0 ) ),
 				'interval' => intval( get_option( 'siteground_optimizer_heartbeat_frontend_interval', 0 ) ),
 			),
 		);
-
-		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_disable' ), 99 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'maybe_disable' ), 99 );
-		add_filter( 'heartbeat_settings', array( $this, 'maybe_modify' ), 99 );
-
 	}
 
 	/**

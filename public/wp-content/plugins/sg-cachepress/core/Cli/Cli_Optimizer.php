@@ -21,7 +21,7 @@ use SiteGround_Optimizer\Images_Optimizer\Images_Optimizer;
  */
 class Cli_Optimizer {
 	/**
-	 * Enable specific optimization for SG Optimizer plugin.
+	 * Enable specific optimization for SiteGround Optimizer plugin.
 	 *
 	 * ## OPTIONS
 	 *
@@ -50,6 +50,7 @@ class Cli_Optimizer {
 	 *  - database-optimization
 	 *  - dns-prefetch
 	 *  - heartbeat-control
+	 *	- preload-combined-css
 	 * ---
 	 * <action>
 	 * : The action: enable\disable.
@@ -81,6 +82,7 @@ class Cli_Optimizer {
 			case 'images':
 			case 'dns-prefetch':
 			case 'heartbeat-control':
+			case 'preload-combined-css':
 				return $this->optimize( $args[1], $args[0], $blog_id );
 			case 'lazyload':
 				return $this->optimize_lazyload( $args[1], $blog_id );
@@ -138,6 +140,7 @@ class Cli_Optimizer {
 			'fix_insecure_content' => 'siteground_optimizer_fix_insecure_content',
 			'dns-prefetch'         => 'siteground_optimizer_dns_prefetch',
 			'heartbeat-control'    => 'siteground_optimizer_heartbeat_control',
+			'preload-combined-css' => 'siteground_optimizer_preload_combined_css',
 		);
 
 		switch ( $action ) {

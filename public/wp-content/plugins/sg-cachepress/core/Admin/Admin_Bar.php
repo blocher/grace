@@ -2,7 +2,6 @@
 namespace SiteGround_Optimizer\Admin;
 
 use SiteGround_Optimizer\Supercacher\Supercacher;
-use SiteGround_Optimizer\DNS\Cloudflare;
 
 /**
  * Add purge button functionality to admin bar.
@@ -10,12 +9,36 @@ use SiteGround_Optimizer\DNS\Cloudflare;
 class Admin_Bar {
 
 	/**
-	 * The constructor.
+	 * Checks the current user capabilities.
+	 *
+	 * @since  5.8.3
+	 *
+	 * @return True/False.
 	 */
-	public function __construct() {
-		add_action( 'admin_bar_menu', array( $this, 'add_admin_bar_purge' ), PHP_INT_MAX );
-	}
+	public function check_capabilities() {
+		// Merged capabilities.
+		$default_capabilities = array_merge(
+			// Adding the capabilities added by the filter.
+			apply_filters(
+				'sgo_purge_button_capabilities',
+				array()
+			),
+			// Adding administrator as a default capability.
+			array(
+				'manage_options',
+			)
+		);
 
+		// Check if the current user have a capability to access the "Purge SG Cache" button.
+		foreach ( $default_capabilities as $cap ) {
+			// Return true if the user has any of the caps.
+			if ( current_user_can( $cap ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	/**
 	 * Adds a purge buttion in the admin bar menu.
@@ -25,18 +48,20 @@ class Admin_Bar {
 	 * @since 5.0.0
 	 */
 	public function add_admin_bar_purge( $wp_admin_bar ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		// Bail if user does not have capabilities.
+		if ( ! $this->check_capabilities() ) {
 			return;
 		}
 
-		$args = array(
-			'id'    => 'SG_CachePress_Supercacher_Purge',
-			'title' => __( 'Purge SG Cache', 'sg-cachepress' ),
-			'href'  => wp_nonce_url( admin_url( 'admin-ajax.php?action=admin_bar_purge_cache' ), 'sg-cachepress-purge' ),
-			'meta'  => array( 'class' => 'sg-cachepress-admin-bar-purge' ),
+		$wp_admin_bar->add_node(
+			array(
+				'id'    => 'SG_CachePress_Supercacher_Purge',
+				'title' => __( 'Purge SG Cache', 'sg-cachepress' ),
+				'href'  => wp_nonce_url( admin_url( 'admin-ajax.php?action=admin_bar_purge_cache' ), 'sg-cachepress-purge' ),
+				'meta'  => array( 'class' => 'sg-cachepress-admin-bar-purge' ),
+			)
 		);
 
-		$wp_admin_bar->add_node( $args );
 	}
 
 	/**
