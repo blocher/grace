@@ -33,7 +33,10 @@ class Rest_Helper_Multisite {
 		// Purge the cache.
 		Supercacher::purge_cache();
 
-		wp_send_json(
+		// Send the response.
+		self::send_json_response(
+			$result,
+			'',
 			array(
 				'success' => $result,
 			)
@@ -58,7 +61,10 @@ class Rest_Helper_Multisite {
 		// Purge the cache.
 		Supercacher::purge_cache();
 
-		wp_send_json(
+		// Send the response.
+		self::send_json_response(
+			$result,
+			'',
 			array(
 				'success' => $result,
 			)

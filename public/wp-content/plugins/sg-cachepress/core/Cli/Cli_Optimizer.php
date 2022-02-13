@@ -3,7 +3,9 @@ namespace SiteGround_Optimizer\Cli;
 
 use SiteGround_Optimizer\Options\Options;
 use SiteGround_Optimizer\Htaccess\Htaccess;
-use SiteGround_Optimizer\Images_Optimizer\Images_Optimizer;
+use SiteGround_Optimizer\Message_Service\Message_Service;
+use SiteGround_Optimizer\File_Cacher\File_Cacher;
+
 /**
  * WP-CLI: wp sg optimize {option} enable/disable.
  *
@@ -30,7 +32,9 @@ class Cli_Optimizer {
 	 * ---
 	 * options:
 	 *  - dynamic-cache
+	 *  - file-cache
 	 *  - autoflush-cache
+	 *  - purge-rest-cache
 	 *  - mobile-cache
 	 *  - html
 	 *  - js
@@ -40,17 +44,14 @@ class Cli_Optimizer {
 	 *  - combine-css
 	 *  - querystring
 	 *  - emojis
-	 *  - images
+	 *  - backup-media
 	 *  - lazyload
-	 *  - gzip
 	 *  - webp
+	 *  - resize-images
 	 *  - web-fonts
-	 *  - browsercache
-	 *  - fix_insecure_content
+	 *  - fix-insecure-content
 	 *  - database-optimization
-	 *  - dns-prefetch
-	 *  - heartbeat-control
-	 *	- preload-combined-css
+	 *  - preload-combined-css
 	 * ---
 	 * <action>
 	 * : The action: enable\disable.
@@ -68,7 +69,7 @@ class Cli_Optimizer {
 		switch ( $args[0] ) {
 			case 'dynamic-cache':
 			case 'autoflush-cache':
-			case 'mobile-cache':
+			case 'purge-rest-cache':
 			case 'html':
 			case 'js':
 			case 'css':
@@ -79,19 +80,18 @@ class Cli_Optimizer {
 			case 'combine-css':
 			case 'web-fonts':
 			case 'webp':
-			case 'images':
-			case 'dns-prefetch':
-			case 'heartbeat-control':
+			case 'backup-media':
+			case 'resize-images':
+			case 'fix-insecure-content':
+			case 'lazyload':
 			case 'preload-combined-css':
 				return $this->optimize( $args[1], $args[0], $blog_id );
-			case 'lazyload':
-				return $this->optimize_lazyload( $args[1], $blog_id );
-			case 'gzip':
-				return $this->optimize_gzip( $args[1] );
-			case 'browsercache':
-				return $this->optimize_browsercache( $args[1] );
 			case 'database-optimization':
 				return $this->optimize_database( $args[1] );
+			case 'mobile-cache':
+				return $this->optimize_mobile_cache( $args[1] );
+			case 'file-cache':
+				return $this->optimize_file_cache( $args[1] );
 		}
 	}
 
@@ -126,21 +126,23 @@ class Cli_Optimizer {
 		$mapping = array(
 			'dynamic-cache'        => 'siteground_optimizer_enable_cache',
 			'autoflush-cache'      => 'siteground_optimizer_autoflush_cache',
+			'purge-rest-cache'     => 'siteground_optimizer_purge_rest_cache',
 			'mobile-cache'         => 'siteground_optimizer_user_agent_header',
 			'html'                 => 'siteground_optimizer_optimize_html',
 			'js'                   => 'siteground_optimizer_optimize_javascript',
 			'js-async'             => 'siteground_optimizer_optimize_javascript_async',
 			'css'                  => 'siteground_optimizer_optimize_css',
 			'combine-css'          => 'siteground_optimizer_combine_css',
+			'web-fonts'            => 'siteground_optimizer_optimize_web_fonts',
 			'combine-js'           => 'siteground_optimizer_combine_javascript',
 			'querystring'          => 'siteground_optimizer_remove_query_strings',
 			'emojis'               => 'siteground_optimizer_disable_emojis',
-			'images'               => 'siteground_optimizer_optimize_images',
+			'backup-media'         => 'siteground_optimizer_backup_media',
 			'webp'                 => 'siteground_optimizer_webp_support',
-			'fix_insecure_content' => 'siteground_optimizer_fix_insecure_content',
-			'dns-prefetch'         => 'siteground_optimizer_dns_prefetch',
-			'heartbeat-control'    => 'siteground_optimizer_heartbeat_control',
+			'resize-images'        => 'siteground_optimizer_resize_images',
+			'fix-insecure-content' => 'siteground_optimizer_fix_insecure_content',
 			'preload-combined-css' => 'siteground_optimizer_preload_combined_css',
+			'lazyload'             => 'siteground_optimizer_lazyload_images',
 		);
 
 		switch ( $action ) {
@@ -150,7 +152,7 @@ class Cli_Optimizer {
 				} else {
 					$result = $this->option_service::enable_mu_option( $blog_id, $mapping[ $option ] );
 				}
-				$type = true;
+				$type = 1;
 				break;
 
 			case 'disable':
@@ -160,7 +162,7 @@ class Cli_Optimizer {
 					$result = $this->option_service::disable_mu_option( $blog_id, $mapping[ $option ] );
 				}
 
-				$type = false;
+				$type = 0;
 				break;
 		}
 
@@ -168,53 +170,12 @@ class Cli_Optimizer {
 			\WP_CLI::error( 'Please specify action' );
 		}
 
-		$message = $this->option_service->get_response_message( $result, $mapping[ $option ], $type );
+		$message = Message_Service::get_response_message( $result, str_replace( 'siteground_optimizer_', '', $mapping[ $option ] ), $type );
 
 		return true === $result ? \WP_CLI::success( $message ) : \WP_CLI::error( $message );
 
 	}
 
-	public function optimize_lazyload( $action, $blog_id=false ) {
-		$this->validate_multisite( 'lazyload', $blog_id );
-
-		$options = array(
-			'siteground_optimizer_lazyload_images',
-			'siteground_optimizer_lazyload_gravatars',
-			'siteground_optimizer_lazyload_thumbnails',
-			'siteground_optimizer_lazyload_responsive',
-			'siteground_optimizer_lazyload_textwidgets',
-			'siteground_optimizer_lazyload_woocommerce',
-			'siteground_optimizer_lazyload_shortcodes',
-			'siteground_optimizer_lazyload_videos',
-			'siteground_optimizer_lazyload_iframes',
-		);
-
-		$status = array();
-
-		foreach ( $options as $option ) {
-			if ( 'enable' === $action ) {
-				if ( false === $blog_id ) {
-					$status[] = Options::enable_option( $option );
-				} else {
-					$status[] = Options::enable_mu_option( $blog_id, $option );
-				}
-			} else {
-				if ( false === $blog_id ) {
-					$status[] = Options::disable_option( $option );
-				} else {
-					$status[] = Options::disable_mu_option( $blog_id, $option );
-				}
-			}
-		}
-
-		if ( in_array( false, $status ) ) {
-			return \WP_CLI::error( 'Could not ' . ucwords( $action ) . ' Lazy Loading Images' );
-		}
-
-		return \WP_CLI::success( 'Lazy Loading Images ' . ucwords( $action ) );
-
-	}
-	
 	/**
 	 * Enable/disable Datbase Optimization
 	 *
@@ -245,112 +206,46 @@ class Cli_Optimizer {
 			$type = false;
 		}
 		// Set the message.
-		$message = $this->option_service->get_response_message( $result, 'siteground_optimizer_database_optimization', $type );
+		$message = Message_Service::get_response_message( $result, 'database_optimization', $type );
 
 		return true === $result ? \WP_CLI::success( $message ) : \WP_CLI::error( $message );
 	}
 
-	public function optimize_gzip( $action ) {
+	public function optimize_mobile_cache( $action ) {
 		if ( 'enable' === $action ) {
-			$result = $this->htaccess_service->enable( 'gzip' );
-			true === $result ? Options::enable_option( 'siteground_optimizer_enable_gzip_compression' ) : '';
+			$result = $this->htaccess_service->disable( 'user-agent-vary' );
+			true === $result ? Options::enable_option( 'siteground_optimizer_user_agent_header' ) : '';
 			$type = true;
 		} else {
-			$result = $this->htaccess_service->disable( 'gzip' );
-			true === $result ? Options::disable_option( 'siteground_optimizer_enable_gzip_compression' ) : '';
+			$result = $this->htaccess_service->enable( 'user-agent-vary' );
+			true === $result ? Options::disable_option( 'siteground_optimizer_user_agent_header' ) : '';
 			$type = false;
 		}
 
-		$message = $this->option_service->get_response_message( $result, 'siteground_optimizer_enable_gzip_compression', $type );
+		$message = Message_Service::get_response_message( $result, 'user_agent_header', $type );
 
 		return true === $result ? \WP_CLI::success( $message ) : \WP_CLI::error( $message );
 	}
 
-	public function optimize_browsercache( $action ) {
-		if ( 'enable' === $action ) {
-			$result = $this->htaccess_service->enable( 'browser-caching' );
-			true === $result ? Options::enable_option( 'siteground_optimizer_enable_browser_caching' ) : '';
-			$type = true;
-		} else {
-			$result = $this->htaccess_service->disable( 'browser-caching' );
-			true === $result ? Options::disable_option( 'siteground_optimizer_enable_browser_caching' ) : '';
-			$type = false;
-		}
+	/**
+	 * Enable/Disable File Caching feature.
+	 *
+	 * @since  7.0.0
+	 *
+	 * @param  string $action String, containing the action that is to be used, "enable" or "disable"
+	 *
+	 * @return void
+	 */
+	public function optimize_file_cache( $action ) {
+			// Check if the option should be enabled or disabled.
+			$value = 'enable' === $action ? 1 : 0;
 
-		$message = $this->option_service->get_response_message( $result, 'siteground_optimizer_enable_browser_caching', $type );
+			// Invoke managment method and try disabling/enabling the option.
+			$result = File_Cacher::toggle_file_cache( $value );
 
-		return true === $result ? \WP_CLI::success( $message ) : \WP_CLI::error( $message );
-	}
+			// Get the correct message for the user based on the result.
+			$message = Message_Service::get_response_message( $result['status'], 'file_caching', $value );
 
-	public function optimize_images( $blog_id = false ) {
-		$this->image_optimizer  = new Images_Optimizer();
-
-		$this->validate_multisite( 'images', $blog_id );
-
-		// Switch to blog for multisite setup.
-		if ( false !== $blog_id ) {
-			\switch_to_blog( $blog_id );
-		}
-
-		// Get all images.
-		$images = get_posts(
-			array(
-				'post_type'      => 'attachment',
-				'post_mime_type' => 'image',
-				'posts_per_page' => -1,
-				'fields'         => 'ids',
-				'meta_query'     => array(
-					// Skip optimized images.
-					array(
-						'key'     => 'siteground_optimizer_is_optimized',
-						'compare' => 'NOT EXISTS',
-					),
-					// Also skip failed optimizations.
-					array(
-						'key'     => 'siteground_optimizer_optimization_failed',
-						'compare' => 'NOT EXISTS',
-					),
-				),
-			)
-		);
-
-		\WP_CLI::log( 'Start Image Optimization');
-
-		// Add empty line.
-		\WP_CLI::log( '' );
-
-		$progress = \WP_CLI\Utils\make_progress_bar( 'Optimizing images', count( $images ) );
-		// Loop through all images and optimize them.
-		foreach ( $images as $id ) {
-			// Keep track of the number of times we've attempted to optimize the image.
-			$count = (int) get_post_meta( $id, 'count', true );
-
-			if ( $count > 1 ) {
-				update_post_meta( $id, 'siteground_optimizer_optimization_failed', 1 );
-				continue;
-			}
-
-			update_post_meta( $id, 'count', $count + 1 );
-
-			// Get attachment metadata.
-			$metadata = wp_get_attachment_metadata( $id );
-
-			// Optimize the main image and the other image sizes.
-			$status = $this->image_optimizer->optimize_image( $id, $metadata );
-
-			// Mark image if the optimization failed.
-			if ( false === $status ) {
-				update_post_meta( $id, 'siteground_optimizer_optimization_failed', 1 );
-			}
-
-			// Mark the image as optimized.
-			update_post_meta( $id, 'siteground_optimizer_is_optimized', 1 );
-
-			$progress->tick();
-		}
-
-		$progress->finish();
-
-		\WP_CLI::success( 'Images optimization completed.' );
+			return true === $result['status'] ? \WP_CLI::success( $message ) : \WP_CLI::error( $message );
 	}
 }

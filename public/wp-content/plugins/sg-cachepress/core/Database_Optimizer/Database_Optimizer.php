@@ -1,6 +1,8 @@
 <?php
 namespace SiteGround_Optimizer\Database_Optimizer;
 
+use SiteGround_Optimizer\Supercacher\Supercacher;
+
 /**
  * SG Database_Optimizer main plugin class.
  */
@@ -51,6 +53,7 @@ class Database_Optimizer {
 			'delete_trash_comments',
 			'expired_transients',
 			'optimize_tables',
+			'clear_memcache',
 		);
 
 		foreach ( $methods as $method ) {
@@ -198,5 +201,16 @@ class Database_Optimizer {
 		foreach ( $tables as $table ) {
 			$this->wpdb->query( "OPTIMIZE TABLE $table->table_name" );
 		}
+	}
+
+	/**
+	 * Clears Memcache/Memcached if the option is enabled.
+	 *
+	 * @since 6.0.1
+	 *
+	 * @return bool Result of cache purge.
+	 */
+	public function clear_memcache() {
+		return Supercacher::flush_memcache();
 	}
 }

@@ -20,9 +20,6 @@ class Cli {
 		// Optimize.
 		\WP_CLI::add_command( 'sg optimize', 'SiteGround_Optimizer\Cli\Cli_Optimizer' );
 
-		// Optimize.
-		\WP_CLI::add_command( 'sg webp', 'SiteGround_Optimizer\Cli\Cli_Webp' );
-
 		// HTTPS.
 		\WP_CLI::add_command( 'sg forcehttps', 'SiteGround_Optimizer\Cli\Cli_Https' );
 
@@ -31,6 +28,8 @@ class Cli {
 
 		// Heartbeat.
 		\WP_CLI::add_command( 'sg heartbeat', 'SiteGround_Optimizer\Cli\Cli_Heartbeat' );
+
+		\WP_CLI::add_command( 'sg images', 'SiteGround_Optimizer\Cli\Cli_Images' );
 
 		// DNS Prefetch.
 		\WP_CLI::add_command( 'sg dns-prefetch', 'SiteGround_Optimizer\Cli\Cli_DNS_Prefetch' );

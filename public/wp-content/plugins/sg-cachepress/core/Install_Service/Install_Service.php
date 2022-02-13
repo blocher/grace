@@ -29,6 +29,9 @@ use SiteGround_Optimizer\Install_Service\Install_5_7_0;
 use SiteGround_Optimizer\Install_Service\Install_5_7_4;
 use SiteGround_Optimizer\Install_Service\Install_5_7_14;
 use SiteGround_Optimizer\Install_Service\Install_5_9_2;
+use SiteGround_Optimizer\Install_Service\Install_6_0_0;
+use SiteGround_Optimizer\Install_Service\Install_6_0_2;
+use SiteGround_Optimizer\Install_Service\Install_6_0_3;
 use SiteGround_Optimizer\Install_Service\Install_Cleanup;
 use SiteGround_Optimizer\Supercacher\Supercacher;
 
@@ -69,6 +72,9 @@ class Install_Service {
 			new Install_5_7_4(),
 			new Install_5_7_14(),
 			new Install_5_9_2(),
+			new Install_6_0_0(),
+			new Install_6_0_2(),
+			new Install_6_0_3(),
 		);
 	}
 

@@ -7,21 +7,38 @@ use SiteGround_Optimizer\Htaccess\Htaccess;
 use SiteGround_Optimizer\Supercacher\Supercacher;
 
 class Ssl {
+
 	/**
-	 * The constructor.
+	 * The singleton instance.
+	 *
+	 * @since 5.9.8
+	 *
+	 * @var \Ssl The singleton instance.
+	 */
+	private static $instance;
+
+	/**
+	 * The constructor
 	 *
 	 * @since 5.0.0
 	 */
 	public function __construct() {
-		$this->htaccess_service = new Htaccess();
+		self::$instance = $this;
+	}
 
-		add_action( 'update_option_siteurl', array( $this, 'maybe_switch_rules' ), 10, 2 );
-
-		// Replace unsecure links if the option is enabled.
-		if ( Options::is_enabled( 'siteground_optimizer_fix_insecure_content' ) ) {
-			add_action( 'init', array( $this, 'start_buffer' ) );
-			add_action( 'shutdown', array( $this, 'end_buffer' ) );
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 5.9.8
+	 *
+	 * @return  The singleton instance.
+	 */
+	public static function get_instance() {
+		if ( null == self::$instance ) {
+			self::$instance = new self();
 		}
+
+		return self::$instance;
 	}
 
 	/**
@@ -75,6 +92,12 @@ class Ssl {
 		);
 
 		$read = @fopen( $site_url, 'rb', false, $stream );
+
+		// Check if the response from the url is 200, if not - return false.
+		if ( false === $read ) {
+			return false;
+		}
+
 		$cont = @stream_context_get_params( $read );
 
 		return is_null( $cont['options']['ssl']['peer_certificate'] ) ? false : true;
@@ -90,12 +113,12 @@ class Ssl {
 	public function disable() {
 
 		// Switch the protocol in database.
-		$protocol_switched = $this->switch_protocol();
+		$protocol_switched     = $this->switch_protocol();
 		$disable_from_htaccess = true;
 
 		// Remove the rule from htaccess for single sites.
 		if ( ! is_multisite() ) {
-			$disable_from_htaccess = $this->htaccess_service->disable( 'ssl' );
+			$disable_from_htaccess = Htaccess::get_instance()->disable( 'ssl' );
 		}
 
 		if (
@@ -130,7 +153,7 @@ class Ssl {
 		}
 
 		// Switch the protocol in database.
-		$protocol_switched = $this->switch_protocol( true );
+		$protocol_switched    = $this->switch_protocol( true );
 		$enable_from_htaccess = true;
 
 		$replacements = array(
@@ -140,13 +163,13 @@ class Ssl {
 
 		// Add rule to htaccess for single sites.
 		if ( ! is_multisite() ) {
-			$parsed  = parse_url( get_option( 'siteurl' ) );
+			$parsed = parse_url( get_option( 'siteurl' ) );
 
 			if ( @strpos( $parsed['host'], 'www.' ) === 0 ) {
 				$replacements['replace'] = "RewriteCond %{HTTP_HOST} !^www\. [NC]\n    RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]";
 			}
 
-			$enable_from_htaccess = $this->htaccess_service->enable( 'ssl', $replacements );
+			$enable_from_htaccess = Htaccess::get_instance()->enable( 'ssl', $replacements );
 		}
 
 		if (
@@ -177,8 +200,8 @@ class Ssl {
 	 * @return bool     The result.
 	 */
 	private function switch_protocol( $ssl = false ) {
-		$from     = true === $ssl ? 'http' : 'https';
-		$to       = true === $ssl ? 'https' : 'http';
+		$from = true === $ssl ? 'http' : 'https';
+		$to   = true === $ssl ? 'https' : 'http';
 
 		// Strip the protocol from site url.
 		$site_url_without_protocol = preg_replace( '#^https?#', '', get_option( 'siteurl' ) );
@@ -206,46 +229,13 @@ class Ssl {
 	}
 
 	/**
-	 * Apply the mixed content fixer.
-	 *
-	 * @since  5.0.0
-	 *
-	 * @param  string $buffer The page content.
-	 *
-	 * @return string         Fixed content.
-	 */
-	public function filter_buffer( $buffer ) {
-		return $this->replace_insecure_links( $buffer );
-	}
-
-	/**
-	 * Start buffer.
-	 *
-	 * @since  5.0.0
-	 */
-	public function start_buffer() {
-		ob_start( array( $this, 'filter_buffer' ) );
-	}
-
-	/**
-	 * End the buffer.
-	 *
-	 * @since  5.0.0
-	 */
-	public function end_buffer() {
-		if ( ob_get_length() ) {
-			ob_end_flush();
-		}
-	}
-
-	/**
 	 * Creates an array of insecure links that should be https and an array of secure links to replace with
 	 *
 	 * @since  3.0.0
 	 * @access public
 	 */
 	public function get_url_list() {
-		$home_no_www = str_replace( '://www.', '://', get_option( 'home' ) );
+		$home_no_www  = str_replace( '://www.', '://', get_option( 'home' ) );
 		$home_yes_www = str_replace( '://', '://www.', $home_no_www );
 
 		// Build the search links.
@@ -257,7 +247,7 @@ class Ssl {
 		);
 
 		return array(
-			'search' => $search, // The search links.
+			'search'  => $search, // The search links.
 			'replace' => str_replace( 'http://', 'https://', $search ), // The replace links.
 		);
 	}
@@ -271,7 +261,7 @@ class Ssl {
 	 *
 	 * @return string          Modified content.
 	 */
-	private function replace_insecure_links( $content ) {
+	public function replace_insecure_links( $content ) {
 		// Get the url list.
 		$urls = $this->get_url_list();
 
@@ -289,5 +279,35 @@ class Ssl {
 
 		// Return modified content.
 		return preg_replace( $pattern, 'https://', $content );
+	}
+
+	/**
+	 * Check if the option for ssl and .htaccess rules match, if not, disable/enable option.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @return bool true, if option is changed, false if matching.
+	 */
+	public function maybe_switch_option() {
+		// Check if SSL is enabled in .htaccess.
+		$htaccess_is_enabled = Htaccess::get_instance()->is_enabled( 'ssl' );
+		// Check if SSL option is enabled in the database.
+		$option_is_enabled = Options::is_enabled( 'siteground_optimizer_ssl_enabled' );
+
+		// Check if .htaccess and the option are matching.
+		if (
+			( $htaccess_is_enabled && $option_is_enabled ) ||
+			( ! $htaccess_is_enabled && ! $option_is_enabled )
+		) {
+			return;
+		}
+
+		// If .htaccess has SSL rule and the option is not set - set it programatically.
+		if ( true === $htaccess_is_enabled ) {
+			return $this->enable();
+		}
+
+		// Disable the option if the .htaccess doesn't have a SSL rule and the option is set.
+		return $this->disable();
 	}
 }

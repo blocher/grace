@@ -36,10 +36,6 @@ class Cli_DNS_Prefetch {
 	 */
 	public function __invoke( $args ) {
 		// Bail if the DNS Prefetch is disabled..
-		if ( ! Options::is_enabled( 'siteground_optimizer_dns_prefetch' ) ) {
-			return \WP_CLI::warning( 'DNS Prefetch is disabled, to activate it use `wp sg optimize dns-prefetch enable`' );
-		}
-
 		$url = ! empty( $args[1] ) ? preg_replace( '~(?:(?:https?:)?(?:\/\/)(?:www\.|(?!www)))?((?:.*?)\.(?:.*))~', '//$1', $args[1] ) : '';
 
 		switch ( $args[0] ) {
@@ -121,7 +117,7 @@ class Cli_DNS_Prefetch {
 		// Update the option.
 		update_option( 'siteground_optimizer_dns_prefetch_urls', $urls );
 
-		return \WP_CLI::success( $url . ' was removed from DNN-Prefetching list' );
+		return \WP_CLI::success( $url . ' was removed from DNS-Prefetching list' );
 	}
 
 }

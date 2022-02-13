@@ -1,8 +1,10 @@
 <?php
 namespace SiteGround_Optimizer\Supercacher;
 
-use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
 use SiteGround_Optimizer\DNS\Cloudflare;
+use SiteGround_Optimizer\File_Cacher\File_Cacher;
+use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
+use SiteGround_Optimizer\Options\Options;
 /**
  * SG CachePress main plugin class
  */
@@ -16,7 +18,7 @@ class Supercacher {
 	public $children = array(
 		'supercacher_posts'    => array(
 			array(
-				'option'   => 'purge_post_save',
+				'option'   => 'purge_all_post_cache',
 				'hook'     => 'save_post',
 				'priority' => 1,
 			),
@@ -172,6 +174,10 @@ class Supercacher {
 	 * @return bool True on success, false on failure.
 	 */
 	public function purge_rest_cache() {
+		if ( ! Options::is_enabled( 'siteground_optimizer_purge_rest_cache' ) ) {
+			return;
+		}
+
 		return $this->purge_cache_request( get_rest_url() );
 	}
 
@@ -294,8 +300,10 @@ class Supercacher {
 			return;
 		}
 
-		// Add slash at the end of the url.
-		$url = trailingslashit( $url );
+		// Add slash at the end of the url if it does not have get parameters.
+		if ( ! strpos( $url, '?' ) ) {
+			$url = trailingslashit( $url );
+		}
 
 		// Check if the url is excluded for dynamic checks only.
 		if ( false === $is_cloudflare_check ) {
@@ -387,6 +395,14 @@ class Supercacher {
 
 		if ( 10 > count( $queue ) ) {
 
+			if ( ! Options::is_enabled( 'siteground_optimizer_purge_rest_cache' ) ) {
+				$key = array_search( get_rest_url(), $queue );
+
+				if ( is_int( $key ) ) {
+					unset( $queue[ $key ] );
+				}
+			}
+
 			// Purge the cache for all URLs in the queue.
 			foreach ( $queue as $url ) {
 				$this->purge_cache_request(
@@ -399,7 +415,7 @@ class Supercacher {
 		}
 
 		// Flush the Cloudflare cache if the optimization is enabled.
-		if ( 1 === intval( get_option( 'siteground_optimizer_cloudflare_optimization', 0 ) ) ) {
+		if ( 1 === intval( get_option( 'siteground_optimizer_cloudflare_optimization_status', 0 ) ) ) {
 			Cloudflare::get_instance()->purge_cache();
 		}
 

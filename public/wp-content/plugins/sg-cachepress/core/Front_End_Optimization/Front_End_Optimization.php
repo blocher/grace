@@ -1,7 +1,10 @@
 <?php
 namespace SiteGround_Optimizer\Front_End_Optimization;
 
-use SiteGround_Optimizer\Helper\Helper;
+use SiteGround_Optimizer\Supercacher\Supercacher;
+use SiteGround_Optimizer\File_Cacher\File_Cacher;
+use SiteGround_Helper\Helper_Service;
+
 /**
  * SG Front_End_Optimization main plugin class
  */
@@ -49,6 +52,8 @@ class Front_End_Optimization {
 		'wp-polyfill',
 		'wp-url',
 		'wp-hooks',
+		'houzez-google-map-api',
+		'wpascript',
 	);
 
 	/**
@@ -102,7 +107,7 @@ class Front_End_Optimization {
 			return;
 		}
 
-		$uploads_dir = Helper::get_uploads_dir();
+		$uploads_dir = Helper_Service::get_uploads_dir();
 
 		// Build the assets dir name.
 		$directory = $uploads_dir . '/siteground-optimizer-assets';
@@ -127,7 +132,7 @@ class Front_End_Optimization {
 	 * @return bool              True is the directory is created.
 	 *                           False on failure.
 	 */
-	private function create_directory( $directory ) {
+	public function create_directory( $directory ) {
 		// Create the directory and return the result.
 		$is_directory_created = wp_mkdir_p( $directory );
 
@@ -150,7 +155,7 @@ class Front_End_Optimization {
 	 * @return string           Original filepath.
 	 */
 	public static function get_original_filepath( $original ) {
-		$home_url = Helper::get_site_url();
+		$home_url = Helper_Service::get_site_url();
 		// Get the home_url from database. Some plugins like qtranslate for example,
 		// modify the home_url, which result to wrong replacement with ABSPATH for resources loaded via link.
 		// Very ugly way to handle resources without protocol.
@@ -266,7 +271,7 @@ class Front_End_Optimization {
 		}
 
 		// Skip all external sources.
-		if ( @strpos( Helper::get_home_url(), $host ) === false ) {
+		if ( @strpos( Helper_Service::get_home_url(), $host ) === false ) {
 			return $src;
 		}
 
@@ -320,6 +325,7 @@ class Front_End_Optimization {
 
 		unset( $wp_scripts->queue['wc-jilt'] );
 
+
 		// Build the assets data.
 		return array(
 			'scripts' => $this->get_assets_data( $wp_scripts ),
@@ -343,11 +349,16 @@ class Front_End_Optimization {
 		);
 
 		// Init the data array.
-		$data = array();
+		$data = array(
+			'header'       => array(),
+			'default'      => array(),
+			'non_minified' => array(),
+		);
 
 		// CLone the global assets object.
 		$items = wp_clone( $assets );
 		$items->all_deps( $items->queue );
+
 
 		// Loop through all assets and push them to data array.
 		foreach ( $items->to_do as $index => $handle ) {
@@ -359,11 +370,16 @@ class Front_End_Optimization {
 				continue;
 			}
 
-			$data[] = $this->get_asset_data( $items->registered[ $handle ], $items->groups[ $handle ] );
-		}
+			if ( 1 !== $items->groups[ $handle ] ) {
+				$data['header'][] = $this->get_asset_data( $items->registered[ $handle ] );
+			}
 
-		// Save the assets, so we can use them on plugin uninstall to update the excluded lists.
-		update_option( 'siteground_optimizer_assets_data', $data );
+			if ( @strpos( $items->registered[ $handle ]->src, '.min.' ) === false ) {
+				$data['non_minified'][] = $this->get_asset_data( $items->registered[ $handle ] );
+			}
+
+			$data['default'][] = $this->get_asset_data( $items->registered[ $handle ] );
+		}
 
 		// Finally return the assets data.
 		return $data;
@@ -378,7 +394,7 @@ class Front_End_Optimization {
 	 *
 	 * @return array        The asset data.
 	 */
-	public function get_asset_data( $item, $in_footer = 0 ) {
+	public function get_asset_data( $item ) {
 		// Strip the protocol from the src because some assets are loaded without protocol.
 		$src = preg_replace( '~https?://~', '', Front_End_Optimization::remove_query_strings( $item->src ) );
 
@@ -391,8 +407,6 @@ class Front_End_Optimization {
 			'title'       => ! empty( $matches[1] ) ? $matches[1] : $item->src, // The assets src.
 			'group'       => ! empty( $matches[2] ) ? substr( $matches[2], 0, -1 ) : __( 'others', 'siteground-optimizer' ), // Get the group name.
 			'name'        => ! empty( $matches[3] ) ? $this->get_plugin_info( $matches[3] ) : false, // The name of the parent( plugin or theme name ).
-			'in_footer'   => $in_footer, // Is loaded in the footer.
-			'is_minified' => @strpos( $item->src, '.min.' ) === false ? 0 : 1, // Is minified.
 		);
 
 		$data['group_title'] = empty( $data['name'] ) ? $data['group'] : $data['group'] . ': ' . $data['name'];
@@ -439,19 +453,15 @@ class Front_End_Optimization {
 	 * @since  5.6.0
 	 */
 	public function check_assets_dir() {
-		$size = $this->get_directory_size( $this->assets_dir );
-
-		if ( self::LIMIT > $size ) {
+		// Bail if the size is smaller that the limit.
+		if ( self::LIMIT > $this->get_directory_size( $this->assets_dir ) ) {
 			return;
 		}
 
-		update_option( 'siteground_optimizer_combine_javascript', 0 );
-		update_option( 'siteground_optimizer_combine_javascript_error', 1 );
-
+		Supercacher::delete_assets();
 		Supercacher::purge_cache();
 		Supercacher::flush_memcache();
-
-		wp_clear_scheduled_hook( 'siteground_optimizer_check_assets_dir' );
+		File_Cacher::purge_everything();
 	}
 
 	/**

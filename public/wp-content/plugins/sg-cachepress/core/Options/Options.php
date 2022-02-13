@@ -348,73 +348,40 @@ class Options {
 	}
 
 	/**
-	 * Prepare response message for react app.
+	 * Retrieves the possible options for the exclusion of media types from the lazy load logic.
 	 *
-	 * @since  5.0.0
+	 * @since 6.0.0
 	 *
-	 * @param  bool   $status The result of operation.
-	 * @param  string $key    The option key.
-	 * @param  bool   $type   True for enable, false for disable option.
-	 *
-	 * @return string       The response message.
+	 * @return array The possible for media types to be lazy loaded.
 	 */
-	public function get_response_message( $status, $key, $type ) {
-		$messages = array(
-			'siteground_optimizer_enable_cache'              => __( 'Dynamic Cache', 'sg-cachepress' ),
-			'siteground_optimizer_autoflush_cache'           => __( 'Autoflush', 'sg-cachepress' ),
-			'siteground_optimizer_user_agent_header'         => __( 'Browser-Specific Caching', 'sg-cachepress' ),
-			'siteground_optimizer_enable_memcached'          => __( 'Memcache', 'sg-cachepress' ),
-			'siteground_optimizer_ssl_enabled'               => __( 'HTTPS', 'sg-cachepress' ),
-			'siteground_optimizer_fix_insecure_content'      => __( 'Insecure Content Fix', 'sg-cachepress' ),
-			'siteground_optimizer_enable_gzip_compression'   => __( 'GZIP Compression', 'sg-cachepress' ),
-			'siteground_optimizer_enable_browser_caching'    => __( 'Browser Caching', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_html'             => __( 'HTML Minification', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_javascript'       => __( 'JavaScript Minification', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_javascript_async' => __( 'Defer Render-blocking JS', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_css'              => __( 'CSS Minification', 'sg-cachepress' ),
-			'siteground_optimizer_combine_css'               => __( 'CSS Combination', 'sg-cachepress' ),
-			'siteground_optimizer_combine_javascript'        => __( 'JavaScript Files Combination', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_web_fonts'        => __( 'Web Fonts Optimization', 'sg-cachepress' ),
-			'siteground_optimizer_remove_query_strings'      => __( 'Query Strings Removal', 'sg-cachepress' ),
-			'siteground_optimizer_disable_emojis'            => __( 'Emoji Removal Filter', 'sg-cachepress' ),
-			'siteground_optimizer_optimize_images'           => __( 'New Images Optimization', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_images'           => __( 'Lazy Loading Images', 'sg-cachepress' ),
-			'siteground_optimizer_webp_support'              => __( 'WebP Generation for New Images', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_gravatars'        => __( 'Lazy Loading Gravatars', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_thumbnails'       => __( 'Lazy Loading Thumbnails', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_responsive'       => __( 'Lazy Loading Responsive Images', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_textwidgets'      => __( 'Lazy Loading Widgets', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_mobile'           => __( 'Lazy Load for Mobile', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_woocommerce'      => __( 'Lazy Load for Product Images', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_shortcodes'       => __( 'Fix for Lazy Loading Short Codes', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_videos'           => __( 'Lazy Load Videos', 'sg-cachepress' ),
-			'siteground_optimizer_lazyload_iframes'          => __( 'Lazy Load Iframes', 'sg-cachepress' ),
-			'siteground_optimizer_supercacher_permissions'   => __( 'Can Config SuperCacher', 'sg-cachepress' ),
-			'siteground_optimizer_frontend_permissions'      => __( 'Can Optimize Frontend', 'sg-cachepress' ),
-			'siteground_optimizer_images_permissions'        => __( 'Can Optimize Images', 'sg-cachepress' ),
-			'siteground_optimizer_environment_permissions'   => __( 'Can Optimize Environment', 'sg-cachepress' ),
-			'siteground_optimizer_heartbeat_control'         => __( 'Heartbeat Optimization', 'sg-cachepress' ),
-			'siteground_optimizer_database_optimization'     => __( 'Scheduled Database Maintenance', 'sg-cachepress' ),
-			'siteground_optimizer_dns_prefetch'              => __( 'DNS Prefetching', 'sg-cachepress' ),
-			'siteground_optimizer_cloudflare_optimization'   => __( 'Cloudflare Optimization', 'sg-cachepress' ),
+	public function get_excluded_lazy_load_media_types() {
+		$lazy_load_types = array(
+			'lazyload_mobile',
+			'lazyload_iframes',
+			'lazyload_videos',
+			'lazyload_gravatars',
+			'lazyload_thumbnails',
+			'lazyload_responsive',
+			'lazyload_textwidgets',
+			'lazyload_shortcodes',
+			'lazyload_woocommerce',
 		);
 
-		// Get the option name. Fallback to `Option` if the option key doens't exists in predefined messages.
-		$option = ! array_key_exists( $key, $messages ) ? __( 'Option', 'sg-cachepress' ) : $messages[ $key ];
+		$result = array();
 
-		if ( true === $status ) {
-			if ( true === $type ) {
-				return sprintf( __( '%s Enabled', 'sg-cachepress' ), $option );
+		foreach ( $lazy_load_types as $type ) {
+			$title = ucfirst( str_replace( 'lazyload_', '', $type ) );
+
+			if ( 'lazyload_textwidgets' === $type ) {
+				$title = 'Text Widgets';
 			}
 
-			return sprintf( __( '%s Disabled', 'sg-cachepress' ), $option );
-
+			$result[] = array(
+				'title' => $title,
+				'value' => $type,
+			);
 		}
 
-		if ( true === $type ) {
-			return sprintf( __( 'Could not enable %s', 'sg-cachepress' ), $option );
-		}
-
-		return sprintf( __( 'Could not disable %s', 'sg-cachepress' ), $option );
+		return $result;
 	}
 }

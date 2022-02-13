@@ -31,8 +31,12 @@ class Supercacher_Terms {
 		// Get the term.
 		$term = \get_term( $term_id );
 
-		// Bail if we shounl ignore the taxonomy.
-		if ( in_array( $term->taxonomy, $this->ignored_taxonomies ) ) {
+		// Bail if we should ignore the taxonomy.
+		if ( 
+			NULL === $term ||
+			is_wp_error( $term ) ||
+			in_array( $term->taxonomy, $this->ignored_taxonomies ) 
+		) {
 			return;
 		}
 

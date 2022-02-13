@@ -2,7 +2,7 @@
 namespace SiteGround_Optimizer\Memcache;
 
 use SiteGround_Optimizer\Options\Options;
-use SiteGround_Optimizer\Helper\Helper;
+use SiteGround_Helper\Helper_Service;
 
 /**
  * The class responsible for obejct cache.
@@ -42,7 +42,6 @@ class Memcache {
 	 * @since  5.0.0
 	 */
 	public function status_healthcheck() {
-
 		if ( Options::is_enabled( 'siteground_optimizer_enable_memcached' ) ) {
 			// Check if the droping exists.
 			if ( $this->dropin_exists() ) {
@@ -149,7 +148,7 @@ class Memcache {
 		$port_file_content = $this->get_port_file_contents();
 
 		if ( ! $port_file_content ) {
-			if ( Helper::is_siteground() ) {
+			if ( Helper_Service::is_siteground() ) {
 				return 11211;
 			}
 
@@ -166,7 +165,7 @@ class Memcache {
 	 *
 	 * @return bool True on retrieving exactly the value set, false otherwise.
 	 */
-	protected function is_connection_working() {
+	public function is_connection_working() {
 		// Tyr to get the port.
 		$port = $this->get_memcached_port();
 
@@ -204,7 +203,7 @@ class Memcache {
 		@unlink( WP_CONTENT_DIR . '/object-cache-crashed.php' );
 
 		// The new object cache.
-		$new_object_cache  = str_replace(
+		$new_object_cache = str_replace(
 			array(
 				'SG_OPTIMIZER_CACHE_KEY_SALT',
 				'@changedefaults@',
@@ -355,5 +354,57 @@ class Memcache {
 
 		// Convert the csv to array.
 		return str_getcsv( $excludes_content, "\n" );
+	}
+
+	/**
+	 * Enable memcached.
+	 *
+	 * @since  @version
+	 */
+	public function enable_memcache() {
+		// Bail if we cannot create a dropin.
+		if ( ! $this->create_memcached_dropin() ) {
+			return false;
+		}
+
+		Options::enable_option( 'siteground_optimizer_enable_memcached' );
+
+		// Remove notices.
+		Options::disable_option( 'siteground_optimizer_memcache_notice' );
+		Options::disable_option( 'siteground_optimizer_memcache_crashed' );
+		Options::disable_option( 'siteground_optimizer_memcache_dropin_crashed' );
+
+		return true;
+	}
+
+	/**
+	 * Disable memcached.
+	 *
+	 * @since  @version
+	 */
+	public function disable_memcache() {
+		// First disable the option.
+		$result = Options::disable_option( 'siteground_optimizer_enable_memcached' );
+
+		// True if the option has been disabled and the dropin doesn't exist.
+		if ( ! $this->dropin_exists() ) {
+			return true;
+		}
+
+		// Try to remove the dropin.
+		$is_dropin_removed = $this->remove_memcached_dropin();
+
+		// Remove notices.
+		Options::disable_option( 'siteground_optimizer_memcache_notice' );
+		Options::disable_option( 'siteground_optimizer_memcache_crashed' );
+		Options::disable_option( 'siteground_optimizer_memcache_dropin_crashed' );
+
+		// True if the droping has been removed.
+		if ( $is_dropin_removed ) {
+			return true;
+		}
+
+		// Bail if the dropin could not be removed.
+		return false;
 	}
 }

@@ -59,7 +59,6 @@ class Install_5_0_0 extends Install {
 			'combine_css'               => 'siteground_optimizer_combine_css',
 			'remove_query_strings'      => 'siteground_optimizer_remove_query_strings',
 			'disable_emojis'            => 'siteground_optimizer_disable_emojis',
-			'optimize_images'           => 'siteground_optimizer_optimize_images',
 			'lazyload_images'           => 'siteground_optimizer_lazyload_images',
 			'lazyload_gravatars'        => 'siteground_optimizer_lazyload_gravatars',
 			'lazyload_thumbnails'       => 'siteground_optimizer_lazyload_thumbnails',
@@ -159,7 +158,6 @@ class Install_5_0_0 extends Install {
 				'combine_css'               => get_option( 'siteground_optimizer_combine_css', 0 ),
 				'remove_query_strings'      => get_option( 'siteground_optimizer_remove_query_strings', 0 ),
 				'disable_emojis'            => get_option( 'siteground_optimizer_disable_emojis', 0 ),
-				'optimize_images'           => get_option( 'siteground_optimizer_optimize_images', 0 ),
 			)
 		);
 	}

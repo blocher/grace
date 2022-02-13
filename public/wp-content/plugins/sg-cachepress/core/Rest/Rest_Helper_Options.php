@@ -2,27 +2,86 @@
 namespace SiteGround_Optimizer\Rest;
 
 use SiteGround_Optimizer\Options\Options;
+use SiteGround_Optimizer\Message_Service\Message_Service;
 use SiteGround_Optimizer\Multisite\Multisite;
 use SiteGround_Optimizer\Front_End_Optimization\Front_End_Optimization;
-use SiteGround_Optimizer\Helper\Helper;
 use SiteGround_Optimizer\Htaccess\Htaccess;
 use SiteGround_Optimizer\Analysis\Analysis;
+use SiteGround_Optimizer\Rest\Rest;
+use SiteGround_Optimizer\Heartbeat_Control\Heartbeat_Control;
+use SiteGround_Helper\Helper_Service;
+use SiteGround_Optimizer\DNS\Cloudflare;
+use SiteGround_Optimizer\File_Cacher\File_Cacher;
 
 /**
  * Rest Helper class that manages all of the front end optimisation.
  */
 class Rest_Helper_Options extends Rest_Helper {
 	/**
+	 * The options map.
+	 *
+	 * @var array
+	 */
+	public $options_map = array(
+		'caching'     => array(
+			'enable_cache',
+			'file_caching',
+			'preheat_cache',
+			'logged_in_cache',
+			'enable_memcached',
+			'autoflush_cache',
+			'user_agent_header',
+			'purge_rest_cache',
+			'logged_in_cache',
+		),
+		'environment' => array(
+			'ssl_enabled',
+			'fix_insecure_content',
+			'database_optimization',
+			'enable_gzip_compression',
+			'enable_browser_caching',
+		),
+		'frontend'    => array(
+			'optimize_css',
+			'combine_css',
+			'preload_combined_css',
+			'optimize_javascript',
+			'combine_javascript',
+			'optimize_javascript_async',
+			'optimize_html',
+			'optimize_web_fonts',
+			'remove_query_strings',
+			'disable_emojis',
+		),
+		'media'       => array(
+			'lazyload_images',
+			'webp_support',
+			'resize_images',
+			'backup_media',
+			'compression_level',
+		),
+	);
+
+	/**
+	 * The options prefix.
+	 *
+	 * @var string
+	 */
+	public $option_prefix = 'siteground_optimizer_';
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
-		$this->options          = new Options();
-		$this->multisite        = new Multisite();
-		$this->htaccess_service = new Htaccess();
-		$this->analysis         = new Analysis();
+		$this->options           = new Options();
+		$this->multisite         = new Multisite();
+		$this->htaccess_service  = new Htaccess();
+		$this->analysis          = new Analysis();
+		$this->heartbeat_control = new Heartbeat_Control();
 	}
+
 	/**
-	 * Checks if the option key exists.
+	 * Enable option from rest.
 	 *
 	 * @since  5.0.0
 	 *
@@ -41,14 +100,14 @@ class Rest_Helper_Options extends Rest_Helper {
 			array(
 				'success' => $result,
 				'data'    => array(
-					'message' => $this->options->get_response_message( $result, $key, true ),
+					'message' => self::get_response_message( $result, str_replace( 'siteground_optimizer_default_', '', $key ), 1 ),
 				),
 			)
 		);
 	}
 
 	/**
-	 * Checks if the option key exists.
+	 * Disable option from rest.
 	 *
 	 * @since  5.0.0
 	 *
@@ -69,47 +128,111 @@ class Rest_Helper_Options extends Rest_Helper {
 			array(
 				'success' => $result,
 				'data'    => array(
-					'message' => $this->options->get_response_message( $result, $key, false ),
+					'message' => self::get_response_message( $result, str_replace( 'siteground_optimizer_default_', '', $key ), 0 ),
 				),
 			)
 		);
 	}
 
 	/**
-	 * Checks if the option key exists.
+	 * Manage the preload combined css method.
 	 *
-	 * @since  5.5.0
+	 * @since  6.0.0
 	 *
 	 * @param  object $request Request data.
-	 *
-	 * @return string The option key.
 	 */
-	public function change_option_from_rest( $request ) {
-		$allowed_options = array(
-			'siteground_optimizer_quality_webp',
-			'siteground_optimizer_quality_type',
-			'siteground_optimizer_quality_images',
-			'siteground_optimizer_heartbeat_dashboard_interval',
-			'siteground_optimizer_heartbeat_post_interval',
-			'siteground_optimizer_heartbeat_frontend_interval',
-		);
+	public function preload_combined_css( $request ) {
+		// Validate rest request and prepare data.
+		$data = $this->validate_rest_request( $request, array( 'preload_combined_css' ) );
 
-		// Get the option key.
-		$key = $this->validate_and_get_option_value( $request, 'option_key' );
-
-		// Bail if the option is now allowed.
-		if ( ! in_array( $key, $allowed_options ) ) {
-			wp_send_json_error();
+		// On Disable - disable all sub settings as well.
+		if ( 0 === $data['value'] ) {
+			Options::disable_option( 'siteground_optimizer_preload_combined_css' );
+			// Send the response.
+			self::send_json_success(
+				self::get_response_message( true, 'preload_combined_css', 0 ),
+				array(
+					'preload_combined_css' => 0,
+				)
+			);
 		}
 
-		$value      = $this->validate_and_get_option_value( $request, 'value' );
-		$is_network = $this->validate_and_get_option_value( $request, 'is_multisite', false );
-		$result     = $this->options->change_option( $key, $value, $is_network );
+		Options::enable_option( 'siteground_optimizer_preload_combined_css' );
+		Options::enable_option( 'siteground_optimizer_combine_css' );
 
-		// Chnage the option.
-		return wp_send_json(
+		// Send the response.
+		self::send_json_success(
+			self::get_response_message( true, 'preload_combined_css', 1 ),
 			array(
-				'success' => $result,
+				'preload_combined_css' => 1,
+				'combine_css'          => 1,
+			)
+		);
+	}
+
+	/**
+	 * Manage the combined css option.
+	 *
+	 * @since  6.0.0
+	 *
+	 * @param  object $request Request data.
+	 */
+	public function manage_combine_css( $request ) {
+		// Validate rest request and prepare data.
+		$data = $this->validate_rest_request( $request, array( 'combine_css' ) );
+
+		// On Disable - disable all sub settings as well.
+		if ( 0 === $data['value'] ) {
+			// Disable the option.
+			Options::disable_option( 'siteground_optimizer_combine_css' );
+			// Disable the related option.
+			Options::disable_option( 'siteground_optimizer_preload_combined_css' );
+
+			// Send the response.
+			self::send_json_success(
+				self::get_response_message( true, 'combine_css', 0 ),
+				array(
+					'combine_css'          => 0,
+					'preload_combined_css' => 0,
+				)
+			);
+		}
+
+		Options::enable_option( 'siteground_optimizer_combine_css' );
+
+		// Send the response.
+		self::send_json_success(
+			self::get_response_message( true, 'combine_css', 1 ),
+			array(
+				'combine_css' => 1,
+			)
+		);
+	}
+	/**
+	 * Check if which method we should initiate.
+	 *
+	 * @since  6.0.0
+	 *
+	 * @param  object $request Request data.
+	 */
+	public function manage_request( $request ) {
+		// Validate the request and prepare data.
+		$data = $this->validate_rest_request( $request );
+
+		// Check if we need to change htaccess rule.
+		$this->maybe_change_htaccess_rules( $data['option'], $data['value'] );
+
+		// Change the option.
+		$result = $this->options->change_option( $data['option'], $data['value'] );
+
+		$new_value = true === $result ? $data['value'] : ! $data['value'];
+
+		// Send the response.
+		self::send_json_response(
+			$result,
+			self::get_response_message( $result, $data['key'], $data['value'] ),
+			array(
+				$data['key'] => intval( $new_value ),
 			)
 		);
 	}
@@ -118,8 +241,133 @@ class Rest_Helper_Options extends Rest_Helper {
 	 * Provide all plugin options.
 	 *
 	 * @since  5.0.0
+	 *
+	 * @param  Object $request The Request Object.
 	 */
-	public function fetch_options() {
+	public function fetch_options( $request ) {
+		// Get the parameters.
+		$params = $request->get_params( $request );
+
+		// Check for page id.
+		if ( empty( $params['page_id'] ) ) {
+			self::send_json(
+				__( 'Missing ID param!', 'sg-cachepress' ),
+				0
+			);
+		}
+
+		switch ( $params['page_id'] ) {
+			case 'caching':
+				// Get the CF status.
+				$has_cloudflare = Cloudflare::has_cloudflare();
+
+				// Options requiring additional action.
+				$page_data = array(
+					'post_types_exclude' => array(
+						'default'  => $this->options->get_post_types(),
+						'selected' => get_option( $this->option_prefix . 'post_types_exclude', array() ),
+					),
+					'excluded_urls' => array(
+						'default'  => array(),
+						'selected' => get_option( $this->option_prefix . 'excluded_urls', array() ),
+					),
+					'file_caching_interval_cleanup' => File_Cacher::get_instance()->get_intervals(),
+					'has_cloudflare' => $has_cloudflare,
+				);
+
+				// Finish preparing the options for the page if CF is not active.
+				if ( 0 === $has_cloudflare ) {
+					break;
+				}
+
+				// Add the CF Settings.
+				$page_data = array_merge(
+					$page_data,
+					array(
+						'cloudflare_optimization_status' => intval( get_option( $this->option_prefix . 'cloudflare_optimization_status', 0 ) ),
+						'cloudflare_email'               => get_option( $this->option_prefix . 'cloudflare_email', '' ),
+						'cloudflare_auth_key'            => get_option( $this->option_prefix . 'cloudflare_auth_key', '' ),
+					)
+				);
+				break;
+			case 'environment':
+				$page_data = array(
+					'heartbeat_dropdowns' => $this->heartbeat_control->prepare_intervals(),
+					'heartbeat_control'   => $this->heartbeat_control->is_enabled(),
+				);
+				break;
+			case 'frontend':
+				$assets = Front_End_Optimization::get_instance()->get_assets();
+
+				// Options requiring additional action.
+				$page_data = array(
+					'minify_html_exclude' => array(
+						'default'  => array(),
+						'selected' => array_values( get_option( $this->option_prefix . 'minify_html_exclude', array() ) ),
+					),
+					'fonts_preload_urls'  => array(
+						'default'  => array(),
+						'selected' => array_values( get_option( $this->option_prefix . 'fonts_preload_urls', array() ) ),
+					),
+					'minify_css_exclude' => array(
+						'default'  => $assets['styles']['non_minified'],
+						'selected' => array_values( get_option( $this->option_prefix . 'minify_css_exclude', array() ) ),
+					),
+					'combine_css_exclude' => array(
+						'default'  => $assets['styles']['default'],
+						'selected' => array_values( get_option( $this->option_prefix . 'combine_css_exclude', array() ) ),
+					),
+					'minify_javascript_exclude' => array(
+						'default'  => $assets['scripts']['non_minified'],
+						'selected' => array_values( get_option( $this->option_prefix . 'minify_javascript_exclude', array() ) ),
+					),
+					'combine_javascript_exclude' => array(
+						'default'  => $assets['scripts']['default'],
+						'selected' => array_values( get_option( $this->option_prefix . 'combine_javascript_exclude', array() ) ),
+					),
+					'async_javascript_exclude' => array(
+						'default'  => $assets['scripts']['default'],
+						'selected' => array_values( get_option( $this->option_prefix . 'async_javascript_exclude', array() ) ),
+					),
+					'dns_prefetch_urls' => array(
+						'default'  => array(),
+						'selected' => get_option( $this->option_prefix . 'dns_prefetch_urls', array() ),
+					),
+				);
+
+				break;
+			case 'media':
+				// Options requiring additional action.
+				$page_data = array(
+					'excluded_lazy_load_classes'     => array(
+						'default'  => array(),
+						'selected' => array_values( get_option( $this->option_prefix . 'excluded_lazy_load_classes', array() ) ),
+					),
+					'excluded_lazy_load_media_types' => array(
+						'default'  => $this->options->get_excluded_lazy_load_media_types(),
+						'selected' => array_values( get_option( $this->option_prefix . 'excluded_lazy_load_media_types', array() ) ),
+					),
+				);
+				break;
+			case 'analysis':
+				$page_data = $this->analysis->rest_get_test_results();
+				break;
+		}
+
+		if ( array_key_exists( $params['page_id'], $this->recommended_optimizations ) ) {
+			$page_data['recommended'] = $this->recommended_optimizations[ $params['page_id'] ];
+		}
+
+		// Send the options to react app.
+		self::send_json_success( '', array_merge( $this->prepare_options( $params['page_id'] ), $page_data ) );
+	}
+
+	/**
+	 * Provide all plugin options.
+	 *
+	 * @since  5.0.0
+	 */
+	public function fetch_options_old() {
 		// Fetch the options.
 		$options = $this->options->fetch_options();
 
@@ -134,12 +382,40 @@ class Rest_Helper_Options extends Rest_Helper {
 		$options['previous_tests']              = $this->analysis->rest_get_test_results();
 
 		// Check for non converted images when we are on avalon server.
-		if ( Helper::is_siteground() ) {
+		if ( Helper_Service::is_siteground() ) {
 			$options['has_images_for_conversion'] = $this->options->check_for_unoptimized_images( 'webp' );
 		}
 
 		// Send the options to react app.
 		wp_send_json_success( $options );
+	}
+
+
+	/**
+	 * Prepare the options based on them being 1/0 or a complex option which result is array.
+	 *
+	 * @since  6.0.0
+	 *
+	 * @param  string $page The page for which we are preparing the options.
+	 *
+	 * @return array  $data The prepared options.
+	 */
+	public function prepare_options( $page ) {
+		// Prepare the array.
+		$data = array();
+
+		// Bail if the page doesn't exist.
+		if ( ! array_key_exists( $page, $this->options_map ) ) {
+			return $data;
+		}
+
+		// Loop trough page specific options.
+		foreach ( $this->options_map[ $page ] as $option ) {
+			// Loop the options groups.
+			$data[ $option ] = intval( get_option( $this->option_prefix . $option, 0 ) );
+		}
+
+		return $data;
 	}
 
 	/**
@@ -162,11 +438,6 @@ class Rest_Helper_Options extends Rest_Helper {
 				0      => 'disable',
 				1      => 'enable',
 				'rule' => 'browser-caching',
-			),
-			'siteground_optimizer_user_agent_header'       => array(
-				0      => 'enable',
-				1      => 'disable',
-				'rule' => 'user-agent-vary',
 			),
 		);
 

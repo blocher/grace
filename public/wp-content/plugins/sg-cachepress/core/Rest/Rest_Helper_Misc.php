@@ -3,109 +3,122 @@ namespace SiteGround_Optimizer\Rest;
 
 use SiteGround_Optimizer\Supercacher\Supercacher;
 use SiteGround_Optimizer\Analysis\Analysis;
+use SiteGround_Optimizer\Rest\Rest;
+use SiteGround_Optimizer\Message_Service\Message_Service;
+use SiteGround_Optimizer\File_Cacher\File_Cacher;
+use SiteGround_Optimizer\Options\Options;
 /**
  * Rest Helper class that manages misc rest routes  settings.
  */
 class Rest_Helper_Misc extends Rest_Helper {
 
 	/**
-	 * Hide the rating box
-	 *
-	 * @since  5.0.12
-	 */
-	public function handle_hide_rating() {
-		// Hide the rating box.
-		update_option( 'siteground_optimizer_hide_rating', 1 );
-		update_site_option( 'siteground_optimizer_hide_rating', 1 );
-
-		// Send the response.
-		wp_send_json_success();
-	}
-
-	/**
-	 * Update exclude list.
-	 *
-	 * @since  5.2.0
-	 *
-	 * @param  object $request Request data.
-	 */
-	public function update_exclude_list( $request ) {
-		// List of predefined exclude lists.
-		$exclude_lists = array(
-			'minify_javascript_exclude',
-			'async_javascript_exclude',
-			'minify_css_exclude',
-			'minify_html_exclude',
-			'excluded_lazy_load_classes',
-			'combine_css_exclude',
-			'dns_prefetch_urls',
-			'combine_javascript_exclude',
-			'fonts_preload_urls',
-			'post_types_exclude',
-		);
-
-		// Get the type and handles data from the request.
-		$type   = $this->validate_and_get_option_value( $request, 'type' );
-		$handle = $this->validate_and_get_option_value( $request, 'handle' );
-
-		// Bail if the type is not listed in the predefined exclude list.
-		if ( ! in_array( $type, $exclude_lists ) ) {
-			wp_send_json_error();
-		}
-
-		$handles = get_option( 'siteground_optimizer_' . $type, array() );
-		$key     = array_search( $handle, $handles );
-
-		if ( false === $key ) {
-			array_push( $handles, $handle );
-		} else {
-			unset( $handles[ $key ] );
-		}
-
-		$handles = array_values( $handles );
-
-		if ( in_array( $type, array( 'minify_html_exclude', 'excluded_lazy_load_classes', 'dns_prefetch_urls', 'fonts_preload_urls' ) ) ) {
-			$handles = $handle;
-		}
-
-		// Update the option.
-		$result = update_option( 'siteground_optimizer_' . $type, $handles );
-
-		// Purge the cache.
-		Supercacher::purge_cache();
-
-		// Send response to the react app.
-		wp_send_json(
-			array(
-				'success' => $result,
-				'handles' => $handles,
-			)
-		);
-	}
-
-	/**
-	 * Disable specific optimizations for a blog.
+	 * Speed test run.
 	 *
 	 * @since  5.4.0
 	 *
 	 * @param  object $request Request data.
 	 */
 	public function run_analysis( $request ) {
-
 		// Get the required params.
 		$device = $this->validate_and_get_option_value( $request, 'device' );
 		$url    = $this->validate_and_get_option_value( $request, 'url', false );
 
-		// Bail if any of the parameters is empty.
-		if ( empty( $device ) ) {
-			wp_send_json_error();
-		}
-
 		$analysis = new Analysis();
-		$analysis->run_analysis( $url, $device );
-		$result = $analysis->rest_get_test_results();
+		$result = $analysis->run_analysis( $url, $device );
 
 		// Send the response.
-		wp_send_json_success( $result );
+		self::send_json_response(
+			$result,
+			false === $result ? __( 'We failed to connect to Google servers, please try later!', 'sg-cachepress' ) : '',
+			array(
+				'success' => $result,
+			)
+		);
+	}
+
+	/**
+	 * Manage Excludes.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param object $request Request data.
+	 */
+	public function manage_excludes( $request ) {
+		// Get the request params.
+		$params = $request->get_params( $request );
+
+		// Get the current type param.
+		$type = str_replace( '-', '_', $params['type'] );
+
+		// Get the Excludes list values.
+		$selected = $this->validate_and_get_option_value( $request, 'selected' );
+		$default  = $this->validate_and_get_option_value( $request, 'default' );
+
+		if ( ! empty( $default ) ) {
+			// Get the default values from the defaults.
+			$default_values = array_column( $default, 'value' );
+
+			// Get the diff between selected and selected in the database.
+			$selected_diff = array_diff( get_option( 'siteground_optimizer_' . $type, array() ), $selected );
+
+			// Get the difference between selected and default values.
+			$diff = array_diff( $selected_diff, $default_values );
+
+			// Preprare the new selected.
+			$selected = array_unique( array_merge( $selected, $diff ) );
+		}
+
+		// Update the option.
+		$result = update_option( 'siteground_optimizer_' . $type, $selected );
+
+		if ( Options::is_enabled( 'siteground_optimizer_file_caching' ) ) {
+			File_Cacher::get_instance()->purge_everything();
+		}
+
+		// Purge the cache.
+		Supercacher::purge_cache();
+
+		// Send the response.
+		self::send_json_success(
+			Message_Service::get_response_message( 1, $type, null ),
+			array(
+				$type => array(
+					'default'  => $default,
+					'selected' => array_values( $selected ),
+				),
+			)
+		);
+	}
+
+	/**
+	 * Return the popup content.
+	 *
+	 * @since  7.0.0
+	 *
+	 * @param object $request Request data.
+	 */
+	public function feature_popup( $request ) {
+		// Get the popup content.
+		$response = wp_remote_get( 'https://sgwpdemo.com/jsons/sg-cachepress-promo.json' );
+
+		// Bail if the request fails.
+		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+			self::send_json_error( 'Error' );
+		}
+
+		// Get the body of the response.
+		$body = wp_remote_retrieve_body( $response );
+
+		// Get the parameters.
+		$params = $request->get_params( $request );
+
+		$data = json_decode( str_replace( '{{FEATURE_NAME}}', Rest::$popups[ $params['type'] ], $body ) );
+
+
+		self::send_json_success(
+			'',
+			$data
+		);
 	}
 }

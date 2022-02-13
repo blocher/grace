@@ -3,7 +3,7 @@ namespace SiteGround_Optimizer\Images_Optimizer;
 
 use SiteGround_Optimizer\Supercacher\Supercacher;
 use SiteGround_Optimizer\Options\Options;
-use SiteGround_Optimizer\Helper\Helper;
+use SiteGround_Helper\Helper_Service;
 
 /**
  * SG Images_Optimizer main plugin class
@@ -128,33 +128,31 @@ class Images_Optimizer_Webp extends Abstract_Images_Optimizer {
 	 */
 	public static function generate_webp_file( $filepath ) {
 		// Bail if the file doens't exists or if the webp copy already exists.
-		if ( ! file_exists( $filepath ) || file_exists( $filepath . '.webp' ) ) {
+		if ( ! file_exists( $filepath ) ) {
 			return true;
+		}
+
+		if ( file_exists( $filepath . '.webp' ) ) {
+			unlink( $filepath . '.webp' ); //phpcs:ignore
 		}
 
 		// Get image type.
 		$type = exif_imagetype( $filepath );
 
-		// Prepare the quality parameters.
-		switch ( get_option( 'siteground_optimizer_quality_type', 'lossless' ) ) {
-			case 'lossy':
-				$quality      = get_option( 'siteground_optimizer_quality_webp', 85 );
-				$quality_type = ' ';
-				break;
-			case 'lossless':
-			default:
-				$quality      = 100;
-				$quality_type = '-lossless';
-				break;
-		}
+		$quality      = apply_filters( 'sgo_webp_quality', 80 );
+		$quality_type = intval( apply_filters( 'sgo_webp_quality_type', 0 ) );
 
 		switch ( $type ) {
 			case IMAGETYPE_GIF:
-				$placeholder = 'gif2webp -q %1$s %2$s %3$s -o %3$s.webp 2>&1';
+				// Default quality type for GIF is lossless.
+				$quality_type = 1 !== $quality_type ? '' : '-lossy';
+				$placeholder  = 'gif2webp -q %1$s %2$s %3$s -o %3$s.webp 2>&1';
 				break;
 
 			case IMAGETYPE_JPEG:
-				$placeholder = 'cwebp -q %1$s %2$s %3$s -o %3$s.webp 2>&1';
+				// Default quality type for JPEG is lossy.
+				$quality_type = 1 !== $quality_type ? '' : '-lossless';
+				$placeholder  = 'cwebp -q %1$s %2$s %3$s -o %3$s.webp 2>&1';
 				break;
 
 			case IMAGETYPE_PNG:
@@ -164,7 +162,9 @@ class Images_Optimizer_Webp extends Abstract_Images_Optimizer {
 				if ( filesize( $filepath ) > self::PNGS_SIZE_LIMIT ) {
 					return true;
 				}
-				$placeholder = 'cwebp -q %1$s %2$s %3$s -o %3$s.webp 2>&1';
+				// Default quality type for PNG is lossy.
+				$quality_type = 1 !== $quality_type ? '' : '-lossless';
+				$placeholder  = 'cwebp -q %1$s %2$s %3$s -o %3$s.webp 2>&1';
 				break;
 
 			default:
@@ -177,7 +177,7 @@ class Images_Optimizer_Webp extends Abstract_Images_Optimizer {
 			sprintf(
 				$placeholder, // The command.
 				$quality, // The quality %.
-				$type, // The quality %.
+				$quality_type, // The quality type -lossless or -lossy.
 				$filepath // Image path.
 			),
 			$output,
@@ -192,10 +192,10 @@ class Images_Optimizer_Webp extends Abstract_Images_Optimizer {
 	 *
 	 * @since  5.4.0
 	 *
-	 * @return bool Tru on success, false on failure.
+	 * @return bool True on success, false on failure.
 	 */
 	public function delete_webp_files() {
-		$basedir = Helper::get_uploads_dir();
+		$basedir = Helper_Service::get_uploads_dir();
 		exec( "find $basedir -name '*.webp' -type f -print0 | xargs -L 500 -0 rm", $output, $result );
 
 		$this->reset_image_optimization_status();

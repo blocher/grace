@@ -36,25 +36,25 @@ class Cli_Memcache {
 		$memcache = new Memcache();
 
 		if ( 'enable' === $args[0] ) {
-			$port = $memcache->get_memcached_port();
+			$port = $memcache->is_connection_working();
 
 			if ( empty( $port ) ) {
 				return \WP_CLI::error( 'SiteGround Optimizer was unable to connect to the Memcached server and it was disabled. Please, check your SiteGround control panel and turn it on if disabled.' );
 			}
 
 			// First enable the option.
-			$result = Options::enable_option( 'siteground_optimizer_enable_memcached' );
+			Options::enable_option( 'siteground_optimizer_enable_memcached' );
 
 			// Send success if the dropin has been created.
-			if ( $result && $memcache->create_memcached_dropin() ) {
-				return \WP_CLI::success( 'Memcached Enabled' );
+			if ( $memcache->create_memcached_dropin() ) {
+				return \WP_CLI::success( 'Memcached Enabled!' );
 			}
 
 			// Dropin cannot be created.
 			return \WP_CLI::error( 'Could Not Enable Memcached!' );
 		} else {
 			// First disable the option.
-			$result = Options::disable_option( 'siteground_optimizer_enable_memcached' );
+			Options::disable_option( 'siteground_optimizer_enable_memcached' );
 
 			// Send success if the option has been disabled and the dropin doesn't exist.
 			if ( ! $memcache->dropin_exists() ) {

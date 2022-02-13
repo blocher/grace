@@ -2,7 +2,7 @@
 namespace SiteGround_Optimizer\Analysis;
 
 use SiteGround_Optimizer\Options\Options;
-use SiteGround_Optimizer\Helper\Helper;
+use SiteGround_Helper\Helper_Service;
 
 /**
  * SG Analysis main plugin class
@@ -67,7 +67,7 @@ class Analysis {
 			'non-composited-animations',
 			'third-party-facades',
 		),
-		'general_optimiazions' => array(
+		'general_optimizations' => array(
 			'server-response-time',
 			'uses-text-compression',
 			'redirects',
@@ -92,7 +92,6 @@ class Analysis {
 	 * @param  array $result Speed test results.
 	 */
 	public function process_analysis( $result ) {
-
 		// Bail if the are no results.
 		if ( empty( $result ) ) {
 			wp_send_json_error();
@@ -110,6 +109,14 @@ class Analysis {
 		foreach ( $result['lighthouseResult']['categories'] as $group ) {
 			foreach ( $group['auditRefs'] as $ref ) {
 
+				if ( 'server-response-time' === $ref['id'] ) {
+					$items['scores']['ttfb'] = round( $result['lighthouseResult']['audits'][ $ref['id'] ]['numericValue'] );
+				}
+
+				if ( 'first-contentful-paint' === $ref['id'] ) {
+					$items['scores']['fcp'] = $result['lighthouseResult']['audits'][ $ref['id'] ]['numericValue'];
+				}
+
 				if ( empty( $ref['group'] ) ) {
 					continue;
 				}
@@ -120,14 +127,6 @@ class Analysis {
 					1.00 === $result['lighthouseResult']['categories']['performance']['score']
 				) {
 					continue;
-				}
-
-				if ( 'server-response-time' === $ref['id'] ) {
-					$items['scores']['ttfb'] = round( $result['lighthouseResult']['audits'][ $ref['id'] ]['numericValue'] );
-				}
-
-				if ( 'first-contentful-paint' === $ref['id'] ) {
-					$items['scores']['fcp'] = $result['lighthouseResult']['audits'][ $ref['id'] ]['numericValue'];
 				}
 
 				$audit = $result['lighthouseResult']['audits'][ $ref['id'] ];
@@ -172,11 +171,11 @@ class Analysis {
 			}
 		}
 
+
 		unset( $items['data']['budgets'] );
 		unset( $items['data']['diagnostics'] );
 		unset( $items['data']['metrics'] );
-
-		$items['scores']['score'] = $result['lighthouseResult']['categories']['performance']['score'];
+		$items['scores']['score'] = round( $result['lighthouseResult']['categories']['performance']['score'] * 100 );
 		// Check if we need to group render blocking resources.
 		if ( ! empty( $items['data']['load-opportunities']['data'] ) &&
 			array_key_exists( 'javascript_optimizations', $items['data']['load-opportunities']['data'] ) ) {
@@ -265,6 +264,8 @@ class Analysis {
 
 			if ( empty( $items['data']['load-opportunities']['data']['javascript_optimizations'] ) ) {
 				unset( $items['data']['load-opportunities']['data']['javascript_optimizations'] );
+			} else {
+				$items['data']['load-opportunities']['data']['javascript_optimizations'] = array_values( $items['data']['load-opportunities']['data']['javascript_optimizations'] );
 			}
 		}
 
@@ -332,9 +333,15 @@ class Analysis {
 
 		// Loop the results and make the arrays consistent.
 		foreach ( $results as $result ) {
+			$test_data = get_option( $result['option_name'] );
+
+			if ( $test_data['scores']['score']['score'] < 2 ) {
+				$test_data['scores']['score']['score'] = $test_data['scores']['score']['score'] * 100;
+			}
+
 			$data[] = array(
 				'option_name' => $result['option_name'],
-				'result'      => get_option( $result['option_name'] ),
+				'result'      => $test_data,
 			);
 		}
 
@@ -369,10 +376,10 @@ class Analysis {
 					'message' => __( 'Defer loading of render-blocking JavaScript files for faster initial site load.', 'sg-cachepress' ),
 				),
 			),
-			'uses-responsive-images' => array(
-				'optimize_images' => array(
-					'title' => __( 'New Images Optimization', 'sg-cachepress' ),
-					'message' => __( 'We will automatically optimize all new images that you upload to your Media Library.', 'sg-cachepress' ),
+			'modern-image-formats' => array(
+				'webp_support' => array(
+					'title' => __( 'Use WebP Images', 'sg-cachepress' ),
+					'message' => __( 'WebP is a next generation image format supported by modern browsers which greatly reduces the size of standard image formats while keeping the same quality. Almost all current browsers work with WebP.', 'sg-cachepress' ),
 				),
 			),
 			'offscreen-images' => array(
@@ -440,9 +447,9 @@ class Analysis {
 	public function get_messages( $scores ) {
 		$data = array();
 		$descriptions = array(
-			'ttfb'  => __( 'Time to First Byte identifies the time at which your server sends a response.', 'sg-cachpress' ),
+			'ttfb'  => __( 'Time to First Byte identifies the time for which your server sends a response.', 'sg-cachepress' ),
 			'score' => __( 'Summarizes the page\'s performance.', 'sg-cachpress' ),
-			'fcp'   => __( 'Speed Index shows how quickly the contents of a page are visibly populated.', 'sg-cachpress' ),
+			'fcp'   => __( 'Speed Index shows how quickly the contents of a page are visibly populated.', 'sg-cachepress' ),
 		);
 
 		$conditions = array(
@@ -483,8 +490,8 @@ class Analysis {
 				),
 			),
 			'score' => array(
-				'low' => 0.49,
-				'medium' => 0.90,
+				'low' => 49,
+				'medium' => 90,
 				'colors' => array(
 					'low' => array(
 						'class_name'       => 'placeholder-without-svg placeholder-low',
@@ -535,7 +542,7 @@ class Analysis {
 	public function run_analysis( $url, $device = 'desktop', $counter = 0 ) {
 		// Try to get the analysis 3 times and then bail.
 		if ( 3 === $counter ) {
-			wp_send_json_error();
+			return false;
 		}
 
 		$full_url = home_url( '/' ) . trim( $url, '/' );
@@ -582,11 +589,11 @@ class Analysis {
 	public function check_for_premigration_test() {
 		global $wp_filesystem;
 		// Bail if the file does not exist.
-		if ( ! file_exists( Helper::get_uploads_dir() . '/pagespeed_results.json' ) ) {
+		if ( ! file_exists( Helper_Service::get_uploads_dir() . '/pagespeed_results.json' ) ) {
 			return false;
 		}
 		// Return the string containing the pre-migration speed test.
-		$pre_migration_result = json_decode( $wp_filesystem->get_contents( Helper::get_uploads_dir() . '/pagespeed_results.json' ), true );
+		$pre_migration_result = json_decode( $wp_filesystem->get_contents( Helper_Service::get_uploads_dir() . '/pagespeed_results.json' ), true );
 
 		$data = array_merge( $this->process_analysis( $pre_migration_result ), array( 'device' => 'desktop' ) );
 
@@ -594,7 +601,7 @@ class Analysis {
 		add_option( 'sgo_pre_migration_speed_test', $data, '', false );
 
 		// Remove the file from the folder.
-		$wp_filesystem->delete( Helper::get_uploads_dir() . '/pagespeed_results.json' );
+		$wp_filesystem->delete( Helper_Service::get_uploads_dir() . '/pagespeed_results.json' );
 	}
 
 }

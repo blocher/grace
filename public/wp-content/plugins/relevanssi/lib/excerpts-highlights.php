@@ -573,7 +573,7 @@ function relevanssi_highlight_terms( $content, $query, $convert_entities = false
 	);
 
 	if ( ! is_array( $query ) ) {
-		$query = explode( ' ', $query );
+		$query = explode( ' ', relevanssi_strtolower( $query ) );
 	}
 
 	$body_stopwords = function_exists( 'relevanssi_fetch_body_stopwords' )
@@ -687,7 +687,7 @@ function relevanssi_highlight_terms( $content, $query, $convert_entities = false
 			$content
 		);
 
-		if ( preg_match_all( '/<.*>/U', $content, $matches ) > 0 ) {
+		if ( preg_match_all( '/<.*>/Us', $content, $matches ) > 0 ) {
 			// Remove highlights from inside HTML tags.
 			foreach ( $matches as $match ) {
 				$new_match = str_replace( $start_emp_token, '', $match );
@@ -940,7 +940,7 @@ function relevanssi_remove_nested_highlights( $string, $begin, $end ) {
 }
 
 /**
- * Finds the  locations of each word.
+ * Finds the locations of each word.
  *
  * Originally lifted from http://www.boyter.org/2013/04/building-a-search-result-extract-generator-in-php/
  * Finds the location of each word in the fulltext.

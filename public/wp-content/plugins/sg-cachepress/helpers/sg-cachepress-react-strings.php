@@ -1,268 +1,239 @@
 <?php
 /* THIS IS A GENERATED FILE. DO NOT EDIT DIRECTLY. */
-$sg_cachepress_i18n_strings = array(
-__( "Test URLs for Cache Status", "sg-cachepress" ), // src-js/components/cache-tester/index.tsx:56
-__( "Check if the Dynamic Cache is working on a certain URL. Especially useful to make sure your Exclude list is working the way it should.", "sg-cachepress" ), // src-js/components/cache-tester/index.tsx:59
-__( "Test", "sg-cachepress" ), // src-js/components/cache-tester/index.tsx:87
-__( "Top 3 Optimization Opportunities", "sg-cachepress" ), // src-js/components/cards/optimizations.tsx:16
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/async-dialog.tsx:18
-__( "Defering render-blocking JavaScript may cause issues with scripts that require certain order of execution. This is why we advise you to check the frontend of your website after you enable this optimization.", "sg-cachepress" ), // src-js/components/dialogs/async-dialog.tsx:29
-__( "If you notice issues with certain functionality, use the Exclude functionality to keep those scripts loading in a render-blocking manner.", "sg-cachepress" ), // src-js/components/dialogs/async-dialog.tsx:39
-__( "Close", "sg-cachepress" ), // src-js/components/dialogs/cache-dialog.tsx:17
-__( "Purge your installation's entire Dynamic Cache or select parts in order to achieve the best hit-to-cache ratio for your account. Here are the plugin's purge rules:", "sg-cachepress" ), // src-js/components/dialogs/cache-dialog.tsx:29
-__( "Full Purge on page, posts, and category deletion, plugin and theme activation, deactivation, or update, and on WordPress core updates.", "sg-cachepress" ), // src-js/components/dialogs/cache-dialog.tsx:38
-__( "Specific URL Purge on comment actions and page, post, and category updates.", "sg-cachepress" ), // src-js/components/dialogs/cache-dialog.tsx:48
-__( "Cancel", "sg-cachepress" ), // src-js/components/dialogs/delete-webp-dialog.tsx:17
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/delete-webp-dialog.tsx:23
-__( "This will delete all WebP files in your uploads folder! In case you need them, you will have to regenerate them again or restore that folder from a backup.", "sg-cachepress" ), // src-js/components/dialogs/delete-webp-dialog.tsx:34
-__( "Cancel", "sg-cachepress" ), // src-js/components/dialogs/enable-webp-dialog.tsx:17
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/enable-webp-dialog.tsx:23
-__( "If you're using CloudFlare or other CDN provider, please keep this optimization disabled and check if you can have WebP enabled by your CDN provider.", "sg-cachepress" ), // src-js/components/dialogs/enable-webp-dialog.tsx:34
-__( "Cancel", "sg-cachepress" ), // src-js/components/dialogs/heartbeat-control-dialog.tsx:18
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/heartbeat-control-dialog.tsx:24
-__( "Enabled", "sg-cachepress" ), // src-js/components/dialogs/heartbeat-control-dialog.tsx:43
-__( "Disable", "sg-cachepress" ), // src-js/components/dialogs/heartbeat-control-dialog.tsx:57
-__( "Select Heartbeat Frequency", "sg-cachepress" ), // src-js/components/dialogs/heartbeat-control-dialog.tsx:92
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/js-dialog.tsx:18
-__( "Combining JavaScript files may cause issues with scripts that require certain order of execution. This is why we advise you to check the frontend of your website after you enable this optimization.", "sg-cachepress" ), // src-js/components/dialogs/js-dialog.tsx:29
-__( "If you notice issues with parts of your site, use the Exclude functionality to keep those scripts separate from the combination.", "sg-cachepress" ), // src-js/components/dialogs/js-dialog.tsx:39
-__( "Cancel", "sg-cachepress" ), // src-js/components/dialogs/php-dialog.tsx:17
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/php-dialog.tsx:23
-__( "You’re switching to PHP %(version)s manually and you will stay on that version until you change it to a newer one. In case you experience any issues after the update, switch back the PHP version from your {{strong}}cPanel{{/strong}} > {{strong}}PHP Version Manager{{/strong}} tool.", "sg-cachepress" ), // src-js/components/dialogs/php-dialog.tsx:37
-__( "You’re about to switch to Managed PHP service. This means that SiteGround will automatically update your PHP version once we are sure there’s a better, safer and more stable version.", "sg-cachepress" ), // src-js/components/dialogs/php-dialog.tsx:50
-__( "Cancel", "sg-cachepress" ), // src-js/components/dialogs/regenerate-webp-dialog.tsx:17
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/regenerate-webp-dialog.tsx:23
-__( "Doing this will delete all WebP files in your uploads folder and generate them anew!", "sg-cachepress" ), // src-js/components/dialogs/regenerate-webp-dialog.tsx:34
-__( "Cancel", "sg-cachepress" ), // src-js/components/dialogs/ssl-dialog.tsx:17
-__( "Confirm", "sg-cachepress" ), // src-js/components/dialogs/ssl-dialog.tsx:23
-__( "In order to force HTTPS on your site, we will automatically update your database replacing all insecure links. In addition to that, we will add a rule in your .htaccess file, forcing all requests to go through encrypted connection.", "sg-cachepress" ), // src-js/components/dialogs/ssl-dialog.tsx:35
-__( "Close", "sg-cachepress" ), // src-js/components/dialogs/urls-dialog.tsx:17
-__( "You can exclude full or partial URLs using \"*\" as a wildcard. For example:", "sg-cachepress" ), // src-js/components/dialogs/urls-dialog.tsx:29
-__( "{{strong}}www.site.com/parent-page/sub-page{{/strong}} will exclude only that single URL.", "sg-cachepress" ), // src-js/components/dialogs/urls-dialog.tsx:38
-__( "{{strong}}www.site.com/parent-page/*{{/strong}} will exclude all sub-pages of \"parent-page\".", "sg-cachepress" ), // src-js/components/dialogs/urls-dialog.tsx:54
-__( "This item already exists in exclude list.", "sg-cachepress" ), // src-js/components/exclude/simple-exclude.tsx:52
-__( "You must input a class name.", "sg-cachepress" ), // src-js/components/exclude/simple-exclude.tsx:62
-__( "Please provide correct URL.", "sg-cachepress" ), // src-js/components/exclude/simple-exclude.tsx:77
-__( "Exclude", "sg-cachepress" ), // src-js/components/exclude/simple-exclude.tsx:156
-__( "This URL already exists in exclude list.", "sg-cachepress" ), // src-js/components/exclude/urls-exclude.tsx:55
-__( "Exclude", "sg-cachepress" ), // src-js/components/exclude/urls-exclude.tsx:142
-__( "SG Optimizer", "sg-cachepress" ), // src-js/components/intro/index.tsx:29
-__( "Please be patient, this process may take some time", "sg-cachepress" ), // src-js/components/loaders/image-loader.tsx:31
-__( "Optimized %(optimized)s of %(total)s images", "sg-cachepress" ), // src-js/components/loaders/image-loader.tsx:35
-__( "Pause", "sg-cachepress" ), // src-js/components/loaders/image-loader.tsx:59
-__( "Please be patient, this process may take some time", "sg-cachepress" ), // src-js/components/loaders/webp-loader.tsx:27
-__( "Generated %(optimized)s of %(total)s webp copies", "sg-cachepress" ), // src-js/components/loaders/webp-loader.tsx:31
-__( "Pause", "sg-cachepress" ), // src-js/components/loaders/webp-loader.tsx:55
-__( "WebP settings have been changed, please, {{link}}re-generate{{/link}} your images!.", "sg-cachepress" ), // src-js/components/slider/quality-slider.tsx:75
-__( "Generate WebP Copies of New Images", "sg-cachepress" ), // src-js/components/webp/webp.tsx:186
-__( "WebP is a next generation image format supported by modern browers which greatly reduces the size of your images.", "sg-cachepress" ), // src-js/components/webp/webp.tsx:191
-__( "Optimization Level", "sg-cachepress" ), // src-js/components/webp/webp.tsx:196
-__( "Chose the quality of WebP copies created by us. Higher quality means higher image size.", "sg-cachepress" ), // src-js/components/webp/webp.tsx:197
-__( "Optimization Type", "sg-cachepress" ), // src-js/components/webp/webp.tsx:210
-__( "Manage WebP Copies for Existing Images", "sg-cachepress" ), // src-js/components/webp/webp.tsx:235
-__( "Generate or delete a WebP copy of your existing media library.", "sg-cachepress" ), // src-js/components/webp/webp.tsx:238
-__( "Delete all WebP Files", "sg-cachepress" ), // src-js/components/webp/webp.tsx:257
-__( "Bulk Generate WebP Files", "sg-cachepress" ), // src-js/components/webp/webp.tsx:274
-__( "All WebP copies of your files have been generated successfully! Force {{link}}re-generation{{/link}} of your images.", "sg-cachepress" ), // src-js/components/webp/webp.tsx:290
-__( "If you want to change your PHP setup and version, please login to {{strong}}Site Tools{{/strong}} and use the {{strong}}DEVS -> PHP Manager{{/strong}} tool. It will allow you to select PHP version and whether you want to change it manually or leave it to us to manage it for you", "sg-cachepress" ), // src-js/containers/php-checker/index.tsx:11
-__( "If you want to change your PHP setup and version, please login to {{strong}}cPanel{{/strong}} and use the {{strong}}PHP Version Manager{{/strong}} tool. It will allow you to select PHP version and whether you want to change it manually or leave it to us to manage it for you.", "sg-cachepress" ), // src-js/containers/php-checker/index.tsx:20
-__( "Managed", "sg-cachepress" ), // src-js/containers/php-checker/index.tsx:33
-__( "Manual", "sg-cachepress" ), // src-js/containers/php-checker/index.tsx:33
-__( "PHP Version Manager", "sg-cachepress" ), // src-js/containers/php-checker/index.tsx:49
-__( "You are currently running on PHP %(version)s %(type)s.", "sg-cachepress" ), // src-js/containers/php-checker/index.tsx:54
-__( "Thanks for using SG Optimizer to make your site faster!", "sg-cachepress" ), // src-js/containers/rating/index.tsx:61
-__( "Help more people optimize their sites by rating our plugin.", "sg-cachepress" ), // src-js/containers/rating/index.tsx:68
-__( "Don’t Show This Again", "sg-cachepress" ), // src-js/containers/rating/index.tsx:78
-__( "Browser Caching", "sg-cachepress" ), // src-js/components/modules/browser-cache/index.tsx:12
-__( "Adds rules to store in your visitors browser cache to keep static content longer for better site performance.", "sg-cachepress" ), // src-js/components/modules/browser-cache/index.tsx:16
-__( "Browser Caching", "sg-cachepress" ), // src-js/components/modules/browser-cache/index.tsx:23
-__( "NGINX Direct Delivery takes care of your static resources including proper expiration dates for your browser caching.", "sg-cachepress" ), // src-js/components/modules/browser-cache/index.tsx:27
-__( "Scheduled Database Maintenance", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:14
-__( "Enable this option to regularly cleanup your database and keep it small and optimized.", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:19
-__( "Enabling this optimization will perform these tasks every 48 hours:", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:32
-__( "Perform Database Optimization for MyISAM tables", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:41
-__( "Delete all automatically created post and page drafts", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:42
-__( "Delete all page and post revisions", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:43
-__( "Delete all posts and pages in your Trash", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:44
-__( "Delete all comments marked as Spam", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:45
-__( "Delete all expired Transients", "sg-cachepress" ), // src-js/components/modules/database-optimization/index.tsx:46
-__( "DNS Pre-fetch for External Domains", "sg-cachepress" ), // src-js/components/modules/dns-prefetch/index.tsx:14
-__( "With this functionality you can enable the DNS pre-fetching for external domains. Doing this will save DNS lookup for resources loaded from these domains.", "sg-cachepress" ), // src-js/components/modules/dns-prefetch/index.tsx:19
-__( "Add only your domain names without http:// or https:// - DNS prefetching will work for both", "sg-cachepress" ), // src-js/components/modules/dns-prefetch/index.tsx:37
-__( "Add", "sg-cachepress" ), // src-js/components/modules/dns-prefetch/index.tsx:44
-__( "Dynamic Caching", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:61
-__( "Store your content in the server’s memory for a faster access with this full-page caching solution powered by NGINX.", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:66
-__( "Manual Cache Purge", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:94
-__( "Clear the Dynamic Cache for your entire website.", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:97
-__( "Purge Cache", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:110
-__( "Purging ...", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:110
-__( "Automatic Cache Purge", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:118
-__( "Automatically perform a smart cache purge after every content modification.", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:123
-__( "See rules", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:128
-__( "Browser-Specific Caching", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:134
-__( "We recommend you to enable this feature {{strong}}only{{/strong}} if you’re experiencing issues with plugins, generating mobile version of your site or similar functionality. Once enabled, the cache has to be generated separately for different browsers which lowers its efficiency.", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:139
-__( "Excluding URLs", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:151
-__( "Use this feature if you want to exclude certain parts of your website from being cached and keep them dynamic.", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:153
-__( "See examples", "sg-cachepress" ), // src-js/components/modules/dynamic-cache/index.tsx:158
-__( "GZIP Compression", "sg-cachepress" ), // src-js/components/modules/gzip/index.tsx:13
-__( "Enables a compression of the content that's delivered to your visitors browsers improving the network loading times of your site.", "sg-cachepress" ), // src-js/components/modules/gzip/index.tsx:17
-__( "GZIP Compression", "sg-cachepress" ), // src-js/components/modules/gzip/index.tsx:23
-__( "GZIP Compression is enabled by default automatically saving you bandwidth and improving the loading speeds of your pages.", "sg-cachepress" ), // src-js/components/modules/gzip/index.tsx:26
-__( "WordPress Admin Pages", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:99
-__( "Select whether the Heartbeat API to work or not on your {{strong}}WordPress Admin Pages{{/strong}}. Unless you rely on it to execute scheduled tasks, we recommend to keep it disabled.", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:104
-__( "Post and Page Edit", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:113
-__( "Select whether the WordPress Heartbeat API to work or not on your {{strong}}Post and Page Edit{{/strong}} screens. We recommend that you keep it enabled at 180 seconds.", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:118
-__( "Site Frontend", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:127
-__( "Select whether the WordPress Heartbeat API to work or not on your {{strong}}Site Frontend{{/strong}}. Unless you rely on it to execute scheduled tasks, we recommend to keep it disabled.", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:132
-__( "Disabled", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:155
-__( "WordPress Heartbeat Optimization", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:166
-__( "Enable this option to allow SG Optimizer to control the WordPress Heartbeat API.", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:172
-__( "By default, the WordPress Heartbeat API checks every 15 seconds on your post edit pages and every 60 seconds on your dashboard and frontend whether there is a scheduled tasks to be executed. This can generate high CPU usage if you leave browser tabs in which you're logged to WordPress opened for a longer period of time. With this option, you can make the checks run less frequently or completely disable them.", "sg-cachepress" ), // src-js/components/modules/heartbeat-control/index.tsx:188
-__( "Memcached is disabled. Please, enable it in your SiteGround control panel.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:27
-__( "Memcached was disabled due to exceeding the single object size limit.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:30
-__( "Memcached was disabled because the necessary dropin was deleted. Please, re-enable it again.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:34
-__( "Memcached is disabled. Please, enable it in your SiteGround control panel.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:52
-__( "Memcached was disabled due to exceeding the single object size limit.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:55
-__( "Memcached was disabled because the necessary dropin was deleted. Please, re-enable it again.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:59
-__( "Memcached", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:97
-__( "SINGLE OBJECT SIZE TOO BIG", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:104
-__( "Your site tried to store a single object above 1MB in Memcached which is above the limitation and will actually slow your site rather than speed it up. Please, check your Options table for obsolete data before enabling it again. Note that the service will be automatically disabled if such error occurs again.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:105
-__( "Powerful object caching for your site. It stores frequently executed queries to your databases and reuses them for better performance.", "sg-cachepress" ), // src-js/components/modules/memcached/index.tsx:112
-__( "Score Check", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:122
-__( "Test how optimized your website is. Our performance check is powered by Google PageSpeed.", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:125
-__( "Device Type", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:156
-__( "URL", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:164
-__( "Analyze", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:180
-__( "Please Wait, We Are Performing a Google PageSpeed Test on Your Page", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:187
-__( "There is nothing here yet", "sg-cachepress" ), // src-js/components/tabs/analytics/index.tsx:233
-__( "Enable HTTPS", "sg-cachepress" ), // src-js/components/tabs/environment-optimization/index.tsx:107
-__( "Configures your site to work correctly via HTTPS and forces a secure connection to your site.", "sg-cachepress" ), // src-js/components/tabs/environment-optimization/index.tsx:110
-__( "Fix Insecure Content", "sg-cachepress" ), // src-js/components/tabs/environment-optimization/index.tsx:154
-__( "Enable this option in case you’re getting insecure content errors on your website. We will dynamically rewrite insecure requests for resources coming from your site", "sg-cachepress" ), // src-js/components/tabs/environment-optimization/index.tsx:157
-__( "Minify the HTML Output", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:115
-__( "Removes unnecessary characters from your HTML output saving data and improving your site speed. ", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:120
-__( "Exclude URLs from HTML Minification", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:126
-__( "Exclude URLs from HTML Minification", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:146
-__( "With this functionality, you can exclude different pages from HTML minification.", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:147
-__( "Minify JavaScript Files", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:163
-__( "Minify your JavaScript files in order to reduce their size and reduce the number of requests to the server. ", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:168
-__( "Exclude from JavaScript Minification", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:174
-__( "Combine JavaScript Files", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:206
-__( "Combine your JavaScript files in order to reduce the number of requests to the server.", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:212
-__( "Exclude from JavaScript Combination", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:218
-__( "JAVASCRIPT COMBINATION DISABLED", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:230
-__( "We have detected that a script is generating uniquely named files which results in our combined assets taking up huge amount of disk space. Please, exclude any scripts that generate unique JS code per page or per visit in order to avoid this from happening again.", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:231
-__( "Defer Render-blocking JS", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:265
-__( "Defer loading of render-blocking JavaScript files for faster initial site load. ", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:271
-__( "Exclude from Loading JS Files Asynchronously", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:277
-__( "Minify CSS Files", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:309
-__( "Minify your CSS files in order to reduce their size and reduce the number of requests to the server. ", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:314
-__( "Exclude From CSS Minification", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:320
-__( "Combine CSS Files", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:352
-__( "Combine multiple CSS files into one to lower the number of requests your site generates. ", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:357
-__( "Exclude from CSS Combination", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:363
-__( "Optimize Loading of Google Fonts", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:395
-__( "Combine the loading of Google fonts reducing the number of HTTP requests.", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:400
-__( "Remove Query Strings From Static Resources", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:406
-__( "Removes version query strings from your static resources improving the caching of those resources.", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:411
-__( "Disable Emojis", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:417
-__( "Enable to prevent WordPress from automatically detecting and generating emojis in your pages.", "sg-cachepress" ), // src-js/components/tabs/frontend-optimization/index.tsx:422
-__( "New Images Optimization", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:84
-__( "We will automatically optimize all new images that you upload to your Media Library.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:88
-__( "Existing Images Optimization", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:104
-__( "We will optimize all your existing images with minimal or no loss in quality. Note, that this will overwrite your original images.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:107
-__( "Resume Optimization", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:126
-__( "Start Optimization", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:126
-__( "We've detected that the WordPress cronjob functionality is not working. Please, enable it following the instructions in {{link}}this article{{/link}} and refresh this page. If you’re using a real cron job, you can {{link2}}ignore this message{{/link2}} at your own risk. Note, that in this case, those operations may take longer than usual to complete.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:141
-__( "https://www.siteground.com/kb/disable-enable-wordpress-cron/", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:145
-__( "All images in your Media Library have been optimized successfully! Force {{link}}re-optimization{{/link}} of your images.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:178
-__( "Lazy Load Media", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:200
-__( "Load images only when they are visible in the browser", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:205
-__( "Lazy Load Iframes", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:223
-__( "We will lazy load iframes often used for things like video embeds from another sources. ", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:227
-__( "Lazy Load Videos", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:235
-__( "We will lazy load all videos you have added directly to your pages.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:239
-__( "Lazy Load Gravatars", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:247
-__( "When users comment under your posts, WordPress tries to load their avatars from gravatar.com. We recommend lazy-loading them as your users scroll down through your page if you have a high number of comments. ", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:251
-__( "Lazy Load Thumbnails", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:259
-__( "Enable if you want to lazy-load the thumbnail sizes of your original images.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:263
-__( "Lazy Load Responsive Images", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:271
-__( "Certain plugins and themes generate multiple images from a single upload to work better on different devices. Enable if you want to lazy-load these too.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:275
-__( "Lazy Load Widgets", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:283
-__( "Enable this option if you want the images in your widget areas to load only when users reach them. ", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:287
-__( "Lazy Load for Mobile", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:295
-__( "Enable if you want to use lazy-loading features for mobile requests to your site.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:299
-__( "Fix for Lazy Loading Short Codes", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:307
-__( "If your images generated by shortcodes are not lazy loaded, please enable this feature.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:311
-__( "Lazy Load Product Images", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:321
-__( "Enable if you want to enable lazy-load images in your store, product and other WooCommerce pages.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:325
-__( "Exclude from Lazy Load", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:336
-__( "In order to exclude images from lazy loading, please add their CSS classes to the exclusion list. Add each CSS class on a separate line.", "sg-cachepress" ), // src-js/components/tabs/image-optimization/index.tsx:337
-__( "Site Admin Permissions", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:85
-__( "In this section, set the access permission for admins of separate sites.", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:88
-__( "SuperCacher Settings", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:115
-__( "Select whether site admins can access and make changes within the SiteGround Optimizer's SuperCacher tab.", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:118
-__( "Frontend Optimizations", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:147
-__( "Select whether site admins can access and make changes within the SiteGround Optimizer's Frontend Optmization tab.", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:150
-__( "Image Optimizations", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:177
-__( "Select whether site admins can access and make changes within the SiteGround Optimizer's Image Optimization tab.", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:180
-__( "Environment Optimizations", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:207
-__( "Select whether site admins can access and make changes within the SiteGround Optimizer's Environment Optimization tab.", "sg-cachepress" ), // src-js/components/tabs/multisite-control/index.tsx:210
-__( "SUPERCACHER SETTINGS", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:37
-__( "Dynamic Caching", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:54
-__( "Select whether new sites should have the Dynamic Caching enabled for them or not.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:57
-__( "Automatic Cache Purge", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:100
-__( "Automatically perform a smart cache purge after every content modification.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:103
-__( "ENVIRONMENT OPTIMIZATION", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:139
-__( "Enable HTTPS", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:160
-__( "Configures your site to work correctly via HTTPS and forces a secure connection to your site.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:163
-__( "Fix Insecure Content", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:205
-__( "Enable this option in case you’re getting insecure content errors on your website. We will dynamically rewrite insecure requests for resources coming from your site", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:208
-__( "FRONTEND OPTIMIZATION", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:243
-__( "Minify the HTML Output", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:260
-__( "Removes unnecessary characters from your HTML output saving data and improving your site speed.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:263
-__( "Minify JavaScript Files", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:293
-__( "Combine and minify your JavaScript files in order to reduce their size, improve cachability, and reduce the number of requests to the server.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:296
-__( "Load Render-blocking JavaScript Files Asynchronously", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:326
-__( "Add async parameter to the JavaScript files loaded in the header section of your site so they don’t block your page rendering.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:329
-__( "Minify CSS Files", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:359
-__( "Combine and minify your CSS files in order to reduce their size, improve cachability, and reduce the number of requests to the server.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:362
-__( "Combine CSS Files", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:392
-__( "Combine multiple CSS files into one to lower the number of requests your site generates.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:395
-__( "Remove Query Strings From Static Resources", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:425
-__( "Removes version query strings from your static resources improving the caching of those resources.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:428
-__( "Disable Emojis", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:458
-__( "Enable to prevent WordPress from automatically detecting and generating emojis in your pages.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:461
-__( "IMAGE OPTIMIZATION", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:491
-__( "Image Optimization", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:508
-__( "We will optimize all your existing images with minimal or no loss in quality. Note, that this will overwrite your original images.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:511
-__( "Lazy Load Images", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:542
-__( "Load images only when they are visible in the browser", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:545
-__( "Lazy Load Iframes", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:586
-__( "We will lazy load iframes often used for things like video embeds from another sources. ", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:589
-__( "Lazy Load Videos", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:620
-__( "We will lazy load all videos you have added directly to your pages.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:623
-__( "Lazy Load Thumbnails", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:654
-__( "Enable if you want to enable lazy-load images in your store, product and other WooCommerce pages.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:657
-__( "Lazy Load Gravatars", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:686
-__( "When users comment under your posts, WordPress tries to load their avatars from gravatar.com. We recommend lazy-loading them as your users scroll down through your page if you have a high number of comments. ", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:689
-__( "Lazy Load Thumbnails", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:720
-__( "Enable if you want to lazy-load the thumbnail sizes of your original images.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:723
-__( "Lazy Load Responsive Images", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:754
-__( "Certain plugins and themes generate multiple images from a single upload to work better on different devices. Enable if you want to lazy-load these too.", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:757
-__( "Lazy Load Widgets", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:789
-__( "Enable this option if you want the images in your widget areas to load only when users reach them. ", "sg-cachepress" ), // src-js/components/tabs/sites-control/index.tsx:792
-_x( "in %s", "future time", "sg-cachepress" ), // extras/date.js:5
-__( "a few seconds", "sg-cachepress" ), // extras/date.js:6
-__( "a minute", "sg-cachepress" ), // extras/date.js:7
-__( "%d minutes", "sg-cachepress" ), // extras/date.js:8
-__( "%d hours", "sg-cachepress" ), // extras/date.js:9
-__( "%d days", "sg-cachepress" ), // extras/date.js:10
-__( "a month", "sg-cachepress" ), // extras/date.js:11
-__( "%d months", "sg-cachepress" ), // extras/date.js:12
-__( "a year", "sg-cachepress" ), // extras/date.js:13
-__( "%d years", "sg-cachepress" ), // extras/date.js:14
-__( "number_format_thousands_sep", "sg-cachepress" ), // extras/date.js:18
-__( "number_format_decimal_point", "sg-cachepress" ), // extras/date.js:20
+$optimizer_i18n_strings = array(
+	__( 'Cancel', 'sg-cachepress' ),
+	__( 'Confirm', 'sg-cachepress' ),
+	__( 'Get the Most of This Plugin', 'sg-cachepress' ),
+	__( 'Collect technical data about my installation. The data will be used to make sure that the plugin(s) works seamlessly on the widest possible range of WordPress sites. (A full list of the data to be collected can be found {{link}}here{{/link}}).', 'sg-cachepress' ),
+	__( 'Send me occasional emails about updates, special offers and new features from SiteGround.', 'sg-cachepress' ),
+	__( 'Feature Unavailable', 'sg-cachepress' ),
+	__( 'Enable', 'sg-cachepress' ),
+	__( 'Recommended', 'sg-cachepress' ),
+	__( 'Select one or more', 'sg-cachepress' ),
+	__( 'Cancel', 'sg-cachepress' ),
+	__( 'Confirm', 'sg-cachepress' ),
+	__( 'SiteGround Optimizer', 'sg-cachepress' ),
+	__( 'Get the best performance for your WordPress website with our top-rated optimization plugin. The SiteGround Optimizer handles caching better than ever and provides a number of environment, media and frontend optimizations for a blazing-fast loading.', 'sg-cachepress' ),
+	__( 'SiteGround Optimizer - Caching', 'sg-cachepress' ),
+	__( 'Caching is essential for speeding up your website. With our Dynamic Caching enabled all non-static resources of your website are cached to prevent unnecessary database queries and page loading, effectively decreasing the loading sped and TTFB (time to first byte) of your website.', 'sg-cachepress' ),
+	__( 'SiteGround Optimizer - Environment', 'sg-cachepress' ),
+	__( 'Create a safer and faster experience for your users with an optimized environment - decrease the CPU usage by modifying the WordPress Heartbeat API; Pre-Fetch External domains to decrease loading time for third-party domains content; Schedule Database Maintenance to keep your databases clean and fast, and more.', 'sg-cachepress' ),
+	__( 'SiteGround Optimizer - Frontend Optimization', 'sg-cachepress' ),
+	__( 'Frontend optimizations can significantly decrease loading speed with a variety of changes that reduce the size of scripts as well as the number of characters used.', 'sg-cachepress' ),
+	__( 'SiteGround Optimizer - Speed Test', 'sg-cachepress' ),
+	__( 'Test your website loading speed with Google PageSpeed. The detailed audits will cover more than 20 areas in terms of how your website performs. Additionally, tips and tricks on improving your score will be provided if an optimization opportunity occurs.', 'sg-cachepress' ),
+	__( 'SiteGround Optimizer - Media', 'sg-cachepress' ),
+	__( 'Image optimization is one of the fundamentals of improving site speed. With image compression, lazy load, and WebP enabled, your site loading speed will be reduced significantly. Additionally, the space your images occupy may also decrease, optimizing your disk space usage.', 'sg-cachepress' ),
+	__( 'Error', 'sg-cachepress' ),
+	__( 'Success', 'sg-cachepress' ),
+	__( 'This feature only works if you have Dynamic Caching enabled. To start using this feature, enable Dynamic Caching first.', 'sg-cachepress' ),
+	__( 'Caching Types', 'sg-cachepress' ),
+	__( 'Caching Settings', 'sg-cachepress' ),
+	__( 'Automatic Purge', 'sg-cachepress' ),
+	__( 'Perform a smart cache purge based on events happening on your WordPress site.', 'sg-cachepress' ),
+	__( 'When clearing the cache - purge the WordPress API cache too.', 'sg-cachepress' ),
+	__( 'Automatic Purge Caching only works if you have Dynamic Caching enabled. To start using this feature, please enable Dynamic Caching first.', 'sg-cachepress' ),
+	__( 'Automatic Purge Caching only works if you have File-based Caching enabled. To start using this feature, please enable File-based Caching first.', 'sg-cachepress' ),
+	__( 'Manual Cache Purge', 'sg-cachepress' ),
+	__( "Purge the cache of your website manually. You can use this option when you're modifying new content and don't have automatic purge enabled to make sure that old cached is purged right away", 'sg-cachepress' ),
+	__( 'Purge Cache', 'sg-cachepress' ),
+	__( 'Exclude URLs from Caching', 'sg-cachepress' ),
+	__( 'Use this feature if you want to exclude certain parts of your website from being cached and keep them dynamic. You can exclude full or partial URLs using "*" as a wildcard. E.g. www.site.com/parent-page/* will exclude all sub-pages of "parent-page".', 'sg-cachepress' ),
+	__( '%(number)s URLs', 'sg-cachepress' ),
+	__( 'Exclude Post Types from Caching', 'sg-cachepress' ),
+	__( "You can exclude certain post types from being cached. This is useful if you have sensitive or often changing post types that you don't want to cache but still want to benefit from caching for the rest of your site.", 'sg-cachepress' ),
+	__( '%(number)s post types', 'sg-cachepress' ),
+	__( 'Test URL Caching Status', 'sg-cachepress' ),
+	__( 'Review the caching status of specific URLs. Use this functionality to verify whether excluded URLs are working as expected.', 'sg-cachepress' ),
+	__( 'Test', 'sg-cachepress' ),
+	__( 'Exclude URLs from Caching', 'sg-cachepress' ),
+	__( 'Invalid URL', 'sg-cachepress' ),
+	__( 'Exclude Post Types from Caching', 'sg-cachepress' ),
+	__( 'Browser-specific Caching', 'sg-cachepress' ),
+	__( "Generate caching separately for different browsers. Enable this feature only if you're experiencing issues with plugins generating mobile versions of your website or other similar functionality. {{strong}}This feature significantly lowers caching efficiency.{{/strong}}", 'sg-cachepress' ),
+	__( 'Browser-specific Caching only works if you have Dynamic Caching enabled. To start using this feature, please enable Dynamic Caching first.', 'sg-cachepress' ),
+	__( 'Browser-specific Caching only works if you have File-based Caching enabled. To start using this feature, please enable File-based Caching first.', 'sg-cachepress' ),
+	__( 'Cloudflare Full Page Caching', 'sg-cachepress' ),
+	__( 'This option will enable full-page caching on your Cloudflare CDN edges. This will reduce the load on your SiteGround server and improve the loading speeds of your pages because by default Cloudflare will cache only your static resources.', 'sg-cachepress' ),
+	__( 'Authenticate with Cloudflare', 'sg-cachepress' ),
+	__( 'Your Cloudflare account may have page rules set that might affect the work of our integration. SiteGround Optimizer will delete all Page Rules and replace that functionality with Cloudflare workers. Note, that Cloudflare workers are free up to 100 000 requests a day and if you go past that number you may need to upgrade your account in order to keep using this functionality.', 'sg-cachepress' ),
+	__( 'Email used with Cloudflare', 'sg-cachepress' ),
+	__( 'Get the Cloudflare Global Api Key from {{link}}here{{/link}}', 'sg-cachepress' ),
+	__( 'Disable full page caching ', 'sg-cachepress' ),
+	__( 'This means that if you want to enable Full page caching again, you will have to authenticate anew.', 'sg-cachepress' ),
+	__( 'Do you wish to proceed?', 'sg-cachepress' ),
+	__( 'I want to deauthenticate from Cloudflare.', 'sg-cachepress' ),
+	__( 'Dynamic Caching', 'sg-cachepress' ),
+	__( "Store your content in the server's memory for a faster access with full-page caching solution powered by NGINX. Having Dynamic Cache is essential for speeding up your website.", 'sg-cachepress' ),
+	__( 'File-based Caching only works if you have Dynamic Caching enabled. To start using this feature, please enable Dynamic Caching first.', 'sg-cachepress' ),
+	__( 'File-Based Caching', 'sg-cachepress' ),
+	__( 'With file-based caching enabled we will create static HTML versions of your website which will be served to future visitors. The files are stored in the browser memory.', 'sg-cachepress' ),
+	__( 'Configure', 'sg-cachepress' ),
+	__( 'Configure File-Based Caching', 'sg-cachepress' ),
+	__( 'Manage the settings of your file-based caching to ensure optimal performance.', 'sg-cachepress' ),
+	__( 'Clean up interval', 'sg-cachepress' ),
+	__( ' Preheat cache', 'sg-cachepress' ),
+	__( 'When Preheating is enabled, our system will reload the cache once it is purged after content update in order to serve the fastest possible results to your real visitors.', 'sg-cachepress' ),
+	__( 'Logged-in users cache', 'sg-cachepress' ),
+	__( 'By default, we do not cache content for logged in users. Once Logged In Cache is enabled, we will store separate caches for each user. Note, that if you have many users, the size of the stored cache may be increased.', 'sg-cachepress' ),
+	__( 'Memcached', 'sg-cachepress' ),
+	__( 'Powerful object caching for your site. Memcached stores frequently executed queries to your databases and then reuses them for better performance.', 'sg-cachepress' ),
+	__( 'Enabled', 'sg-cachepress' ),
+	__( 'Disabled', 'sg-cachepress' ),
+	__( 'Dynamic Caching Status', 'sg-cachepress' ),
+	__( 'Other Optimizations', 'sg-cachepress' ),
+	__( 'Important Notifications', 'sg-cachepress' ),
+	__( 'Rate Us', 'sg-cachepress' ),
+	__( 'Thank you for using SiteGround Optimizer!', 'sg-cachepress' ),
+	__( 'Help other people speed up their sites by rating our plugin.', 'sg-cachepress' ),
+	__( 'Environment settings', 'sg-cachepress' ),
+	__( 'Fix Insecure Content', 'sg-cachepress' ),
+	__( 'Enable this option in case you’re getting insecure content errors on your website. We will dynamically rewrite insecure requests for resources coming from your site.', 'sg-cachepress' ),
+	__( 'This feature only works if you have HTTPS Enforce enabled. To start using this feature, enable HTTPS enforce first.', 'sg-cachepress' ),
+	__( 'GZIP Compression', 'sg-cachepress' ),
+	__( "Enables compression of the content that's delivered to your visitors' browsers improving the network loading times of your site.", 'sg-cachepress' ),
+	__( 'Browser Caching', 'sg-cachepress' ),
+	__( "Adds rules to store the static content of your site longer in the visitors' browser cache which improves the site performance.", 'sg-cachepress' ),
+	__( 'WordPress Heartbeat Optimization', 'sg-cachepress' ),
+	__( "The WordPress Heartbeat API checks your post edit pages every 15 seconds and your dashboard and front end every 60 seconds, even in the absence of scheduled tasks. This can generate high CPU usage if you leave browser tabs in which you're logged to WordPress opened for a longer period of time. You can modify these settings to reduce load.", 'sg-cachepress' ),
+	__( 'WordPress Admin Pages', 'sg-cachepress' ),
+	__( 'Unless you rely on it to execute scheduled tasks, we recommend to keep it disabled.', 'sg-cachepress' ),
+	__( 'Posts and Pages', 'sg-cachepress' ),
+	__( 'We recommend that you keep it enabled at 180 seconds.', 'sg-cachepress' ),
+	__( 'Site Frontend', 'sg-cachepress' ),
+	__( 'Unless you rely on it to execute scheduled tasks, we recommend to keep it disabled.', 'sg-cachepress' ),
+	__( 'Scheduled Database Maintenance', 'sg-cachepress' ),
+	__( 'This functionality will clean up your database {{strong}}once a week{{/strong}} to keep it small and optimized by performing the following tasks:', 'sg-cachepress' ),
+	__( 'Perform Database Optimization for MyISAM tables', 'sg-cachepress' ),
+	__( 'Delete all automatically created post and page drafts', 'sg-cachepress' ),
+	__( 'Delete all page and post revisions', 'sg-cachepress' ),
+	__( 'Delete all posts and pages in your Trash', 'sg-cachepress' ),
+	__( 'Delete all comments marked as Spam', 'sg-cachepress' ),
+	__( 'Delete all expired Transients', 'sg-cachepress' ),
+	__( 'Manage External Domains', 'sg-cachepress' ),
+	__( 'HTTPS Enforce', 'sg-cachepress' ),
+	__( 'Configures your site to work correctly via HTTPS and forces a secure connection to your site. In order to force HTTPS, we will automatically update your database replacing all insecure links. In addition to that, we will add a rule in your .htaccess file, forcing all requests to go through encrypted connection.', 'sg-cachepress' ),
+	__( 'You Will be Logged Out', 'sg-cachepress' ),
+	__( 'Enabling HTTPS Enforce will have you logged out from your current session and you will have to log back in to your WordPress admin.', 'sg-cachepress' ),
+	__( 'Are you sure you wish to proceed?', 'sg-cachepress' ),
+	__( 'Combine CSS Files', 'sg-cachepress' ),
+	__( 'Combine multiple CSS files into one to lower the number of requests your site generates.', 'sg-cachepress' ),
+	__( 'Exclude from CSS Combination', 'sg-cachepress' ),
+	__( '%(number)s scripts', 'sg-cachepress' ),
+	__( 'Exclude from CSS Combination', 'sg-cachepress' ),
+	__( 'Exclude from CSS Minification', 'sg-cachepress' ),
+	__( '%(number)s scripts', 'sg-cachepress' ),
+	__( 'Exclude from CSS Minification', 'sg-cachepress' ),
+	__( 'Minify CSS Files', 'sg-cachepress' ),
+	__( 'Minify your CSS files in order to reduce their size and the number of requests on the server.', 'sg-cachepress' ),
+	__( 'Preload Combined CSS', 'sg-cachepress' ),
+	__( 'Adds the preload value to the combine css files instructing the browser that this is important resource which will be needed very soon to render the page.', 'sg-cachepress' ),
+	__( 'This feature only works if you have Combine CSS Files enabled. To start using this feature, enable Combine CSS Files first.', 'sg-cachepress' ),
+	__( 'Manage CSS Frontend', 'sg-cachepress' ),
+	__( 'Manage JavaScript Frontend', 'sg-cachepress' ),
+	__( 'Manage General Frontend', 'sg-cachepress' ),
+	__( 'Disable Emojis', 'sg-cachepress' ),
+	__( 'Enable to prevent WordPress from automatically detecting and generating emojis in your pages.', 'sg-cachepress' ),
+	__( 'Exclude from HTML Minification', 'sg-cachepress' ),
+	__( '%(number)s scripts', 'sg-cachepress' ),
+	__( 'Exclude from HTML Minification', 'sg-cachepress' ),
+	__( 'Fonts Preloading', 'sg-cachepress' ),
+	__( "Preload the fonts you're using for faster rendering and better site performance. Make sure you preload only the fonts that are actually in use. {{strong}}Use the full URL to the font.{{/strong}}", 'sg-cachepress' ),
+	__( '%(number)s fonts', 'sg-cachepress' ),
+	__( 'Fonts to be Preloaded', 'sg-cachepress' ),
+	__( 'Minify the HTML Output', 'sg-cachepress' ),
+	__( 'Remove unnecessary characters from your HTML output to reduce data size and improve your site loading speed.', 'sg-cachepress' ),
+	__( 'Remove Query Strings from Static Resources', 'sg-cachepress' ),
+	__( 'Removes version query strings from your static resources improving the caching of those resources.', 'sg-cachepress' ),
+	__( 'Web Fonts Optimization', 'sg-cachepress' ),
+	__( "With this optimization we're changing the default way to load Google fonts in order to save HTTP requests. In addition to that, all other fonts that your website uses will be properly preloaded so browsers take the least possible amount of time to cache and render them.", 'sg-cachepress' ),
+	__( 'Combine JavaScript Files', 'sg-cachepress' ),
+	__( 'Combine multiple JavaScript files into one to lower the number of requests your site generates.', 'sg-cachepress' ),
+	__( 'Defer Render-blocking JavaScript', 'sg-cachepress' ),
+	__( 'Defer loading of render-blocking JavaScript files for faster initial site load.', 'sg-cachepress' ),
+	__( 'Exclude from Deferral of Render-blocking JS', 'sg-cachepress' ),
+	__( '%(number)s scripts', 'sg-cachepress' ),
+	__( 'Exclude from Deferral of Render-blocking JS', 'sg-cachepress' ),
+	__( 'Exclude from JavaScript Combination', 'sg-cachepress' ),
+	__( '%(number)s scripts', 'sg-cachepress' ),
+	__( 'Exclude from JavaScript Combination', 'sg-cachepress' ),
+	__( 'Exclude from JavaScript Minification', 'sg-cachepress' ),
+	__( '%(number)s scripts', 'sg-cachepress' ),
+	__( 'Exclude from JavaScript Minification', 'sg-cachepress' ),
+	__( 'Minify JavaScript Files', 'sg-cachepress' ),
+	__( 'Minify your JavaScript files in order to reduce their size and the number of requests on the server.', 'sg-cachepress' ),
+	__( 'Exclude CSS Classes from Lazy Load', 'sg-cachepress' ),
+	__( 'Exclude CSS Classes from Lazy Load', 'sg-cachepress' ),
+	__( '%(number)s classes', 'sg-cachepress' ),
+	__( 'Exclude Media Types from Lazy Load', 'sg-cachepress' ),
+	__( 'Exclude Media Types from Lazy Load', 'sg-cachepress' ),
+	__( '%(number)s media types', 'sg-cachepress' ),
+	__( 'Configure Image Compression', 'sg-cachepress' ),
+	__( 'Select the compression level you wish to use. The higher the compression, the larger the space saved.', 'sg-cachepress' ),
+	__( 'Compression Level', 'sg-cachepress' ),
+	__( 'Back up all original images.', 'sg-cachepress' ),
+	__( 'While this is great to have if you plan to change image compression levels in future, bear in mind that this is a resource consuming option that will take up from your hosting space.', 'sg-cachepress' ),
+	__( 'I want to compress my existing images, too.', 'sg-cachepress' ),
+	__( 'Overwrite images with custom compression level', 'sg-cachepress' ),
+	__( 'Changing your compression level will re-generate all existing images. This is a time and resource consuming process that may take awhile, depending on the number and size of your images.', 'sg-cachepress' ),
+	__( 'Compressing image %(converted)s of %(total)s...', 'sg-cachepress' ),
+	__( 'Image Compression', 'sg-cachepress' ),
+	__( 'We will resize your images to decrease the space they occupy and the time needed for each image to load. The dimensions of your images will not change and with our improved resizing algorithm the visual change in quality is practically non-detectable. Changing your compression level will re-generate all existing images, including WebP images. This is a time and resource consuming process that may take awhile depending on the number and size of your images.', 'sg-cachepress' ),
+	__( 'Image compression level is', 'sg-cachepress' ),
+	__( 'Preview', 'sg-cachepress' ),
+	__( 'Edit', 'sg-cachepress' ),
+	__( 'Enabled', 'sg-cachepress' ),
+	__( 'Disabled', 'sg-cachepress' ),
+	__( 'Default', 'sg-cachepress' ),
+	__( 'Select from existing', 'sg-cachepress' ),
+	__( 'Select Image', 'sg-cachepress' ),
+	__( 'Original - %(size)s', 'sg-cachepress' ),
+	__( 'Low (25%% size reduction) - %(size)s', 'sg-cachepress' ),
+	__( 'Medium (60%% size reduction) - %(size)s', 'sg-cachepress' ),
+	__( 'High (85%% size reduction) - %(size)s', 'sg-cachepress' ),
+	__( 'Compare Image Compression Level', 'sg-cachepress' ),
+	__( 'Close', 'sg-cachepress' ),
+	__( 'Preview Image', 'sg-cachepress' ),
+	__( 'Compression Level', 'sg-cachepress' ),
+	__( 'Lazy Load Media', 'sg-cachepress' ),
+	__( 'With Lazy Load enabled only the media in the visible part of the browser will be loaded. This makes loading faster and smoother for longer pages with multiple media items.', 'sg-cachepress' ),
+	__( 'Maximum Image Width', 'sg-cachepress' ),
+	__( 'If you’re often uploading or using large images on your website, you might want to start resizing images to fit a maximum width. This can reduce the images size up to 80% and dramatically increase loading speed on pages with one or more large images. Enabling this will resize your existing and future images whose width exceeds 2560 px.', 'sg-cachepress' ),
+	__( 'Compression Settings', 'sg-cachepress' ),
+	__( 'Media Optimization', 'sg-cachepress' ),
+	__( 'Converting image %(converted)s of %(total)s...', 'sg-cachepress' ),
+	__( 'Use WebP Images', 'sg-cachepress' ),
+	__( 'WebP is a next generation image format supported by modern browsers which greatly reduces the size of standard image formats while keeping the same quality. Almost all current browsers work with WebP.', 'sg-cachepress' ),
+	__( 'Disable WebP', 'sg-cachepress' ),
+	__( 'Enable WebP', 'sg-cachepress' ),
+	__( 'Deactivating the use of WebP images will delete all currently generated WebP files. We will regenerate them again if you enable the option.', 'sg-cachepress' ),
+	__( 'Enabling WebP will re-generate all existing WebP images, if any and will generate new WebP versions of all existing standard images. This is a time and resource consuming process that may take awhile, depending on the number and size of your images.', 'sg-cachepress' ),
+	__( 'Device Type', 'sg-cachepress' ),
+	__( 'Desktop', 'sg-cachepress' ),
+	__( 'Mobile', 'sg-cachepress' ),
+	__( 'URL', 'sg-cachepress' ),
+	__( 'Analyze', 'sg-cachepress' ),
+	__( 'CSS Optimizations', 'sg-cachepress' ),
+	__( 'JavaScript Optimizations', 'sg-cachepress' ),
+	__( 'General Optimizations', 'sg-cachepress' ),
+	__( 'Other', 'sg-cachepress' ),
+	__( 'Optimize Resources', 'sg-cachepress' ),
+	__( 'Potential Saving', 'sg-cachepress' ),
+	__( 'URL Address', 'sg-cachepress' ),
+	__( 'Transfer Size', 'sg-cachepress' ),
+	__( 'Potential Saving', 'sg-cachepress' ),
+	__( 'Use WebP Images', 'sg-cachepress' ),
+	__( 'WebP is a next generation image format supported by modern browsers which greatly reduces the size of standard image formats while keeping the same quality. Almost all current browsers work with WebP.', 'sg-cachepress' ),
+	__( 'Go to media', 'sg-cachepress' ),
+	__( 'Recommended Optimizations', 'sg-cachepress' ),
+	__( 'Google Score', 'sg-cachepress' ),
+	__( 'Page Load Time', 'sg-cachepress' ),
+	__( 'Time to First Byte', 'sg-cachepress' ),
+	__( 'Either a security plugin, custom function, or rules in your .htaccess file is preventing the WordPress REST API from working properly. SiteGround Optimizer is using it to store its options and other functionalities so please make sure it works properly.', 'sg-cachepress' ),
+	__( 'Could not connect to the WordPress REST API', 'sg-cachepress' ),
+	__( 'Either a security plugin, custom function or rules in your .htaccess file is preventing the WordPress REST API from working properly. SiteGround Security is using it to store its options and other functionalities so please make sure it works properly.', 'sg-cachepress' ),
+	__( 'Could not connect to the WordPress REST API', 'sg-cachepress' ),
+	__( 'This field is required.', 'sg-cachepress' ),
+	__( 'Invalid URL', 'sg-cachepress' ),
 );
 /* THIS IS THE END OF THE GENERATED FILE */

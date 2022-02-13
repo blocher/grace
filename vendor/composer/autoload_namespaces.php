@@ -8,6 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'Smalot\\PdfParser\\' => array($vendorDir . '/smalot/pdfparser/src'),
     'SimplePie' => array($vendorDir . '/simplepie/simplepie/library'),
-    'Google_Service_' => array($vendorDir . '/google/apiclient-services/src'),
     'ForceUTF8\\' => array($vendorDir . '/neitanod/forceutf8/src'),
 );
